@@ -29,6 +29,7 @@ private:
 private slots:
     void initForm();
     void buttonClick();
+    void valueChange();
     void initLeftMain();
     void initLeftConfig();
     void leftMainClick();

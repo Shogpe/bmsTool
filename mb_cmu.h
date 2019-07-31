@@ -15,10 +15,10 @@ typedef struct {
     uint16_t status_num;  // bmu状态个数
 } CMU_CONF;
 typedef struct {
-    uint8_t type;     // bmu个数
-    uint16_t start_addr;     // bmu电压个数
-    uint16_t reg_len;    // bmu温度个数
-    uint16_t tab_offset;  // bmu状态个数
+    uint8_t type;     // 寄存器类型
+    uint16_t start_addr;     // 寄存器起始地址
+    uint16_t reg_len;    //寄存器长度
+    uint16_t tab_offset;  // 转存表偏移
 } MB_CMD;
 typedef struct {
     MB_CMD volatge;

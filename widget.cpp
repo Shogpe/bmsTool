@@ -12,10 +12,25 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
     timer->start(2000);
     //
-    int NumOfRow = 8;
-    int NumOfCol = 16;
-    ui->tableWidget->setColumnCount(NumOfCol);
-    ui->tableWidget->setRowCount(NumOfRow);
+}
+
+Widget::~Widget() {
+    mycmu->stop = true;
+    mycmu->wait();
+    timer->stop();
+    delete timer;
+    delete mycmu;
+    delete ui;
+}
+
+void Widget::uiInit(int NumOfBmu,int NumOfVol,int NumOfTemp,int NumOfStatus) {
+//    int NumOfBmu = 20;
+//    int NumOfVol = 12;
+//    int NumOfTemp = 6;
+//    int NumOfStatus = 5;
+
+    ui->tableWidget->setColumnCount(NumOfVol);
+    ui->tableWidget->setRowCount(NumOfBmu);
     /* 设置 tableWidget */
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
@@ -29,9 +44,8 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
     //
-    int NumOfTemp = 10;
     ui->tableTemp->setColumnCount(NumOfTemp);
-    ui->tableTemp->setRowCount(NumOfRow);
+    ui->tableTemp->setRowCount(NumOfBmu);
     hdr_list.clear();
     for (int i = 0; i < ui->tableTemp->columnCount() - 2; i++) {
         hdr_list.append(("Tpack" + QString::number(i + 1)));
@@ -40,9 +54,9 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     hdr_list.append(tr("Tp1"));
     hdr_list.append(tr("Tp2"));
     ui->tableTemp->setHorizontalHeaderLabels(hdr_list);
-    int NumOfStatus = 5;
+
     ui->tableStatus->setColumnCount(NumOfStatus);
-    ui->tableStatus->setRowCount(NumOfRow);
+    ui->tableStatus->setRowCount(NumOfBmu);
     hdr_list.clear();
     hdr_list.append(tr("电压断线"));
     hdr_list.append(tr("温度断线"));
@@ -50,18 +64,6 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     hdr_list.append(tr("故障状态"));
     hdr_list.append(tr("版本号"));
     ui->tableStatus->setHorizontalHeaderLabels(hdr_list);
-    mycmu = new mb_cmu;
-    mycmu->config = {.bmu_num = 8, .vol_num = 16, .temp_num = 10, .status_num = 4};
-    mycmu->start();
-}
-
-Widget::~Widget() {
-    mycmu->stop = true;
-    mycmu->wait();
-    timer->stop();
-    delete timer;
-    delete mycmu;
-    delete ui;
 }
 
 void Widget::timerUpDate() {

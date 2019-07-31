@@ -21,6 +21,7 @@ class Widget : public QWidget {
   void flushTemp();
   void flushVoltage();
   void flushStatus();
+  void uiInit(int,int,int,int);
   mb_cmu* mycmu;
 
  private:

@@ -1,15 +1,19 @@
 #pragma execution_character_set("utf-8")
 #include "main_ui.h"
 
+#include <QTimer>
 #include "iconhelper.h"
 #include "ui_main_ui.h"
-#include <QTimer>
 
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
+    ui->page4->uiInit(20, 12, 6 + 2, 4 + 1);
+    ui->page4->mycmu = new mb_cmu;
+    ui->page4->mycmu->config = {.bmu_num = 20, .vol_num = 12, .temp_num = 6, .status_num = 4};
+    ui->page4->mycmu->start();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
     timer->start(1000);
@@ -34,7 +38,7 @@ void MainUI::initForm() {
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
 
-    //ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
+    // ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
 
     QSize icoSize(32, 32);
     int icoWidth = 85;
@@ -72,6 +76,32 @@ void MainUI::buttonClick() {
             btn->setChecked(false);
         }
     }
+
+    if (name == "主界面") {
+        ui->stackedWidget->setCurrentIndex(0);
+    } else if (name == "系统设置") {
+        ui->stackedWidget->setCurrentIndex(1);
+    } else if (name == "事件查询") {
+        ui->stackedWidget->setCurrentIndex(2);
+    } else if (name == "使用帮助") {
+        ui->stackedWidget->setCurrentIndex(3);
+    } else if (name == "用户退出") {
+        exit(0);
+    }
+}
+
+void MainUI::valueChange() {
+    QSpinBox* b = (QSpinBox*)sender();
+    QString name = b->text();
+
+    //    QList<QSpinBox*> tbtns = ui->widgetTop->findChildren<QSpinBox*>();
+    //    foreach (QSpinBox* btn, tbtns) {
+    //        if (btn == b) {
+    //            btn->setChecked(true);
+    //        } else {
+    //            btn->setChecked(false);
+    //        }
+    //    }
 
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
@@ -151,8 +181,20 @@ void MainUI::leftConfigClick() {
             btnsConfig.at(i)->setIcon(QIcon(IconHelper::Instance()->getPixmap(btnsConfig.at(i), true)));
         }
     }
-
-    ui->lab2->setText(name);
+    qDebug() << name;
+    if (name == "其他设置") {
+        int bmu_num = ui->nBMU->value();
+        int vol_num = ui->nVol->value();
+        int temp_num = ui->nTemp->value();
+        int status_num = ui->nStatus->value();
+        ui->page4->uiInit(bmu_num, vol_num, temp_num, status_num);
+        //ui->page4->mycmu = new mb_cmu;
+        ui->page4->mycmu->config.bmu_num = bmu_num;
+        ui->page4->mycmu->config.vol_num = vol_num;
+        ui->page4->mycmu->config.temp_num = temp_num;
+        ui->page4->mycmu->config.status_num = status_num - 1;
+        ui->page4->mycmu->Init(ui->lineEditIP->text().toStdString(),ui->spinBoxPort->value());
+    }
 }
 void MainUI::connectClick() {
     QToolButton* b = (QToolButton*)sender();
@@ -181,14 +223,24 @@ void MainUI::on_btnMenu_Max_clicked() {
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }
 void MainUI::timerUpDate() {
-    if(ui->page4->mycmu->cmu_status) {
+    if (ui->page4->mycmu->cmu_status) {
         ui->labelStatus->setText(tr("已连接"));
         int val = ui->page4->mycmu->cmu_ver;
-        ui->labelVer->setText(QString("0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
+        ui->labelVer->setText(QString("版本号:0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
         ui->tbtnConnect->setText("重连");
     } else {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
+    }
+    ui->tableConfig->setRowCount(ui->page4->mycmu->tab_config[8].tab_offset);
+    ui->tableConfig->setColumnCount(1);
+    for (int i = 0; i < ui->page4->mycmu->tab_config[8].tab_offset; i++) {
+        QTableWidgetItem* item = new QTableWidgetItem();
+        double val = ui->page4->mycmu->tab_reg[i];
+        item->setText(QString("%1").arg(val, 0, 'g', 5));
+        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableConfig->setItem(i, 0, item);
     }
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";

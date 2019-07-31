@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
+    <width>1015</width>
     <height>600</height>
    </rect>
   </property>
@@ -343,11 +343,78 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="MainPage">
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
+       <item row="1" column="2">
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <widget class="Widget" name="DataWidget">
+          <attribute name="title">
+           <string>BMU数据</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>设置</string>
+          </attribute>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="3">
+        <widget class="QWidget" name="widgetLeftMain" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>90</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QListWidget" name="listWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <item>
+             <property name="text">
+              <string>192.168.1.120</string>
+             </property>
+             <property name="checkState">
+              <enum>Checked</enum>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="2">
         <widget class="QGroupBox" name="groupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -365,7 +432,10 @@
              <string>输入IP地址</string>
             </property>
             <property name="text">
-             <string>192.168.1.125</string>
+             <string>192.168.1.122</string>
+            </property>
+            <property name="maxLength">
+             <number>16</number>
             </property>
            </widget>
           </item>
@@ -439,83 +509,17 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="0" rowspan="2">
-        <widget class="QWidget" name="widgetLeftMain" native="true">
-         <property name="maximumSize">
-          <size>
-           <width>90</width>
-           <height>16777215</height>
-          </size>
+       <item row="0" column="1">
+        <widget class="Line" name="line">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QToolButton" name="tbtnMain1">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>数据监控</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="tbtnMain2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMS监控</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="tbtnMain3">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU监控</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>471</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
         </widget>
        </item>
       </layout>
@@ -669,7 +673,7 @@
                <string>dz</string>
               </property>
               <property name="specialValueText">
-               <string> </string>
+               <string/>
               </property>
               <property name="suffix">
                <string/>
@@ -694,7 +698,7 @@
                <string>dz</string>
               </property>
               <property name="specialValueText">
-               <string> </string>
+               <string/>
               </property>
               <property name="suffix">
                <string/>
@@ -706,7 +710,7 @@
                <number>10</number>
               </property>
               <property name="value">
-               <number>8</number>
+               <number>6</number>
               </property>
              </widget>
             </item>
@@ -716,7 +720,7 @@
                <string>dz</string>
               </property>
               <property name="specialValueText">
-               <string> </string>
+               <string/>
               </property>
               <property name="suffix">
                <string/>
@@ -754,7 +758,7 @@
                <string>dz</string>
               </property>
               <property name="specialValueText">
-               <string> </string>
+               <string/>
               </property>
               <property name="suffix">
                <string/>
@@ -813,7 +817,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="Widget" name="page4">
+     <widget class="QWidget" name="page4">
       <layout class="QVBoxLayout" name="verticalLayout_4"/>
      </widget>
     </widget>

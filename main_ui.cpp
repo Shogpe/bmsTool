@@ -10,10 +10,10 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-    ui->page4->uiInit(20, 12, 6 + 2, 4 + 1);
-    ui->page4->mycmu = new mb_cmu;
-    ui->page4->mycmu->config = {.bmu_num = 20, .vol_num = 12, .temp_num = 6, .status_num = 4};
-    ui->page4->mycmu->start();
+    ui->DataWidget->uiInit(8, 16, 4 + 2, 4 + 1);
+    ui->DataWidget->mycmu = new mb_cmu;
+    ui->DataWidget->mycmu->config = {.bmu_num = 8, .vol_num = 16, .temp_num = 6, .status_num = 4};
+    ui->DataWidget->mycmu->start();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
     timer->start(1000);
@@ -24,7 +24,7 @@ MainUI::~MainUI() { delete ui; }
 void MainUI::initForm() {
     this->setProperty("form", true);
     this->setProperty("canMove", true);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint| Qt::Window);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 30);
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));
@@ -54,7 +54,7 @@ void MainUI::initForm() {
 
     ui->btnMain->click();
 
-    ui->widgetLeftMain->setProperty("flag", "left");
+    //ui->widgetLeftMain->setProperty("flag", "left");
     ui->widgetLeftConfig->setProperty("flag", "left");
     ui->MainPage->setStyleSheet(QString("QWidget[flag=\"left\"] "
                                         "QAbstractButton{min-height:%1px;max-height:%1px;}")
@@ -118,7 +118,7 @@ void MainUI::valueChange() {
 
 void MainUI::initLeftMain() {
     pixCharMain << 0xf030 << 0xf03e << 0xf247;
-    btnsMain << ui->tbtnMain1 << ui->tbtnMain2 << ui->tbtnMain3;
+    //btnsMain << ui->tbtnMain1 << ui->tbtnMain2 << ui->tbtnMain3;
 
     int count = btnsMain.count();
     for (int i = 0; i < count; i++) {
@@ -127,9 +127,9 @@ void MainUI::initLeftMain() {
         connect(btnsMain.at(i), SIGNAL(clicked(bool)), this, SLOT(leftMainClick()));
     }
 
-    IconHelper::Instance()->setStyle(ui->widgetLeftMain, btnsMain, pixCharMain, 15, 35, 25, "left", 4);
+    //IconHelper::Instance()->setStyle(ui->widgetLeftMain, btnsMain, pixCharMain, 15, 35, 25, "left", 4);
     connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(connectClick()));
-    ui->tbtnMain1->click();
+   // ui->tbtnMain1->click();
 }
 
 void MainUI::initLeftConfig() {
@@ -187,13 +187,13 @@ void MainUI::leftConfigClick() {
         int vol_num = ui->nVol->value();
         int temp_num = ui->nTemp->value();
         int status_num = ui->nStatus->value();
-        ui->page4->uiInit(bmu_num, vol_num, temp_num, status_num);
+        ui->DataWidget->uiInit(bmu_num, vol_num, temp_num, status_num);
         //ui->page4->mycmu = new mb_cmu;
-        ui->page4->mycmu->config.bmu_num = bmu_num;
-        ui->page4->mycmu->config.vol_num = vol_num;
-        ui->page4->mycmu->config.temp_num = temp_num;
-        ui->page4->mycmu->config.status_num = status_num - 1;
-        ui->page4->mycmu->Init(ui->lineEditIP->text().toStdString(),ui->spinBoxPort->value());
+        ui->DataWidget->mycmu->config.bmu_num = bmu_num;
+        ui->DataWidget->mycmu->config.vol_num = vol_num;
+        ui->DataWidget->mycmu->config.temp_num = temp_num;
+        ui->DataWidget->mycmu->config.status_num = status_num - 1;
+        ui->DataWidget->mycmu->Init(ui->lineEditIP->text().toStdString(),ui->spinBoxPort->value());
     }
 }
 void MainUI::connectClick() {
@@ -201,7 +201,7 @@ void MainUI::connectClick() {
     QString name = b->text();
     // ui->labelStatus->setText(QString("%1").arg(time(NULL)));
     string ip = ui->lineEditIP->text().toStdString();
-    ui->page4->mycmu->Init(ip, 502);
+    ui->DataWidget->mycmu->Init(ip, 502);
     qDebug() << "connect " << ui->lineEditIP->text();
 }
 void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
@@ -223,20 +223,20 @@ void MainUI::on_btnMenu_Max_clicked() {
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }
 void MainUI::timerUpDate() {
-    if (ui->page4->mycmu->cmu_status) {
+    if (ui->DataWidget->mycmu->cmu_status) {
         ui->labelStatus->setText(tr("已连接"));
-        int val = ui->page4->mycmu->cmu_ver;
+        int val = ui->DataWidget->mycmu->cmu_ver;
         ui->labelVer->setText(QString("版本号:0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
         ui->tbtnConnect->setText("重连");
     } else {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
-    ui->tableConfig->setRowCount(ui->page4->mycmu->tab_config[8].tab_offset);
+    ui->tableConfig->setRowCount(ui->DataWidget->mycmu->tab_config[8].tab_offset);
     ui->tableConfig->setColumnCount(1);
-    for (int i = 0; i < ui->page4->mycmu->tab_config[8].tab_offset; i++) {
+    for (int i = 0; i < ui->DataWidget->mycmu->tab_config[8].tab_offset; i++) {
         QTableWidgetItem* item = new QTableWidgetItem();
-        double val = ui->page4->mycmu->tab_reg[i];
+        double val = ui->DataWidget->mycmu->tab_reg[i];
         item->setText(QString("%1").arg(val, 0, 'g', 5));
         //      item->setBackground(QBrush(QColor(Qt::lightGray)));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));

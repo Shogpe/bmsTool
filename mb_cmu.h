@@ -20,14 +20,9 @@ typedef struct {
     uint16_t reg_len;    //寄存器长度
     uint16_t tab_offset;  // 转存表偏移
 } MB_CMD;
-typedef struct {
-    MB_CMD volatge;
-    MB_CMD temprature;
-    MB_CMD status;
-    MB_CMD version;
-    MB_CMD other;
-} CMU_TABLE_CONF;
+
 #define CMU_ONLINE 0
+#define CMU_OUTOFDATE 31
 class mb_cmu : public QThread {
     Q_OBJECT
    protected:
@@ -43,10 +38,11 @@ class mb_cmu : public QThread {
    public:
     uint16_t tab_reg[1000];
     CMU_CONF config;
-    MB_CMD tab_config[10];
+    MB_CMD *tab_config;
     uint32_t cmu_ver;
     uint32_t cmu_status;
     bool stop;
+    int max_offset;
 
    private:
     modbus_t* cmu;

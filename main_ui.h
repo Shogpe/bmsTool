@@ -34,7 +34,7 @@ private slots:
     void initLeftConfig();
     void leftMainClick();
     void leftConfigClick();
-    void connectClick();
+    void btnClick();
     void timerUpDate();
 
 private slots:

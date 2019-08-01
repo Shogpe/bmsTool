@@ -128,8 +128,9 @@ void MainUI::initLeftMain() {
     }
 
     //IconHelper::Instance()->setStyle(ui->widgetLeftMain, btnsMain, pixCharMain, 15, 35, 25, "left", 4);
-    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(connectClick()));
+    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
    // ui->tbtnMain1->click();
+    //ui->listBMS->set
 }
 
 void MainUI::initLeftConfig() {
@@ -196,13 +197,16 @@ void MainUI::leftConfigClick() {
         ui->DataWidget->mycmu->Init(ui->lineEditIP->text().toStdString(),ui->spinBoxPort->value());
     }
 }
-void MainUI::connectClick() {
+
+void MainUI::btnClick() {
     QToolButton* b = (QToolButton*)sender();
     QString name = b->text();
-    // ui->labelStatus->setText(QString("%1").arg(time(NULL)));
-    string ip = ui->lineEditIP->text().toStdString();
-    ui->DataWidget->mycmu->Init(ip, 502);
-    qDebug() << "connect " << ui->lineEditIP->text();
+    if (name == "连接"|| name == "重连" ) {
+        string ip = ui->lineEditIP->text().toStdString();
+        int port = ui->spinBoxPort->value();
+        ui->DataWidget->mycmu->Init(ip, port);
+        qDebug() << "connect " << ui->lineEditIP->text();
+    }
 }
 void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
 
@@ -222,9 +226,11 @@ void MainUI::on_btnMenu_Max_clicked() {
 }
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }
+
 void MainUI::timerUpDate() {
     if (ui->DataWidget->mycmu->cmu_status) {
         ui->labelStatus->setText(tr("已连接"));
+        if(ui->DataWidget->mycmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("过期"));
         int val = ui->DataWidget->mycmu->cmu_ver;
         ui->labelVer->setText(QString("版本号:0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
         ui->tbtnConnect->setText("重连");
@@ -232,9 +238,9 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
-    ui->tableConfig->setRowCount(ui->DataWidget->mycmu->tab_config[8].tab_offset);
+    ui->tableConfig->setRowCount(ui->DataWidget->mycmu->max_offset);
     ui->tableConfig->setColumnCount(1);
-    for (int i = 0; i < ui->DataWidget->mycmu->tab_config[8].tab_offset; i++) {
+    for (int i = 0; i < ui->DataWidget->mycmu->max_offset; i++) {
         QTableWidgetItem* item = new QTableWidgetItem();
         double val = ui->DataWidget->mycmu->tab_reg[i];
         item->setText(QString("%1").arg(val, 0, 'g', 5));

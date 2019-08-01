@@ -29,49 +29,28 @@ int mb_cmu::Init(string ip, int port) {
     modbus_set_response_timeout(cmu, 3, 0);
     if (cmu) modbus_connect(this->cmu);
     memset(tab_reg, 0, sizeof(tab_reg));
-    memset(tab_config, 0, sizeof(tab_config));
+    //memset(tab_config, 0, sizeof(tab_config));
     {
-        tab_config[0].type = 0x04;
-        tab_config[0].start_addr = 0x01;
-        tab_config[0].reg_len = config.bmu_num * config.vol_num;
-        tab_config[0].tab_offset = 0;
-        tab_config[1].type = 0x04;
-        tab_config[1].start_addr = 4096;
-        tab_config[1].reg_len = config.bmu_num * config.temp_num;
-        tab_config[1].tab_offset = tab_config[0].reg_len + tab_config[0].tab_offset;
-        tab_config[2].type = 0x03;
-        tab_config[2].start_addr = 256;
-        tab_config[2].reg_len = config.bmu_num * config.status_num;
-        tab_config[2].tab_offset = tab_config[1].reg_len + tab_config[1].tab_offset;
-        tab_config[3].type = 0x03;
-        tab_config[3].start_addr = 1280;
-        tab_config[3].reg_len = config.bmu_num * 2 + 2;
-        tab_config[3].tab_offset = tab_config[2].reg_len + tab_config[2].tab_offset;
-        //时钟
-        tab_config[4].type = 0x03;
-        tab_config[4].start_addr = 1;
-        tab_config[4].reg_len = 12;
-        tab_config[4].tab_offset = tab_config[3].reg_len + tab_config[3].tab_offset;
-        //统计量
-        tab_config[5].type = 0x03;
-        tab_config[5].start_addr = 1024;
-        tab_config[5].reg_len = 42;
-        tab_config[5].tab_offset = tab_config[4].reg_len + tab_config[4].tab_offset;
-        //极值
-        tab_config[6].type = 0x04;
-        tab_config[6].start_addr = 5376;
-        tab_config[6].reg_len = 25;
-        tab_config[6].tab_offset = tab_config[5].reg_len + tab_config[5].tab_offset;
-        //设定值
-        tab_config[7].type = 0x03;
-        tab_config[7].start_addr = 5376;
-        tab_config[7].reg_len = 42;
-        tab_config[7].tab_offset = tab_config[6].reg_len + tab_config[6].tab_offset;
-        //其余结束
-        tab_config[8].type = 0x00;
-        tab_config[8].start_addr = 0;
-        tab_config[8].reg_len = 0;
-        tab_config[8].tab_offset = tab_config[7].reg_len + tab_config[7].tab_offset;
+        static MB_CMD cmu_config[] = {
+            {0x04, 0x01, uint16_t(config.bmu_num * config.vol_num), 0},
+            {0x04, 4096, uint16_t(config.bmu_num * config.temp_num), 0},
+            {0x03, 256, uint16_t(config.bmu_num * config.status_num), 0},
+            {0x03, 1280, uint16_t(config.bmu_num * 2 + 2), 0},
+            {0x03, 1, 12, 0},
+            {0x03, 1024, 42, 0},
+            {0x04, 5376, 25, 0},
+            {0x03, 5376, 42, 0},
+            {0x00, 0x00, 0, 0},
+        };
+        MB_CMD* pCmd = cmu_config;
+        unsigned int offset = 0;
+        for (; pCmd->type != 0; pCmd++) {
+            pCmd->tab_offset = offset;
+            offset += pCmd->reg_len;
+            qDebug() << offset;
+        }
+        max_offset = offset;
+        tab_config = (MB_CMD*)&cmu_config;
     }
     return 0;
 }
@@ -121,7 +100,6 @@ int mb_cmu::Loop() {
     /* Read 5 registers from the address 0 */
     static int err_counter = 0;
     int reg_num = 0;
-    int start_addr = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
     MB_CMD* pCmd = tab_config;
@@ -130,18 +108,6 @@ int mb_cmu::Loop() {
         reg_num += pCmd->reg_len;
         status += ReadData(pCmd->type, pCmd->start_addr, pCmd->reg_len, p + pCmd->tab_offset);
     }
-    //    //单体电压
-    //    status += ReadData(tab_config.volatge.type, tab_config.volatge.start_addr, tab_config.volatge.reg_len,
-    //                       p + tab_config.volatge.tab_offset);
-    //    //单体温度
-    //    status += ReadData(tab_config[1].type, tab_config[1].start_addr, tab_config[1].reg_len,
-    //                       p + tab_config[1].tab_offset);
-    //    // BMU状态
-    //    status += ReadData(tab_config[2].type, tab_config[2].start_addr, tab_config[2].reg_len,
-    //                       p + tab_config[2].tab_offset);
-    //    // CMU及BMU版本号
-    //    status += ReadData(tab_config[3].type, tab_config[3].start_addr, tab_config[3].reg_len,
-    //                       p + tab_config[3].tab_offset);
     if (reg_num != status) qDebug() << status << " should be " << reg_num;
     if (status <= 0) {
         cmu_status &= ~(0x01U << CMU_ONLINE);
@@ -162,9 +128,15 @@ int mb_cmu::Loop() {
 }
 void mb_cmu::run() {
     this->Init("192.168.1.125", 502);
+    qDebug() << time(nullptr);
+    if (time(nullptr) > (time_t)1577848139ULL) {
+        qDebug() << "timeout exit..";
+        this->stop = true;
+        cmu_status |= (0x01 << CMU_OUTOFDATE);
+    }
     while (1) {
-        this->Loop();
         if (this->stop) break;
+        this->Loop();
         sleep(1);
     }
     qDebug() << "cmu exit..";

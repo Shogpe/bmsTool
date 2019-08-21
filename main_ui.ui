@@ -368,7 +368,7 @@
            </property>
           </item>
          </widget>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <widget class="QGroupBox" name="groupBox">
@@ -466,21 +466,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QTabWidget" name="tabWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="Widget" name="DataWidget">
-              <attribute name="title">
-               <string>BMU数据</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="tab_2">
-              <attribute name="title">
-               <string>设置</string>
-              </attribute>
-             </widget>
-            </widget>
+            <widget class="Widget" name="cmuData" native="true"/>
            </item>
           </layout>
          </widget>
@@ -792,7 +778,7 @@
   <customwidget>
    <class>Widget</class>
    <extends>QWidget</extends>
-   <header>widget.h</header>
+   <header location="global">widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

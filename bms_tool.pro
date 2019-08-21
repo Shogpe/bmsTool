@@ -17,18 +17,21 @@ OBJECTS_DIR = temp/obj
 # DESTDIR     = $$PWD/../bin
 
 SOURCES     += main.cpp \
+    MessageQueue.cpp \
     main_ui.cpp \
     mb_cmu.cpp \
     modbus-data.c \
     modbus-rtu.c \
     modbus-tcp.c \
     modbus.c \
+    utils.cpp \
     widget.cpp
 SOURCES     += iconhelper.cpp
 SOURCES     += appinit.cpp
 SOURCES     +=
 
 HEADERS     += iconhelper.h \
+    MessageQueue.h \
     config.h \
     main_ui.h \
     mb_cmu.h \
@@ -39,6 +42,7 @@ HEADERS     += iconhelper.h \
     modbus-tcp.h \
     modbus-version.h \
     modbus.h \
+    utils.h \
     version.h \
     widget.h
 HEADERS     += appinit.h

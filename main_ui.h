@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "widget.h"
+#include "mb_cmu.h"
+
 class QToolButton;
 
 namespace Ui {
@@ -26,6 +28,7 @@ private:
     QList<int> pixCharConfig;
     QList<QToolButton *> btnsConfig;
     QTimer* timer;
+    mb_cmu *pcmu;
 private slots:
     void initForm();
     void buttonClick();

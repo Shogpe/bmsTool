@@ -18,7 +18,7 @@ class Widget : public QWidget {
  public:
   explicit Widget(QWidget* parent = nullptr);
   ~Widget();
-  void flushVoltage();
+  void flushData();
   void uiInit(int,int,int,int);
   mb_cmu* mycmu;
 

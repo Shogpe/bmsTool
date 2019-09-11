@@ -387,11 +387,14 @@
                 <property name="toolTip">
                  <string>输入IP地址</string>
                 </property>
+                <property name="inputMask">
+                 <string>000.000.000.000</string>
+                </property>
                 <property name="text">
-                 <string>192.168.1.122</string>
+                 <string>192.168.001.120</string>
                 </property>
                 <property name="maxLength">
-                 <number>16</number>
+                 <number>15</number>
                 </property>
                </widget>
               </item>

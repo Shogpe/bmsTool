@@ -107,7 +107,7 @@ bool MessageQueue::sendMsg(const int& queueid, const TMsgData& data) {
 
     return ret;
 }
-
+#include <QDebug>
 /**
  * @brief MessageQueue::readMsg
  * @details 读取消息队列消息
@@ -125,11 +125,8 @@ bool MessageQueue::readMsg(const int& queueid, TMsgData& data) {
     if (it != msgMgr_->end()) {
         if (it.value().size() > 0) {
             data = it.value().dequeue();
-        } else {
-            ret = false;
+            ret = true;
         }
-    } else {
-        ret = false;
     }
 
     resSemaphore_->release();

@@ -14,7 +14,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     this->pcmu->config = {.bmu_num = 8, .vol_num = 16, .temp_num = 6, .status_num = 5};
     string ip = ui->lineEditIP->text().toStdString();
     int port = ui->spinBoxPort->value();
-    this->pcmu->Init(ip,port);
+    this->pcmu->Init();
     this->pcmu->start();
     ui->cmuData->mycmu = pcmu;
     timer = new QTimer(this);
@@ -84,9 +84,15 @@ void MainUI::buttonClick() {
             btn->setChecked(false);
         }
     }
-
+    MessageQueue* pmq = MessageQueue::getInstance();
+    TMsgData MsgCmd;
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
+        MsgCmd.msg_type = 0;
+        QString ip = ui->lineEditIP->text();
+        MsgCmd.data.append(ip);
+        bool ret = pmq->sendMsg(0,MsgCmd);
+        qDebug() << "send "<<MsgCmd.msg_type << "," << MsgCmd.data<<","<<ret<<","<<MsgCmd.data.size();
     } else if (name == "系统设置") {
         ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {
@@ -110,18 +116,19 @@ void MainUI::valueChange() {
     //            btn->setChecked(false);
     //        }
     //    }
-
-    if (name == "主界面") {
-        ui->stackedWidget->setCurrentIndex(0);
-    } else if (name == "系统设置") {
-        ui->stackedWidget->setCurrentIndex(1);
-    } else if (name == "事件查询") {
-        ui->stackedWidget->setCurrentIndex(2);
-    } else if (name == "使用帮助") {
-        ui->stackedWidget->setCurrentIndex(3);
-    } else if (name == "用户退出") {
-        exit(0);
-    }
+//    MessageQueue* pmq = MessageQueue::getInstance();
+//    TMsgData MsgCmd;
+//    if (name == "主界面") {
+//        ui->stackedWidget->setCurrentIndex(0);
+//    } else if (name == "系统设置") {
+//        ui->stackedWidget->setCurrentIndex(1);
+//    } else if (name == "事件查询") {
+//        ui->stackedWidget->setCurrentIndex(2);
+//    } else if (name == "使用帮助") {
+//        ui->stackedWidget->setCurrentIndex(3);
+//    } else if (name == "用户退出") {
+//        exit(0);
+//    }
 }
 
 void MainUI::initLeftMain() {
@@ -197,11 +204,11 @@ void MainUI::leftConfigClick() {
         int temp_num = ui->nTemp->value();
         int status_num = ui->nStatus->value();
 
-        this->pcmu->config.bmu_num = bmu_num;
-        this->pcmu->config.vol_num = vol_num;
-        this->pcmu->config.temp_num = temp_num;
-        this->pcmu->config.status_num = status_num - 1;
-        this->pcmu->Init(ui->lineEditIP->text().toStdString(), ui->spinBoxPort->value());
+//        this->pcmu->config.bmu_num = bmu_num;
+//        this->pcmu->config.vol_num = vol_num;
+//        this->pcmu->config.temp_num = temp_num;
+//        this->pcmu->config.status_num = status_num - 1;
+        this->pcmu->Init();
     }
 }
 
@@ -211,7 +218,7 @@ void MainUI::btnClick() {
     if (name == "连接" || name == "重连") {
         string ip = ui->lineEditIP->text().toStdString();
         int port = ui->spinBoxPort->value();
-        this->pcmu->Init(ip, port);
+        this->pcmu->Init();
         qDebug() << "connect " << ui->lineEditIP->text();
     }
 }

@@ -36,6 +36,8 @@ typedef enum {
     CONFIG_INIT,  //
     CONFIG_IP,
     CONFIG_PORT,
+    CTRL_DO,
+    CTRL_AO,
 } MSG_TYPE;
 #define CMU_ONLINE 0
 #define CMU_OUTOFDATE 31

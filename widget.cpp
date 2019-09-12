@@ -1,8 +1,8 @@
 #include "widget.h"
 
 #include <QDateTime>
+#include <QSpinBox>
 #include <QTimer>
-
 #include "ui_widget.h"
 
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -21,7 +21,6 @@ Widget::~Widget() {
 }
 
 void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) {
-
     ui->tableBMU->setColumnCount(NumOfVol + NumOfTemp + NumOfStatus);
     ui->tableBMU->setRowCount(NumOfBmu);
     /* 设置 tableWidget */
@@ -45,13 +44,25 @@ void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) 
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
+    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+        connect(dspbox, SIGNAL(editingFinished()), this, SLOT(valueChange()),Qt::UniqueConnection);
+    }
 }
-
+void Widget::valueChange() {
+    QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
+    QString name = b->objectName();
+    if (name == "ClusterNB") {
+        qDebug() << b->value();
+    } else {
+        qDebug() << name;
+    }
+}
 void Widget::timerUpDate() {
     QTime t;
     t.start();  //将此时间设置为当前时间
     //
-    uiInit(8,16,6,5);
+    uiInit(8, 16, 6, 5);
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     qDebug() << t.elapsed() << "ms";

@@ -28,6 +28,8 @@ class Widget : public QWidget {
 
  private slots:
   void timerUpDate();
+  void valueChange();
+
 };
 
 #endif

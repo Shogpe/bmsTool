@@ -195,12 +195,16 @@ void mb_cmu::run() {
     qDebug() << "cmu exit..";
 }
 void mb_cmu::DealCMD(TMsgData& Msg) {
+    int ret = -1;
     switch (Msg.msg_type) {
         case CONFIG_IP: {
             mb_ip = Msg.data.toStdString();
         } break;
         case CONFIG_PORT: {
             mb_port = Msg.data.toInt();
+            if (mb_port < 0 || mb_port > 65535) {
+                mb_port = 502;
+            }
         } break;
         case THREAD_EXIT:
             stop = true;
@@ -209,6 +213,32 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             cmu_status = 0;
             Init();
             break;
+        case CTRL_DO: {
+            if (Msg.data.size() == 2 * sizeof(int)) {
+                int* p = (int*)Msg.data.data();
+                int addr = p[0];
+                int value = p[1];
+                ret = modbus_write_bit(cmu, addr, value);
+                if(ret != 0) qDebug()<<"wr do failed" << ret;
+            }
+        } break;
+        case CTRL_AO: {
+            int nb = Msg.data.size();
+            if (nb < 2) break;
+            int* p = (int*)Msg.data.data();
+            if (nb == 2 * sizeof(int)) {
+                int addr = p[0];
+                int value = p[1];
+                ret = modbus_write_register(cmu, addr, value);
+                if(ret != 0) qDebug()<<"wr ao failed" << ret;
+            } else {
+                int addr = p[0];
+                uint16_t* pv = (uint16_t*)&p[1];
+                ret = modbus_write_registers(cmu, addr, (nb - 1) / 2, pv);
+                if(ret != 0) qDebug()<<"wr aos failed" << ret;
+            }
+            break;
+        }
         default:
             break;
     }

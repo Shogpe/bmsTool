@@ -5,16 +5,11 @@
 #include <QTimer>
 #include "ui_widget.h"
 
-void QAbstractSpinBox::wheelEvent(QWheelEvent *e) {}
-QString QDoubleSpinBox::textFromValue(double value) const
-{
-    return QLocale().toString(value, 'g', QLocale::FloatingPointShortest);
-}
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     this->timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
-    timer->start(2000);
+    // timer->start(2000);
     mycmu = nullptr;
     //
 }

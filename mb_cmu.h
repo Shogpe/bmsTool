@@ -151,11 +151,12 @@ class mb_cmu : public QThread {
     int Close();                    //释放资源
    public:
     uint16_t tab_reg[1000];
+    uint16_t tab_AI[1000];
+    ST_SysPara sys_para;
     CMU_CONF config;
     vector<MB_CMD> tab_config;
     uint32_t cmu_ver;
     uint32_t cmu_status;
-    bool stop;
     int max_offset;
     MessageQueue* pMq;
 
@@ -163,6 +164,7 @@ class mb_cmu : public QThread {
     modbus_t* cmu;
     string mb_ip;
     int mb_port;
+    bool stop;
     int ReadData(uint8_t type, int start, int len, uint16_t* dest);
     int sec_ctrl(uint16_t addr,uint16_t type);
 };

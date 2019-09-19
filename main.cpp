@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
 #endif
 
     //加载样式表
-    QFile file(":/qss/psblack.css");
+//    QFile file(":/qss/psblack.css");
 //    QFile file(":/qss/lightblue.css");
-//    QFile file(":/qss/flatwhite.css");
+    QFile file(":/qss/flatwhite.css");
     if (file.open(QFile::ReadOnly)) {
         QString qss = QLatin1String(file.readAll());
         QString paletteColor = qss.mid(20, 7);

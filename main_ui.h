@@ -29,6 +29,7 @@ private:
     QList<QToolButton *> btnsConfig;
     QTimer* timer;
     mb_cmu *pcmu;
+    MessageQueue* pmq;
 private slots:
     void initForm();
     void buttonClick();

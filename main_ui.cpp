@@ -11,19 +11,23 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     this->initLeftMain();
     this->initLeftConfig();
     this->pcmu = new mb_cmu;
-    this->pcmu->config = {.bmu_num = 8, .vol_num = 16, .temp_num = 6, .status_num = 5};
-    string ip = ui->lineEditIP->text().toStdString();
-    int port = ui->spinBoxPort->value();
-    this->pcmu->Init();
+    pmq = MessageQueue::getInstance();
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CONFIG_IP;
+    QString ip = ui->lineEditIP->text();
+    MsgCmd.data.append(ip);
+    pmq->sendMsg(0,MsgCmd);
     this->pcmu->start();
     ui->cmuData->mycmu = pcmu;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
-    timer->start(1000);
+    //timer->start(1000);
 }
 
 MainUI::~MainUI() {
-    pcmu->stop = true;
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = THREAD_EXIT;
+    pmq->sendMsg(0,MsgCmd);
     pcmu->wait();
     delete pcmu;
     delete ui;
@@ -199,16 +203,7 @@ void MainUI::leftConfigClick() {
     }
     qDebug() << name;
     if (name == "其他设置") {
-        int bmu_num = ui->nBMU->value();
-        int vol_num = ui->nVol->value();
-        int temp_num = ui->nTemp->value();
-        int status_num = ui->nStatus->value();
 
-//        this->pcmu->config.bmu_num = bmu_num;
-//        this->pcmu->config.vol_num = vol_num;
-//        this->pcmu->config.temp_num = temp_num;
-//        this->pcmu->config.status_num = status_num - 1;
-        this->pcmu->Init();
     }
 }
 

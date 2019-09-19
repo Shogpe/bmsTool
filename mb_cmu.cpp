@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QTimerEvent>
 #include "utils.h"
-
+uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, WORD(0x9000), 0x1122, 0x3344, 0x5566};
 mb_cmu::mb_cmu() {
     cmu = nullptr;
     cmu_status = 0;
@@ -239,7 +239,21 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             }
             break;
         }
+        case CTRL_UPGRADE: {
+            uint16_t type = Msg.data.toUShort();
+            sec_ctrl(ADDR_UPGRADE,type);
+        } break;
+        case CTRL_ADJ: {
+            uint16_t type = Msg.data.toUShort();
+            sec_ctrl(ADDR_ADJ,type);
+        } break;
         default:
             break;
     }
+}
+int mb_cmu::sec_ctrl(uint16_t addr,uint16_t type) {
+    int ret = -1;
+    sec_cmd[8] = type;
+    ret = modbus_write_registers(cmu, addr, 9, sec_cmd);
+    return ret;
 }

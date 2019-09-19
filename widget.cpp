@@ -5,6 +5,11 @@
 #include <QTimer>
 #include "ui_widget.h"
 
+void QAbstractSpinBox::wheelEvent(QWheelEvent *e) {}
+QString QDoubleSpinBox::textFromValue(double value) const
+{
+    return QLocale().toString(value, 'g', QLocale::FloatingPointShortest);
+}
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     this->timer = new QTimer(this);
@@ -46,7 +51,7 @@ void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) 
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
-        connect(dspbox, SIGNAL(editingFinished()), this, SLOT(valueChange()),Qt::UniqueConnection);
+        connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange()), Qt::UniqueConnection);
     }
 }
 void Widget::valueChange() {

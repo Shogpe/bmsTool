@@ -38,6 +38,8 @@ typedef enum {
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
+    CTRL_UPGRADE,
+    CTRL_ADJ,
 } MSG_TYPE;
 #define CMU_ONLINE 0
 #define CMU_OUTOFDATE 31
@@ -46,6 +48,27 @@ typedef enum {
 #define TAB_ENG_LEN 42  //能量数据:SOC,电量
 #define TAB_CFG_LEN 46  //配置数据:参数
 #define TAB_CMU_LEN 25  //统计数据:计算极值
+//升级命令
+#define ADDR_UPGRADE 0xFFD0
+#define MB_UpdateCMU 0x5a78  // 23160 下载升级CMU应用程序
+#define MB_UpdateBMU 0x5a33  // 23091 下载升级所有BMU应用程序
+#define MB_UpdateBTB 0x5a66  // 23142 下载升级BMU BOOT程序
+#define MB_UpdateBTC 0x5a6a  // 23146 下载升级CMU BOOT程序
+#define MB_UpdateBFW 0xa566  // 42342 下载BMU信息文件
+#define MB_UpdateCFW 0x7567  // 30055 下载CMU信息文件
+#define MB_UpdBmuNDL 0xa533  // 42291 直接升级BMU应用程序
+//校准命令
+#define ADDR_ADJ 0xFFC0
+#define MOD_CMD_Adj_IZero 0x11    //电流采样零刻度校准
+#define MOD_CMD_Adj_VZero 0x22    //电压采样零刻度校准
+#define MOD_CMD_Adj_LZero 0x33    //漏电流零刻度校准
+#define MOD_CMD_Adj_IFull 0xaa11  //电流采样满刻度校准
+#define MOD_CMD_Adj_VFull 0xaa22  //电压采样满刻度校准
+#define MOD_CMD_Adj_LFull 0xaa33  //漏电流满刻度校准
+#define MOD_CMD_Adj_TZero 0x44    //温度校准
+#define MOD_CMD_Adj_TFull 0xaa44
+#define MOD_CMD_Adj_RZero 0x55  //绝缘电阻校准
+#define MOD_CMD_Adj_RFull 0xaa55
 /* 系统配置参数数据结构-------------------------------------------------------*/
 typedef union {
     uint16_t array[46];
@@ -141,6 +164,7 @@ class mb_cmu : public QThread {
     string mb_ip;
     int mb_port;
     int ReadData(uint8_t type, int start, int len, uint16_t* dest);
+    int sec_ctrl(uint16_t addr,uint16_t type);
 };
 
 #endif  // MB_CMU_H

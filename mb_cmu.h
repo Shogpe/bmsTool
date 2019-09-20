@@ -22,14 +22,95 @@ typedef struct {
     uint16_t reg_len;     //寄存器长度
     uint16_t tab_offset;  // 转存表偏移
 } MB_CMD;
-
+#define GET_RAWDATALEN(x) ((x & 0x0f00) >> 8)
+#define GET_RAWDATATYPE_ID(x) (x & 0xf)
+//自动采集解析结构
+typedef struct structDatabaseIO {
+    uint16_t data_type;  //数据器类型
+    uint8_t offset;      //在返回串中的位/字序号
+    double factor;       //变比
+    uint16_t index;      //实时数据地址
+} DatabaseIO;
+//采集结构体
+#define IO_MAX 200
+#define NONE_REG 0x00
+#define DO_REG 0x01
+#define DI_REG 0x02
+#define AO_REG 0x03
+#define AI_REG 0x04
+typedef struct structReg {
+    int dev_id;                  //设备地址
+    unsigned char reg_type;      //寄存器类型，功能码
+    int reg_start;               //起始地址
+    int reg_num;                 //连续个数
+    int data_num;                //数据个数
+    vector<DatabaseIO> data_io;  //实时数据库,连续个数
+} DataReg;
+//写入结构体
+typedef struct structTable {
+    int index;               //数据库序号
+    unsigned char reg_type;  //寄存器类型，功能码
+    int reg_addr;            //寄存器地址
+    int data_type;           //数据类型
+    double default_val;      //初值
+    float factor;            //变比
+} NodeReg;
 typedef struct {
     int index;           // 数据索引
-    uint32_t data_type;  // 数据类型
-    float factor;        //变比
     string name;         // 控件名
+    uint16_t reg_type;  // 数据类型
+    uint16_t reg_addr;  // 数据类型
+    uint32_t data_type;  // 数据类型
+    uint32_t val_type;  // 数据类型
+    float factor;        //变比
 } MB_NODE;
+// 32位系统数据类型定义
+typedef union {
+    unsigned char b[4];
+    int32_t i32;
+    float f32;
+    uint32_t ui32;
+    int16_t i16;
+    uint16_t ui16;
+    int16_t i16_array[2];
+    uint16_t ui16_array[2];
+} DT_RAW32;
 
+// 64位数据结构定义
+typedef union {
+    unsigned char b[8];
+    uint16_t ui16_array[4];
+    int16_t i16_array[4];
+    int32_t i32_array[2];
+    uint32_t ui32_array[2];
+    DT_RAW32 st_32type[2];
+    int32_t i32;
+    float f32;
+    double f64;
+    uint32_t ui32;
+    int16_t i16;
+    uint16_t ui16;
+    uint64_t ui64;
+    int64_t i64;
+    void *p;
+} DT_RAW64;
+typedef struct {
+    DT_RAW32 val;           //数据值
+    time_t t;               //数据时间
+    unsigned char valtype;  //数据类型 AI DI ACC AIwithT DIwithT ACCwithT
+} ST_SYS_DATA;
+//原始数据类型定义
+typedef struct {
+    DT_RAW64 data;  //点数据
+    uint16_t type;  //数据类型
+} ST_POINT_DATA;
+//节点数据结构
+typedef struct {
+    uint16_t isUpdate;      //是否被跟新  1更新 其他没有跟新
+    uint16_t UpdateCnt;     //更新计数
+    ST_POINT_DATA rawdata;  //原始数据
+    ST_SYS_DATA sysData;    //转化为系统格式数据
+} ST_NODE_DATA;
 typedef enum {
     NONE = 0,
     THREAD_EXIT,   //线程退出
@@ -48,6 +129,7 @@ typedef enum {
 #define TAB_ENG_LEN 42  //能量数据:SOC,电量
 #define TAB_CFG_LEN 46  //配置数据:参数
 #define TAB_CMU_LEN 25  //统计数据:计算极值
+#define TAB_BMU_OFFSET TAB_SYS_LEN+TAB_ENG_LEN+TAB_CMU_LEN
 //升级命令
 #define ADDR_UPGRADE 0xFFD0
 #define MB_UpdateCMU 0x5a78  // 23160 下载升级CMU应用程序
@@ -154,7 +236,7 @@ class mb_cmu : public QThread {
     uint16_t tab_AI[1000];
     ST_SysPara sys_para;
     CMU_CONF config;
-    vector<MB_CMD> tab_config;
+    vector<ST_NODE_DATA> tab_data;
     uint32_t cmu_ver;
     uint32_t cmu_status;
     int max_offset;
@@ -165,8 +247,15 @@ class mb_cmu : public QThread {
     string mb_ip;
     int mb_port;
     bool stop;
+    vector<DataReg> reg_list_;  //读取表
+    vector<NodeReg> wr_list_;   //下发表
+    int ReadAI();
+    int JudgeReg(NodeReg &node_reg);
+    void NewReg(NodeReg &node_reg);
+    void InsertReg(NodeReg &node_reg, int index);
     int ReadData(uint8_t type, int start, int len, uint16_t* dest);
     int sec_ctrl(uint16_t addr,uint16_t type);
+    int ParseData();
 };
 
 #endif  // MB_CMU_H

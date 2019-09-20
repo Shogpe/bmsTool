@@ -75,52 +75,52 @@ void Widget::flushData() {
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     int cloumn_offset = 0;
-    uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[mycmu->tab_config[4].tab_offset]);
-    for (int i = 0; i < mycmu->config.bmu_num; i++) {
-        for (int j = 0; j < mycmu->config.vol_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
-            double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, j + cloumn_offset, item);
-        }
-    }
-    cloumn_offset += mycmu->config.vol_num;
-    int16_t* pTemp = (int16_t*)&(mycmu->tab_reg[mycmu->tab_config[5].tab_offset]);
-    for (int i = 0; i < mycmu->config.bmu_num; i++) {
-        for (int j = 0; j < mycmu->config.temp_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
-            double val = *(pTemp + i * mycmu->config.temp_num + j) / 10.0;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, j + cloumn_offset, item);
-        }
-    }
-    cloumn_offset += mycmu->config.temp_num;
-    uint16_t* pStatus = (uint16_t*)&(mycmu->tab_reg[mycmu->tab_config[6].tab_offset]);
-    for (int i = 0; i < mycmu->config.status_num; i++) {
-        for (int j = 0; j < mycmu->config.bmu_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
-            uint16_t val = *(pStatus + i * mycmu->config.bmu_num + j);
-            item->setText(QString("0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(j, i + cloumn_offset, item);
-        }
-    }
-    cloumn_offset += mycmu->config.status_num;
-    uint32_t* p32 = (uint32_t*)&(mycmu->tab_reg[mycmu->tab_config[7].tab_offset]);
-    mycmu->cmu_ver = *(p32++);
-    for (int j = 0; j < mycmu->config.bmu_num; j++) {
-        QTableWidgetItem* item = new QTableWidgetItem();
-        uint32_t val = *(p32 + j);
-        item->setText(QString("0x%1").arg(int(val), 8, 16, QLatin1Char('0')));
-        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableBMU->setItem(j, cloumn_offset, item);
-    }
+//    uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[mycmu->tab_config[4].tab_offset]);
+//    for (int i = 0; i < mycmu->config.bmu_num; i++) {
+//        for (int j = 0; j < mycmu->config.vol_num; j++) {
+//            QTableWidgetItem* item = new QTableWidgetItem();
+//            double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
+//            item->setText(QString("%1").arg(val, 0, 'g', 5));
+//            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+//            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+//            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+//        }
+//    }
+//    cloumn_offset += mycmu->config.vol_num;
+//    int16_t* pTemp = (int16_t*)&(mycmu->tab_reg[mycmu->tab_config[5].tab_offset]);
+//    for (int i = 0; i < mycmu->config.bmu_num; i++) {
+//        for (int j = 0; j < mycmu->config.temp_num; j++) {
+//            QTableWidgetItem* item = new QTableWidgetItem();
+//            double val = *(pTemp + i * mycmu->config.temp_num + j) / 10.0;
+//            item->setText(QString("%1").arg(val, 0, 'g', 5));
+//            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+//            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+//            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+//        }
+//    }
+//    cloumn_offset += mycmu->config.temp_num;
+//    uint16_t* pStatus = (uint16_t*)&(mycmu->tab_reg[mycmu->tab_config[6].tab_offset]);
+//    for (int i = 0; i < mycmu->config.status_num; i++) {
+//        for (int j = 0; j < mycmu->config.bmu_num; j++) {
+//            QTableWidgetItem* item = new QTableWidgetItem();
+//            uint16_t val = *(pStatus + i * mycmu->config.bmu_num + j);
+//            item->setText(QString("0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
+//            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+//            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+//            ui->tableBMU->setItem(j, i + cloumn_offset, item);
+//        }
+//    }
+//    cloumn_offset += mycmu->config.status_num;
+//    uint32_t* p32 = (uint32_t*)&(mycmu->tab_reg[mycmu->tab_config[7].tab_offset]);
+//    mycmu->cmu_ver = *(p32++);
+//    for (int j = 0; j < mycmu->config.bmu_num; j++) {
+//        QTableWidgetItem* item = new QTableWidgetItem();
+//        uint32_t val = *(p32 + j);
+//        item->setText(QString("0x%1").arg(int(val), 8, 16, QLatin1Char('0')));
+//        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+//        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+//        ui->tableBMU->setItem(j, cloumn_offset, item);
+//    }
     //数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);

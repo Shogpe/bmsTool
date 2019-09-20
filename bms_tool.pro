@@ -10,11 +10,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET      = bms_tool
 TEMPLATE    = app
-MOC_DIR     = temp/moc
-RCC_DIR     = temp/rcc
-UI_DIR      = temp/ui
-OBJECTS_DIR = temp/obj
-# DESTDIR     = $$PWD/../bin
+CONFIG(debug, debug|release){
+DESTDIR     = $$PWD/output
+} else {
+DESTDIR     = $$PWD/debug
+}
+MOC_DIR     = $$DESTDIR/temp/moc
+RCC_DIR     = $$DESTDIR/temp/rcc
+UI_DIR      = $$DESTDIR/temp/ui
+OBJECTS_DIR = $$DESTDIR/temp/obj
+
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \
@@ -52,8 +57,8 @@ FORMS       += \
     main_ui.ui \
     widget.ui
 
-RESOURCES   += main.qrc
-RESOURCES   += qss.qrc
+RESOURCES   += other\main.qrc
+RESOURCES   += other\qss.qrc
 CONFIG      += qt warn_off static
 INCLUDEPATH += $$PWD
 win32: LIBS += -LC:\Qt\5.12.3\mingw73_32\lib -lws2_32

@@ -10,15 +10,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET      = bms_tool
 TEMPLATE    = app
-CONFIG(debug, debug|release){
-DESTDIR     = $$PWD/output
-} else {
-DESTDIR     = $$PWD/debug
-}
-MOC_DIR     = $$DESTDIR/temp/moc
-RCC_DIR     = $$DESTDIR/temp/rcc
-UI_DIR      = $$DESTDIR/temp/ui
-OBJECTS_DIR = $$DESTDIR/temp/obj
+#CONFIG(debug, debug|release){
+#DESTDIR     = $$PWD/output/
+#} else {
+#DESTDIR     = $$PWD/debug
+#}
+#MOC_DIR     = $$DESTDIR/temp/moc
+#RCC_DIR     = $$DESTDIR/temp/rcc
+#UI_DIR      = $$DESTDIR/temp/ui
+#OBJECTS_DIR = $$DESTDIR/temp/obj
 
 
 SOURCES     += main.cpp \
@@ -63,3 +63,16 @@ CONFIG      += qt warn_off static
 INCLUDEPATH += $$PWD
 win32: LIBS += -LC:\Qt\5.12.3\mingw73_32\lib -lws2_32
 
+#-------------------------------------------------
+#
+# Project Info created by bao 2019-09-25T09:51:37
+#
+#-------------------------------------------------
+VERSION = 1.0.0.0
+RC_ICONS = "other/main.ico"
+QMAKE_TARGET_PRODUCT = "bms_tool"
+QMAKE_TARGET_COMPANY = "Cubenergy"
+QMAKE_TARGET_DESCRIPTION = "CMU Debug Tool"
+QMAKE_TARGET_COPYRIGHT = "Copyright 2019 Ganing"
+RC_LANG = 0x0804
+#RC_FILE = ""

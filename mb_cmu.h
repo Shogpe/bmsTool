@@ -62,7 +62,7 @@ typedef struct {
     uint16_t reg_addr;  // 数据类型
     uint32_t data_type;  // 数据类型
     uint32_t val_type;  // 数据类型
-    float factor;        //变比
+    double factor;        //变比
 } MB_NODE;
 // 32位系统数据类型定义
 typedef union {
@@ -95,7 +95,7 @@ typedef union {
     void *p;
 } DT_RAW64;
 typedef struct {
-    DT_RAW32 val;           //数据值
+    DT_RAW64 val;           //数据值
     time_t t;               //数据时间
     unsigned char valtype;  //数据类型 AI DI ACC AIwithT DIwithT ACCwithT
 } ST_SYS_DATA;
@@ -241,9 +241,11 @@ class mb_cmu : public QThread {
     uint32_t cmu_status;
     int max_offset;
     MessageQueue* pMq;
+    map<string,NodeReg> name_map;
 
    private:
     modbus_t* cmu;
+    int err_counter = 0;
     string mb_ip;
     int mb_port;
     bool stop;

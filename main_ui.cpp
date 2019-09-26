@@ -21,7 +21,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->cmuData->mycmu = pcmu;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
-    //timer->start(1000);
+    timer->start(1000);
 }
 
 MainUI::~MainUI() {
@@ -211,10 +211,15 @@ void MainUI::btnClick() {
     QToolButton* b = (QToolButton*)sender();
     QString name = b->text();
     if (name == "连接" || name == "重连") {
-        string ip = ui->lineEditIP->text().toStdString();
-        int port = ui->spinBoxPort->value();
-        this->pcmu->Init();
-        qDebug() << "connect " << ui->lineEditIP->text();
+        uint16_t port = ui->spinBoxPort->value();
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CONFIG_IP;
+        MsgCmd.data.append(ui->lineEditIP->text());
+        pmq->sendMsg(0, MsgCmd);
+        MsgCmd.msg_type = CONFIG_PORT;
+        MsgCmd.data.clear();
+        MsgCmd.data.fromRawData((char*)&port, sizeof(port));
+        pmq->sendMsg(0, MsgCmd);
     }
 }
 void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
@@ -248,16 +253,16 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
-    ui->tableConfig->setRowCount(this->pcmu->max_offset);
-    ui->tableConfig->setColumnCount(1);
-    for (int i = 0; i < this->pcmu->max_offset; i++) {
-        QTableWidgetItem* item = new QTableWidgetItem();
-        double val = this->pcmu->tab_reg[i];
-        item->setText(QString("%1").arg(val, 0, 'g', 5));
-        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableConfig->setItem(i, 0, item);
-    }
+//    ui->tableConfig->setRowCount(this->pcmu->max_offset);
+//    ui->tableConfig->setColumnCount(1);
+//    for (int i = 0; i < this->pcmu->max_offset; i++) {
+//        QTableWidgetItem* item = new QTableWidgetItem();
+//        double val = this->pcmu->tab_reg[i];
+//        item->setText(QString("%1").arg(val, 0, 'g', 5));
+//        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+//        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+//        ui->tableConfig->setItem(i, 0, item);
+//    }
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }

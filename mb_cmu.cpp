@@ -4,53 +4,53 @@
 #include "utils.h"
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, WORD(0x9000), 0x1122, 0x3344, 0x5566};
 static MB_NODE tab_config[] = {
-    {0, "单体电池电压最大值", 4, 5376, 514, 128, 0.0001f},
-    {1, "电压最大单体电池编号", 4, 5377, 514, 128, 1},
-    {2, "单体电池电压最小值", 4, 5378, 514, 128, 0.0001f},
-    {3, "电压最小单体电池编号", 4, 5379, 514, 128, 1},
-    {4, "电池模组温度最高值", 4, 5380, 513, 128, 0.1f},
-    {5, "温度最高电池模组编号", 4, 5381, 514, 128, 1},
-    {6, "电池模组温度最低值", 4, 5382, 513, 128, 0.1f},
-    {7, "温度最低电池模组编号", 4, 5383, 514, 128, 1},
-    {8, "Pack极柱温度最高值", 4, 5384, 513, 128, 0.1f},
-    {9, "温度最高Pack编号", 4, 5385, 514, 128, 1},
-    {10, "最大单体电压差值", 4, 5386, 513, 128, 0.001f},
-    {11, "最大电池模组温差值", 4, 5387, 514, 128, 0.1f},
-    {12, "最大电池模组温升值", 4, 5388, 514, 128, 0.1f},
+    {0, "Umax", 4, 5376, 514, 128, 0.0001},
+    {1, "UmaxID", 4, 5377, 514, 128, 1},
+    {2, "Umin", 4, 5378, 514, 128, 0.0001},
+    {3, "UminID", 4, 5379, 514, 128, 1},
+    {4, "Tmax", 4, 5380, 513, 128, 0.1},
+    {5, "TmaxID", 4, 5381, 514, 128, 1},
+    {6, "Tmin", 4, 5382, 513, 128, 0.1},
+    {7, "TminID", 4, 5383, 514, 128, 1},
+    {8, "TpMax", 4, 5384, 513, 128, 0.1},
+    {9, "TpMaxID", 4, 5385, 514, 128, 1},
+    {10, "最大单体电压差值", 4, 5386, 513, 128, 0.001},
+    {11, "最大电池模组温差值", 4, 5387, 514, 128, 0.1},
+    {12, "最大电池模组温升值", 4, 5388, 514, 128, 0.1},
     {13, "最大温升电池模组编号", 4, 5389, 514, 128, 1},
-    {14, "最大模组电压值", 4, 5390, 514, 128, 0.001f},
+    {14, "最大模组电压值", 4, 5390, 514, 128, 0.001},
     {15, "最大模组电压ID", 4, 5391, 514, 128, 1},
-    {16, "簇电压", 4, 5392, 514, 128, 0.1f},
-    {17, "簇绝缘电阻", 4, 5393, 514, 128, 0.1f},
-    {18, "簇正母线绝缘电阻值", 4, 5394, 514, 128, 0.1f},
-    {19, "簇负母线绝缘电阻值", 4, 5395, 514, 128, 0.1f},
-    {20, "簇漏电流值", 4, 5396, 513, 128, 0.1f},
-    {21, "簇总电流值", 4, 5397, 513, 128, 0.1f},
-    {22, "簇外接温度值", 4, 5398, 513, 128, 0.1f},
-    {23, "簇正极柱温度值", 4, 5399, 513, 128, 0.1f},
-    {24, "簇负极柱温度值", 4, 5400, 513, 128, 0.1f},
-    {25, "时钟", 3, 1, 17410, 128, 1},
-    {26, "nBC系统状态寄存器1", 3, 3, 514, 128, 1},
-    {27, "nBC系统状态寄存器2", 3, 4, 514, 128, 1},
-    {28, "nBC保护状态位", 3, 5, 514, 128, 1},
-    {29, "nBC报警状态位", 3, 6, 514, 128, 1},
-    {30, "nBMU通讯状态1", 3, 7, 1028, 128, 1},
-    {31, "nBMU通讯状态2", 3, 9, 514, 128, 1},
-    {32, "nBMS_DO状态", 3, 11, 514, 128, 1},
-    {33, "nBMS_DI状态", 3, 12, 514, 128, 1},
-    {34, "SOC", 3, 1024, 514, 128, 0.1f},
-    {35, "SOH", 3, 1025, 514, 128, 0.1f},
-    {36, "直流功率", 3, 1026, 513, 128, 0.1f},
-    {37, "当前剩余电量", 3, 1027, 17410, 128, 0.1f},
-    {38, "累计充电量", 3, 1029, 17410, 128, 0.1f},
-    {39, "累计放电量", 3, 1031, 17410, 128, 0.1f},
-    {40, "当前充电电量", 3, 1033, 17410, 128, 0.1f},
-    {41, "当前放电电量", 3, 1035, 17410, 128, 0.1f},
-    {42, "当前剩余库伦", 3, 1037, 17410, 128, 0.1f},
-    {43, "当前输入库伦", 3, 1039, 17410, 128, 0.1f},
-    {44, "当前输出库伦", 3, 1041, 17410, 128, 0.1f},
-    {45, "累计输入库伦", 3, 1043, 17410, 128, 0.1f},
-    {46, "累计输出库伦", 3, 1045, 17410, 128, 0.1f},
+    {16, "簇电压", 4, 5392, 514, 128, 0.1},
+    {17, "簇绝缘电阻", 4, 5393, 514, 128, 0.1},
+    {18, "簇正母线绝缘电阻值", 4, 5394, 514, 128, 0.1},
+    {19, "簇负母线绝缘电阻值", 4, 5395, 514, 128, 0.1},
+    {20, "簇漏电流值", 4, 5396, 513, 128, 0.1},
+    {21, "簇总电流值", 4, 5397, 513, 128, 0.1},
+    {22, "簇外接温度值", 4, 5398, 513, 128, 0.1},
+    {23, "簇正极柱温度值", 4, 5399, 513, 128, 0.1},
+    {24, "簇负极柱温度值", 4, 5400, 513, 128, 0.1},
+    {25, "sysTime", 3, 1, 17410, 128, 1},
+    {26, "sysStatus1", 3, 3, 514, 128, 1},
+    {27, "sysStatus2", 3, 4, 514, 128, 1},
+    {28, "sysErrStatus", 3, 5, 514, 128, 1},
+    {29, "sysAlmStatus", 3, 6, 514, 128, 1},
+    {30, "sysComm1", 3, 7, 1028, 128, 1},
+    {31, "sysComm2", 3, 9, 514, 128, 1},
+    {32, "sysDOStatus", 3, 11, 514, 128, 1},
+    {33, "sysDIStatus", 3, 12, 514, 128, 1},
+    {34, "SOC", 3, 1024, 514, 128, 0.1},
+    {35, "SOH", 3, 1025, 514, 128, 0.1},
+    {36, "直流功率", 3, 1026, 513, 128, 0.1},
+    {37, "当前剩余电量", 3, 1027, 17410, 128, 0.1},
+    {38, "累计充电量", 3, 1029, 17410, 128, 0.1},
+    {39, "累计放电量", 3, 1031, 17410, 128, 0.1},
+    {40, "当前充电电量", 3, 1033, 17410, 128, 0.1},
+    {41, "当前放电电量", 3, 1035, 17410, 128, 0.1},
+    {42, "当前剩余库伦", 3, 1037, 17410, 128, 0.1},
+    {43, "当前输入库伦", 3, 1039, 17410, 128, 0.1},
+    {44, "当前输出库伦", 3, 1041, 17410, 128, 0.1},
+    {45, "累计输入库伦", 3, 1043, 17410, 128, 0.1},
+    {46, "累计输出库伦", 3, 1045, 17410, 128, 0.1},
     {47, "累计充电时间", 3, 1047, 17410, 128, 1},
     {48, "累计放电时间", 3, 1049, 17410, 128, 1},
     {49, "当前充电时间", 3, 1051, 17410, 128, 1},
@@ -61,48 +61,48 @@ static MB_NODE tab_config[] = {
     {54, "充电停止时间", 3, 1061, 17410, 128, 1},
     {55, "放电开始时间", 3, 1063, 17410, 128, 1},
     {56, "放电停止时间", 3, 1065, 17410, 128, 1},
-    {57, "单体电池电压越上限告警值", 3, 5376, 514, 128, 0.0001f},
-    {58, "单体电池电压越上上限保护值", 3, 5377, 514, 128, 0.0001f},
-    {59, "单体电池电压越下限告警值", 3, 5378, 514, 128, 0.0001f},
-    {60, "单体电池电压越下下限保护值", 3, 5379, 514, 128, 0.0001f},
-    {61, "单体电池温度越上限告警值", 3, 5380, 513, 128, 0.1f},
-    {62, "单体电池温度越上上限保护值", 3, 5381, 513, 128, 0.1f},
-    {63, "单体电池温度越下限告警值", 3, 5382, 513, 128, 0.1f},
-    {64, "单体电池温度越下下限保护值", 3, 5383, 513, 128, 0.1f},
-    {65, "单体电池温差越上限告警值", 3, 5384, 513, 128, 0.1f},
-    {66, "单体电池温差越上上限保护值", 3, 5385, 513, 128, 0.1f},
-    {67, "单体电池温升越上限告警值", 3, 5386, 513, 128, 0.1f},
-    {68, "单体电池温升越上上限保护值", 3, 5387, 513, 128, 0.1f},
-    {69, "Pack极柱温度越上限告警值", 3, 5388, 513, 128, 0.1f},
-    {70, "Pack极柱温度越上上限保护值", 3, 5389, 513, 128, 0.1f},
-    {71, "充放电电流越上限过负荷告警值", 3, 5390, 514, 128, 1},
-    {72, "充放电电流越上上限过负荷保护值", 3, 5391, 514, 128, 1},
-    {73, "短路电流保护值", 3, 5392, 514, 128, 1},
-    {74, "簇电压越上限告警值", 3, 5393, 514, 128, 0.1f},
-    {75, "簇电压越上上限保护值", 3, 5394, 514, 128, 0.1f},
-    {76, "簇电压越下限告警值", 3, 5395, 514, 128, 0.1f},
-    {77, "簇电压越下下限保护值", 3, 5396, 514, 128, 0.1f},
-    {78, "簇电池绝缘电阻保护值", 3, 5397, 514, 128, 1},
-    {79, "簇电池漏电流保护值", 3, 5398, 514, 128, 0.1f},
-    {80, "告警延时", 3, 5399, 514, 128, 1},
-    {81, "保护延时", 3, 5400, 514, 128, 1},
-    {82, "簇电池容量", 3, 5401, 514, 128, 0.1f},
-    {83, "簇电池校正容量", 3, 5402, 514, 128, 0.1f},
-    {84, "簇电池剩余电量", 3, 5403, 514, 128, 0.1f},
-    {85, "充放电额定电流", 3, 5404, 514, 128, 0.1f},
-    {86, "电流传感器量程", 3, 5405, 514, 128, 1},
-    {87, "漏电流传感器量程", 3, 5406, 514, 128, 1},
-    {88, "电压传感器量程", 3, 5407, 514, 128, 1},
-    {89, "电池均衡控制模式", 3, 5408, 514, 128, 1},
-    {90, "均衡启动电压阈值", 3, 5409, 514, 128, 0.0001f},
-    {91, "均衡启动电压差值", 3, 5410, 514, 128, 0.0001f},
-    {92, "簇电池单元数量", 3, 5411, 514, 128, 1},
-    {93, "BMU单体电池个数", 3, 5412, 514, 128, 1},
-    {94, "BMU模组温度个数", 3, 5413, 514, 128, 1},
-    {95, "BMU极柱温度个数", 3, 5414, 514, 128, 1},
-    {96, "报警屏蔽位", 3, 5415, 514, 128, 1},
-    {97, "故障屏蔽位", 3, 5416, 514, 128, 1},
-    {98, "CMU功能使能位", 3, 5417, 514, 128, 1},
+    {57, "CellVolH", 3, 5376, 514, 128, 0.0001},
+    {58, "CellVolHH", 3, 5377, 514, 128, 0.0001},
+    {59, "CellVolL", 3, 5378, 514, 128, 0.0001},
+    {60, "CellVolLL", 3, 5379, 514, 128, 0.0001},
+    {61, "PackTH", 3, 5380, 513, 128, 0.1},
+    {62, "PackTHH", 3, 5381, 513, 128, 0.1},
+    {63, "PackTL", 3, 5382, 513, 128, 0.1},
+    {64, "PackTLL", 3, 5383, 513, 128, 0.1},
+    {65, "PackTdH", 3, 5384, 513, 128, 0.1},
+    {66, "PackTdHH", 3, 5385, 513, 128, 0.1},
+    {67, "PackTrH", 3, 5386, 513, 128, 0.1},
+    {68, "PackTrHH", 3, 5387, 513, 128, 0.1},
+    {69, "PoleTH", 3, 5388, 513, 128, 0.1},
+    {70, "PoleTHH", 3, 5389, 513, 128, 0.1},
+    {71, "ClusterCurH", 3, 5390, 514, 128, 1},
+    {72, "ClusterCurHH", 3, 5391, 514, 128, 1},
+    {73, "ClusterCurShort", 3, 5392, 514, 128, 1},
+    {74, "ClusterVolH", 3, 5393, 514, 128, 0.1},
+    {75, "ClusterVolHH", 3, 5394, 514, 128, 0.1},
+    {76, "ClusterVolL", 3, 5395, 514, 128, 0.1},
+    {77, "ClusterVolLL", 3, 5396, 514, 128, 0.1},
+    {78, "ClusterRIns", 3, 5397, 514, 128, 1},
+    {79, "ClusterCurLeak", 3, 5398, 514, 128, 0.1},
+    {80, "ClusterTAlm", 3, 5399, 514, 128, 1},
+    {81, "ClusterTErr", 3, 5400, 514, 128, 1},
+    {82, "ClusterE", 3, 5401, 514, 128, 0.1},
+    {83, "ClusterEAdj", 3, 5402, 514, 128, 0.1},
+    {84, "ClusterEremain", 3, 5403, 514, 128, 0.1},
+    {85, "ClusterIe", 3, 5404, 514, 128, 0.1},
+    {86, "ClusterCurRange", 3, 5405, 514, 128, 1},
+    {87, "ClusterILeakRg", 3, 5406, 514, 128, 1},
+    {88, "ClusterVolRange", 3, 5407, 514, 128, 1},
+    {89, "BalnceMask", 3, 5408, 514, 128, 1},
+    {90, "BalnceStart", 3, 5409, 514, 128, 0.0001},
+    {91, "BalnceStartDiff", 3, 5410, 514, 128, 0.1},
+    {92, "ClusterBmuNum", 3, 5411, 514, 128, 1},
+    {93, "BmuCellNum", 3, 5412, 514, 128, 1},
+    {94, "BmuPackTNum", 3, 5413, 514, 128, 1},
+    {95, "BmuPoleTNum", 3, 5414, 514, 128, 1},
+    {96, "ClusterAlmMask", 3, 5415, 514, 128, 1},
+    {97, "ClusterErrMask", 3, 5416, 514, 128, 1},
+    {98, "FuncMask", 3, 5417, 514, 128, 1},
 };
 #define MAX_CFG 99
 mb_cmu::mb_cmu() {
@@ -134,9 +134,8 @@ int mb_cmu::Init() {
     NodeReg node_reg_tmp;
     reg_list_.clear();
     wr_list_.clear();
-    int val = 0;
-    float fval = 0;
     int index = -1;
+    ST_NODE_DATA tmp_data;
     for (int i = 0; i < MAX_CFG; i++) {
         node_reg_tmp.default_val = 0;
         if (tab_config[i].reg_type > NONE_REG) {
@@ -152,6 +151,8 @@ int mb_cmu::Init() {
                 NewReg(node_reg_tmp);
             }
         }
+        tab_data.push_back(tmp_data);
+        name_map[tab_config[i].name] = node_reg_tmp;
     }
     return 0;
 }
@@ -196,59 +197,55 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
         default:
             break;
     }
+    if (status <= 0) {
+        cmu_status &= ~(0x01U << CMU_ONLINE);
+        err_counter++;
+    } else {
+        err_counter = 0;
+        cmu_status |= (0x01 << CMU_ONLINE);
+    }
     return status;
 }
 int mb_cmu::ReadALL() {
     /* Read 5 registers from the address 0 */
-    static int err_counter = 0;
+
     unsigned int reg_num = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
-    MB_CMD cmu_config[] = {
-        {0x03, 1, TAB_SYS_LEN, 0},  //时钟,状态
-        {0x03, 1024, TAB_ENG_LEN, 0},
-        {0x04, 5376, TAB_CMU_LEN, 0},
-        {0x00, 0x00, 0, 0},
-    };
-    MB_CMD* pCmd = cmu_config;
+    //    MB_CMD cmu_config[] = {
+    //        {0x03, 1, TAB_SYS_LEN, 0},  //时钟,状态
+    //        {0x03, 1024, TAB_ENG_LEN, 0},
+    //        {0x04, 5376, TAB_CMU_LEN, 0},
+    //        {0x00, 0x00, 0, 0},
+    //    };
+    //    MB_CMD* pCmd = cmu_config;
+    //    unsigned int offset = 0;
+    //    for (; pCmd->type != 0; pCmd++) {
+    //        offset += pCmd->reg_len;
+    //        status += ReadData(pCmd->type, pCmd->start_addr, pCmd->reg_len, p + offset);
+    //    }
     unsigned int offset = 0;
-    for (; pCmd->type != 0; pCmd++) {
-        offset += pCmd->reg_len;
-        status += ReadData(pCmd->type, pCmd->start_addr, pCmd->reg_len, p + offset);
-    }
+    status += ReadAI();
     //
-    reg_num = config.bmu_num * config.vol_num;
-    status += ReadData(0x04, 0x01, reg_num, p + offset);
-    offset += reg_num;
-    reg_num = config.bmu_num * config.temp_num;
-    status += ReadData(0x04, 0x1000, reg_num, p + offset);
-    offset += reg_num;
-    reg_num = config.bmu_num * config.status_num;
-    status += ReadData(0x03, 0x100, reg_num, p + offset);
-    offset += reg_num;
-    //版本号
-    reg_num = config.bmu_num * 2 + 2;
-    status += ReadData(0x03, 0x500, reg_num, p + offset);
-    offset += reg_num;
-
-    if (reg_num != status) qDebug() << status << " should be " << reg_num;
-    if (status <= 0) {
-        cmu_status &= ~(0x01U << CMU_ONLINE);
-        if (err_counter++ >= 5) {
-            qDebug() << "reconnect..." << time(NULL);
-            err_counter = 0;
-            modbus_close(this->cmu);
-            modbus_connect(this->cmu);
-        }
-    } else {
-        err_counter = 0;
-        cmu_status |= (0x01 << CMU_ONLINE);
-        return 1;
+    if (config.bmu_num > 0) {
+        reg_num = config.bmu_num * config.vol_num;
+        status += ReadData(0x04, 0x01, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * config.temp_num;
+        status += ReadData(0x04, 0x1000, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * config.status_num;
+        status += ReadData(0x03, 0x100, reg_num, p + offset);
+        offset += reg_num;
+        //版本号
+        reg_num = config.bmu_num * 2 + 2;
+        status += ReadData(0x03, 0x500, reg_num, p + offset);
+        offset += reg_num;
     }
 
-    return 0;
+    return status;
 }
-#define TIME_OUTOFDATE 3 * 31 * 24 * 60 * 60
+#define TIME_OUTOFDATE 3 * 1 * 24 * 60 * 60
 typedef enum {
     SM_NONE = 0,
     SM_CONNECT,  //
@@ -265,11 +262,12 @@ void mb_cmu::run() {
     }
     int rc = -1;
     TMsgData MsgCmd;
-    STATE_MACHINE state = SM_NONE;
+    STATE_MACHINE state = SM_CONNECT;
+    Init();
     while (1) {
         if (this->stop) break;
         while (pMq->readMsg(0, MsgCmd)) {
-            qDebug() << "recv " << MsgCmd.msg_type << "," << MsgCmd.data;
+            qDebug() << "recv " << MsgCmd.msg_type << "," << MsgCmd.data.toHex();
             DealCMD(MsgCmd);
         }
         //状态机
@@ -277,6 +275,10 @@ void mb_cmu::run() {
             case SM_READ:
                 if (ReadALL()) {
                     state = SM_INIT;
+                }
+                if (err_counter++ >= 10) {
+                    qDebug() << "reconnect..." << time(NULL);
+                    state = SM_CONNECT;
                 }
                 break;
             case SM_CONNECT: {
@@ -287,12 +289,12 @@ void mb_cmu::run() {
                 if (cmu) rc = modbus_connect(this->cmu);
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
-                // tab_config.clear();
+                qDebug() << "ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
                 break;
             }
             case SM_INIT: {
                 ST_SysPara sys_para;
-                rc = ReadData(0x03, 5376, TAB_CFG_LEN, sys_para.array);
+                rc = ReadData(0x03, 0x1500, TAB_CFG_LEN, sys_para.array);
                 if (rc == TAB_CFG_LEN) {
                     state = SM_READ;
                     config.bmu_num = sys_para.Name.u16ClusterBmuNum;
@@ -320,8 +322,8 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             qDebug() << "ip config:" << mb_ip.c_str();
         } break;
         case CONFIG_PORT: {
-            mb_port = Msg.data.toInt();
-            if (mb_port < 0 || mb_port > 65535) {
+            memcpy(&mb_port, Msg.data, sizeof(uint16_t));
+            if (mb_port <= 0 || mb_port > 65535) {
                 mb_port = 502;
             }
             qDebug() << "port config:" << mb_port;
@@ -340,32 +342,38 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 int addr = p[0];
                 int value = p[1];
                 ret = modbus_write_bit(cmu, addr, value);
-                if (ret != 0) qDebug() << "wr do failed" << ret;
+                if (ret < 0) qDebug() << "wr do failed" << ret;
             }
         } break;
         case CTRL_AO: {
             int nb = Msg.data.size();
             if (nb < 2) break;
-            int* p = (int*)Msg.data.data();
-            if (nb == 2 * sizeof(int)) {
-                int addr = p[0];
+            uint16_t* p = (uint16_t*)Msg.data.data();
+            if (p[0] > MAX_CFG) break;
+            if (nb == 2 * sizeof(uint16_t)) {
+                int addr = tab_config[p[0]].reg_addr;
                 int value = p[1];
                 ret = modbus_write_register(cmu, addr, value);
-                if (ret != 0) qDebug() << "wr ao failed" << ret;
+                if (ret < 0)
+                    qDebug() << "wr ao failed" << ret;
+                else
+                    qDebug() << "wr ao " << addr << ":" << value;
             } else {
-                int addr = p[0];
+                int addr = tab_config[p[0]].reg_addr;
                 uint16_t* pv = (uint16_t*)&p[1];
                 ret = modbus_write_registers(cmu, addr, (nb - 1) / 2, pv);
-                if (ret != 0) qDebug() << "wr aos failed" << ret;
-            }
+                if (ret < 0)
+                    qDebug() << "wr aos failed" << ret;
+                else
+                    qDebug() << "wr aos " << addr << ":" << nb;            }
             break;
         }
         case CTRL_UPGRADE: {
-            uint16_t type = Msg.data.toUShort();
+            uint16_t type = *(uint16_t*)Msg.data.data();
             sec_ctrl(ADDR_UPGRADE, type);
         } break;
         case CTRL_ADJ: {
-            uint16_t type = Msg.data.toUShort();
+            uint16_t type = *(uint16_t*)Msg.data.data();
             sec_ctrl(ADDR_ADJ, type);
         } break;
         default:
@@ -376,6 +384,10 @@ int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type) {
     int ret = -1;
     sec_cmd[8] = type;
     ret = modbus_write_registers(cmu, addr, 9, sec_cmd);
+    if (ret < 0)
+        qDebug() << "wr ao failed" << ret;
+    else
+        qDebug() << "wr ao " << addr << "ok";
     return ret;
 }
 int mb_cmu::ParseData() {
@@ -443,37 +455,32 @@ void mb_cmu::InsertReg(NodeReg& node_reg, int index) {
         cout << e.what() << endl;
     }
 }
+
 int mb_cmu::ReadAI() {
     int res = -1;
-    for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {}
-        //DEBUG_PRINT(DEBUG_ON,"start=%d,reg_num=%d-%d,io_len=%d",iter->reg_start,iter->reg_num,iter->data_num,iter->data_io.size());
-//        for (int i = 0; i < 1; i++) {
-//            res = modbus_re iter->reg_type, iter->reg_start, iter->reg_num, dev_id);
-//            res = RecvPackCheck(dev_id, RWDeal());
-//            if (res == DEF_FUNC_RESULT_OK) {
-//                for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
-//                     data_iter++) {
-//                    if(m_trantmpdev.node.size()>data_iter->index)
-//                    {
-//                        m_trantmpdev.node.at(data_iter->index).isUpdate = true;
-//                        m_trantmpdev.node.at(data_iter->index).UpdateCnt++;
-//                        m_trantmpdev.node.at(data_iter->index).rawdata.data.ui32 =
-//                            (GetData(data_iter->offset, data_iter->data_type)).ui32;
-//                        ParseSysData(m_trantmpdev.node.at(data_iter->index), data_iter->factor);
-//                    }
-//                    else
-//                    {
-//                        DEBUG_PRINT(_DEBUG, " set value error size:%d index :%d  ",m_trantmpdev.node.size(),data_iter->index);
-//                    }
-
-//                }
-//                break;
-//            }
-//        }
-//        if (res != DEF_FUNC_RESULT_OK) {
-//            DEBUG_PRINT(_DEBUG, " read fail  ");
-//            //return res;
-//        }
-//    }
-//    return DEF_FUNC_RESULT_OK;
+    uint16_t tab_buf[128];
+    for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
+        res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
+        if (res == iter->reg_num) {
+            for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
+                 data_iter++) {
+                if (tab_data.size() > data_iter->index) {
+                    tab_data.at(data_iter->index).isUpdate = true;
+                    tab_data.at(data_iter->index).UpdateCnt++;
+                    if (data_iter->data_type == 514) {
+                        tab_data.at(data_iter->index).sysData.val.f64 = tab_buf[data_iter->offset] * data_iter->factor;
+                    } else if (data_iter->data_type == 513) {
+                        tab_data.at(data_iter->index).sysData.val.f64 =
+                            (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
+                    } else if (data_iter->data_type == 17410) {
+                        tab_data.at(data_iter->index).sysData.val.f64 =
+                            MODBUS_GET_INT32_FROM_INT16(tab_buf, data_iter->offset) * data_iter->factor;
+                    }
+                    // if(data_iter->index>56) qDebug()<<data_iter->index<<" "
+                    // <<tab_data.at(data_iter->index).sysData.val.f32;
+                }
+            }
+        }
+    }
+    return res;
 }

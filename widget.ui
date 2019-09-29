@@ -47,7 +47,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -57,8 +57,57 @@
        <string>CMU数据</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_47">
+       <item row="2" column="7">
+        <widget class="QDoubleSpinBox" name="Umin">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="4">
+        <widget class="QLabel" name="label_79">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -66,7 +115,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>保护状态</string>
+          <string>簇功率</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -76,8 +125,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
-        <widget class="QLabel" name="label_54">
+       <item row="0" column="6">
+        <widget class="QLabel" name="label_44">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -85,7 +134,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最小单体ID</string>
+          <string>最大单体电压</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -95,8 +144,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QDoubleSpinBox" name="sysStatus2">
+       <item row="9" column="1">
+        <widget class="QDoubleSpinBox" name="sysDOStatus">
          <property name="wrapping">
           <bool>false</bool>
          </property>
@@ -129,6 +178,55 @@
          </property>
         </widget>
        </item>
+       <item row="15" column="1">
+        <widget class="QDoubleSpinBox" name="ILeak">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> A</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
        <item row="10" column="0">
         <widget class="QLabel" name="label_52">
          <property name="frameShape">
@@ -148,8 +246,140 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="6">
-        <widget class="QLabel" name="label_44">
+       <item row="0" column="9">
+        <widget class="QDoubleSpinBox" name="ERemain">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kWh</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="9">
+        <widget class="QDoubleSpinBox" name="TCharge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> s</string>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="sysErrStatus">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000000000000000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="6">
+        <widget class="QLabel" name="label_61">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -157,7 +387,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最大单体电压</string>
+          <string>最高极柱温度</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -167,8 +397,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
-        <widget class="QDoubleSpinBox" name="UmaxID">
+       <item row="9" column="5">
+        <widget class="QDoubleSpinBox" name="TpMaxID">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -216,224 +446,21 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QDoubleSpinBox" name="sysAlmStatus">
-         <property name="wrapping">
-          <bool>false</bool>
+       <item row="17" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="frame">
-          <bool>false</bool>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>10000000000000000000.000000000000000</double>
-         </property>
-        </widget>
+        </spacer>
        </item>
-       <item row="6" column="1">
-        <widget class="QDoubleSpinBox" name="sysComm1">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>10000000000000000000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="7">
-        <widget class="QDoubleSpinBox" name="Umax">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="accelerated">
-          <bool>false</bool>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string> V</string>
-         </property>
-         <property name="decimals">
-          <number>4</number>
-         </property>
-         <property name="singleStep">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QDoubleSpinBox" name="sysStatus1">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>10000000000000000000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QDoubleSpinBox" name="sysErrStatus">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>10000000000000000000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QDoubleSpinBox" name="sysDOStatus">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>10000000000000000000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_1">
+       <item row="11" column="6">
+        <widget class="QLabel" name="label_74">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -441,7 +468,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>时钟</string>
+          <string>簇外接温度</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -497,8 +524,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_45">
+       <item row="11" column="8">
+        <widget class="QLabel" name="label_89">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -506,7 +533,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>系统状态1</string>
+          <string>累计充电次数</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -516,8 +543,60 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_49">
+       <item row="11" column="5">
+        <widget class="QDoubleSpinBox" name="SOC">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>200.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="4">
+        <widget class="QLabel" name="label_78">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -525,7 +604,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>通信状态1</string>
+          <string>SOH</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -535,18 +614,24 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="1">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_47">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
          </property>
-        </spacer>
+         <property name="text">
+          <string>保护状态</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item row="8" column="0">
         <widget class="QLabel" name="label_50">
@@ -567,8 +652,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_46">
+       <item row="2" column="4">
+        <widget class="QLabel" name="label_54">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -576,7 +661,568 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>系统状态2</string>
+          <string>最小单体ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="9">
+        <widget class="QDoubleSpinBox" name="ECharge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kWh</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="7">
+        <widget class="QDoubleSpinBox" name="TnExt">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="9">
+        <widget class="QDoubleSpinBox" name="TCurCharge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> s</string>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="8">
+        <widget class="QLabel" name="label_87">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>当前充电时间</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="6">
+        <widget class="QLabel" name="label_66">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大模组电压</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="7">
+        <widget class="QDoubleSpinBox" name="TpMax">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string>???</string>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="4">
+        <widget class="QLabel" name="label_64">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大温升ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="4">
+        <widget class="QLabel" name="label_60">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最高极柱ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="6">
+        <widget class="QLabel" name="label_62">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大单体压差</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="8">
+        <widget class="QLabel" name="label_84">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>当前放电量</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="6">
+        <widget class="QLabel" name="label_55">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最小单体电压</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="8">
+        <widget class="QLabel" name="label_90">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>累计放电次数</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_48">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>告警状态</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="5">
+        <widget class="QDoubleSpinBox" name="Pdc">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kW</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="8">
+        <widget class="QLabel" name="label_80">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>剩余电量</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <widget class="QDoubleSpinBox" name="RnIns">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kΩ</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QDoubleSpinBox" name="UmaxID">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="8">
+        <widget class="QLabel" name="label_82">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>累计放电量</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -620,8 +1266,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <widget class="QLabel" name="label_53">
+       <item row="6" column="4">
+        <widget class="QLabel" name="label_58">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -629,7 +1275,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最大单体ID</string>
+          <string>最低模组ID</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -639,8 +1285,11 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_51">
+       <item row="8" column="8">
+        <widget class="QLabel" name="label_86">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -648,7 +1297,29 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>DO状态</string>
+          <string>累计放电时间</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="8">
+        <widget class="QLabel" name="label_85">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>累计充电时间</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -692,8 +1363,8 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_48">
+       <item row="5" column="6">
+        <widget class="QLabel" name="label_57">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -701,13 +1372,1361 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>告警状态</string>
+          <string>最高模组温度</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
          </property>
          <property name="scaledContents">
           <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="9">
+        <widget class="QDoubleSpinBox" name="EDischarge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kWh</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="7">
+        <widget class="QDoubleSpinBox" name="TpExt">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="7">
+        <widget class="QDoubleSpinBox" name="Tmin">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="sysStatus2">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000000000000000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_46">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>系统状态2</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="7">
+        <widget class="QDoubleSpinBox" name="TrMax">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="7">
+        <widget class="QDoubleSpinBox" name="UdMax">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="5">
+        <widget class="QDoubleSpinBox" name="SOH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>200.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="5">
+        <widget class="QDoubleSpinBox" name="TminID">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="9">
+        <widget class="QDoubleSpinBox" name="TDischarge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> s</string>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="label_70">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>簇正极绝缘</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="sysAlmStatus">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000000000000000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="5">
+        <widget class="QDoubleSpinBox" name="TrMaxID">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="8">
+        <widget class="QLabel" name="label_88">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>当前放电时间</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="sysComm1">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000000000000000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <widget class="QDoubleSpinBox" name="RpIns">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kΩ</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="7">
+        <widget class="QDoubleSpinBox" name="Tmax">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_1">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>时钟</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="5">
+        <widget class="QDoubleSpinBox" name="UdMaxID">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLabel" name="label_63">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大压差ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="9">
+        <widget class="QDoubleSpinBox" name="ECurCharge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kWh</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="9">
+        <widget class="QDoubleSpinBox" name="ECurDischarge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kWh</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_45">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>系统状态1</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_51">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>DO状态</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QDoubleSpinBox" name="RIns">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> kΩ</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="9">
+        <widget class="QDoubleSpinBox" name="CountCharge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="8">
+        <widget class="QLabel" name="label_81">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>累计充电量</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="9">
+        <widget class="QDoubleSpinBox" name="CountDischarge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>5000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="6">
+        <widget class="QLabel" name="label_76">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>负极外接温度</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLabel" name="label_53">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大单体ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="sysStatus1">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000000000000000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="9">
+        <widget class="QDoubleSpinBox" name="TCurDischarge">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> s</string>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLabel" name="label_65">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大模组ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="7">
+        <widget class="QDoubleSpinBox" name="TExt">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QLabel" name="label_56">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最高模组ID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="6">
+        <widget class="QLabel" name="label_59">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最低模组温度</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="7">
+        <widget class="QDoubleSpinBox" name="Umax">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -760,147 +2779,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="6">
-        <widget class="QLabel" name="label_55">
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="text">
-          <string>最小单体电压</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="scaledContents">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="7">
-        <widget class="QDoubleSpinBox" name="Umin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="accelerated">
-          <bool>false</bool>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string> V</string>
-         </property>
-         <property name="decimals">
-          <number>4</number>
-         </property>
-         <property name="singleStep">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="4">
-        <widget class="QDoubleSpinBox" name="STime">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="prefix">
-          <string>耗时:</string>
-         </property>
-         <property name="suffix">
-          <string>ms</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="5">
-        <widget class="QDateTimeEdit" name="dateTimeEdit"/>
-       </item>
-       <item row="11" column="4">
-        <widget class="QDoubleSpinBox" name="costTime">
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="prefix">
-          <string>耗时:</string>
-         </property>
-         <property name="suffix">
-          <string>ms</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="6">
-        <widget class="QSpinBox" name="date_day"/>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="label_56">
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="text">
-          <string>最高模组ID</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="scaledContents">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="5">
+       <item row="5" column="5">
         <widget class="QDoubleSpinBox" name="TmaxID">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -949,27 +2828,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="6">
-        <widget class="QLabel" name="label_57">
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="text">
-          <string>最高模组温度</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="scaledContents">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="7">
-        <widget class="QDoubleSpinBox" name="Tmax">
+       <item row="4" column="7">
+        <widget class="QDoubleSpinBox" name="UmMax">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1004,7 +2864,7 @@
           <string/>
          </property>
          <property name="suffix">
-          <string> ℃</string>
+          <string> V</string>
          </property>
          <property name="decimals">
           <number>4</number>
@@ -1014,8 +2874,8 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="4">
-        <widget class="QLabel" name="label_58">
+       <item row="14" column="0">
+        <widget class="QLabel" name="label_71">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -1023,7 +2883,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最低模组ID</string>
+          <string>簇负极绝缘</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -1033,57 +2893,8 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="5">
-        <widget class="QDoubleSpinBox" name="TminID">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="accelerated">
-          <bool>false</bool>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>5000000000.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="6">
-        <widget class="QLabel" name="label_59">
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_72">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -1091,7 +2902,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最低模组温度</string>
+          <string>簇漏电流</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -1101,54 +2912,8 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="7">
-        <widget class="QDoubleSpinBox" name="Tmin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="wrapping">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>false</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="specialValueText">
-          <string/>
-         </property>
-         <property name="accelerated">
-          <bool>false</bool>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string> ℃</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="singleStep">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLabel" name="label_60">
+       <item row="11" column="4">
+        <widget class="QLabel" name="label_77">
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -1159,7 +2924,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最高极柱ID</string>
+          <string>SOC</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -1169,8 +2934,87 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="5">
-        <widget class="QDoubleSpinBox" name="TpMaxID">
+       <item row="8" column="6">
+        <widget class="QLabel" name="label_67">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>最大温升</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_49">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>通信状态1</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="8">
+        <widget class="QLabel" name="label_83">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>当前充电量</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="6">
+        <widget class="QLabel" name="label_75">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>正极外接温度</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="5">
+        <widget class="QDoubleSpinBox" name="UmMaxID">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1218,8 +3062,46 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="7">
-        <widget class="QDoubleSpinBox" name="TpMax">
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_69">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>簇绝缘</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="4">
+        <widget class="QLabel" name="label_68">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="text">
+          <string>簇电压</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="5">
+        <widget class="QDoubleSpinBox" name="Udc">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1254,18 +3136,21 @@
           <string/>
          </property>
          <property name="suffix">
-          <string> ℃</string>
+          <string> V</string>
          </property>
          <property name="decimals">
           <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="5" column="6">
-        <widget class="QLabel" name="label_61">
+       <item row="14" column="4">
+        <widget class="QLabel" name="label_73">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -1273,7 +3158,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="text">
-          <string>最高极柱温度</string>
+          <string>簇电流</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -1283,7 +3168,56 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="8">
+       <item row="14" column="5">
+        <widget class="QDoubleSpinBox" name="Idc">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="specialValueText">
+          <string/>
+         </property>
+         <property name="accelerated">
+          <bool>false</bool>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string> A</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="9">
         <widget class="QPushButton" name="btnUpgrade">
          <property name="text">
           <string>升级</string>

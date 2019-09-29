@@ -218,7 +218,13 @@ typedef union {
         uint16_t u16TftpServIPH;  // TFTP服务器地址高位1.230 0xE601
     } Name;
 } ST_SysPara;
-
+typedef enum {
+    SM_NONE = 0,
+    SM_CONNECT,  //
+    SM_READ,     //
+    SM_CTRL,     //
+    SM_INIT,     //
+} STATE_MACHINE;
 class mb_cmu : public QThread {
     Q_OBJECT
    protected:
@@ -246,6 +252,7 @@ class mb_cmu : public QThread {
    private:
     modbus_t* cmu;
     int err_counter = 0;
+    STATE_MACHINE state = SM_CONNECT;
     string mb_ip;
     int mb_port;
     bool stop;

@@ -29,7 +29,6 @@ class Widget : public QWidget {
    private slots:
     void timerUpDate();
     void valueChange();
-    void on_dateTimeEdit_dateTimeChanged(const QDateTime &dateTime);
     void on_btnUpgrade_released();
 };
 class MyDoubleSpinBox : public QDoubleSpinBox {

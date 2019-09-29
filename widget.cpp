@@ -35,6 +35,9 @@ void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) 
     for (int i = 0; i < NumOfTemp - 2; i++) {
         hdr_list.append(("Tpack" + QString::number(i + 1)));
     }
+//    for (int i = 0; i < config.temp_num - 2; i++) {
+//        hdr_list.append(("Tp" + QString::number(i + 1)));
+//    }
     hdr_list.append(tr("Tp1"));
     hdr_list.append(tr("Tp2"));
     hdr_list.append(tr("电压断线"));
@@ -51,8 +54,6 @@ void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) 
         // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
 
-    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &Widget::on_dateTimeEdit_dateTimeChanged,
-            Qt::UniqueConnection);
     connect(ui->btnUpgrade,&QPushButton::released,this,&Widget::on_btnUpgrade_released,Qt::UniqueConnection);
 }
 void Widget::valueChange() {
@@ -81,14 +82,13 @@ void Widget::valueChange() {
     }
 }
 void Widget::timerUpDate() {
-    QTime t;
-    t.start();  //将此时间设置为当前时间
+//    QTime t;
+//    t.start();  //将此时间设置为当前时间
     //
     uiInit(8, 16, 6, 5);
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
-    ui->costTime->setValue(t.elapsed());
 }
 void Widget::flushData() {
     //一定要固定宽度，否则刷新很慢
@@ -183,14 +183,6 @@ void Widget::flushData() {
             }
         }
     }
-}
-
-void Widget::on_dateTimeEdit_dateTimeChanged(const QDateTime& dateTime) {
-    time_t time = dateTime.toTime_t();
-    qDebug() << "now " << time;
-    time /= 60 * 60;
-    int day = (time + 8) % (24);
-    ui->date_day->setValue(day);
 }
 
 void Widget::on_btnUpgrade_released() {

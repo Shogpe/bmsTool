@@ -14,21 +14,21 @@ static MB_NODE tab_config[] = {
     {7, "TminID", 4, 5383, 514, 128, 1},
     {8, "TpMax", 4, 5384, 513, 128, 0.1},
     {9, "TpMaxID", 4, 5385, 514, 128, 1},
-    {10, "最大单体电压差值", 4, 5386, 513, 128, 0.001},
-    {11, "最大电池模组温差值", 4, 5387, 514, 128, 0.1},
-    {12, "最大电池模组温升值", 4, 5388, 514, 128, 0.1},
-    {13, "最大温升电池模组编号", 4, 5389, 514, 128, 1},
-    {14, "最大模组电压值", 4, 5390, 514, 128, 0.001},
-    {15, "最大模组电压ID", 4, 5391, 514, 128, 1},
-    {16, "簇电压", 4, 5392, 514, 128, 0.1},
-    {17, "簇绝缘电阻", 4, 5393, 514, 128, 0.1},
-    {18, "簇正母线绝缘电阻值", 4, 5394, 514, 128, 0.1},
-    {19, "簇负母线绝缘电阻值", 4, 5395, 514, 128, 0.1},
-    {20, "簇漏电流值", 4, 5396, 513, 128, 0.1},
-    {21, "簇总电流值", 4, 5397, 513, 128, 0.1},
-    {22, "簇外接温度值", 4, 5398, 513, 128, 0.1},
-    {23, "簇正极柱温度值", 4, 5399, 513, 128, 0.1},
-    {24, "簇负极柱温度值", 4, 5400, 513, 128, 0.1},
+    {10, "UdMax", 4, 5386, 513, 128, 0.001},
+    {11, "UdMaxID", 4, 5387, 514, 128, 0.1},
+    {12, "TrMax", 4, 5388, 514, 128, 0.1},
+    {13, "TrMaxID", 4, 5389, 514, 128, 1},
+    {14, "UmMax", 4, 5390, 514, 128, 0.001},
+    {15, "UmMaxID", 4, 5391, 514, 128, 1},
+    {16, "Udc", 4, 5392, 514, 128, 0.1},
+    {17, "RIns", 4, 5393, 514, 128, 0.1},
+    {18, "RpIns", 4, 5394, 514, 128, 0.1},
+    {19, "RnIns", 4, 5395, 514, 128, 0.1},
+    {20, "ILeak", 4, 5396, 513, 128, 0.1},
+    {21, "Idc", 4, 5397, 513, 128, 0.1},
+    {22, "TExt", 4, 5398, 513, 128, 0.1},
+    {23, "TpExt", 4, 5399, 513, 128, 0.1},
+    {24, "TnExt", 4, 5400, 513, 128, 0.1},
     {25, "sysTime", 3, 1, 17410, 128, 1},
     {26, "sysStatus1", 3, 3, 514, 128, 1},
     {27, "sysStatus2", 3, 4, 514, 128, 1},
@@ -40,23 +40,23 @@ static MB_NODE tab_config[] = {
     {33, "sysDIStatus", 3, 12, 514, 128, 1},
     {34, "SOC", 3, 1024, 514, 128, 0.1},
     {35, "SOH", 3, 1025, 514, 128, 0.1},
-    {36, "直流功率", 3, 1026, 513, 128, 0.1},
-    {37, "当前剩余电量", 3, 1027, 17410, 128, 0.1},
-    {38, "累计充电量", 3, 1029, 17410, 128, 0.1},
-    {39, "累计放电量", 3, 1031, 17410, 128, 0.1},
-    {40, "当前充电电量", 3, 1033, 17410, 128, 0.1},
-    {41, "当前放电电量", 3, 1035, 17410, 128, 0.1},
+    {36, "Pdc", 3, 1026, 513, 128, 0.1},
+    {37, "ERemain", 3, 1027, 17410, 128, 0.1},
+    {38, "ECharge", 3, 1029, 17410, 128, 0.1},
+    {39, "EDischarge", 3, 1031, 17410, 128, 0.1},
+    {40, "ECurCharge", 3, 1033, 17410, 128, 0.1},
+    {41, "ECurDischarge", 3, 1035, 17410, 128, 0.1},
     {42, "当前剩余库伦", 3, 1037, 17410, 128, 0.1},
     {43, "当前输入库伦", 3, 1039, 17410, 128, 0.1},
     {44, "当前输出库伦", 3, 1041, 17410, 128, 0.1},
     {45, "累计输入库伦", 3, 1043, 17410, 128, 0.1},
     {46, "累计输出库伦", 3, 1045, 17410, 128, 0.1},
-    {47, "累计充电时间", 3, 1047, 17410, 128, 1},
-    {48, "累计放电时间", 3, 1049, 17410, 128, 1},
-    {49, "当前充电时间", 3, 1051, 17410, 128, 1},
-    {50, "当前放电时间", 3, 1053, 17410, 128, 1},
-    {51, "累计充电次数", 3, 1055, 17410, 128, 1},
-    {52, "累计放电次数", 3, 1057, 17410, 128, 1},
+    {47, "TCharge", 3, 1047, 17410, 128, 1},
+    {48, "TDischarge", 3, 1049, 17410, 128, 1},
+    {49, "TCurCharge", 3, 1051, 17410, 128, 1},
+    {50, "TCurDischarge", 3, 1053, 17410, 128, 1},
+    {51, "CountCharge", 3, 1055, 17410, 128, 1},
+    {52, "CountDischarge", 3, 1057, 17410, 128, 1},
     {53, "充电开始时间", 3, 1059, 17410, 128, 1},
     {54, "充电停止时间", 3, 1061, 17410, 128, 1},
     {55, "放电开始时间", 3, 1063, 17410, 128, 1},
@@ -204,6 +204,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
         err_counter = 0;
         cmu_status |= (0x01 << CMU_ONLINE);
     }
+
     return status;
 }
 int mb_cmu::ReadALL() {
@@ -246,13 +247,7 @@ int mb_cmu::ReadALL() {
     return status;
 }
 #define TIME_OUTOFDATE 3 * 1 * 24 * 60 * 60
-typedef enum {
-    SM_NONE = 0,
-    SM_CONNECT,  //
-    SM_READ,     //
-    SM_CTRL,     //
-    SM_INIT,     //
-} STATE_MACHINE;
+
 void mb_cmu::run() {
     qDebug() << time(nullptr);
     if (time(nullptr) > (cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
@@ -262,7 +257,7 @@ void mb_cmu::run() {
     }
     int rc = -1;
     TMsgData MsgCmd;
-    STATE_MACHINE state = SM_CONNECT;
+
     Init();
     while (1) {
         if (this->stop) break;
@@ -271,14 +266,15 @@ void mb_cmu::run() {
             DealCMD(MsgCmd);
         }
         //状态机
+        if (err_counter++ >= 10) {
+            qDebug() << "reconnect..." << time(NULL);
+            err_counter = 0;
+            state = SM_CONNECT;
+        }
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
                     state = SM_INIT;
-                }
-                if (err_counter++ >= 10) {
-                    qDebug() << "reconnect..." << time(NULL);
-                    state = SM_CONNECT;
                 }
                 break;
             case SM_CONNECT: {
@@ -318,15 +314,20 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
     int ret = -1;
     switch (Msg.msg_type) {
         case CONFIG_IP: {
-            mb_ip = Msg.data.toStdString();
-            qDebug() << "ip config:" << mb_ip.c_str();
+            if (mb_ip != Msg.data.toStdString()) {
+                mb_ip = Msg.data.toStdString();
+                state = SM_CONNECT;
+                qDebug() << "ip config:" << mb_ip.c_str();
+            }
         } break;
         case CONFIG_PORT: {
-            memcpy(&mb_port, Msg.data, sizeof(uint16_t));
-            if (mb_port <= 0 || mb_port > 65535) {
-                mb_port = 502;
+            uint16_t port = 0;
+            memcpy(&port, Msg.data.data(), sizeof(uint16_t));
+            if(mb_port == port) break;
+            if (port != 0) {
+                mb_port = port;
             }
-            qDebug() << "port config:" << mb_port;
+            qDebug() << "port config:" << port;
         } break;
         case THREAD_EXIT:
             stop = true;
@@ -365,7 +366,8 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 if (ret < 0)
                     qDebug() << "wr aos failed" << ret;
                 else
-                    qDebug() << "wr aos " << addr << ":" << nb;            }
+                    qDebug() << "wr aos " << addr << ":" << nb;
+            }
             break;
         }
         case CTRL_UPGRADE: {
@@ -379,6 +381,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         default:
             break;
     }
+    Msg.data.clear();
 }
 int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type) {
     int ret = -1;

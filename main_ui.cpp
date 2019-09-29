@@ -16,7 +16,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     MsgCmd.msg_type = CONFIG_IP;
     QString ip = ui->lineEditIP->text();
     MsgCmd.data.append(ip);
-    pmq->sendMsg(0,MsgCmd);
+    pmq->sendMsg(0, MsgCmd);
     this->pcmu->start();
     ui->cmuData->mycmu = pcmu;
     timer = new QTimer(this);
@@ -27,7 +27,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
 MainUI::~MainUI() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
-    pmq->sendMsg(0,MsgCmd);
+    pmq->sendMsg(0, MsgCmd);
     pcmu->wait();
     delete pcmu;
     delete ui;
@@ -95,8 +95,8 @@ void MainUI::buttonClick() {
         MsgCmd.msg_type = 0;
         QString ip = ui->lineEditIP->text();
         MsgCmd.data.append(ip);
-        bool ret = pmq->sendMsg(0,MsgCmd);
-        qDebug() << "send "<<MsgCmd.msg_type << "," << MsgCmd.data<<","<<ret<<","<<MsgCmd.data.size();
+        bool ret = pmq->sendMsg(0, MsgCmd);
+        qDebug() << "send " << MsgCmd.msg_type << "," << MsgCmd.data << "," << ret << "," << MsgCmd.data.size();
     } else if (name == "系统设置") {
         ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {
@@ -120,19 +120,19 @@ void MainUI::valueChange() {
     //            btn->setChecked(false);
     //        }
     //    }
-//    MessageQueue* pmq = MessageQueue::getInstance();
-//    TMsgData MsgCmd;
-//    if (name == "主界面") {
-//        ui->stackedWidget->setCurrentIndex(0);
-//    } else if (name == "系统设置") {
-//        ui->stackedWidget->setCurrentIndex(1);
-//    } else if (name == "事件查询") {
-//        ui->stackedWidget->setCurrentIndex(2);
-//    } else if (name == "使用帮助") {
-//        ui->stackedWidget->setCurrentIndex(3);
-//    } else if (name == "用户退出") {
-//        exit(0);
-//    }
+    //    MessageQueue* pmq = MessageQueue::getInstance();
+    //    TMsgData MsgCmd;
+    //    if (name == "主界面") {
+    //        ui->stackedWidget->setCurrentIndex(0);
+    //    } else if (name == "系统设置") {
+    //        ui->stackedWidget->setCurrentIndex(1);
+    //    } else if (name == "事件查询") {
+    //        ui->stackedWidget->setCurrentIndex(2);
+    //    } else if (name == "使用帮助") {
+    //        ui->stackedWidget->setCurrentIndex(3);
+    //    } else if (name == "用户退出") {
+    //        exit(0);
+    //    }
 }
 
 void MainUI::initLeftMain() {
@@ -203,7 +203,6 @@ void MainUI::leftConfigClick() {
     }
     qDebug() << name;
     if (name == "其他设置") {
-
     }
 }
 
@@ -218,7 +217,8 @@ void MainUI::btnClick() {
         pmq->sendMsg(0, MsgCmd);
         MsgCmd.msg_type = CONFIG_PORT;
         MsgCmd.data.clear();
-        MsgCmd.data.fromRawData((char*)&port, sizeof(port));
+        MsgCmd.data.reserve(sizeof(port));
+        memcpy(MsgCmd.data.data(), &port, sizeof(port));
         pmq->sendMsg(0, MsgCmd);
     }
 }
@@ -242,7 +242,7 @@ void MainUI::on_btnMenu_Max_clicked() {
 void MainUI::on_btnMenu_Close_clicked() { close(); }
 
 void MainUI::timerUpDate() {
-    if(pcmu == nullptr) return;
+    if (pcmu == nullptr) return;
     if (this->pcmu->cmu_status) {
         ui->labelStatus->setText(tr("已连接"));
         if (this->pcmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("过期"));
@@ -253,16 +253,16 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
-//    ui->tableConfig->setRowCount(this->pcmu->max_offset);
-//    ui->tableConfig->setColumnCount(1);
-//    for (int i = 0; i < this->pcmu->max_offset; i++) {
-//        QTableWidgetItem* item = new QTableWidgetItem();
-//        double val = this->pcmu->tab_reg[i];
-//        item->setText(QString("%1").arg(val, 0, 'g', 5));
-//        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-//        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-//        ui->tableConfig->setItem(i, 0, item);
-//    }
+    //    ui->tableConfig->setRowCount(this->pcmu->max_offset);
+    //    ui->tableConfig->setColumnCount(1);
+    //    for (int i = 0; i < this->pcmu->max_offset; i++) {
+    //        QTableWidgetItem* item = new QTableWidgetItem();
+    //        double val = this->pcmu->tab_reg[i];
+    //        item->setText(QString("%1").arg(val, 0, 'g', 5));
+    //        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+    //        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+    //        ui->tableConfig->setItem(i, 0, item);
+    //    }
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }

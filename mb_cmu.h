@@ -12,7 +12,8 @@ using namespace std;
 typedef struct {
     uint16_t bmu_num;     // bmu个数
     uint16_t vol_num;     // bmu电压个数
-    uint16_t temp_num;    // bmu温度个数
+    uint16_t T_num;    // bmu温度个数
+    uint16_t Tp_num;    // bmu温度个数
     uint16_t status_num;  // bmu状态个数
 } CMU_CONF;
 

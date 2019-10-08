@@ -18,7 +18,7 @@ class Widget : public QWidget {
     explicit Widget(QWidget* parent = nullptr);
     ~Widget();
     void flushData();
-    void uiInit(int, int, int, int);
+    void uiInit();
     mb_cmu* mycmu;
 
    private:
@@ -29,7 +29,7 @@ class Widget : public QWidget {
    private slots:
     void timerUpDate();
     void valueChange();
-    void on_btnUpgrade_released();
+    void on_btn_released();
 };
 class MyDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT

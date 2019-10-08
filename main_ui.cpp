@@ -253,6 +253,7 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
+
     //    ui->tableConfig->setRowCount(this->pcmu->max_offset);
     //    ui->tableConfig->setColumnCount(1);
     //    for (int i = 0; i < this->pcmu->max_offset; i++) {

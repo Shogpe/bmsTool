@@ -12,6 +12,8 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     timer->start(2000);
     mycmu = nullptr;
     pmq = MessageQueue::getInstance();
+    pmq->registMsgQueue(99);
+    config = {0, 0, 0, 0, 0};
     //
 }
 
@@ -21,25 +23,23 @@ Widget::~Widget() {
     delete ui;
 }
 
-void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) {
-    ui->tableBMU->setColumnCount(NumOfVol + NumOfTemp + NumOfStatus);
-    ui->tableBMU->setRowCount(NumOfBmu);
+void Widget::uiInit() {
+    ui->tableBMU->setColumnCount(config.vol_num + config.T_num + config.Tp_num + config.status_num + 1);
+    ui->tableBMU->setRowCount(config.bmu_num);
     /* 设置 tableWidget */
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     QStringList hdr_list;
-    for (int i = 0; i < NumOfVol; i++) {
+    for (int i = 0; i < config.vol_num; i++) {
         hdr_list.append(("Vol" + QString::number(i + 1)));
     }
-    for (int i = 0; i < NumOfTemp - 2; i++) {
+    for (int i = 0; i < config.T_num; i++) {
         hdr_list.append(("Tpack" + QString::number(i + 1)));
     }
-//    for (int i = 0; i < config.temp_num - 2; i++) {
-//        hdr_list.append(("Tp" + QString::number(i + 1)));
-//    }
-    hdr_list.append(tr("Tp1"));
-    hdr_list.append(tr("Tp2"));
+    for (int i = 0; i < config.Tp_num; i++) {
+        hdr_list.append(("Tp" + QString::number(i + 1)));
+    }
     hdr_list.append(tr("电压断线"));
     hdr_list.append(tr("温度断线"));
     hdr_list.append(tr("运行状态"));
@@ -54,7 +54,7 @@ void Widget::uiInit(int NumOfBmu, int NumOfVol, int NumOfTemp, int NumOfStatus) 
         // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
 
-    connect(ui->btnUpgrade,&QPushButton::released,this,&Widget::on_btnUpgrade_released,Qt::UniqueConnection);
+    connect(ui->btnUpgrade, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
 }
 void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
@@ -82,10 +82,16 @@ void Widget::valueChange() {
     }
 }
 void Widget::timerUpDate() {
-//    QTime t;
-//    t.start();  //将此时间设置为当前时间
+    //    QTime t;
+    //    t.start();  //将此时间设置为当前时间
     //
-    uiInit(8, 16, 6, 5);
+    TMsgData Msg;
+    if (pmq->readMsg(99, Msg) != 0) {
+        memcpy(&config, Msg.data.data(), sizeof(config));
+        Msg.data.clear();
+        this->uiInit();
+
+    }
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
@@ -95,8 +101,7 @@ void Widget::flushData() {
     if (mycmu == nullptr) return;
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-
-    memcpy(&config, &mycmu->config, sizeof(config));
+    // memcpy(&config, &mycmu->config, sizeof(config));
     int cloumn_offset = 0;
     int data_index = 0;
     uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[data_index]);
@@ -114,9 +119,9 @@ void Widget::flushData() {
     cloumn_offset += config.vol_num;
     int16_t* pTemp = (int16_t*)&(mycmu->tab_reg[data_index]);
     for (int i = 0; i < config.bmu_num; i++) {
-        for (int j = 0; j < config.temp_num; j++) {
+        for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
             QTableWidgetItem* item = new QTableWidgetItem();
-            double val = *(pTemp + i * mycmu->config.temp_num + j) / 10.0;
+            double val = *(pTemp + i * (config.T_num + config.Tp_num) + j) / 10.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
@@ -124,7 +129,7 @@ void Widget::flushData() {
             data_index++;
         }
     }
-    cloumn_offset += config.temp_num;
+    cloumn_offset += (config.T_num + config.Tp_num);
     uint16_t* pStatus = (uint16_t*)&(mycmu->tab_reg[data_index]);
     for (int i = 0; i < config.status_num; i++) {
         for (int j = 0; j < config.bmu_num; j++) {
@@ -176,7 +181,7 @@ void Widget::flushData() {
             // qDebug() << iter1->second << ":" << iter1->first.c_str();
             try {
                 int index = iter1->second.index;
-                //if (dspbox->hasFocus()) continue;
+                // if (dspbox->hasFocus()) continue;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
             } catch (exception& e) {
                 cout << e.what() << endl;
@@ -185,11 +190,17 @@ void Widget::flushData() {
     }
 }
 
-void Widget::on_btnUpgrade_released() {
+void Widget::on_btn_released() {
     TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_UPGRADE;
-    uint16_t val = 0x5a78;
-    MsgCmd.data.resize(sizeof(uint16_t));
-    memcpy(MsgCmd.data.data(), &val, sizeof(uint16_t));
+    QPushButton* b = (QPushButton*)sender();
+    QString name = b->text();
+    if (name == "btnUpgrade") {
+        MsgCmd.msg_type = CTRL_UPGRADE;
+        uint16_t val = 0x5a78;
+        MsgCmd.data.resize(sizeof(uint16_t));
+        memcpy(MsgCmd.data.data(), &val, sizeof(uint16_t));
+    } else {
+        ;
+    }
     pmq->sendMsg(0, MsgCmd);
 }

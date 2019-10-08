@@ -114,7 +114,7 @@ mb_cmu::mb_cmu() {
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
     tab_data.reserve(1000);
-    config = {0, 0, 0, 0};
+    config = {0, 0, 0, 0,0};
 }
 
 mb_cmu::~mb_cmu() {
@@ -136,6 +136,7 @@ int mb_cmu::Init() {
     wr_list_.clear();
     int index = -1;
     ST_NODE_DATA tmp_data;
+    tmp_data.sysData.val.f64 = 0;
     for (int i = 0; i < MAX_CFG; i++) {
         node_reg_tmp.default_val = 0;
         if (tab_config[i].reg_type > NONE_REG) {
@@ -232,7 +233,7 @@ int mb_cmu::ReadALL() {
         reg_num = config.bmu_num * config.vol_num;
         status += ReadData(0x04, 0x01, reg_num, p + offset);
         offset += reg_num;
-        reg_num = config.bmu_num * config.temp_num;
+        reg_num = config.bmu_num * (config.T_num+config.Tp_num);
         status += ReadData(0x04, 0x1000, reg_num, p + offset);
         offset += reg_num;
         reg_num = config.bmu_num * config.status_num;
@@ -293,10 +294,22 @@ void mb_cmu::run() {
                 rc = ReadData(0x03, 0x1500, TAB_CFG_LEN, sys_para.array);
                 if (rc == TAB_CFG_LEN) {
                     state = SM_READ;
-                    config.bmu_num = sys_para.Name.u16ClusterBmuNum;
-                    config.vol_num = sys_para.Name.u16BmuCellNum;
-                    config.temp_num = sys_para.Name.u16BmuPackTNum + sys_para.Name.u16BmuPoleTNum;
-                    config.status_num = 4;
+                    if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
+                        config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
+                        config.Tp_num != sys_para.Name.u16BmuPoleTNum) {
+                        config.bmu_num = sys_para.Name.u16ClusterBmuNum;
+                        config.vol_num = sys_para.Name.u16BmuCellNum;
+                        config.T_num = sys_para.Name.u16BmuPackTNum;
+                        config.Tp_num = sys_para.Name.u16BmuPoleTNum;
+                        config.status_num = 4;
+
+                        TMsgData MsgCmd;
+                        MsgCmd.msg_type = 0;
+                        MsgCmd.data.resize(sizeof(config));
+                        memcpy(MsgCmd.data.data(), &config, sizeof(config));
+                        pMq->sendMsg(99, MsgCmd);
+                    }
+
                 } else
                     sleep(1);
                 break;
@@ -323,7 +336,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CONFIG_PORT: {
             uint16_t port = 0;
             memcpy(&port, Msg.data.data(), sizeof(uint16_t));
-            if(mb_port == port) break;
+            if (mb_port == port) break;
             if (port != 0) {
                 mb_port = port;
             }

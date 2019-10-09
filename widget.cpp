@@ -15,6 +15,18 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     pmq->registMsgQueue(99);
     config = {0, 0, 0, 0, 0};
     //
+    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
+    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+        connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
+        // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
+    }
+    QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
+    foreach (QPushButton* btn, btns) {
+        qDebug() << btn->text();
+        connect(btn, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
+        // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
+    }
+
 }
 
 Widget::~Widget() {
@@ -48,13 +60,8 @@ void Widget::uiInit() {
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
-    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-    foreach (QDoubleSpinBox* dspbox, dspboxs) {
-        connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
-        // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
-    }
 
-    connect(ui->btnUpgrade, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
+    // connect(ui->btnUpgrade, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
 }
 void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
@@ -69,7 +76,7 @@ void Widget::valueChange() {
             val[0] = iter1->second.index;
             qDebug() << b->value() << "," << iter1->second.factor << "," << b->value() / iter1->second.factor;
             //+0.5保障精度
-            val[1] = static_cast<int>(dval / iter1->second.factor + 0.5 - (dval < 0));
+            val[1] = static_cast<uint16_t>(dval / iter1->second.factor + 0.5 - (dval < 0));
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO;
             MsgCmd.data.resize(2 * sizeof(uint16_t));
@@ -90,7 +97,6 @@ void Widget::timerUpDate() {
         memcpy(&config, Msg.data.data(), sizeof(config));
         Msg.data.clear();
         this->uiInit();
-
     }
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
@@ -189,18 +195,20 @@ void Widget::flushData() {
         }
     }
 }
-
+map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
+                            {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
+                            {"btnDownBMU", CTRL_DOWN_BMU},
+                            {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL}};
 void Widget::on_btn_released() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();
-    QString name = b->text();
-    if (name == "btnUpgrade") {
-        MsgCmd.msg_type = CTRL_UPGRADE;
-        uint16_t val = 0x5a78;
-        MsgCmd.data.resize(sizeof(uint16_t));
-        memcpy(MsgCmd.data.data(), &val, sizeof(uint16_t));
-    } else {
-        ;
-    }
-    pmq->sendMsg(0, MsgCmd);
+    QString name = b->objectName();
+    map<QString, int>::iterator iter1;
+    iter1 = btnMap.find(name);
+    if (iter1 != btnMap.end()) {
+        int type = iter1->second;
+        MsgCmd.msg_type = type;
+        pmq->sendMsg(0, MsgCmd);
+    } else
+        qDebug() << name;
 }

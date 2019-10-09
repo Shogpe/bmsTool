@@ -114,7 +114,7 @@ mb_cmu::mb_cmu() {
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
     tab_data.reserve(1000);
-    config = {0, 0, 0, 0,0};
+    config = {0, 0, 0, 0, 0};
 }
 
 mb_cmu::~mb_cmu() {
@@ -233,7 +233,7 @@ int mb_cmu::ReadALL() {
         reg_num = config.bmu_num * config.vol_num;
         status += ReadData(0x04, 0x01, reg_num, p + offset);
         offset += reg_num;
-        reg_num = config.bmu_num * (config.T_num+config.Tp_num);
+        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
         status += ReadData(0x04, 0x1000, reg_num, p + offset);
         offset += reg_num;
         reg_num = config.bmu_num * config.status_num;
@@ -383,13 +383,47 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             }
             break;
         }
-        case CTRL_UPGRADE: {
-            uint16_t type = *(uint16_t*)Msg.data.data();
-            sec_ctrl(ADDR_UPGRADE, type);
+        case CTRL_DOWN_BMS: {
+            sec_ctrl(ADDR_UPGRADE, MB_UpdateCMU);
         } break;
-        case CTRL_ADJ: {
-            uint16_t type = *(uint16_t*)Msg.data.data();
-            sec_ctrl(ADDR_ADJ, type);
+        case CTRL_DOWN_BMS_BTL: {
+            sec_ctrl(ADDR_UPGRADE, MB_UpdateBTC);
+        } break;
+        case CTRL_DOWN_BMU: {
+            sec_ctrl(ADDR_UPGRADE, MB_UpdateBMU);
+        } break;
+        case CTRL_DOWN_BMU_BTL: {
+            sec_ctrl(ADDR_UPGRADE, MB_UpdateBTB);
+        } break;
+        case CTRL_UPGRADE_BMU: {
+            sec_ctrl(ADDR_UPGRADE, MB_UpdBmuNDL);
+        } break;
+        case CTRL_ADJ_U_FULL: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_VFull);
+        } break;
+        case CTRL_ADJ_U_ZERO: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_VZero);
+        } break;
+        case CTRL_ADJ_I_FULL: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_IFull);
+        } break;
+        case CTRL_ADJ_I_ZERO: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_IZero);
+        } break;
+        case CTRL_ADJ_ILEAK_FULL: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_LFull);
+        } break;
+        case CTRL_ADJ_ILEAK_ZERO: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_LZero);
+        } break;
+        case CTRL_ADJ_RINS_FULL: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_RFull);
+        } break;
+        case CTRL_ADJ_RINS_ZERO: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
+        } break;
+        case CTRL_ADJ_RINS_ZERO: {
+            sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
         } break;
         default:
             break;

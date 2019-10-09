@@ -12,8 +12,8 @@ using namespace std;
 typedef struct {
     uint16_t bmu_num;     // bmu个数
     uint16_t vol_num;     // bmu电压个数
-    uint16_t T_num;    // bmu温度个数
-    uint16_t Tp_num;    // bmu温度个数
+    uint16_t T_num;       // bmu温度个数
+    uint16_t Tp_num;      // bmu温度个数
     uint16_t status_num;  // bmu状态个数
 } CMU_CONF;
 
@@ -23,7 +23,7 @@ typedef struct {
     uint16_t reg_len;     //寄存器长度
     uint16_t tab_offset;  // 转存表偏移
 } MB_CMD;
-#define GET_RAWDATALEN(x) ((x & 0x0f00) >> 8)
+#define GET_RAWDATALEN(x)     ((x & 0x0f00) >> 8)
 #define GET_RAWDATATYPE_ID(x) (x & 0xf)
 //自动采集解析结构
 typedef struct structDatabaseIO {
@@ -33,12 +33,12 @@ typedef struct structDatabaseIO {
     uint16_t index;      //实时数据地址
 } DatabaseIO;
 //采集结构体
-#define IO_MAX 200
+#define IO_MAX   200
 #define NONE_REG 0x00
-#define DO_REG 0x01
-#define DI_REG 0x02
-#define AO_REG 0x03
-#define AI_REG 0x04
+#define DO_REG   0x01
+#define DI_REG   0x02
+#define AO_REG   0x03
+#define AI_REG   0x04
 typedef struct structReg {
     int dev_id;                  //设备地址
     unsigned char reg_type;      //寄存器类型，功能码
@@ -59,11 +59,11 @@ typedef struct structTable {
 typedef struct {
     int index;           // 数据索引
     string name;         // 控件名
-    uint16_t reg_type;  // 数据类型
-    uint16_t reg_addr;  // 数据类型
+    uint16_t reg_type;   // 数据类型
+    uint16_t reg_addr;   // 数据类型
     uint32_t data_type;  // 数据类型
-    uint32_t val_type;  // 数据类型
-    double factor;        //变比
+    uint32_t val_type;   // 数据类型
+    double factor;       //变比
 } MB_NODE;
 // 32位系统数据类型定义
 typedef union {
@@ -114,23 +114,41 @@ typedef struct {
 } ST_NODE_DATA;
 typedef enum {
     NONE = 0,
-    THREAD_EXIT,   //线程退出
+    THREAD_EXIT,  //线程退出
     CONFIG_INIT,  //
     CONFIG_IP,
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
-    CTRL_UPGRADE,
-    CTRL_ADJ,
+    CTRL_DOWN_BMS,
+    CTRL_DOWN_BMS_BTL,  // BMS BOOTLOADER
+    CTRL_DOWN_BMU,
+    CTRL_DOWN_BMU_BTL,  // BMU BTL
+    CTRL_UPGRADE_BMU,   //升级BMU,不下载
+    CTRL_ADJ_U_FULL,
+    CTRL_ADJ_U_ZERO,
+    CTRL_ADJ_I_FULL,
+    CTRL_ADJ_I_ZERO,
+    CTRL_ADJ_ILEAK_FULL,
+    CTRL_ADJ_ILEAK_ZERO,
+    CTRL_ADJ_RINS_FULL,
+    CTRL_ADJ_RINS_ZERO,
+    CTRL_CMD_CLR_ENG,
+    CTRL_CMD_CLR_SOE,
+    CTRL_CMD_CLR_ALL_SOE,
+    CTRL_CMD_BMU_LOCK,
+    CTRL_CMD_BMU_UNLOCK,
+    CTRL_CMD_RESET,
+    CTRL_CMD_REBOOT,
 } MSG_TYPE;
-#define CMU_ONLINE 0
+#define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
 
-#define TAB_SYS_LEN 12  //系统数据:时钟,状态
-#define TAB_ENG_LEN 42  //能量数据:SOC,电量
-#define TAB_CFG_LEN 46  //配置数据:参数
-#define TAB_CMU_LEN 25  //统计数据:计算极值
-#define TAB_BMU_OFFSET TAB_SYS_LEN+TAB_ENG_LEN+TAB_CMU_LEN
+#define TAB_SYS_LEN    12  //系统数据:时钟,状态
+#define TAB_ENG_LEN    42  //能量数据:SOC,电量
+#define TAB_CFG_LEN    46  //配置数据:参数
+#define TAB_CMU_LEN    25  //统计数据:计算极值
+#define TAB_BMU_OFFSET TAB_SYS_LEN + TAB_ENG_LEN + TAB_CMU_LEN
 //升级命令
 #define ADDR_UPGRADE 0xFFD0
 #define MB_UpdateCMU 0x5a78  // 23160 下载升级CMU应用程序
@@ -141,17 +159,33 @@ typedef enum {
 #define MB_UpdateCFW 0x7567  // 30055 下载CMU信息文件
 #define MB_UpdBmuNDL 0xa533  // 42291 直接升级BMU应用程序
 //校准命令
-#define ADDR_ADJ 0xFFC0
-#define MOD_CMD_Adj_IZero 0x11    //电流采样零刻度校准
-#define MOD_CMD_Adj_VZero 0x22    //电压采样零刻度校准
-#define MOD_CMD_Adj_LZero 0x33    //漏电流零刻度校准
-#define MOD_CMD_Adj_IFull 0xaa11  //电流采样满刻度校准
-#define MOD_CMD_Adj_VFull 0xaa22  //电压采样满刻度校准
-#define MOD_CMD_Adj_LFull 0xaa33  //漏电流满刻度校准
-#define MOD_CMD_Adj_TZero 0x44    //温度校准
-#define MOD_CMD_Adj_TFull 0xaa44
-#define MOD_CMD_Adj_RZero 0x55  //绝缘电阻校准
-#define MOD_CMD_Adj_RFull 0xaa55
+#define ADDR_ADJ     0xFFC0
+#define MB_Adj_IZero 0x11    //电流采样零刻度校准
+#define MB_Adj_VZero 0x22    //电压采样零刻度校准
+#define MB_Adj_LZero 0x33    //漏电流零刻度校准
+#define MB_Adj_IFull 0xaa11  //电流采样满刻度校准
+#define MB_Adj_VFull 0xaa22  //电压采样满刻度校准
+#define MB_Adj_LFull 0xaa33  //漏电流满刻度校准
+#define MB_Adj_TZero 0x44    //温度校准
+#define MB_Adj_TFull 0xaa44
+#define MB_Adj_RZero 0x55  //绝缘电阻校准
+#define MB_Adj_RFull 0xaa55
+//其他命令
+#define ADDR_TIME_ADJ      0xFFE0
+#define ADDR_WR_LOCK       0xFFF0
+#define MB_UNLOCK          0x67A5
+#define ADDR_RESET_FACTORY 0xFFF1
+#define MB_FACTORY         0x1D32
+#define MB_BMU_LOCK        0x55aa
+#define MB_BMU_UNLOCK      0xaa55
+#define ADDR_CLEAR_ENG     0xFFF2
+#define MB_CLEAR_ENG       0x1EC6
+#define ADDR_REBOOT        0xFFF3
+#define MB_REBOOT          0x1D32
+#define ADDR_CLEAR_SOE     0xFFF8
+#define MB_CLR_SOE         0xAA55
+#define MB_CLR_ALL_SOE     0xBB66
+
 /* 系统配置参数数据结构-------------------------------------------------------*/
 typedef union {
     uint16_t array[46];
@@ -235,9 +269,9 @@ class mb_cmu : public QThread {
    public:
     mb_cmu();
     ~mb_cmu();
-    int Init();  //初始化
-    int ReadALL();                     //
-    int Close();                    //释放资源
+    int Init();     //初始化
+    int ReadALL();  //
+    int Close();    //释放资源
    public:
     uint16_t tab_reg[1000];
     uint16_t tab_AI[1000];
@@ -247,11 +281,11 @@ class mb_cmu : public QThread {
     uint32_t cmu_ver;
     uint32_t cmu_status;
     int max_offset;
-    MessageQueue* pMq;
-    map<string,NodeReg> name_map;
+    MessageQueue *pMq;
+    map<string, NodeReg> name_map;
 
    private:
-    modbus_t* cmu;
+    modbus_t *cmu;
     int err_counter = 0;
     STATE_MACHINE state = SM_CONNECT;
     string mb_ip;
@@ -263,8 +297,8 @@ class mb_cmu : public QThread {
     int JudgeReg(NodeReg &node_reg);
     void NewReg(NodeReg &node_reg);
     void InsertReg(NodeReg &node_reg, int index);
-    int ReadData(uint8_t type, int start, int len, uint16_t* dest);
-    int sec_ctrl(uint16_t addr,uint16_t type);
+    int ReadData(uint8_t type, int start, int len, uint16_t *dest);
+    int sec_ctrl(uint16_t addr, uint16_t type);
     int ParseData();
 };
 

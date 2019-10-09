@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+# QT += quickwidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET      = bms_tool
@@ -46,6 +46,7 @@ FORMS       += \
 
 RESOURCES   += other\main.qrc
 RESOURCES   += other\qss.qrc
+# RESOURCES   += qml\dynamic.qml
 CONFIG      += qt warn_off static
 INCLUDEPATH += $$PWD
 win32: LIBS += -LC:\Qt\5.12.3\mingw73_32\lib -lws2_32

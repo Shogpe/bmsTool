@@ -136,10 +136,12 @@ typedef enum {
     CTRL_CMD_CLR_ENG,
     CTRL_CMD_CLR_SOE,
     CTRL_CMD_CLR_ALL_SOE,
+    CTRL_CMD_UNLOCK,
     CTRL_CMD_BMU_LOCK,
     CTRL_CMD_BMU_UNLOCK,
     CTRL_CMD_RESET,
     CTRL_CMD_REBOOT,
+    CERT_CMD_TIME_ADJ,
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -299,6 +301,8 @@ class mb_cmu : public QThread {
     void InsertReg(NodeReg &node_reg, int index);
     int ReadData(uint8_t type, int start, int len, uint16_t *dest);
     int sec_ctrl(uint16_t addr, uint16_t type);
+    int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
+    int write_ao(uint16_t addr, uint16_t v);
     int ParseData();
 };
 

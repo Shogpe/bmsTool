@@ -198,7 +198,22 @@ void Widget::flushData() {
 map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
                             {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
                             {"btnDownBMU", CTRL_DOWN_BMU},
-                            {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL}};
+                            {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL},
+                            {"btnUpBMU", CTRL_UPGRADE_BMU},
+                            {"btnBMULock", CTRL_CMD_BMU_LOCK},
+                            {"btnBMUUnlock", CTRL_CMD_BMU_UNLOCK},
+                            {"btnClearEng", CTRL_CMD_CLR_ENG},
+                            {"btnIFullAdj", CTRL_ADJ_I_FULL},
+                            {"btnIzeroAdj", CTRL_ADJ_I_ZERO},
+                            {"btnIleakFullAdj", CTRL_ADJ_ILEAK_FULL},
+                            {"btnIleakZeroAdj", CTRL_ADJ_ILEAK_ZERO},
+                            {"btnRFullAdj", CTRL_ADJ_RINS_FULL},
+                            {"btnRZeroAdj", CTRL_ADJ_RINS_ZERO},
+                            {"btnUfullAdj", CTRL_ADJ_U_FULL},
+                            {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
+                            {"btnReboot", CTRL_CMD_REBOOT},
+                            {"btnTimeAdj", CERT_CMD_TIME_ADJ},
+                            {"btnResetDef", CTRL_CMD_RESET}};
 void Widget::on_btn_released() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();

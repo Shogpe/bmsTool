@@ -422,23 +422,64 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_ADJ_RINS_ZERO: {
             sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
         } break;
-        case CTRL_ADJ_RINS_ZERO: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
+        case CTRL_CMD_BMU_UNLOCK: {
+            write_ao(ADDR_RESET_FACTORY, MB_BMU_UNLOCK);
+            break;
+        }
+        case CTRL_CMD_BMU_LOCK: {
+            write_ao(ADDR_RESET_FACTORY, MB_BMU_LOCK);
+        } break;
+        case CTRL_CMD_UNLOCK: {
+            write_ao(ADDR_WR_LOCK, MB_UNLOCK);
+        } break;
+        case CTRL_CMD_RESET: {
+            write_ao(ADDR_RESET_FACTORY, MB_FACTORY);
+        } break;
+        case CTRL_CMD_CLR_ENG: {
+            write_ao(ADDR_CLEAR_ENG, MB_CLEAR_ENG);
+        } break;
+        case CTRL_CMD_CLR_ALL_SOE: {
+            write_ao(ADDR_CLEAR_SOE, MB_CLR_ALL_SOE);
+        } break;
+        case CTRL_CMD_REBOOT: {
+            write_ao(ADDR_REBOOT, MB_REBOOT);
+        } break;
+        case CERT_CMD_TIME_ADJ: {
+            uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
+            write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
         } break;
         default:
             break;
     }
     Msg.data.clear();
 }
-int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type) {
+int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
     int ret = -1;
-    sec_cmd[8] = type;
-    ret = modbus_write_registers(cmu, addr, 9, sec_cmd);
+    if (!pv) return ret;
+    if (len < 1) return ret;
+    if (len == 1) {
+        ret = write_ao(addr, *pv);
+        return ret;
+    }
+    ret = modbus_write_registers(cmu, addr, len, pv);
     if (ret < 0)
-        qDebug() << "wr ao failed" << ret;
+        qDebug() << "wr aos failed" << addr << ":" << ret;
     else
-        qDebug() << "wr ao " << addr << "ok";
+        qDebug() << "wr aos " << addr << ":" << len;
     return ret;
+}
+int mb_cmu::write_ao(uint16_t addr, uint16_t v) {
+    int ret = -1;
+    ret = modbus_write_register(cmu, addr, v);
+    if (ret < 0)
+        qDebug() << "wr ao failed" << addr << ":" << ret;
+    else
+        qDebug() << "wr ao " << addr << ":" << v;
+    return ret;
+}
+int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type) {
+    sec_cmd[8] = type;
+    return write_ao(addr, 9, sec_cmd);
 }
 int mb_cmu::ParseData() {
     int ret = -1;

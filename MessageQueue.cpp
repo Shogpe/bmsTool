@@ -42,7 +42,7 @@ void MessageQueue::deleteInstance() {
  * @details 注册消息队列
  * @param queueid 消息队列ID
  * @return true false
- */
+**/
 bool MessageQueue::registMsgQueue(const int& queueid) {
     TMsgQueue queue;
     TMsgManager::iterator it;

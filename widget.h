@@ -1,7 +1,6 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-//#include <QStandardItemModel>
 #include <QWidget>
 #include <iostream>
 #include <QSpinBox>

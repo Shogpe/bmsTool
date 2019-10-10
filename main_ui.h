@@ -2,6 +2,7 @@
 #define UIDEMO08_H
 
 #include <QWidget>
+#include "qframelesswidget.h"
 #include "widget.h"
 #include "mb_cmu.h"
 
@@ -11,12 +12,12 @@ namespace Ui {
 class MainUI;
 }
 
-class MainUI : public QWidget
+class MainUI : public QFramelessWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainUI(QWidget *parent = 0);
+    explicit MainUI(QWidget *parent = nullptr);
     ~MainUI();
 
 private:

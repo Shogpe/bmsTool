@@ -5,7 +5,7 @@
 #include "iconhelper.h"
 #include "ui_main_ui.h"
 
-MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
+MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
     this->initLeftMain();
@@ -92,11 +92,6 @@ void MainUI::buttonClick() {
     TMsgData MsgCmd;
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
-        MsgCmd.msg_type = 0;
-        QString ip = ui->lineEditIP->text();
-        MsgCmd.data.append(ip);
-        bool ret = pmq->sendMsg(0, MsgCmd);
-        qDebug() << "send " << MsgCmd.msg_type << "," << MsgCmd.data << "," << ret << "," << MsgCmd.data.size();
     } else if (name == "系统设置") {
         ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {

@@ -35,6 +35,7 @@ HEADERS     += iconhelper.h \
     MessageQueue.h \
     main_ui.h \
     mb_cmu.h \
+    qframelesswidget.h \
     utils.h \
     version.h \
     widget.h

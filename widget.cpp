@@ -26,7 +26,9 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
         connect(btn, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
         // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
-
+    //
+    m_model.append({12, 1, 2,3,4,5});
+    ui->ViewSOE->setModel(&m_model);
 }
 
 Widget::~Widget() {
@@ -97,8 +99,12 @@ void Widget::timerUpDate() {
         memcpy(&config, Msg.data.data(), sizeof(config));
         Msg.data.clear();
         this->uiInit();
+        qDebug()<<QString("table:%1x%2").arg(config.bmu_num).arg(config.vol_num+config.T_num+config.Tp_num+config.status_num);
     }
     this->flushData();
+    QModelIndex index = m_model.index(0,0,QModelIndex());
+    m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1,2,3,4,5});
+    m_model.setData(index,{(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1,2,3,4,5});
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
@@ -108,17 +114,20 @@ void Widget::flushData() {
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     // memcpy(&config, &mycmu->config, sizeof(config));
+    if(config.bmu_num > ui->tableBMU->rowCount()) return;
     int cloumn_offset = 0;
     int data_index = 0;
     uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[data_index]);
     for (int i = 0; i < config.bmu_num; i++) {
         for (int j = 0; j < config.vol_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
+            //QTableWidgetItem* item = new QTableWidgetItem();
             double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            //item->setText(QString("%1").arg(val, 0, 'g', 5));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+            //ui->tableBMU->setItem(i, j + cloumn_offset, item);
+            QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
+            item->setText(QString("%1").arg(val, 0, 'g', 5));
             data_index++;
         }
     }

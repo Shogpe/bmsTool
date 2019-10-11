@@ -9,6 +9,7 @@
 #include "modbus-version.h"
 #include "modbus.h"
 using namespace std;
+
 typedef struct {
     uint16_t bmu_num;     // bmu个数
     uint16_t vol_num;     // bmu电压个数
@@ -187,7 +188,15 @@ typedef enum {
 #define ADDR_CLEAR_SOE     0xFFF8
 #define MB_CLR_SOE         0xAA55
 #define MB_CLR_ALL_SOE     0xBB66
-
+//
+typedef struct {
+  uint64_t soe_time;         // 事件时间
+  uint16_t soe_type;  // 事件类型
+  uint16_t soe_id;     //事件ID
+  uint16_t soe_val;     //当前值
+  uint16_t soe_limit;  // 限值
+  uint16_t soe_stat;  // 系统状态
+} CMU_SOE;
 /* 系统配置参数数据结构-------------------------------------------------------*/
 typedef union {
     uint16_t array[46];

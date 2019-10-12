@@ -14,6 +14,7 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     pmq = MessageQueue::getInstance();
     TMsgData MsgCmd;
     MsgCmd.msg_type = CONFIG_IP;
+    ui->lineEditIP->setText("192.168.1.120");
     QString ip = ui->lineEditIP->text();
     MsgCmd.data.append(ip);
     pmq->sendMsg(0, MsgCmd);

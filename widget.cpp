@@ -22,12 +22,13 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     }
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
-        qDebug() << btn->text();
+        //qDebug() << btn->text();
         connect(btn, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
-        // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
     //
-    m_model.append({12, 1, 2,3,4,5});
+    connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
+    ui->ViewSOE->verticalHeader()->hide();
+    //ui->ViewSOE->setColumnWidth(0,900);
     ui->ViewSOE->setModel(&m_model);
 }
 
@@ -96,15 +97,28 @@ void Widget::timerUpDate() {
     //
     TMsgData Msg;
     if (pmq->readMsg(99, Msg) != 0) {
-        memcpy(&config, Msg.data.data(), sizeof(config));
-        Msg.data.clear();
-        this->uiInit();
-        qDebug()<<QString("table:%1x%2").arg(config.bmu_num).arg(config.vol_num+config.T_num+config.Tp_num+config.status_num);
+        if (Msg.msg_type == 0) {
+            memcpy(&config, Msg.data.data(), sizeof(config));
+            Msg.data.clear();
+            this->uiInit();
+            qDebug() << QString("table:%1x%2")
+                            .arg(config.bmu_num)
+                            .arg(config.vol_num + config.T_num + config.Tp_num + config.status_num);
+        } else if (Msg.msg_type == 1) {
+          if(!mycmu) return;
+            qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
+            for (int i = 0; i < 500; i++) {
+              qDebug() << "apped " << i<<"soe:"<<mycmu->cmu_soe.list_soe[i].soe_time;
+                QModelIndex index = m_model.index(i, 0, QModelIndex());
+                // m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1, 2, 3, 4, 5});
+                if(!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
+                  m_model.append(mycmu->cmu_soe.list_soe[i]);
+                }
+                //Sleep(2000);
+            }
+        }
     }
     this->flushData();
-    QModelIndex index = m_model.index(0,0,QModelIndex());
-    m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1,2,3,4,5});
-    m_model.setData(index,{(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1,2,3,4,5});
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
@@ -114,20 +128,20 @@ void Widget::flushData() {
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     // memcpy(&config, &mycmu->config, sizeof(config));
-    if(config.bmu_num > ui->tableBMU->rowCount()) return;
+    if (config.bmu_num > ui->tableBMU->rowCount()) return;
     int cloumn_offset = 0;
     int data_index = 0;
     uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[data_index]);
     for (int i = 0; i < config.bmu_num; i++) {
         for (int j = 0; j < config.vol_num; j++) {
-            //QTableWidgetItem* item = new QTableWidgetItem();
+            QTableWidgetItem* item = new QTableWidgetItem();
             double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
-            //item->setText(QString("%1").arg(val, 0, 'g', 5));
+            item->setText(QString("%1").arg(val, 0, 'g', 5));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            //ui->tableBMU->setItem(i, j + cloumn_offset, item);
-            QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+            //QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
+            //item->setText(QString("%1").arg(val, 0, 'g', 5));
             data_index++;
         }
     }
@@ -222,7 +236,8 @@ map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
                             {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
                             {"btnReboot", CTRL_CMD_REBOOT},
                             {"btnTimeAdj", CERT_CMD_TIME_ADJ},
-                            {"btnResetDef", CTRL_CMD_RESET}};
+                            {"btnResetDef", CTRL_CMD_RESET},
+                            {"btnReadSOE", CERT_CMD_READ_SOE}};
 void Widget::on_btn_released() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();

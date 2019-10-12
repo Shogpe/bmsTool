@@ -158,7 +158,7 @@ int mb_cmu::Init() {
     return 0;
 }
 
-#define MAX_LEN 100
+#define MAX_LEN 125
 /*
  * 读取数据
  **/
@@ -367,19 +367,11 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             if (nb == 2 * sizeof(uint16_t)) {
                 int addr = tab_config[p[0]].reg_addr;
                 int value = p[1];
-                ret = modbus_write_register(cmu, addr, value);
-                if (ret < 0)
-                    qDebug() << "wr ao failed" << ret;
-                else
-                    qDebug() << "wr ao " << addr << ":" << value;
+                ret = write_ao(addr, value);
             } else {
                 int addr = tab_config[p[0]].reg_addr;
                 uint16_t* pv = (uint16_t*)&p[1];
-                ret = modbus_write_registers(cmu, addr, (nb - 1) / 2, pv);
-                if (ret < 0)
-                    qDebug() << "wr aos failed" << ret;
-                else
-                    qDebug() << "wr aos " << addr << ":" << nb;
+                ret = write_ao(addr, (nb - 1) / 2, pv);
             }
             break;
         }
@@ -447,6 +439,13 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CERT_CMD_TIME_ADJ: {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
             write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
+        } break;
+        case CERT_CMD_READ_SOE: {
+            ReadSOE();
+            TMsgData MsgCmd;
+            MsgCmd.data.clear();
+            MsgCmd.msg_type = 1;
+            pMq->sendMsg(99, MsgCmd);
         } break;
         default:
             break;
@@ -567,11 +566,57 @@ int mb_cmu::ReadAI() {
                         tab_data.at(data_iter->index).sysData.val.f64 =
                             MODBUS_GET_INT32_FROM_INT16(tab_buf, data_iter->offset) * data_iter->factor;
                     }
-                    // if(data_iter->index>56) qDebug()<<data_iter->index<<" "
-                    // <<tab_data.at(data_iter->index).sysData.val.f32;
                 }
             }
         }
     }
+    return res;
+}
+#define MAX_SOE_COUNT 500
+#define SOE_REG_LEN   8
+
+static uint16_t get_data(const uint16_t* src, int index) {
+    uint16_t val = src[index];
+    return static_cast<uint16_t>((val >> 8) | (val << 8));
+}
+int mb_cmu::ReadSOE() {
+    int res = -1;
+    uint16_t tab_buf[128] = {0};
+    res = ReadData(0x03, 0x2000, 2, tab_buf);
+    if (res != 2) return -1;
+    memset(&cmu_soe, 0, sizeof(cmu_soe));
+    cmu_soe.new_soe_count = tab_buf[0];
+    cmu_soe.soe_count = tab_buf[1];
+    int start = 0x2002;
+    int len = MAX_SOE_COUNT;
+    int soe_index = 0;
+    do {
+        int soe_len = len > 15 ? 15 : len;
+        len -= soe_len;
+        res = modbus_read_registers(cmu, start, soe_len * SOE_REG_LEN, tab_buf);
+        qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
+        if (res == soe_len * SOE_REG_LEN) {
+            start += (soe_len * SOE_REG_LEN);
+            for (int i = soe_len;--i >= 0;) {
+                uint64_t u64time = static_cast<uint32_t>((get_data(tab_buf, SOE_REG_LEN * i + 1) << 16) |
+                                                         get_data(tab_buf, SOE_REG_LEN * i));
+                if (u64time > 0xFFFFFFFF) {
+                    soe_index++;
+                    continue;
+                }
+                u64time = u64time * 1000 + get_data(tab_buf, SOE_REG_LEN * i + 2);
+                cmu_soe.list_soe[soe_index].soe_time = u64time;
+                cmu_soe.list_soe[soe_index].soe_stat = get_data(tab_buf, SOE_REG_LEN * i + 3);
+                cmu_soe.list_soe[soe_index].soe_type = get_data(tab_buf, SOE_REG_LEN * i + 4);
+                cmu_soe.list_soe[soe_index].soe_id = get_data(tab_buf, SOE_REG_LEN * i + 5);
+                cmu_soe.list_soe[soe_index].soe_val = get_data(tab_buf, SOE_REG_LEN * i + 6);
+                cmu_soe.list_soe[soe_index].soe_limit = get_data(tab_buf, SOE_REG_LEN * i + 7);
+                soe_index++;
+            }
+        } else {
+            return -1;
+        }
+    } while (len);
+    qDebug() << "read soe succeed.";
     return res;
 }

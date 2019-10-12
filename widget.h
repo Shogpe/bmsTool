@@ -69,7 +69,7 @@ class SOEModel : public QAbstractTableModel {
   }
   bool setData(const QModelIndex &index, const CMU_SOE &soe, int role = Qt::EditRole)
   {
-    if(!index.isValid())      return false;
+    if(!index.isValid()) return false;
     if(role == Qt::EditRole && index.row() <= m_data.size()) {
       m_data.replace(index.row(),soe);
       emit dataChanged(index, index);

@@ -143,6 +143,7 @@ typedef enum {
     CTRL_CMD_RESET,
     CTRL_CMD_REBOOT,
     CERT_CMD_TIME_ADJ,
+    CERT_CMD_READ_SOE,
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -190,13 +191,18 @@ typedef enum {
 #define MB_CLR_ALL_SOE     0xBB66
 //
 typedef struct {
-  uint64_t soe_time;         // 事件时间
-  uint16_t soe_type;  // 事件类型
-  uint16_t soe_id;     //事件ID
-  uint16_t soe_val;     //当前值
-  uint16_t soe_limit;  // 限值
-  uint16_t soe_stat;  // 系统状态
+    uint64_t soe_time;   // 事件时间
+    uint16_t soe_type;   // 事件类型
+    uint16_t soe_id;     //事件ID
+    uint16_t soe_val;    //当前值
+    uint16_t soe_limit;  // 限值
+    uint16_t soe_stat;   // 系统状态
 } CMU_SOE;
+typedef struct {
+    uint16_t soe_count;
+    uint16_t new_soe_count;
+    CMU_SOE list_soe[500];
+} ST_SOE;
 /* 系统配置参数数据结构-------------------------------------------------------*/
 typedef union {
     uint16_t array[46];
@@ -287,6 +293,7 @@ class mb_cmu : public QThread {
     uint16_t tab_reg[1000];
     uint16_t tab_AI[1000];
     ST_SysPara sys_para;
+    ST_SOE cmu_soe;
     CMU_CONF config;
     vector<ST_NODE_DATA> tab_data;
     uint32_t cmu_ver;
@@ -305,6 +312,7 @@ class mb_cmu : public QThread {
     vector<DataReg> reg_list_;  //读取表
     vector<NodeReg> wr_list_;   //下发表
     int ReadAI();
+    int ReadSOE();
     int JudgeReg(NodeReg &node_reg);
     void NewReg(NodeReg &node_reg);
     void InsertReg(NodeReg &node_reg, int index);

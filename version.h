@@ -5,7 +5,7 @@
 #define VER_FILEVERSION_STR         "1.0.0.0\0"
 
 #define VER_PRODUCTVERSION          1,0,0,0
-#define VER_PRODUCTVERSION_STR      "1.0\0"  //产品版本
+#define VER_PRODUCTVERSION_STR      "1.0.0.1\0"  //产品版本
 
 #define VER_COMPANYNAME_STR         "Cubenergy"
 #define VER_FILEDESCRIPTION_STR     "bms_tool"  //文件说明

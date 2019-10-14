@@ -247,7 +247,7 @@ int mb_cmu::ReadALL() {
 
     return status;
 }
-#define TIME_OUTOFDATE 3 * 1 * 24 * 60 * 60
+#define TIME_OUTOFDATE 3 * 31 * 24 * 60 * 60
 
 void mb_cmu::run() {
     qDebug() << time(nullptr);
@@ -594,7 +594,7 @@ int mb_cmu::ReadSOE() {
         int soe_len = len > 15 ? 15 : len;
         len -= soe_len;
         res = modbus_read_registers(cmu, start, soe_len * SOE_REG_LEN, tab_buf);
-        qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
+        //qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
         if (res == soe_len * SOE_REG_LEN) {
             start += (soe_len * SOE_REG_LEN);
             for (int i = soe_len;--i >= 0;) {

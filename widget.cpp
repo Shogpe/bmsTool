@@ -1,6 +1,6 @@
 #include "widget.h"
-
 #include <QDateTime>
+#include <QMessageBox>
 #include <QTimer>
 #include <QtDebug>
 #include "ui_widget.h"
@@ -17,18 +17,20 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     //
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
+        // dspbox->installEventFilter(this);
         connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
         // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
-        //qDebug() << btn->text();
+        // qDebug() << btn->text();
         connect(btn, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
     }
     //
     connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
     ui->ViewSOE->verticalHeader()->hide();
-    //ui->ViewSOE->setColumnWidth(0,900);
+    ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
+    // ui->ViewSOE->setColumnWidth(0,900);
     ui->ViewSOE->setModel(&m_model);
 }
 
@@ -71,6 +73,13 @@ void Widget::valueChange() {
     map<string, NodeReg>::iterator iter1;
     if (!b->hasFocus()) return;
     double dval = b->value();
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("确认"), QString(tr("要修改%1为 %2 ?")).arg(b->objectName()).arg(dval),
+                                  QMessageBox::No | QMessageBox::Yes);
+    if (reply != QMessageBox::Yes) {
+        qDebug() << "Yes was clicked No";
+        return;
+    }
     iter1 = mycmu->name_map.find(b->objectName().toStdString());
     if (iter1 != mycmu->name_map.end()) {
         qDebug() << iter1->second.index << ":" << iter1->first.c_str();
@@ -105,17 +114,20 @@ void Widget::timerUpDate() {
                             .arg(config.bmu_num)
                             .arg(config.vol_num + config.T_num + config.Tp_num + config.status_num);
         } else if (Msg.msg_type == 1) {
-          if(!mycmu) return;
-            qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
+            if (!mycmu) return;
+            ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+            // qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
             for (int i = 0; i < 500; i++) {
-              qDebug() << "apped " << i<<"soe:"<<mycmu->cmu_soe.list_soe[i].soe_time;
+                // qDebug() << "apped " << i << "soe:" << mycmu->cmu_soe.list_soe[i].soe_time;
                 QModelIndex index = m_model.index(i, 0, QModelIndex());
                 // m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1, 2, 3, 4, 5});
-                if(!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
-                  m_model.append(mycmu->cmu_soe.list_soe[i]);
+                if (!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
+                    m_model.append(mycmu->cmu_soe.list_soe[i]);
                 }
-                //Sleep(2000);
             }
+            ui->labelSOE->setText(
+                QString("新SOE:%1,总计:%2").arg(mycmu->cmu_soe.new_soe_count).arg(mycmu->cmu_soe.soe_count));
+            ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         }
     }
     this->flushData();
@@ -140,8 +152,8 @@ void Widget::flushData() {
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
-            //QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
-            //item->setText(QString("%1").arg(val, 0, 'g', 5));
+            // QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
+            // item->setText(QString("%1").arg(val, 0, 'g', 5));
             data_index++;
         }
     }
@@ -218,26 +230,35 @@ void Widget::flushData() {
         }
     }
 }
-map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
-                            {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
-                            {"btnDownBMU", CTRL_DOWN_BMU},
-                            {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL},
-                            {"btnUpBMU", CTRL_UPGRADE_BMU},
-                            {"btnBMULock", CTRL_CMD_BMU_LOCK},
-                            {"btnBMUUnlock", CTRL_CMD_BMU_UNLOCK},
-                            {"btnClearEng", CTRL_CMD_CLR_ENG},
-                            {"btnIFullAdj", CTRL_ADJ_I_FULL},
-                            {"btnIzeroAdj", CTRL_ADJ_I_ZERO},
-                            {"btnIleakFullAdj", CTRL_ADJ_ILEAK_FULL},
-                            {"btnIleakZeroAdj", CTRL_ADJ_ILEAK_ZERO},
-                            {"btnRFullAdj", CTRL_ADJ_RINS_FULL},
-                            {"btnRZeroAdj", CTRL_ADJ_RINS_ZERO},
-                            {"btnUfullAdj", CTRL_ADJ_U_FULL},
-                            {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
-                            {"btnReboot", CTRL_CMD_REBOOT},
-                            {"btnTimeAdj", CERT_CMD_TIME_ADJ},
-                            {"btnResetDef", CTRL_CMD_RESET},
-                            {"btnReadSOE", CERT_CMD_READ_SOE}};
+bool Widget::eventFilter(QObject* obj, QEvent* event) {
+    if (event->type() == QEvent::MouseButtonPress) {
+        // showNumpadDialog();
+        //    qDebug()<< event->type();
+        ;
+    }
+    return false;
+}
+static map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
+                                   {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
+                                   {"btnDownBMU", CTRL_DOWN_BMU},
+                                   {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL},
+                                   {"btnUpBMU", CTRL_UPGRADE_BMU},
+                                   {"btnBMULock", CTRL_CMD_BMU_LOCK},
+                                   {"btnBMUUnlock", CTRL_CMD_BMU_UNLOCK},
+                                   {"btnClearEng", CTRL_CMD_CLR_ENG},
+                                   {"btnIFullAdj", CTRL_ADJ_I_FULL},
+                                   {"btnIzeroAdj", CTRL_ADJ_I_ZERO},
+                                   {"btnIleakFullAdj", CTRL_ADJ_ILEAK_FULL},
+                                   {"btnIleakZeroAdj", CTRL_ADJ_ILEAK_ZERO},
+                                   {"btnRFullAdj", CTRL_ADJ_RINS_FULL},
+                                   {"btnRZeroAdj", CTRL_ADJ_RINS_ZERO},
+                                   {"btnUfullAdj", CTRL_ADJ_U_FULL},
+                                   {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
+                                   {"btnReboot", CTRL_CMD_REBOOT},
+                                   {"btnTimeAdj", CERT_CMD_TIME_ADJ},
+                                   {"btnResetDef", CTRL_CMD_RESET},
+                                   {"btnReadSOE", CERT_CMD_READ_SOE}};
+
 void Widget::on_btn_released() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();
@@ -247,6 +268,32 @@ void Widget::on_btn_released() {
     if (iter1 != btnMap.end()) {
         int type = iter1->second;
         MsgCmd.msg_type = type;
+
+        if (type == CERT_CMD_READ_SOE) ui->labelSOE->setText("");
+        pmq->sendMsg(0, MsgCmd);
+    } else
+        qDebug() << name;
+}
+void Widget::on_btn_do_contrl() {
+    TMsgData MsgCmd;
+    QPushButton* b = (QPushButton*)sender();
+    QString name = b->objectName();
+    int addr = ui->comboBoxDO->currentIndex() + 1;
+    if (name == "btnSetDO") {
+        uint16_t val[2];
+        val[0] = addr;
+        val[1] = 1;
+        MsgCmd.msg_type = CTRL_DO;
+        MsgCmd.data.resize(2 * sizeof(uint16_t));
+        memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
+        pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnResetDO") {
+        uint16_t val[2];
+        val[0] = addr;
+        val[1] = 0;
+        MsgCmd.msg_type = CTRL_DO;
+        MsgCmd.data.resize(2 * sizeof(uint16_t));
+        memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
         pmq->sendMsg(0, MsgCmd);
     } else
         qDebug() << name;

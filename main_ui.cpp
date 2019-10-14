@@ -4,7 +4,7 @@
 #include <QTimer>
 #include "iconhelper.h"
 #include "ui_main_ui.h"
-
+#include "version.h"
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -36,7 +36,7 @@ MainUI::~MainUI() {
 
 void MainUI::initForm() {
     this->setProperty("form", true);
-    this->setProperty("canMove", true);
+    //this->setProperty("canMove", true);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 30);
@@ -50,7 +50,7 @@ void MainUI::initForm() {
     ui->labTitle->setText("库博BMS监控软件");
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
-
+    ui->labelVer->setText(VER_PRODUCTVERSION_STR);
     // ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
 
     QSize icoSize(32, 32);
@@ -231,8 +231,10 @@ void MainUI::on_btnMenu_Max_clicked() {
         this->setGeometry(qApp->desktop()->availableGeometry());
     }
 
-    this->setProperty("canMove", max);
+    //this->setProperty("canMove", max);
+    setMoveEnable(max);
     max = !max;
+    //setResizeEnable(max);
 }
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }

@@ -24,10 +24,12 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
         // qDebug() << btn->text();
-        connect(btn, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
+        connect(btn, &QPushButton::released, this, &Widget::btn_released, Qt::UniqueConnection);
     }
     //
-    connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
+    connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
+    connect(ui->btnSetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
+    connect(ui->btnResetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
     // ui->ViewSOE->setColumnWidth(0,900);
@@ -75,7 +77,7 @@ void Widget::valueChange() {
     double dval = b->value();
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, tr("确认"), QString(tr("要修改%1为 %2 ?")).arg(b->objectName()).arg(dval),
-                                  QMessageBox::No | QMessageBox::Yes);
+                                  QMessageBox::No | QMessageBox::Yes, QMessageBox::No);
     if (reply != QMessageBox::Yes) {
         qDebug() << "Yes was clicked No";
         return;
@@ -256,10 +258,9 @@ static map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
                                    {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
                                    {"btnReboot", CTRL_CMD_REBOOT},
                                    {"btnTimeAdj", CERT_CMD_TIME_ADJ},
-                                   {"btnResetDef", CTRL_CMD_RESET},
-                                   {"btnReadSOE", CERT_CMD_READ_SOE}};
+                                   {"btnResetDef", CTRL_CMD_RESET}};
 
-void Widget::on_btn_released() {
+void Widget::btn_released() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();
     QString name = b->objectName();
@@ -268,20 +269,23 @@ void Widget::on_btn_released() {
     if (iter1 != btnMap.end()) {
         int type = iter1->second;
         MsgCmd.msg_type = type;
-
-        if (type == CERT_CMD_READ_SOE) ui->labelSOE->setText("");
         pmq->sendMsg(0, MsgCmd);
     } else
         qDebug() << name;
 }
-void Widget::on_btn_do_contrl() {
+void Widget::btn_contrl() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();
     QString name = b->objectName();
-    int addr = ui->comboBoxDO->currentIndex() + 1;
     if (name == "btnSetDO") {
         uint16_t val[2];
-        val[0] = addr;
+        QList<QAbstractButton*> list = ui->m_pButtonGroup->findChildren<QAbstractButton*>();
+        foreach (QAbstractButton* pButton, list) {
+            if (pButton->isChecked()) {
+                val[0] = list.indexOf(pButton) + 1;
+                break;
+            }
+        }
         val[1] = 1;
         MsgCmd.msg_type = CTRL_DO;
         MsgCmd.data.resize(2 * sizeof(uint16_t));
@@ -289,12 +293,23 @@ void Widget::on_btn_do_contrl() {
         pmq->sendMsg(0, MsgCmd);
     } else if (name == "btnResetDO") {
         uint16_t val[2];
-        val[0] = addr;
+        QList<QAbstractButton*> list = ui->m_pButtonGroup->findChildren<QAbstractButton*>();
+        foreach (QAbstractButton* pButton, list) {
+            if (pButton->isChecked()) {
+                val[0] = list.indexOf(pButton) + 1;
+                break;
+            }
+        }
         val[1] = 0;
         MsgCmd.msg_type = CTRL_DO;
         MsgCmd.data.resize(2 * sizeof(uint16_t));
         memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
         pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnReadSOE") {
+        MsgCmd.msg_type = CERT_CMD_READ_SOE;
+        MsgCmd.data.clear();
+        pmq->sendMsg(0, MsgCmd);
+        ui->labelSOE->setText("");
     } else
         qDebug() << name;
 }

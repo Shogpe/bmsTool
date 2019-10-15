@@ -1,4 +1,4 @@
-﻿#include "appinit.h"
+#include "appinit.h"
 #include "qmutex.h"
 #include "qapplication.h"
 #include "qevent.h"
@@ -54,5 +54,5 @@ bool AppInit::eventFilter(QObject *obj, QEvent *evt)
 
 void AppInit::start()
 {
-    qApp->installEventFilter(this);
+    //qApp->installEventFilter(this);
 }

@@ -3,6 +3,7 @@
 
 #include <QTimer>
 #include "iconhelper.h"
+#include "models/ExtendedGroupBox/ExtendedGroupBox.h"
 #include "ui_main_ui.h"
 #include "version.h"
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
@@ -36,21 +37,21 @@ MainUI::~MainUI() {
 
 void MainUI::initForm() {
     this->setProperty("form", true);
-    //this->setProperty("canMove", true);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 30);
+    IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));
     IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf067));
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 
-    // ui->widgetMenu->setVisible(false);
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTop->setProperty("nav", "top");
     ui->labTitle->setText("库博BMS监控软件");
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
-    ui->labelVer->setText(VER_PRODUCTVERSION_STR);
+    ui->labVersion->setText(QString("V") + VER_PRODUCTVERSION_STR);
+    ui->labUser->setText("Ganing");
     // ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
 
     QSize icoSize(32, 32);
@@ -66,8 +67,6 @@ void MainUI::initForm() {
     }
 
     ui->btnMain->click();
-
-    // ui->widgetLeftMain->setProperty("flag", "left");
     ui->widgetLeftConfig->setProperty("flag", "left");
     ui->MainPage->setStyleSheet(QString("QWidget[flag=\"left\"] "
                                         "QAbstractButton{min-height:%1px;max-height:%1px;}")
@@ -89,8 +88,6 @@ void MainUI::buttonClick() {
             btn->setChecked(false);
         }
     }
-    MessageQueue* pmq = MessageQueue::getInstance();
-    TMsgData MsgCmd;
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
     } else if (name == "系统设置") {
@@ -107,45 +104,17 @@ void MainUI::buttonClick() {
 void MainUI::valueChange() {
     QSpinBox* b = (QSpinBox*)sender();
     QString name = b->text();
-
-    //    QList<QSpinBox*> tbtns = ui->widgetTop->findChildren<QSpinBox*>();
-    //    foreach (QSpinBox* btn, tbtns) {
-    //        if (btn == b) {
-    //            btn->setChecked(true);
-    //        } else {
-    //            btn->setChecked(false);
-    //        }
-    //    }
-    //    MessageQueue* pmq = MessageQueue::getInstance();
-    //    TMsgData MsgCmd;
-    //    if (name == "主界面") {
-    //        ui->stackedWidget->setCurrentIndex(0);
-    //    } else if (name == "系统设置") {
-    //        ui->stackedWidget->setCurrentIndex(1);
-    //    } else if (name == "事件查询") {
-    //        ui->stackedWidget->setCurrentIndex(2);
-    //    } else if (name == "使用帮助") {
-    //        ui->stackedWidget->setCurrentIndex(3);
-    //    } else if (name == "用户退出") {
-    //        exit(0);
-    //    }
 }
 
 void MainUI::initLeftMain() {
     pixCharMain << 0xf030 << 0xf03e << 0xf247;
-    // btnsMain << ui->tbtnMain1 << ui->tbtnMain2 << ui->tbtnMain3;
-
     int count = btnsMain.count();
     for (int i = 0; i < count; i++) {
         btnsMain.at(i)->setCheckable(true);
         btnsMain.at(i)->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         connect(btnsMain.at(i), SIGNAL(clicked(bool)), this, SLOT(leftMainClick()));
     }
-
-    // IconHelper::Instance()->setStyle(ui->widgetLeftMain, btnsMain, pixCharMain, 15, 35, 25, "left", 4);
     connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
-    // ui->tbtnMain1->click();
-    // ui->listBMS->set
 }
 
 void MainUI::initLeftConfig() {
@@ -231,15 +200,16 @@ void MainUI::on_btnMenu_Max_clicked() {
         this->setGeometry(qApp->desktop()->availableGeometry());
     }
 
-    //this->setProperty("canMove", max);
+    // this->setProperty("canMove", max);
     setMoveEnable(max);
     max = !max;
-    //setResizeEnable(max);
+    // setResizeEnable(max);
 }
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }
 
 void MainUI::timerUpDate() {
+    ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss"));
     if (pcmu == nullptr) return;
     if (this->pcmu->cmu_status) {
         ui->labelStatus->setText(tr("已连接"));
@@ -251,17 +221,4 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
-
-    //    ui->tableConfig->setRowCount(this->pcmu->max_offset);
-    //    ui->tableConfig->setColumnCount(1);
-    //    for (int i = 0; i < this->pcmu->max_offset; i++) {
-    //        QTableWidgetItem* item = new QTableWidgetItem();
-    //        double val = this->pcmu->tab_reg[i];
-    //        item->setText(QString("%1").arg(val, 0, 'g', 5));
-    //        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-    //        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-    //        ui->tableConfig->setItem(i, 0, item);
-    //    }
-    // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
-    // qDebug() << t.elapsed() << "ms";
 }

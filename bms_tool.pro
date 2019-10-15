@@ -11,21 +11,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET      = bms_tool
 TEMPLATE    = app
 #CONFIG(debug, debug|release){
-#DESTDIR     = $$PWD/output/
+DESTDIR     = $$PWD/output/release
 #} else {
-#DESTDIR     = $$PWD/debug
+DESTDIR     = $$PWD/output/debug
 #}
 #MOC_DIR     = $$DESTDIR/temp/moc
 #RCC_DIR     = $$DESTDIR/temp/rcc
 #UI_DIR      = $$DESTDIR/temp/ui
 #OBJECTS_DIR = $$DESTDIR/temp/obj
 
-include(libmodbus/libmodbus.pri)
+include(ThirdParty/libmodbus/libmodbus.pri)
+include(ThirdParty/log4qt/log4qt.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
     mb_cmu.cpp \
+    models/ExtendedGroupBox/ExtendedGroupBox.cpp \
     utils.cpp \
     widget.cpp
 SOURCES     += iconhelper.cpp
@@ -35,6 +37,10 @@ HEADERS     += iconhelper.h \
     MessageQueue.h \
     main_ui.h \
     mb_cmu.h \
+    models/ExtendedGroupBox/ExtendedGroupBox.h \
+    models/MyDoubleSpinBox/MyDoubleSpinBox.h \
+    models/SOEModel/SOEModel.h \
+    models/QFramelessWidget/qframelesswidget.h \
     qframelesswidget.h \
     utils.h \
     version.h \

@@ -296,7 +296,7 @@ class mb_cmu : public QThread {
     ST_SOE cmu_soe;
     CMU_CONF config;
     vector<ST_NODE_DATA> tab_data;
-    uint32_t cmu_ver;
+    uint32_t cmu_ver = 0;
     uint32_t cmu_status;
     int max_offset;
     MessageQueue *pMq;

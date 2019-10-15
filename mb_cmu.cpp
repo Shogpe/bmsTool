@@ -351,12 +351,12 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             Init();
             break;
         case CTRL_DO: {
-            if (Msg.data.size() == 2 * sizeof(int)) {
-                int* p = (int*)Msg.data.data();
-                int addr = p[0];
-                int value = p[1];
+            if (Msg.data.size() == 2 * sizeof(uint16_t)) {
+                uint16_t* p = (uint16_t*)Msg.data.data();
+                uint16_t addr = p[0];
+                uint16_t value = p[1];
                 ret = modbus_write_bit(cmu, addr, value);
-                if (ret < 0) qDebug() << "wr do failed" << ret;
+                if (ret < 0) qDebug() << QString("wr do %1 failed(%2)").arg(addr).arg(ret);
             }
         } break;
         case CTRL_AO: {

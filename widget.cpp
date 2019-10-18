@@ -309,7 +309,7 @@ void Widget::btn_contrl() {
         MsgCmd.msg_type = CERT_CMD_READ_SOE;
         MsgCmd.data.clear();
         pmq->sendMsg(0, MsgCmd);
-        ui->labelSOE->setText("");
+        ui->labelSOE->setText(tr("读取中...请稍侯..."));
     } else
         qDebug() << name;
 }

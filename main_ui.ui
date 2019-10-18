@@ -29,381 +29,6 @@
    <property name="bottomMargin">
     <number>1</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QWidget" name="widgetTitle" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item row="0" column="2">
-       <widget class="QLabel" name="labTitle">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3" rowspan="2">
-       <widget class="QWidget" name="widgetTop" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QToolButton" name="btnMain">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>主界面</string>
-           </property>
-           <property name="icon">
-            <iconset resource="other/main.qrc">
-             <normaloff>:/image/main_main.png</normaloff>:/image/main_main.png</iconset>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="btnConfig">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>系统设置</string>
-           </property>
-           <property name="icon">
-            <iconset resource="other/main.qrc">
-             <normaloff>:/image/main_config.png</normaloff>:/image/main_config.png</iconset>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="btnData">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>事件查询</string>
-           </property>
-           <property name="icon">
-            <iconset resource="other/main.qrc">
-             <normaloff>:/image/main_data.png</normaloff>:/image/main_data.png</iconset>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="btnHelp">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>使用帮助</string>
-           </property>
-           <property name="icon">
-            <iconset resource="other/main.qrc">
-             <normaloff>:/image/main_person.png</normaloff>:/image/main_person.png</iconset>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="btnExit">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>用户退出</string>
-           </property>
-           <property name="icon">
-            <iconset resource="other/main.qrc">
-             <normaloff>:/image/main_exit.png</normaloff>:/image/main_exit.png</iconset>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="5" rowspan="2">
-       <widget class="QWidget" name="widgetMenu" native="true">
-        <layout class="QGridLayout" name="gridLayout_2">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0" colspan="2">
-          <widget class="QToolButton" name="btnMenu">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="btnMenu_Min">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>ArrowCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>最小化</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0" colspan="5">
-          <widget class="QLabel" name="labTime">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="btnMenu_Max">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="5">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>10</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="btnMenu_Close">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>ArrowCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="toolTip">
-            <string>关闭</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="5">
-          <widget class="QLabel" name="labUser">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="labVersion">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string>v1.0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labIco">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4" rowspan="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="styleSheet">
@@ -414,30 +39,11 @@
      </property>
      <widget class="QWidget" name="MainPage">
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0">
+       <item row="0" column="1">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QListWidget" name="listBMS">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>120</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="resizeMode">
-           <enum>QListView::Adjust</enum>
-          </property>
-          <item>
-           <property name="text">
-            <string>192.168.1.120</string>
-           </property>
-          </item>
-         </widget>
          <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
@@ -549,6 +155,16 @@
            </item>
           </layout>
          </widget>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QtNavTreeView" name="treeBMS">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
         </widget>
        </item>
       </layout>
@@ -851,6 +467,396 @@
      </widget>
     </widget>
    </item>
+   <item row="0" column="0">
+    <widget class="QWidget" name="widgetTitle" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="0" column="5" rowspan="2">
+       <widget class="QWidget" name="widgetMenu" native="true">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QToolButton" name="btnMenu">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnMenu_Min">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>最小化</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="5">
+          <widget class="QLabel" name="labTime">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="btnMenu_Max">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="5">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="btnMenu_Close">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>关闭</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="5">
+          <widget class="QLabel" name="labUser">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="labTitle">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="2">
+       <widget class="QWidget" name="widgetTop" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="btnMain">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>主界面</string>
+           </property>
+           <property name="icon">
+            <iconset resource="other/main.qrc">
+             <normaloff>:/image/main_main.png</normaloff>:/image/main_main.png</iconset>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnConfig">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777212</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>系统设置</string>
+           </property>
+           <property name="icon">
+            <iconset resource="other/main.qrc">
+             <normaloff>:/image/main_config.png</normaloff>:/image/main_config.png</iconset>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnData">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>事件查询</string>
+           </property>
+           <property name="icon">
+            <iconset resource="other/main.qrc">
+             <normaloff>:/image/main_data.png</normaloff>:/image/main_data.png</iconset>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnHelp">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>使用帮助</string>
+           </property>
+           <property name="icon">
+            <iconset resource="other/main.qrc">
+             <normaloff>:/image/main_person.png</normaloff>:/image/main_person.png</iconset>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnExit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>用户退出</string>
+           </property>
+           <property name="icon">
+            <iconset resource="other/main.qrc">
+             <normaloff>:/image/main_exit.png</normaloff>:/image/main_exit.png</iconset>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="4" rowspan="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="labVersion">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="2">
+       <widget class="QLabel" name="labIco">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QWidget" name="widgetStatus" native="true"/>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -859,6 +865,11 @@
    <extends>QWidget</extends>
    <header>widget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtNavTreeView</class>
+   <extends>QTreeView</extends>
+   <header>QtNavTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources>

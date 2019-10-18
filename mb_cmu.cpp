@@ -214,18 +214,6 @@ int mb_cmu::ReadALL() {
     unsigned int reg_num = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
-    //    MB_CMD cmu_config[] = {
-    //        {0x03, 1, TAB_SYS_LEN, 0},  //时钟,状态
-    //        {0x03, 1024, TAB_ENG_LEN, 0},
-    //        {0x04, 5376, TAB_CMU_LEN, 0},
-    //        {0x00, 0x00, 0, 0},
-    //    };
-    //    MB_CMD* pCmd = cmu_config;
-    //    unsigned int offset = 0;
-    //    for (; pCmd->type != 0; pCmd++) {
-    //        offset += pCmd->reg_len;
-    //        status += ReadData(pCmd->type, pCmd->start_addr, pCmd->reg_len, p + offset);
-    //    }
     unsigned int offset = 0;
     status += ReadAI();
     //

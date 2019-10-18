@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "models/QFramelessWidget/qframelesswidget.h"
+#include "models/ListView/ListView.h"
+
 #include "widget.h"
 #include "mb_cmu.h"
 
@@ -31,7 +33,8 @@ private:
     QTimer* timer;
     mb_cmu *pcmu;
     MessageQueue* pmq;
-private slots:
+    StringListModel list_model;
+   private slots:
     void initForm();
     void buttonClick();
     void valueChange();

@@ -21,13 +21,17 @@ DESTDIR     = $$PWD/output/debug
 #OBJECTS_DIR = $$DESTDIR/temp/obj
 
 include(ThirdParty/libmodbus/libmodbus.pri)
-include(ThirdParty/log4qt/log4qt.pri)
+# include(ThirdParty/log4qt/log4qt.pri)
+include(models/Toast/Toast.pri)
+include(ThirdParty/view/view.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
     mb_cmu.cpp \
     models/ExtendedGroupBox/ExtendedGroupBox.cpp \
+    models/ListView/ListView.cpp \
+    models/ListView/StyledDelegate.cpp \
     utils.cpp \
     widget.cpp
 SOURCES     += iconhelper.cpp
@@ -38,10 +42,11 @@ HEADERS     += iconhelper.h \
     main_ui.h \
     mb_cmu.h \
     models/ExtendedGroupBox/ExtendedGroupBox.h \
+    models/ListView/ListView.h \
+    models/ListView/StyledDelegate.h \
     models/MyDoubleSpinBox/MyDoubleSpinBox.h \
     models/SOEModel/SOEModel.h \
     models/QFramelessWidget/qframelesswidget.h \
-    qframelesswidget.h \
     utils.h \
     version.h \
     widget.h

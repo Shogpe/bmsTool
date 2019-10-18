@@ -3,7 +3,7 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QFile>
-
+#include <QMainWindow>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -36,8 +36,12 @@ int main(int argc, char *argv[])
 
     a.setFont(QFont("Microsoft Yahei", 9));
     AppInit::Instance()->start();
-
+    //QMainWindow w;
     MainUI w;
+    //w.setWindowFlags(Qt::FramelessWindowHint);
+    //w.setWindowFlags(Qt::CustomizeWindowHint);
+    //MainUI *main_ui = new MainUI;
+    //w.setCentralWidget( main_ui);
     w.show();
 
     return a.exec();

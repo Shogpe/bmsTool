@@ -20,10 +20,10 @@ DESTDIR     = $$PWD/output/debug
 #UI_DIR      = $$DESTDIR/temp/ui
 #OBJECTS_DIR = $$DESTDIR/temp/obj
 
-include(ThirdParty/libmodbus/libmodbus.pri)
+include(ThirdParty/ThirdParty.pri)
 # include(ThirdParty/log4qt/log4qt.pri)
-include(models/Toast/Toast.pri)
-include(ThirdParty/view/view.pri)
+include(models/models.pri)
+# include(ThirdParty/view/view.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \

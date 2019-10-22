@@ -66,25 +66,44 @@ void MainUI::initForm() {
     }
 
     ui->btnMain->click();
-    ui->widgetLeftConfig->setProperty("flag", "left");
-    ui->MainPage->setStyleSheet(QString("QWidget[flag=\"left\"] "
-                                        "QAbstractButton{min-height:%1px;max-height:%1px;}")
-                                    .arg(60));
-    ui->page2->setStyleSheet(QString("QWidget[flag=\"left\"] "
-                                     "QAbstractButton{min-height:%1px;max-height:%1px;}")
-                                 .arg(20));
+    //创建语言切换菜单
+    langue_menu = new QMenu(tr("Langue"));
+    setChinese = new QAction(tr("Chinese"),this);
+    setChinese->setCheckable(true);
+    setEnglish = new QAction(tr("English"),this);
+    setEnglish->setCheckable(true);
+    setEnglish->setChecked(true);
+    langue_menu->addAction(setChinese);
+    langue_menu->addAction(setEnglish);
+    langueGroup = new QActionGroup(this);
+    langueGroup->addAction(setEnglish);
+    langueGroup->addAction(setChinese);
 
-    // ui->listBMS->setModel(&list_model);
-    // list_model.insertRows(0,1,QModelIndex());
-    ui->treeBMS->addItem("192.168.1.120");
-    ui->treeBMS->addItem("192.168.1.121");
-    ui->treeBMS->addItem("192.168.1.122");
-    ui->treeBMS->addItem("192.168.1.123");
-    ui->treeBMS->addItem("192.168.1.120","502");
-    ui->treeBMS->addItem("192.168.1.120","CMU");
-    ui->treeBMS->addItem("192.168.1.121","502");
-    ui->treeBMS->addItem("192.168.1.122","502");
-    ui->treeBMS->addItem("192.168.1.123","502");
+    //创建主题切换菜单
+    theme_menu = new QMenu(tr("Theme"));
+    setBlue = new QAction(tr("lightblue"),this);
+    setBlue->setCheckable(true);
+    setBlue->setChecked(true);
+    setBlack = new QAction(tr("psblack"),this);
+    setBlack->setCheckable(true);
+    setWhite = new QAction(tr("flatwhite"),this);
+    setWhite->setCheckable(true);
+    theme_menu->addAction(setBlue);
+    theme_menu->addAction(setBlack);
+    theme_menu->addAction(setWhite);
+    themeGroup = new QActionGroup(this);
+    themeGroup->addAction(setBlue);
+    themeGroup->addAction(setBlack);
+    themeGroup->addAction(setWhite);
+    //创建主菜单,将主题和语言菜单当二级菜单加入主菜单
+    title_menu = new QMenu;
+    title_menu->addMenu(langue_menu);
+    title_menu->addMenu(theme_menu);
+    ui->btnMenu->setMenu(title_menu);//将主菜单设置到菜单按钮
+    //关联换肤和切换语言功能
+    ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
+    connect(langueGroup,&QActionGroup::triggered,this,&MainUI::changeLangue);
+    connect(themeGroup,&QActionGroup::triggered,this,&MainUI::changeTheme);
 }
 #include "Toast.h"
 void MainUI::buttonClick() {
@@ -182,7 +201,58 @@ void MainUI::leftConfigClick() {
     if (name == "其他设置") {
     }
 }
+void MainUI::changeLangue()//切换语言
+{
+//  if(setChinese->isChecked()){//判断选中了哪个语言
+//    translator->load(":/langue/zh_cn.qm");//加载翻译文件
+//    qApp->installTranslator(translator);//安装翻译文件
+//    //刷新界面,因为没有Ui文件，所以要手动实现刷新,使用Ui文件只需要调用ui->retranslateUi(this)即可
+//    retranslateUI();
+//  }else if(setEnglish->isChecked()){
+//    qApp->removeTranslator(translator);
+//    retranslateUI();
+//  }
+}
 
+void MainUI::changeTheme()//切换主题
+{
+  if(setBlue->isChecked()){//判断选中了哪个主题,然后应用相应主题
+    QFile styleFile(QStringLiteral(":/qss/lightblue.css"));//读取主题文件
+    if(styleFile.open(QFile::ReadOnly)){
+      QString qss = styleFile.readAll();
+      QString paletteColor = qss.mid(20, 7);
+      qApp->setPalette(QPalette(QColor(paletteColor)));//设置窗体调色板
+      qApp->setStyleSheet(qss);//设置主题
+      styleFile.close();
+    }else{
+      qDebug()<<"styleFile Loading error";
+    }
+  }else if(setBlack->isChecked()){
+    QFile styleFile(QStringLiteral(":/qss/psblack.css"));
+    if(styleFile.open(QFile::ReadOnly)){
+      QString qss = styleFile.readAll();
+      QString paletteColor = qss.mid(20, 7);
+      qApp->setPalette(QPalette(QColor(paletteColor)));//设置窗体调色板
+      qApp->setStyleSheet(qss);
+      styleFile.close();
+    }else{
+      qDebug()<<"styleFile Loading error";
+    }
+
+  }else if(setWhite->isChecked()){
+    QFile styleFile(QStringLiteral(":/qss/flatwhite.css"));
+    if(styleFile.open(QFile::ReadOnly)){
+      QString qss = styleFile.readAll();
+      QString paletteColor = qss.mid(20, 7);
+      qApp->setPalette(QPalette(QColor(paletteColor)));//设置窗体调色板
+      qApp->setStyleSheet(qss);
+      styleFile.close();
+    }else{
+      qDebug()<<"styleFile Loading error";
+    }
+
+  }
+}
 void MainUI::btnClick() {
     QToolButton* b = (QToolButton*)sender();
     QString name = b->text();

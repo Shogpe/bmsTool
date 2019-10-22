@@ -39,7 +39,7 @@
      </property>
      <widget class="QWidget" name="MainPage">
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="1">
+       <item row="0" column="0">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -155,16 +155,6 @@
            </item>
           </layout>
          </widget>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QtNavTreeView" name="treeBMS">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
         </widget>
        </item>
       </layout>
@@ -520,6 +510,9 @@
              <height>30</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>菜单</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -582,6 +575,9 @@
            </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>最大化</string>
            </property>
            <property name="text">
             <string/>
@@ -865,11 +861,6 @@
    <extends>QWidget</extends>
    <header>widget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QtNavTreeView</class>
-   <extends>QTreeView</extends>
-   <header>QtNavTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -34,6 +34,16 @@ private:
     mb_cmu *pcmu;
     MessageQueue* pmq;
     StringListModel list_model;
+    QMenu *title_menu;
+    QMenu *langue_menu;
+    QMenu *theme_menu;
+    QActionGroup *langueGroup;
+    QActionGroup *themeGroup;
+    QAction *setChinese;
+    QAction *setEnglish;
+    QAction *setBlue;
+    QAction *setBlack;
+    QAction *setWhite;
    private slots:
     void initForm();
     void buttonClick();
@@ -49,6 +59,8 @@ private slots:
     void on_btnMenu_Min_clicked();
     void on_btnMenu_Max_clicked();
     void on_btnMenu_Close_clicked();
+    void changeLangue();
+    void changeTheme();
 };
 
 #endif // UIDEMO08_H

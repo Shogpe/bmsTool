@@ -32,6 +32,18 @@
    <bool>true</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QTabWidget" name="DataWidget">
      <property name="enabled">
@@ -5449,8 +5461,8 @@
       <widget class="QPushButton" name="btnSetDO">
        <property name="geometry">
         <rect>
-         <x>180</x>
-         <y>280</y>
+         <x>160</x>
+         <y>270</y>
          <width>135</width>
          <height>28</height>
         </rect>
@@ -5468,8 +5480,8 @@
       <widget class="QPushButton" name="btnResetDO">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>280</y>
+         <x>20</x>
+         <y>270</y>
          <width>135</width>
          <height>28</height>
         </rect>
@@ -5489,25 +5501,25 @@
         <rect>
          <x>20</x>
          <y>30</y>
-         <width>331</width>
-         <height>191</height>
+         <width>281</width>
+         <height>214</height>
         </rect>
        </property>
        <property name="title">
-        <string>IO选取</string>
+        <string>DO选取</string>
        </property>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButton">
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioButton_5">
           <property name="text">
-           <string>DO1(断路器)</string>
+           <string>DO5(KM-合)</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QRadioButton" name="radioButton_2">
+        <item row="5" column="0">
+         <widget class="QRadioButton" name="radioButton_6">
           <property name="text">
-           <string>DO2(KM+分)</string>
+           <string>DO6(充电指示)</string>
           </property>
          </widget>
         </item>
@@ -5525,52 +5537,220 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QRadioButton" name="radioButton_5">
-          <property name="text">
-           <string>DO5(KM-合)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QRadioButton" name="radioButton_6">
-          <property name="text">
-           <string>DO6(充电指示)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
+        <item row="6" column="0">
          <widget class="QRadioButton" name="radioButton_7">
           <property name="text">
            <string>DO7(放电指示)</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>DO1(断路器)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="radioButton_2">
+          <property name="text">
+           <string>DO2(KM+分)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioButton_8">
           <property name="text">
            <string>DO8(充满指示)</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="0" column="1">
          <widget class="QRadioButton" name="radioButton_9">
           <property name="text">
            <string>DO9(放空指示)</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="1" column="1">
          <widget class="QRadioButton" name="radioButton_10">
           <property name="text">
            <string>DO10(告警指示)</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="2" column="1">
          <widget class="QRadioButton" name="radioButton_11">
           <property name="text">
            <string>DO11(风扇控制)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QRadioButton" name="radioButton_12">
+          <property name="text">
+           <string>DO12(备用1)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QRadioButton" name="radioButton_13">
+          <property name="text">
+           <string>DO13(备用2)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QRadioButton" name="radioButton_14">
+          <property name="text">
+           <string>DO14(备用3)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QRadioButton" name="radioButton_15">
+          <property name="text">
+           <string>DO15(备用4)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QRadioButton" name="radioButton_16">
+          <property name="text">
+           <string>DO16(备用5)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="m_pButtonGroup_2">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>30</y>
+         <width>281</width>
+         <height>214</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>DI</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioButton_17">
+          <property name="text">
+           <string>DO5(KM-合)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QRadioButton" name="radioButton_18">
+          <property name="text">
+           <string>DO6(充电指示)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="radioButton_19">
+          <property name="text">
+           <string>DO3(KM+合)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioButton_20">
+          <property name="text">
+           <string>DO4(KM-分)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QRadioButton" name="radioButton_21">
+          <property name="text">
+           <string>DO7(放电指示)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="radioButton_22">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>DI(断路器)</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="radioButton_23">
+          <property name="text">
+           <string>DO2(KM+分)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QRadioButton" name="radioButton_24">
+          <property name="text">
+           <string>DO8(充满指示)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="radioButton_25">
+          <property name="text">
+           <string>DO9(放空指示)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QRadioButton" name="radioButton_26">
+          <property name="text">
+           <string>DO10(告警指示)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QRadioButton" name="radioButton_27">
+          <property name="text">
+           <string>DO11(风扇控制)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QRadioButton" name="radioButton_28">
+          <property name="text">
+           <string>DO12(备用1)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QRadioButton" name="radioButton_29">
+          <property name="text">
+           <string>DO13(备用2)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QRadioButton" name="radioButton_30">
+          <property name="text">
+           <string>DO14(备用3)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QRadioButton" name="radioButton_31">
+          <property name="text">
+           <string>DO15(备用4)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QRadioButton" name="radioButton_32">
+          <property name="text">
+           <string>DO16(备用5)</string>
           </property>
          </widget>
         </item>

@@ -151,7 +151,7 @@
             </widget>
            </item>
            <item>
-            <widget class="Widget" name="cmuData" native="true"/>
+            <widget class="Widget" name="cmuData"/>
            </item>
           </layout>
          </widget>
@@ -858,7 +858,7 @@
  <customwidgets>
   <customwidget>
    <class>Widget</class>
-   <extends>QWidget</extends>
+   <extends>QTabWidget</extends>
    <header>widget.h</header>
    <container>1</container>
   </customwidget>

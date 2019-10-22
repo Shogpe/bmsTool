@@ -267,6 +267,7 @@ void mb_cmu::run() {
                 }
                 break;
             case SM_CONNECT: {
+                cmu_status &= ~(0x01U << CMU_ONLINE);
                 if (cmu != nullptr) this->Close();
                 cmu = modbus_new_tcp(this->mb_ip.c_str(), this->mb_port);
                 modbus_set_slave(cmu, 1);

@@ -19,11 +19,9 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         // dspbox->installEventFilter(this);
         connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
-        // connect(dspbox, SIGNAL(valueChanged(double)), this, SLOT(valueChange(double)), Qt::UniqueConnection);
     }
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
-        // qDebug() << btn->text();
         connect(btn, &QPushButton::released, this, &Widget::btn_released, Qt::UniqueConnection);
     }
     //
@@ -32,7 +30,6 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     connect(ui->btnResetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
-    // ui->ViewSOE->setColumnWidth(0,900);
     ui->ViewSOE->setModel(&m_model);
 }
 
@@ -96,7 +93,6 @@ void Widget::valueChange() {
             MsgCmd.data.resize(2 * sizeof(uint16_t));
             memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
             pmq->sendMsg(0, MsgCmd);
-            // dspbox->setValue(mycmu->tab_data.at(iter1->second).sysData.val.f32);
         } catch (exception& e) {
             qDebug() << e.what();
         }
@@ -231,6 +227,92 @@ void Widget::flushData() {
             }
         }
     }
+    map<string, NodeReg>::iterator iter1;
+    iter1 = mycmu->name_map.find("sysStatus1");
+    if (iter1 != mycmu->name_map.end()) {
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_SysStatus->setTitle(QString("%1(%2)").arg(tr("系统状态")).arg(value));
+        QList<QLabel*> SysStatus;
+        SysStatus << ui->bSysErr << ui->bSysAlm << ui->bSysFull << ui->bSysEmpty << ui->bSysInit << ui->bSysCommErr
+                  << ui->bSysBalance << ui->bSysCharge << ui->bSysDischarge << ui->bSysStop << ui->bSys10 << ui->bSys11
+                  << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
+        foreach (QLabel* Label, SysStatus) {
+            try {
+                QString color = (value >> SysStatus.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        }
+    }
+    iter1 = mycmu->name_map.find("sysErrStatus");
+    if (iter1 != mycmu->name_map.end()) {
+      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+      ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态")).arg(value));
+      QList<QLabel*> StatusList;
+      StatusList << ui->bErr0 << ui->bErr1 << ui->bErr2 << ui->bErr3 << ui->bErr4 << ui->bErr5
+                << ui->bErr6 << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11
+                << ui->bErr12 << ui->bErr13 << ui->bErr14 << ui->bErr15;
+      foreach (QLabel* Label, StatusList) {
+        try {
+          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+          Label->setStyleSheet(QString("color:%1").arg(color));
+        } catch (exception& e) {
+          qDebug() << e.what();
+        }
+      }
+    }
+    iter1 = mycmu->name_map.find("sysAlmStatus");
+    if (iter1 != mycmu->name_map.end()) {
+      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+      ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态")).arg(value));
+      QList<QLabel*> StatusList;
+      StatusList << ui->bAlm0 << ui->bAlm1 << ui->bAlm2 << ui->bAlm3 << ui->bAlm4 << ui->bAlm5
+                << ui->bAlm6 << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11
+                << ui->bAlm12 << ui->bAlm13 << ui->bAlm14 << ui->bAlm15;
+      foreach (QLabel* Label, StatusList) {
+        try {
+          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+          Label->setStyleSheet(QString("color:%1").arg(color));
+        } catch (exception& e) {
+          qDebug() << e.what();
+        }
+      }
+    }
+    iter1 = mycmu->name_map.find("sysDIStatus");
+    if (iter1 != mycmu->name_map.end()) {
+      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+      ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
+      QList<QLabel*> StatusList;
+      StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5
+                << ui->bDI6 << ui->bDI7 << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11
+                << ui->bDI12 << ui->bDI13 << ui->bDI14 << ui->bDI15;
+      foreach (QLabel* Label, StatusList) {
+        try {
+          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+          Label->setStyleSheet(QString("color:%1").arg(color));
+        } catch (exception& e) {
+          qDebug() << e.what();
+        }
+      }
+    }
+    iter1 = mycmu->name_map.find("sysDOStatus");
+    if (iter1 != mycmu->name_map.end()) {
+      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+      ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value));
+      QList<QRadioButton*> RadioList;
+      RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
+                << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
+                << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+      foreach (QRadioButton* rb, RadioList) {
+        try {
+          QString color = (value >> RadioList.indexOf(rb)) & 0x01 > 0 ? "red" : "green";
+          rb->setStyleSheet(QString("color:%1").arg(color));
+        } catch (exception& e) {
+          qDebug() << e.what();
+        }
+      }
+    }
 }
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::MouseButtonPress) {
@@ -279,10 +361,13 @@ void Widget::btn_contrl() {
     QString name = b->objectName();
     if (name == "btnSetDO") {
         uint16_t val[2];
-        QList<QAbstractButton*> list = ui->m_pButtonGroup->findChildren<QAbstractButton*>();
-        foreach (QAbstractButton* pButton, list) {
+        QList<QRadioButton*> RadioList;
+        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
+                  << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
+                  << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        foreach (QRadioButton* pButton, RadioList) {
             if (pButton->isChecked()) {
-                val[0] = list.indexOf(pButton) + 1;
+                val[0] = RadioList.indexOf(pButton) + 1;
                 break;
             }
         }
@@ -293,10 +378,13 @@ void Widget::btn_contrl() {
         pmq->sendMsg(0, MsgCmd);
     } else if (name == "btnResetDO") {
         uint16_t val[2];
-        QList<QAbstractButton*> list = ui->m_pButtonGroup->findChildren<QAbstractButton*>();
-        foreach (QAbstractButton* pButton, list) {
+        QList<QRadioButton*> RadioList;
+        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
+                  << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
+                  << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        foreach (QRadioButton* pButton, RadioList) {
             if (pButton->isChecked()) {
-                val[0] = list.indexOf(pButton) + 1;
+                val[0] = RadioList.indexOf(pButton) + 1;
                 break;
             }
         }

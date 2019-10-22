@@ -7,13 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>170</width>
-    <height>52</height>
+    <height>50</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>52</height>
+    <height>30</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -43,14 +49,29 @@
    </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>52</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgba(0,0,0,0.80);
-border-radius: 26px;
+border-radius: 15px;
 color: #FFFFFF;
 font-family: microsoft yahei;
-font-size: 16px;
-padding-left:25px;
-padding-right:25px;</string>
+font-size: 13px;
+padding-left:15px;
+padding-right:15px;</string>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -66,8 +87,6 @@ padding-right:25px;</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <!--resources>
-  <include location="Toast.qrc"/>
- </resources-->
+ <resources/>
  <connections/>
 </ui>

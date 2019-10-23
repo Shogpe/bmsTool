@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QTimerEvent>
 #include "utils.h"
+#include "myhelper.h"
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, WORD(0x9000), 0x1122, 0x3344, 0x5566};
 static MB_NODE tab_config[] = {
     {0, "Umax", 4, 5376, 514, 128, 0.0001},
@@ -103,8 +104,10 @@ static MB_NODE tab_config[] = {
     {96, "ClusterAlmMask", 3, 5415, 514, 128, 1},
     {97, "ClusterErrMask", 3, 5416, 514, 128, 1},
     {98, "FuncMask", 3, 5417, 514, 128, 1},
+    {99, "IP", 3, 5418, 514, 128, 1},
+    {100, "ServerIP", 3, 5420, 514, 128, 1},
 };
-#define MAX_CFG 99
+#define MAX_CFG 101
 mb_cmu::mb_cmu() {
     cmu = nullptr;
     cmu_status = 0;
@@ -146,7 +149,6 @@ int mb_cmu::Init() {
             node_reg_tmp.index = tab_config[i].index;
             node_reg_tmp.factor = tab_config[i].factor;
             if ((index = JudgeReg(node_reg_tmp)) != -1) {
-                //
                 InsertReg(node_reg_tmp, index);
             } else {
                 NewReg(node_reg_tmp);
@@ -239,7 +241,7 @@ int mb_cmu::ReadALL() {
 
 void mb_cmu::run() {
     qDebug() << time(nullptr);
-    if (time(nullptr) > (cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
+    if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
         qDebug() << "timeout exit..";
         this->stop = true;
         cmu_status |= (0x01 << CMU_OUTOFDATE);
@@ -341,7 +343,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
         case CTRL_DO: {
             if (Msg.data.size() == 2 * sizeof(uint16_t)) {
-                uint16_t* p = (uint16_t*)Msg.data.data();
+              uint16_t* p = reinterpret_cast< uint16_t *>(Msg.data.data());
                 uint16_t addr = p[0];
                 uint16_t value = p[1];
                 ret = modbus_write_bit(cmu, addr, value);
@@ -349,16 +351,16 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             }
         } break;
         case CTRL_AO: {
-            int nb = Msg.data.size();
+            uint16_t nb = Msg.data.size();
             if (nb < 2) break;
-            uint16_t* p = (uint16_t*)Msg.data.data();
+            uint16_t* p = reinterpret_cast< uint16_t *>(Msg.data.data());
             if (p[0] > MAX_CFG) break;
             if (nb == 2 * sizeof(uint16_t)) {
-                int addr = tab_config[p[0]].reg_addr;
-                int value = p[1];
+                uint16_t addr = tab_config[p[0]].reg_addr;
+                uint16_t value = p[1];
                 ret = write_ao(addr, value);
             } else {
-                int addr = tab_config[p[0]].reg_addr;
+                uint16_t addr = tab_config[p[0]].reg_addr;
                 uint16_t* pv = (uint16_t*)&p[1];
                 ret = write_ao(addr, (nb - 1) / 2, pv);
             }

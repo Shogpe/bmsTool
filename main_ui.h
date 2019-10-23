@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "models/QFramelessWidget/qframelesswidget.h"
 #include "models/ListView/ListView.h"
-
+#include "myhelper.h"
 #include "widget.h"
 #include "mb_cmu.h"
 
@@ -33,7 +33,7 @@ private:
     QTimer* timer;
     mb_cmu *pcmu;
     MessageQueue* pmq;
-    StringListModel list_model;
+    //StringListModel list_model;
     QMenu *title_menu;
     QMenu *langue_menu;
     QMenu *theme_menu;

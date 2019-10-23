@@ -3,8 +3,8 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QtDebug>
+#include "myhelper.h"
 #include "ui_widget.h"
-
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     this->timer = new QTimer(this);
@@ -182,12 +182,12 @@ void Widget::flushData() {
         }
     }
     cloumn_offset += config.status_num;
-    uint32_t* p32 = (uint32_t*)&(mycmu->tab_reg[data_index]);
+    uint32_t* p32 = reinterpret_cast<uint32_t*>(&(mycmu->tab_reg[data_index]));
     mycmu->cmu_ver = *(p32++);
     for (int j = 0; j < config.bmu_num; j++) {
         QTableWidgetItem* item = new QTableWidgetItem();
         uint32_t val = *(p32 + j);
-        item->setText(QString("0x%1").arg(int(val), 8, 16, QLatin1Char('0')));
+        item->setText(myHelper::IntegerToHexString(val));
         //      item->setBackground(QBrush(QColor(Qt::lightGray)));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(j, cloumn_offset, item);
@@ -247,72 +247,73 @@ void Widget::flushData() {
     }
     iter1 = mycmu->name_map.find("sysErrStatus");
     if (iter1 != mycmu->name_map.end()) {
-      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-      ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态")).arg(value));
-      QList<QLabel*> StatusList;
-      StatusList << ui->bErr0 << ui->bErr1 << ui->bErr2 << ui->bErr3 << ui->bErr4 << ui->bErr5
-                << ui->bErr6 << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11
-                << ui->bErr12 << ui->bErr13 << ui->bErr14 << ui->bErr15;
-      foreach (QLabel* Label, StatusList) {
-        try {
-          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
-          Label->setStyleSheet(QString("color:%1").arg(color));
-        } catch (exception& e) {
-          qDebug() << e.what();
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态")).arg(value));
+        QList<QLabel*> StatusList;
+        StatusList << ui->bErr0 << ui->bErr1 << ui->bErr2 << ui->bErr3 << ui->bErr4 << ui->bErr5 << ui->bErr6
+                   << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11 << ui->bErr12 << ui->bErr13
+                   << ui->bErr14 << ui->bErr15;
+        foreach (QLabel* Label, StatusList) {
+            try {
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
         }
-      }
     }
     iter1 = mycmu->name_map.find("sysAlmStatus");
     if (iter1 != mycmu->name_map.end()) {
-      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-      ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态")).arg(value));
-      QList<QLabel*> StatusList;
-      StatusList << ui->bAlm0 << ui->bAlm1 << ui->bAlm2 << ui->bAlm3 << ui->bAlm4 << ui->bAlm5
-                << ui->bAlm6 << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11
-                << ui->bAlm12 << ui->bAlm13 << ui->bAlm14 << ui->bAlm15;
-      foreach (QLabel* Label, StatusList) {
-        try {
-          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
-          Label->setStyleSheet(QString("color:%1").arg(color));
-        } catch (exception& e) {
-          qDebug() << e.what();
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态")).arg(value));
+        QList<QLabel*> StatusList;
+        StatusList << ui->bAlm0 << ui->bAlm1 << ui->bAlm2 << ui->bAlm3 << ui->bAlm4 << ui->bAlm5 << ui->bAlm6
+                   << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11 << ui->bAlm12 << ui->bAlm13
+                   << ui->bAlm14 << ui->bAlm15;
+        foreach (QLabel* Label, StatusList) {
+            try {
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
         }
-      }
     }
     iter1 = mycmu->name_map.find("sysDIStatus");
     if (iter1 != mycmu->name_map.end()) {
-      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-      ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
-      QList<QLabel*> StatusList;
-      StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5
-                << ui->bDI6 << ui->bDI7 << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11
-                << ui->bDI12 << ui->bDI13 << ui->bDI14 << ui->bDI15;
-      foreach (QLabel* Label, StatusList) {
-        try {
-          QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
-          Label->setStyleSheet(QString("color:%1").arg(color));
-        } catch (exception& e) {
-          qDebug() << e.what();
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
+        QList<QLabel*> StatusList;
+        StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5 << ui->bDI6 << ui->bDI7
+                   << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11 << ui->bDI12 << ui->bDI13 << ui->bDI14
+                   << ui->bDI15;
+        foreach (QLabel* Label, StatusList) {
+            try {
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
         }
-      }
     }
     iter1 = mycmu->name_map.find("sysDOStatus");
     if (iter1 != mycmu->name_map.end()) {
-      uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-      ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value));
-      QList<QRadioButton*> RadioList;
-      RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
-                << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
-                << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-      foreach (QRadioButton* rb, RadioList) {
-        try {
-          QString color = (value >> RadioList.indexOf(rb)) & 0x01 > 0 ? "red" : "green";
-          rb->setStyleSheet(QString("color:%1").arg(color));
-        } catch (exception& e) {
-          qDebug() << e.what();
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value));
+        QList<QRadioButton*> RadioList;
+        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        foreach (QRadioButton* rb, RadioList) {
+            try {
+                QString color = (value >> RadioList.indexOf(rb)) & 0x01 > 0 ? "red" : "green";
+                rb->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
         }
-      }
     }
+    ui->lineEditServIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u16TftpServIPH |
+                                                              (mycmu->sys_para.Name.u16TftpServIPL << 16)));
 }
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::MouseButtonPress) {
@@ -362,9 +363,8 @@ void Widget::btn_contrl() {
     if (name == "btnSetDO") {
         uint16_t val[2];
         QList<QRadioButton*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
-                  << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
-                  << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
         foreach (QRadioButton* pButton, RadioList) {
             if (pButton->isChecked()) {
                 val[0] = RadioList.indexOf(pButton) + 1;
@@ -379,9 +379,8 @@ void Widget::btn_contrl() {
     } else if (name == "btnResetDO") {
         uint16_t val[2];
         QList<QRadioButton*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5
-                  << ui->bDO6 << ui->bDO7 << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11
-                  << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
         foreach (QRadioButton* pButton, RadioList) {
             if (pButton->isChecked()) {
                 val[0] = RadioList.indexOf(pButton) + 1;
@@ -400,4 +399,26 @@ void Widget::btn_contrl() {
         ui->labelSOE->setText(tr("读取中...请稍侯..."));
     } else
         qDebug() << name;
+}
+
+void Widget::on_lineEditIP_editingFinished() {
+    if (!ui->lineEditIP->isModified()) return;
+    ui->lineEditIP->setModified(false);
+    qDebug() << ui->lineEditIP->text();
+    if (!myHelper::IsIP(ui->lineEditIP->text())) {
+        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        return;
+    }
+    uint32_t ip = myHelper::IPV4StringToInteger(ui->lineEditIP->text());
+    uint16_t val[3];
+    val[0] = 99;
+    val[1] = ip >> 16 & 0xFFFF;
+    val[2] = ip & 0xFFFF;
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_AO;
+    MsgCmd.data.resize(3 * sizeof(uint16_t));
+    memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
+    QString resultHex = MsgCmd.data.toHex('-');
+    myHelper::ShowMessageBoxInfo(QString("%1,%2").arg(ip, 0, 16).arg(resultHex));
+    pmq->sendMsg(0, MsgCmd);
 }

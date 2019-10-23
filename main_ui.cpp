@@ -217,40 +217,12 @@ void MainUI::changeLangue()  //切换语言
 
 void MainUI::changeTheme()  //切换主题
 {
-    if (setBlue->isChecked()) {                                  //判断选中了哪个主题,然后应用相应主题
-        QFile styleFile(QStringLiteral(":/qss/lightblue.css"));  //读取主题文件
-        if (styleFile.open(QFile::ReadOnly)) {
-            QString qss = styleFile.readAll();
-            QString paletteColor = qss.mid(20, 7);
-            qApp->setPalette(QPalette(QColor(paletteColor)));  //设置窗体调色板
-            qApp->setStyleSheet(qss);                          //设置主题
-            styleFile.close();
-        } else {
-            qDebug() << "styleFile Loading error";
-        }
+    if (setBlue->isChecked()) {  //判断选中了哪个主题,然后应用相应主题
+        myHelper::SetStyle("lightblue");
     } else if (setBlack->isChecked()) {
-        QFile styleFile(QStringLiteral(":/qss/psblack.css"));
-        if (styleFile.open(QFile::ReadOnly)) {
-            QString qss = styleFile.readAll();
-            QString paletteColor = qss.mid(20, 7);
-            qApp->setPalette(QPalette(QColor(paletteColor)));  //设置窗体调色板
-            qApp->setStyleSheet(qss);
-            styleFile.close();
-        } else {
-            qDebug() << "styleFile Loading error";
-        }
-
+        myHelper::SetStyle("psblack");
     } else if (setWhite->isChecked()) {
-        QFile styleFile(QStringLiteral(":/qss/flatwhite.css"));
-        if (styleFile.open(QFile::ReadOnly)) {
-            QString qss = styleFile.readAll();
-            QString paletteColor = qss.mid(20, 7);
-            qApp->setPalette(QPalette(QColor(paletteColor)));  //设置窗体调色板
-            qApp->setStyleSheet(qss);
-            styleFile.close();
-        } else {
-            qDebug() << "styleFile Loading error";
-        }
+        myHelper::SetStyle("flatwhite");
     }
 }
 void MainUI::btnClick() {
@@ -297,7 +269,7 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->pcmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("过期"));
         uint32_t val = this->pcmu->cmu_ver;
-        ui->labelVer->setText(QString("版本号:0x%1").arg(uint32_t(val), 8, 16, QLatin1Char('0')));
+        ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");
     } else {
         ui->labelStatus->setStyleSheet("color:red");

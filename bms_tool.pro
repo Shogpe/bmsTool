@@ -29,9 +29,6 @@ SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
     mb_cmu.cpp \
-    models/ExtendedGroupBox/ExtendedGroupBox.cpp \
-    models/ListView/ListView.cpp \
-    models/ListView/StyledDelegate.cpp \
     utils.cpp \
     widget.cpp
 SOURCES     += iconhelper.cpp
@@ -41,9 +38,7 @@ HEADERS     += iconhelper.h \
     MessageQueue.h \
     main_ui.h \
     mb_cmu.h \
-    models/ExtendedGroupBox/ExtendedGroupBox.h \
-    models/ListView/ListView.h \
-    models/ListView/StyledDelegate.h \
+    myhelper.h \
     models/MyDoubleSpinBox/MyDoubleSpinBox.h \
     models/SOEModel/SOEModel.h \
     models/QFramelessWidget/qframelesswidget.h \

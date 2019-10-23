@@ -113,6 +113,7 @@ typedef struct {
     ST_POINT_DATA rawdata;  //原始数据
     ST_SYS_DATA sysData;    //转化为系统格式数据
 } ST_NODE_DATA;
+
 typedef enum {
     NONE = 0,
     THREAD_EXIT,  //线程退出

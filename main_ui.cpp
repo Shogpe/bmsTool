@@ -1,10 +1,10 @@
 #pragma execution_character_set("utf-8")
 #include "main_ui.h"
 #include <QTimer>
+#include "Toast.h"
 #include "iconhelper.h"
 #include "ui_main_ui.h"
 #include "version.h"
-
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -12,19 +12,26 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     this->initLeftConfig();
     this->pcmu = new mb_cmu;
     pmq = MessageQueue::getInstance();
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CONFIG_IP;
-    ui->lineEditIP->setText("192.168.1.120");
-    QString ip = ui->lineEditIP->text();
-    MsgCmd.data.append(ip);
-    pmq->sendMsg(0, MsgCmd);
     this->pcmu->start();
     ui->cmuData->mycmu = pcmu;
+    connect(ui->lineEditIP,&QLineEdit::editingFinished,this,&MainUI::valueChange,Qt::UniqueConnection);
+    connect(pcmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
+            static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
+    load_config();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
     timer->start(1000);
 }
-
+void MainUI::slot_message_call(const QString& msg) {
+    // qDebug() << QString("msg:%1").arg(msg);
+    Toast::showTip(msg, nullptr);
+}
+bool MainUI::load_config() {
+    settings = new QSettings("config.ini", QSettings::IniFormat);
+    QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
+    ui->lineEditIP->setText(target_ip);
+    return true;
+}
 MainUI::~MainUI() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
@@ -45,13 +52,14 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 
     ui->widgetTitle->setProperty("form", "title");
+    ui->widgetTitle->installEventFilter(this);
+    this->setWidget(this);
     ui->widgetTop->setProperty("nav", "top");
     ui->labTitle->setText("库博BMS监控软件");
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
     ui->labVersion->setText(QString("battery management system v") + VER_PRODUCTVERSION_STR);
     ui->labUser->setText("Ganing");
-    // ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
 
     QSize icoSize(32, 32);
     int icoWidth = 85;
@@ -106,7 +114,7 @@ void MainUI::initForm() {
     connect(langueGroup, &QActionGroup::triggered, this, &MainUI::changeLangue);
     connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
 }
-#include "Toast.h"
+
 void MainUI::buttonClick() {
     QToolButton* b = (QToolButton*)sender();
     QString name = b->text();
@@ -119,7 +127,7 @@ void MainUI::buttonClick() {
             btn->setChecked(false);
         }
     }
-    Toast::showTip(name, nullptr);
+
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
     } else if (name == "系统设置") {
@@ -134,8 +142,19 @@ void MainUI::buttonClick() {
 }
 
 void MainUI::valueChange() {
-    QSpinBox* b = (QSpinBox*)sender();
-    QString name = b->text();
+    QLineEdit* pEdit = (QLineEdit*)sender();
+    if (!pEdit->isModified()) return;
+    pEdit->setModified(false);
+    QString ip = pEdit->text();
+    if (!myHelper::IsIP(ip)) {
+      myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+      return;
+    }
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CONFIG_IP;
+    MsgCmd.data.append(ip);
+    pmq->sendMsg(0, MsgCmd);
+    settings->setValue("global/target_ip",ip);
 }
 
 void MainUI::initLeftMain() {
@@ -245,18 +264,14 @@ void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
 
 void MainUI::on_btnMenu_Max_clicked() {
     static bool max = false;
-    // static QRect location = this->geometry();
-
     if (max) {
         showNormal();
     } else {
         showMaximized();
     }
-
-    // this->setProperty("canMove", max);
-    // setMoveEnable(max);
+    setMoveEnable(max);
+    setResizeEnable(max);
     max = !max;
-    // setResizeEnable(max);
 }
 
 void MainUI::on_btnMenu_Close_clicked() { close(); }
@@ -276,4 +291,13 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
+}
+bool MainUI::eventFilter(QObject* obj, QEvent* event) {
+    if (obj == ui->widgetTitle) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            this->on_btnMenu_Max_clicked();
+            return true;
+        }
+    }
+    return QFramelessWidget::eventFilter(obj, event);
 }

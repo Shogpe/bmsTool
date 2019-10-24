@@ -1,8 +1,9 @@
 #include "mb_cmu.h"
 #include <QDebug>
 #include <QTimerEvent>
-#include "utils.h"
 #include "myhelper.h"
+#include "utils.h"
+
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, WORD(0x9000), 0x1122, 0x3344, 0x5566};
 static MB_NODE tab_config[] = {
     {0, "Umax", 4, 5376, 514, 128, 0.0001},
@@ -36,7 +37,7 @@ static MB_NODE tab_config[] = {
     {28, "sysErrStatus", 3, 5, 514, 128, 1},
     {29, "sysAlmStatus", 3, 6, 514, 128, 1},
     {30, "sysComm1", 3, 7, 1028, 128, 1},
-    {31, "sysComm2", 3, 9, 514, 128, 1},
+    {31, "sysComm2", 3, 9, 1028, 128, 1},
     {32, "sysDOStatus", 3, 11, 514, 128, 1},
     {33, "sysDIStatus", 3, 12, 514, 128, 1},
     {34, "SOC", 3, 1024, 514, 128, 0.1},
@@ -118,6 +119,7 @@ mb_cmu::mb_cmu() {
     pMq->registMsgQueue(0);
     tab_data.reserve(1000);
     config = {0, 0, 0, 0, 0};
+    memset(&sys_para, 0, sizeof(sys_para));
 }
 
 mb_cmu::~mb_cmu() {
@@ -281,8 +283,10 @@ void mb_cmu::run() {
                 break;
             }
             case SM_INIT: {
-                ST_SysPara sys_para;
+                // ST_SysPara sys_para;
                 rc = ReadData(0x03, 0x1500, TAB_CFG_LEN, sys_para.array);
+                sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
+                sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
                 if (rc == TAB_CFG_LEN) {
                     state = SM_READ;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
@@ -323,15 +327,17 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 state = SM_CONNECT;
                 qDebug() << "ip config:" << mb_ip.c_str();
             }
+            return Msg.data.clear();
         } break;
         case CONFIG_PORT: {
             uint16_t port = 0;
             memcpy(&port, Msg.data.data(), sizeof(uint16_t));
-            if (mb_port == port) break;
+            // if (mb_port == port) break;
             if (port != 0) {
                 mb_port = port;
             }
             qDebug() << "port config:" << port;
+            return Msg.data.clear();
         } break;
         case THREAD_EXIT:
             stop = true;
@@ -343,17 +349,21 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
         case CTRL_DO: {
             if (Msg.data.size() == 2 * sizeof(uint16_t)) {
-              uint16_t* p = reinterpret_cast< uint16_t *>(Msg.data.data());
+                uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
                 uint16_t addr = p[0];
                 uint16_t value = p[1];
                 ret = modbus_write_bit(cmu, addr, value);
-                if (ret < 0) qDebug() << QString("wr do %1 failed(%2)").arg(addr).arg(ret);
+                if (ret < 0)
+                    emit signal_message(QString(tr("操作失败")));
+                else {
+                    emit signal_message(QString(tr("操作成功")));
+                }
             }
         } break;
         case CTRL_AO: {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;
-            uint16_t* p = reinterpret_cast< uint16_t *>(Msg.data.data());
+            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
             if (p[0] > MAX_CFG) break;
             if (nb == 2 * sizeof(uint16_t)) {
                 uint16_t addr = tab_config[p[0]].reg_addr;
@@ -364,75 +374,76 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 uint16_t* pv = (uint16_t*)&p[1];
                 ret = write_ao(addr, (nb - 1) / 2, pv);
             }
+
             break;
         }
         case CTRL_DOWN_BMS: {
-            sec_ctrl(ADDR_UPGRADE, MB_UpdateCMU);
+            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateCMU);
         } break;
         case CTRL_DOWN_BMS_BTL: {
-            sec_ctrl(ADDR_UPGRADE, MB_UpdateBTC);
+            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTC);
         } break;
         case CTRL_DOWN_BMU: {
-            sec_ctrl(ADDR_UPGRADE, MB_UpdateBMU);
+            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBMU);
         } break;
         case CTRL_DOWN_BMU_BTL: {
-            sec_ctrl(ADDR_UPGRADE, MB_UpdateBTB);
+            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTB);
         } break;
         case CTRL_UPGRADE_BMU: {
-            sec_ctrl(ADDR_UPGRADE, MB_UpdBmuNDL);
+            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdBmuNDL);
         } break;
         case CTRL_ADJ_U_FULL: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_VFull);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VFull);
         } break;
         case CTRL_ADJ_U_ZERO: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_VZero);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VZero);
         } break;
         case CTRL_ADJ_I_FULL: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_IFull);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IFull);
         } break;
         case CTRL_ADJ_I_ZERO: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_IZero);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IZero);
         } break;
         case CTRL_ADJ_ILEAK_FULL: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_LFull);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LFull);
         } break;
         case CTRL_ADJ_ILEAK_ZERO: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_LZero);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LZero);
         } break;
         case CTRL_ADJ_RINS_FULL: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_RFull);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RFull);
         } break;
         case CTRL_ADJ_RINS_ZERO: {
-            sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
+            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
         } break;
         case CTRL_CMD_BMU_UNLOCK: {
-            write_ao(ADDR_RESET_FACTORY, MB_BMU_UNLOCK);
+            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_UNLOCK);
             break;
         }
         case CTRL_CMD_BMU_LOCK: {
-            write_ao(ADDR_RESET_FACTORY, MB_BMU_LOCK);
+            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_LOCK);
         } break;
         case CTRL_CMD_UNLOCK: {
-            write_ao(ADDR_WR_LOCK, MB_UNLOCK);
+            ret = write_ao(ADDR_WR_LOCK, MB_UNLOCK);
         } break;
         case CTRL_CMD_RESET: {
-            write_ao(ADDR_RESET_FACTORY, MB_FACTORY);
+            ret = write_ao(ADDR_RESET_FACTORY, MB_FACTORY);
         } break;
         case CTRL_CMD_CLR_ENG: {
-            write_ao(ADDR_CLEAR_ENG, MB_CLEAR_ENG);
+            ret = write_ao(ADDR_CLEAR_ENG, MB_CLEAR_ENG);
         } break;
         case CTRL_CMD_CLR_ALL_SOE: {
-            write_ao(ADDR_CLEAR_SOE, MB_CLR_ALL_SOE);
+            ret = write_ao(ADDR_CLEAR_SOE, MB_CLR_ALL_SOE);
         } break;
         case CTRL_CMD_REBOOT: {
-            write_ao(ADDR_REBOOT, MB_REBOOT);
+            ret = write_ao(ADDR_REBOOT, MB_REBOOT);
         } break;
         case CERT_CMD_TIME_ADJ: {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
-            write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
+            ret = write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
         } break;
         case CERT_CMD_READ_SOE: {
-            ReadSOE();
+            ret = ReadSOE();
             TMsgData MsgCmd;
             MsgCmd.data.clear();
             MsgCmd.msg_type = 1;
@@ -442,6 +453,11 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
     }
     Msg.data.clear();
+    if (ret < 0)
+        emit signal_message(QString(tr("操作失败")));
+    else {
+        emit signal_message(QString(tr("操作成功")));
+    }
 }
 int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
     int ret = -1;
@@ -585,10 +601,10 @@ int mb_cmu::ReadSOE() {
         int soe_len = len > 15 ? 15 : len;
         len -= soe_len;
         res = modbus_read_registers(cmu, start, soe_len * SOE_REG_LEN, tab_buf);
-        //qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
+        // qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
         if (res == soe_len * SOE_REG_LEN) {
             start += (soe_len * SOE_REG_LEN);
-            for (int i = soe_len;--i >= 0;) {
+            for (int i = soe_len; --i >= 0;) {
                 uint64_t u64time = static_cast<uint32_t>((get_data(tab_buf, SOE_REG_LEN * i + 1) << 16) |
                                                          get_data(tab_buf, SOE_REG_LEN * i));
                 if (u64time > 0xFFFFFFFF) {

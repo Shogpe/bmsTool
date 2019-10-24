@@ -230,7 +230,7 @@ class QFramelessWidget : public QWidget {
 
     //设置要无边框的窗体
     void setWidget(QWidget *widget) {
-        if (this->widget == 0) {
+        if (this->widget == nullptr) {
             this->widget = widget;
             //设置鼠标追踪为真
             this->widget->setMouseTracking(true);

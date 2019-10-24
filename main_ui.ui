@@ -10,6 +10,9 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -29,8 +32,17 @@
    <property name="bottomMargin">
     <number>1</number>
    </property>
+   <property name="horizontalSpacing">
+    <number>5</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>2</number>
+   </property>
    <item row="3" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -39,6 +51,18 @@
      </property>
      <widget class="QWidget" name="MainPage">
       <layout class="QGridLayout" name="gridLayout_5">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
        <item row="0" column="0">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
@@ -64,6 +88,12 @@
               <bool>false</bool>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
               <item>
                <widget class="QLineEdit" name="lineEditIP">
                 <property name="toolTip">

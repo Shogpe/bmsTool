@@ -8,7 +8,7 @@
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     this->timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
+    connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
     timer->start(2000);
     mycmu = nullptr;
     pmq = MessageQueue::getInstance();
@@ -17,8 +17,9 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     //
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
-        // dspbox->installEventFilter(this);
-        connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
+        // connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
+        connect(dspbox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
+                &Widget::valueChange, Qt::UniqueConnection);
     }
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
@@ -64,28 +65,20 @@ void Widget::uiInit() {
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
-
-    // connect(ui->btnUpgrade, &QPushButton::released, this, &Widget::on_btn_released, Qt::UniqueConnection);
 }
 void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
-    map<string, NodeReg>::iterator iter1;
-    if (!b->hasFocus()) return;
     double dval = b->value();
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("确认"), QString(tr("要修改%1为 %2 ?")).arg(b->objectName()).arg(dval),
-                                  QMessageBox::No | QMessageBox::Yes, QMessageBox::No);
-    if (reply != QMessageBox::Yes) {
-        qDebug() << "Yes was clicked No";
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改%1为 %2 ?")).arg(b->objectName()).arg(dval)) !=
+        QDialog::Accepted)
         return;
-    }
+    this->setFocus();
+    map<string, NodeReg>::iterator iter1;
     iter1 = mycmu->name_map.find(b->objectName().toStdString());
     if (iter1 != mycmu->name_map.end()) {
-        qDebug() << iter1->second.index << ":" << iter1->first.c_str();
         try {
             uint16_t val[2] = {0};
             val[0] = iter1->second.index;
-            qDebug() << b->value() << "," << iter1->second.factor << "," << b->value() / iter1->second.factor;
             //+0.5保障精度
             val[1] = static_cast<uint16_t>(dval / iter1->second.factor + 0.5 - (dval < 0));
             TMsgData MsgCmd;
@@ -184,11 +177,18 @@ void Widget::flushData() {
     cloumn_offset += config.status_num;
     uint32_t* p32 = reinterpret_cast<uint32_t*>(&(mycmu->tab_reg[data_index]));
     mycmu->cmu_ver = *(p32++);
+    //版本号
+    uint32_t comm_status1 = mycmu->tab_data.at(30).sysData.val.f64;
+    uint32_t comm_status2 = mycmu->tab_data.at(31).sysData.val.f64;
+    uint64_t comm_status = (comm_status2 << 32) | comm_status1;
     for (int j = 0; j < config.bmu_num; j++) {
         QTableWidgetItem* item = new QTableWidgetItem();
         uint32_t val = *(p32 + j);
         item->setText(myHelper::IntegerToHexString(val));
-        //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+        if (comm_status >> j & 0x01)
+            item->setTextColor(QColor(Qt::darkGreen));
+        else
+            item->setTextColor(QColor(Qt::red));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(j, cloumn_offset, item);
         data_index++;
@@ -202,25 +202,26 @@ void Widget::flushData() {
         map<string, NodeReg>::iterator iter1;
         iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
         if (iter1 != mycmu->name_map.end()) {
-            // qDebug() << iter1->second << ":" << iter1->first.c_str();
             try {
                 int index = iter1->second.index;
                 if (dspbox->hasFocus()) continue;
+                dspbox->blockSignals(true);
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
+                dspbox->blockSignals(false);
+
             } catch (exception& e) {
                 cout << e.what() << endl;
             }
         }
     }
     dspboxs = ui->tabCMU->findChildren<QDoubleSpinBox*>();
+    dspboxs << ui->sysTime;
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         map<string, NodeReg>::iterator iter1;
         iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
         if (iter1 != mycmu->name_map.end()) {
-            // qDebug() << iter1->second << ":" << iter1->first.c_str();
             try {
-                int index = iter1->second.index;
-                // if (dspbox->hasFocus()) continue;
+                uint index = iter1->second.index;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
             } catch (exception& e) {
                 cout << e.what() << endl;
@@ -272,7 +273,7 @@ void Widget::flushData() {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -312,17 +313,28 @@ void Widget::flushData() {
             }
         }
     }
-    ui->lineEditServIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u16TftpServIPH |
-                                                              (mycmu->sys_para.Name.u16TftpServIPL << 16)));
+    if (!ui->lineEditServIP->hasFocus())
+        ui->lineEditServIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u32TftpServIP));
+    if (!ui->lineEditIP->hasFocus())
+        ui->lineEditIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u32LocalIP));
+    uint16_t id = mycmu->tab_data.at(mycmu->name_map["UmaxID"].index).sysData.val.f64;
+    ui->UmaxID->setText(QString(tr("最大单体电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["UminID"].index).sysData.val.f64;
+    ui->UminID->setText(QString(tr("最小单体电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["TmaxID"].index).sysData.val.f64;
+    ui->TmaxID->setText(QString(tr("最高单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["TminID"].index).sysData.val.f64;
+    ui->TminID->setText(QString(tr("最低单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["UmMaxID"].index).sysData.val.f64;
+    ui->UmMaxID->setText(QString(tr("最大模组电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["UdMaxID"].index).sysData.val.f64;
+    ui->UdMaxID->setText(QString(tr("最大单体压差(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["TpMaxID"].index).sysData.val.f64;
+    ui->TpMaxID->setText(QString(tr("最大极柱温度(%1)")).arg(myHelper::IDToString(id, config.Tp_num)));
+    id = mycmu->tab_data.at(mycmu->name_map["TrMaxID"].index).sysData.val.f64;
+    ui->TrMaxID->setText(QString(tr("最大单体温升(%1)")).arg(myHelper::IDToString(id, config.T_num)));
 }
-bool Widget::eventFilter(QObject* obj, QEvent* event) {
-    if (event->type() == QEvent::MouseButtonPress) {
-        // showNumpadDialog();
-        //    qDebug()<< event->type();
-        ;
-    }
-    return false;
-}
+
 static map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
                                    {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
                                    {"btnDownBMU", CTRL_DOWN_BMU},
@@ -402,23 +414,50 @@ void Widget::btn_contrl() {
 }
 
 void Widget::on_lineEditIP_editingFinished() {
-    if (!ui->lineEditIP->isModified()) return;
-    ui->lineEditIP->setModified(false);
-    qDebug() << ui->lineEditIP->text();
-    if (!myHelper::IsIP(ui->lineEditIP->text())) {
+    QLineEdit* pEdit = ui->lineEditIP;
+    if (!pEdit->isModified()) return;
+    pEdit->setModified(false);
+    if (!myHelper::IsIP(pEdit->text())) {
         myHelper::ShowMessageBoxError(tr("invalid ip address!"));
         return;
     }
-    uint32_t ip = myHelper::IPV4StringToInteger(ui->lineEditIP->text());
+    this->setFocus();
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要设备IP为%1吗").arg(pEdit->text()))) != QDialog::Accepted)
+        return;
+    uint32_t ip = myHelper::IPV4StringToInteger(pEdit->text());
     uint16_t val[3];
     val[0] = 99;
-    val[1] = ip >> 16 & 0xFFFF;
-    val[2] = ip & 0xFFFF;
+    ip = bswap_32(ip);
+    val[1] = ip & 0xFFFF;
+    val[2] = ip >> 16 & 0xFFFF;
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_AO;
     MsgCmd.data.resize(3 * sizeof(uint16_t));
     memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
-    QString resultHex = MsgCmd.data.toHex('-');
-    myHelper::ShowMessageBoxInfo(QString("%1,%2").arg(ip, 0, 16).arg(resultHex));
+    pmq->sendMsg(0, MsgCmd);
+}
+
+void Widget::on_lineEditServIP_editingFinished() {
+    QLineEdit* pEdit = ui->lineEditServIP;
+    if (!pEdit->isModified()) return;
+    pEdit->setModified(false);
+    if (!myHelper::IsIP(pEdit->text())) {
+        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        return;
+    }
+    this->setFocus();
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(pEdit->text()))) !=
+        QDialog::Accepted)
+        return;
+    uint32_t ip = myHelper::IPV4StringToInteger(pEdit->text());
+    uint16_t val[3];
+    val[0] = 100;
+    ip = bswap_32(ip);
+    val[1] = ip & 0xFFFF;
+    val[2] = ip >> 16 & 0xFFFF;
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_AO;
+    MsgCmd.data.resize(3 * sizeof(uint16_t));
+    memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }

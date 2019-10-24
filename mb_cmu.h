@@ -50,7 +50,7 @@ typedef struct structReg {
 } DataReg;
 //写入结构体
 typedef struct structTable {
-    int index;               //数据库序号
+    uint index;              //数据库序号
     unsigned char reg_type;  //寄存器类型，功能码
     int reg_addr;            //寄存器地址
     int data_type;           //数据类型
@@ -265,10 +265,10 @@ typedef union {
         uint16_t u16FaultMask;      //故障屏蔽,默认0,0:不使用1:使用
         uint16_t uFunCtrReg;        //使能(电流/电压/漏电/绝缘/双CAN等)
 
-        uint16_t u16LocalIPL;     // 43本地IP低位,192.168 0xa8c0
-        uint16_t u16LocalIPH;     //本地IP高位,默认1.120 0x7801
-        uint16_t u16TftpServIPL;  // TFTP服务器地址低位192.168 0xA8C0
-        uint16_t u16TftpServIPH;  // TFTP服务器地址高位1.230 0xE601
+        uint32_t u32LocalIP;  // 43本地IP低位,192.168 0xa8c0  2143格式
+        // uint16_t u16LocalIPH;     //本地IP高位,默认1.120 0x7801
+        uint32_t u32TftpServIP;  // TFTP服务器地址低位192.168 0xA8C0 2143格式
+        // uint16_t u16TftpServIPH;  // TFTP服务器地址高位1.230 0xE601
     } Name;
 } ST_SysPara;
 typedef enum {
@@ -306,7 +306,7 @@ class mb_cmu : public QThread {
    private:
     modbus_t *cmu;
     int err_counter = 0;
-    STATE_MACHINE state = SM_CONNECT;
+    STATE_MACHINE state = SM_NONE;
     string mb_ip;
     int mb_port;
     bool stop;
@@ -322,6 +322,8 @@ class mb_cmu : public QThread {
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);
     int ParseData();
+   signals:
+    void signal_message(const QString &msg);
 };
 
 #endif  // MB_CMU_H

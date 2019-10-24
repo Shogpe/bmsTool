@@ -29,13 +29,16 @@ class Widget : public QWidget {
     QTimer* timer;
     CMU_CONF config;
     SOEModel m_model;
-    bool eventFilter(QObject* obj, QEvent* event);
+
    private slots:
     void timerUpDate();
     void valueChange();
     void btn_released();
     void btn_contrl();
     void on_lineEditIP_editingFinished();
+    void on_lineEditServIP_editingFinished();
+    //
+
 };
 
 #endif

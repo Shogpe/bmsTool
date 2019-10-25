@@ -35,10 +35,13 @@ class Widget : public QWidget {
     void valueChange();
     void btn_released();
     void btn_contrl();
+    void stateChanged();
     void on_lineEditIP_editingFinished();
     void on_lineEditServIP_editingFinished();
     //
 
+    void on_btnOutput_released();
+    void on_btnInput_released();
 };
 
 #endif

@@ -25,10 +25,15 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     foreach (QPushButton* btn, btns) {
         connect(btn, &QPushButton::released, this, &Widget::btn_released, Qt::UniqueConnection);
     }
+    QList<QCheckBox*> chkboxs = ui->G_FuncMask->findChildren<QCheckBox*>();
+    foreach (QCheckBox* chkbox, chkboxs) {
+        connect(chkbox, &QCheckBox::stateChanged, this, &Widget::stateChanged, Qt::UniqueConnection);
+    }
     //
     connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
     connect(ui->btnSetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
     connect(ui->btnResetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
+
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
     ui->ViewSOE->setModel(&m_model);
@@ -313,6 +318,24 @@ void Widget::flushData() {
             }
         }
     }
+    iter1 = mycmu->name_map.find("FuncMask");
+    if (iter1 != mycmu->name_map.end()) {
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_FuncMask->setTitle(QString("%1(%2)").arg(tr("使能位")).arg(value));
+        QList<QCheckBox*> CheckBoxList;
+        CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
+                     << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12
+                     << ui->bFunc13 << ui->bFunc14 << ui->bFunc15;
+        foreach (QCheckBox* cb, CheckBoxList) {
+            try {
+                cb->blockSignals(true);
+                cb->setChecked((value >> CheckBoxList.indexOf(cb)) & 0x01 > 0);
+                cb->blockSignals(false);
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        }
+    }
     if (!ui->lineEditServIP->hasFocus())
         ui->lineEditServIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u32TftpServIP));
     if (!ui->lineEditIP->hasFocus())
@@ -367,6 +390,25 @@ void Widget::btn_released() {
         pmq->sendMsg(0, MsgCmd);
     } else
         qDebug() << name;
+}
+void Widget::stateChanged() {
+    QCheckBox* b = (QCheckBox*)sender();
+    QList<QCheckBox*> CheckBoxList;
+    uint16_t value[2] = {0};
+    CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
+                 << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12 << ui->bFunc13
+                 << ui->bFunc14 << ui->bFunc15;
+    foreach (QCheckBox* cb, CheckBoxList) { value[1] |= (cb->isChecked() << CheckBoxList.indexOf(cb)); }
+    if (myHelper::ShowMessageBoxQuesion(
+            QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("开启") : tr("关闭")))) !=
+        QDialog::Accepted)
+        return;
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_AO;
+    value[0] = 98;
+    MsgCmd.data.resize(2 * sizeof(uint16_t));
+    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    pmq->sendMsg(0, MsgCmd);
 }
 void Widget::btn_contrl() {
     TMsgData MsgCmd;
@@ -460,4 +502,111 @@ void Widget::on_lineEditServIP_editingFinished() {
     MsgCmd.data.resize(3 * sizeof(uint16_t));
     memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
+}
+
+#include <QtXml>
+void Widget::on_btnOutput_released() {
+    QString filename = QFileDialog::getSaveFileName(this, "Save", "", "*.xml");
+
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QDomDocument document;
+
+    QString strHeader("version=\"1.0\" encoding=\"UTF-8\"");
+    document.appendChild(document.createProcessingInstruction("xml", strHeader));
+
+    QDomElement root_elem = document.createElement("configtemplate");
+    root_elem.setAttribute("ver", 1);
+    document.appendChild(root_elem);
+    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
+
+    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+        QDomElement item1 = document.createElement("item");
+        item1.setAttribute("name", dspbox->objectName());
+        item1.setAttribute("value", dspbox->value());
+        root_elem.appendChild(item1);
+    }
+    QTextStream out(&file);
+    document.save(out, 4);
+    file.close();
+}
+
+void Widget::on_btnInput_released() {
+    QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QDomDocument doc;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+    QList<QString> name_list;
+    name_list << "CellVolH"
+              << "CellVolHH"
+              << "CellVolL"
+              << "CellVolLL"
+              << "PackTH"
+              << "PackTHH"
+              << "PackTL"
+              << "PackTLL"
+              << "PackTdH"
+              << "PackTdHH"
+              << "PackTrH"
+              << "PackTrHH"
+              << "PoleTH"
+              << "PoleTHH"
+              << "ClusterCurH"
+              << "ClusterCurHH"
+              << "ClusterCurShort"
+              << "ClusterVolH"
+              << "ClusterVolHH"
+              << "ClusterVolL"
+              << "ClusterVolLL"
+              << "ClusterRIns"
+              << "ClusterCurLeak"
+              << "ClusterTAlm"
+              << "ClusterTErr"
+              << "ClusterE"
+              << "ClusterEAdj"
+              << "ClusterEremain"
+              << "ClusterIe"
+              << "ClusterCurRange"
+              << "ClusterILeakRg"
+              << "ClusterVolRange"
+              << "BalnceMask"
+              << "BalnceStart"
+              << "BalnceStartDiff"
+              << "ClusterBmuNum"
+              << "BmuCellNum"
+              << "BmuPackTNum"
+              << "BmuPoleTNum"
+              << "ClusterAlmMask"
+              << "ClusterErrMask"
+              << "FuncMask";
+    double value[42];
+    foreach (const QString cur_name, name_list) {
+      uint index = mycmu->name_map[cur_name.toStdString()].index;
+      value[name_list.indexOf(cur_name)] = mycmu->tab_data.at(index).sysData.val.f64;
+    }
+
+    QDomElement root = doc.documentElement();  //返回根节点
+    QDomNode node = root.firstChild();         //获得第一个子节点
+    while (!node.isNull())                     //如果节点不空
+    {
+        if (node.isElement())  //如果节点是元素
+        {
+            QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
+            int i = name_list.indexOf(e.attribute("name"));
+            if(i!=-1)
+              value[i]=e.attribute("value").toDouble();
+        }
+        node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
+    }
+    for(int i=0;i<42;i++) qDebug()<<value[i];
 }

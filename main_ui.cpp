@@ -282,7 +282,7 @@ void MainUI::timerUpDate() {
     if (this->pcmu->cmu_status) {
         ui->labelStatus->setStyleSheet("color:green");
         ui->labelStatus->setText(tr("已连接"));
-        if (this->pcmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("过期"));
+        if (this->pcmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->pcmu->cmu_ver;
         ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");

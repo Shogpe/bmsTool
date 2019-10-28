@@ -9,6 +9,7 @@
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
+    this->installEventFilter(this);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
     timer->start(2000);
@@ -626,4 +627,8 @@ void Widget::on_btnInput_released() {
     i_value[0] = 57;
     memcpy(MsgCmd.data.data(), &i_value, 43 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
+}
+//屏蔽本控件传递事件到父控件
+bool Widget::eventFilter(QObject* obj, QEvent* event) {
+  return true;//QWidget::eventFilter(obj, event);
 }

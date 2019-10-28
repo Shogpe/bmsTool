@@ -14,7 +14,7 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     pmq = MessageQueue::getInstance();
     this->pcmu->start();
     ui->cmuData->mycmu = pcmu;
-    connect(ui->lineEditIP,&QLineEdit::editingFinished,this,&MainUI::valueChange,Qt::UniqueConnection);
+    connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::valueChange, Qt::UniqueConnection);
     connect(pcmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
             static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
     load_config();
@@ -29,7 +29,9 @@ void MainUI::slot_message_call(const QString& msg) {
 bool MainUI::load_config() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
+    QByteArray ba = settings->value("global/layout").toByteArray();
     ui->lineEditIP->setText(target_ip);
+    this->restoreGeometry(ba);
     return true;
 }
 MainUI::~MainUI() {
@@ -37,6 +39,9 @@ MainUI::~MainUI() {
     MsgCmd.msg_type = THREAD_EXIT;
     pmq->sendMsg(0, MsgCmd);
     pcmu->wait();
+    QByteArray ba = this->saveGeometry();
+    settings->setValue("global/layout", ba);
+    delete settings;
     delete pcmu;
     delete ui;
 }
@@ -147,14 +152,14 @@ void MainUI::valueChange() {
     pEdit->setModified(false);
     QString ip = pEdit->text();
     if (!myHelper::IsIP(ip)) {
-      myHelper::ShowMessageBoxError(tr("invalid ip address!"));
-      return;
+        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        return;
     }
     TMsgData MsgCmd;
     MsgCmd.msg_type = CONFIG_IP;
     MsgCmd.data.append(ip);
     pmq->sendMsg(0, MsgCmd);
-    settings->setValue("global/target_ip",ip);
+    settings->setValue("global/target_ip", ip);
 }
 
 void MainUI::initLeftMain() {

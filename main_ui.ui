@@ -21,16 +21,16 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="horizontalSpacing">
     <number>5</number>
@@ -70,6 +70,12 @@
          </property>
          <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="groupBox">
              <property name="sizePolicy">

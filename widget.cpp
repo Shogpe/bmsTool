@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QtDebug>
+#include <QtXml>
+
 #include "myhelper.h"
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -504,7 +506,6 @@ void Widget::on_lineEditServIP_editingFinished() {
     pmq->sendMsg(0, MsgCmd);
 }
 
-#include <QtXml>
 void Widget::on_btnOutput_released() {
     QString filename = QFileDialog::getSaveFileName(this, "Save", "", "*.xml");
 
@@ -589,10 +590,11 @@ void Widget::on_btnInput_released() {
               << "ClusterAlmMask"
               << "ClusterErrMask"
               << "FuncMask";
-    double value[42];
+    double d_value[42];
+    uint16_t i_value[43];
     foreach (const QString cur_name, name_list) {
-      uint index = mycmu->name_map[cur_name.toStdString()].index;
-      value[name_list.indexOf(cur_name)] = mycmu->tab_data.at(index).sysData.val.f64;
+        uint index = mycmu->name_map[cur_name.toStdString()].index;
+        d_value[name_list.indexOf(cur_name)] = mycmu->tab_data.at(index).sysData.val.f64;
     }
 
     QDomElement root = doc.documentElement();  //返回根节点
@@ -603,10 +605,25 @@ void Widget::on_btnInput_released() {
         {
             QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
             int i = name_list.indexOf(e.attribute("name"));
-            if(i!=-1)
-              value[i]=e.attribute("value").toDouble();
+            if (i != -1) d_value[i] = e.attribute("value").toDouble();
         }
         node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
-    for(int i=0;i<42;i++) qDebug()<<value[i];
+    doc.clear();
+    qDebug() << "load ok!";
+    try {
+        for (int i = 1; i < 43; i++) {
+            i_value[i] = static_cast<uint16_t>(d_value[i-1] / mycmu->name_map[name_list.at(i-1).toStdString()].factor +
+                                               0.5 - (d_value[i-1] < 0));
+        }
+    } catch (exception& e) {
+        qDebug() << e.what();
+    }
+    qDebug() << "to Int ok!";
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_AO;
+    MsgCmd.data.resize(43 * sizeof(uint16_t));
+    i_value[0] = 57;
+    memcpy(MsgCmd.data.data(), &i_value, 43 * sizeof(uint16_t));
+    pmq->sendMsg(0, MsgCmd);
 }

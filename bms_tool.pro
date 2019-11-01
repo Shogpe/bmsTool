@@ -24,11 +24,12 @@ include(ThirdParty/ThirdParty.pri)
 # include(ThirdParty/log4qt/log4qt.pri)
 include(models/models.pri)
 # include(ThirdParty/view/view.pri)
+include(protocol/protocol.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
-    mb_cmu.cpp \
+    stategroupbox.cpp \
     utils.cpp \
     widget.cpp
 SOURCES     += iconhelper.cpp
@@ -37,11 +38,11 @@ SOURCES     += appinit.cpp
 HEADERS     += iconhelper.h \
     MessageQueue.h \
     main_ui.h \
-    mb_cmu.h \
     myhelper.h \
     models/MyDoubleSpinBox/MyDoubleSpinBox.h \
     models/SOEModel/SOEModel.h \
     models/QFramelessWidget/qframelesswidget.h \
+    stategroupbox.h \
     utils.h \
     version.h \
     widget.h
@@ -49,6 +50,7 @@ HEADERS     += appinit.h
 
 FORMS       += \
     main_ui.ui \
+    stategroupbox.ui \
     widget.ui
 
 RESOURCES   += other\main.qrc

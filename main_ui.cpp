@@ -10,12 +10,12 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-    this->pcmu = new mb_cmu;
+    this->pDev = new mb_cmu;
     pmq = MessageQueue::getInstance();
-    this->pcmu->start();
-    ui->cmuData->mycmu = pcmu;
+    this->pDev->start();
+    ui->cmuData->mycmu = pDev;
     connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::valueChange, Qt::UniqueConnection);
-    connect(pcmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
+    connect(pDev, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
             static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
     load_config();
     timer = new QTimer(this);
@@ -38,14 +38,14 @@ MainUI::~MainUI() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
     pmq->sendMsg(0, MsgCmd);
-    pcmu->wait();
+    pDev->wait();
     QByteArray ba = this->saveGeometry();
     settings->setValue("global/layout", ba);
     delete settings;
-    delete pcmu;
+    delete pDev;
     delete ui;
 }
-
+#include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
@@ -76,8 +76,10 @@ void MainUI::initForm() {
         btn->setMinimumWidth(icoWidth);
         btn->setCheckable(true);
         connect(btn, SIGNAL(clicked()), this, SLOT(buttonClick()));
-        btn->hide();
+        //btn->hide();
     }
+    //
+    ui->gridLayout_3->addWidget(new StateGroupBox());
 
     ui->btnMain->click();
     //创建语言切换菜单
@@ -283,12 +285,12 @@ void MainUI::on_btnMenu_Close_clicked() { close(); }
 
 void MainUI::timerUpDate() {
     ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss"));
-    if (pcmu == nullptr) return;
-    if (this->pcmu->cmu_status) {
+    if (pDev == nullptr) return;
+    if (this->pDev->cmu_status) {
         ui->labelStatus->setStyleSheet("color:green");
         ui->labelStatus->setText(tr("已连接"));
-        if (this->pcmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
-        uint32_t val = this->pcmu->cmu_ver;
+        if (this->pDev->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
+        uint32_t val = this->pDev->cmu_ver;
         ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");
     } else {

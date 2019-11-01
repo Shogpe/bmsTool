@@ -36,6 +36,7 @@ class Widget : public QWidget {
     void btn_released();
     void btn_contrl();
     void stateChanged();
+    void checkChanged();
     void on_lineEditIP_editingFinished();
     void on_lineEditServIP_editingFinished();
     //

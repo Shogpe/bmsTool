@@ -30,7 +30,7 @@ class MainUI : public QFramelessWidget {
     QList<int> pixCharConfig;
     QList<QToolButton *> btnsConfig;
     QTimer *timer;
-    mb_cmu *pcmu;
+    mb_cmu *pDev;
     MessageQueue *pmq;
     // StringListModel list_model;
     QMenu *title_menu;

@@ -283,8 +283,7 @@ void mb_cmu::run() {
                 break;
             }
             case SM_INIT: {
-                // ST_SysPara sys_para;
-                rc = ReadData(0x03, 0x1500, TAB_CFG_LEN, sys_para.array);
+                rc = ReadData(0x03, 5411, TAB_CFG_LEN, sys_para.array);
                 sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
                 sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
                 if (rc == TAB_CFG_LEN) {

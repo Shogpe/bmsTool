@@ -32,10 +32,13 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     foreach (QCheckBox* chkbox, chkboxs) {
         connect(chkbox, &QCheckBox::stateChanged, this, &Widget::stateChanged, Qt::UniqueConnection);
     }
-    //
+    QList<QCheckBox*> RadioList;
+    RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+              << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+    foreach (QCheckBox* rb, RadioList) {
+        connect(rb, &QCheckBox::stateChanged, this, &Widget::checkChanged, Qt::UniqueConnection);
+    }  //
     connect(ui->btnReadSOE, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
-    connect(ui->btnSetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
-    connect(ui->btnResetDO, &QPushButton::released, this, &Widget::btn_contrl, Qt::UniqueConnection);
 
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
@@ -198,6 +201,7 @@ void Widget::flushData() {
         else
             item->setTextColor(QColor(Qt::red));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        item->setFlags(item->flags() & (~Qt::ItemIsUserCheckable));
         ui->tableBMU->setItem(j, cloumn_offset, item);
         data_index++;
     }
@@ -309,13 +313,17 @@ void Widget::flushData() {
     if (iter1 != mycmu->name_map.end()) {
         uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
         ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value));
-        QList<QRadioButton*> RadioList;
+        QList<QCheckBox*> RadioList;
         RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
                   << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-        foreach (QRadioButton* rb, RadioList) {
+        foreach (QCheckBox* rb, RadioList) {
             try {
-                QString color = (value >> RadioList.indexOf(rb)) & 0x01 > 0 ? "red" : "green";
+                bool bit = (value >> RadioList.indexOf(rb)) & 0x01 > 0;
+                QString color = bit ? "red" : "green";
                 rb->setStyleSheet(QString("color:%1").arg(color));
+                rb->blockSignals(true);
+                rb->setChecked(bit);
+                rb->blockSignals(false);
             } catch (exception& e) {
                 qDebug() << e.what();
             }
@@ -413,43 +421,30 @@ void Widget::stateChanged() {
     memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
+void Widget::checkChanged() {
+    QCheckBox* b = (QCheckBox*)sender();
+    QList<QCheckBox*> RadioList;
+    uint16_t value[2] = {0};
+
+    RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+              << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+    value[0] = RadioList.indexOf(b) + 1;
+    value[1] = b->isChecked();
+    if (myHelper::ShowMessageBoxQuesion(
+            QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("-控合-") : tr("-控分-")))) !=
+        QDialog::Accepted)
+        return;
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_DO;
+    MsgCmd.data.resize(2 * sizeof(uint16_t));
+    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    pmq->sendMsg(0, MsgCmd);
+}
 void Widget::btn_contrl() {
     TMsgData MsgCmd;
     QPushButton* b = (QPushButton*)sender();
     QString name = b->objectName();
-    if (name == "btnSetDO") {
-        uint16_t val[2];
-        QList<QRadioButton*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
-                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-        foreach (QRadioButton* pButton, RadioList) {
-            if (pButton->isChecked()) {
-                val[0] = RadioList.indexOf(pButton) + 1;
-                break;
-            }
-        }
-        val[1] = 1;
-        MsgCmd.msg_type = CTRL_DO;
-        MsgCmd.data.resize(2 * sizeof(uint16_t));
-        memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
-        pmq->sendMsg(0, MsgCmd);
-    } else if (name == "btnResetDO") {
-        uint16_t val[2];
-        QList<QRadioButton*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
-                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-        foreach (QRadioButton* pButton, RadioList) {
-            if (pButton->isChecked()) {
-                val[0] = RadioList.indexOf(pButton) + 1;
-                break;
-            }
-        }
-        val[1] = 0;
-        MsgCmd.msg_type = CTRL_DO;
-        MsgCmd.data.resize(2 * sizeof(uint16_t));
-        memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
-        pmq->sendMsg(0, MsgCmd);
-    } else if (name == "btnReadSOE") {
+    if (name == "btnReadSOE") {
         MsgCmd.msg_type = CERT_CMD_READ_SOE;
         MsgCmd.data.clear();
         pmq->sendMsg(0, MsgCmd);
@@ -614,8 +609,9 @@ void Widget::on_btnInput_released() {
     qDebug() << "load ok!";
     try {
         for (int i = 1; i < 43; i++) {
-            i_value[i] = static_cast<uint16_t>(d_value[i-1] / mycmu->name_map[name_list.at(i-1).toStdString()].factor +
-                                               0.5 - (d_value[i-1] < 0));
+            i_value[i] =
+                static_cast<uint16_t>(d_value[i - 1] / mycmu->name_map[name_list.at(i - 1).toStdString()].factor + 0.5 -
+                                      (d_value[i - 1] < 0));
         }
     } catch (exception& e) {
         qDebug() << e.what();
@@ -630,5 +626,5 @@ void Widget::on_btnInput_released() {
 }
 //屏蔽本控件传递事件到父控件
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
-  return true;//QWidget::eventFilter(obj, event);
+    return true;  // QWidget::eventFilter(obj, event);
 }

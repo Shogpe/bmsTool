@@ -77,7 +77,6 @@ typedef union {
     int16_t i16_array[2];
     uint16_t ui16_array[2];
 } DT_RAW32;
-
 // 64位数据结构定义
 typedef union {
     unsigned char b[8];
@@ -145,6 +144,7 @@ typedef enum {
     CTRL_CMD_REBOOT,
     CERT_CMD_TIME_ADJ,
     CERT_CMD_READ_SOE,
+    CTRL_AO_ADDR,
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -163,6 +163,7 @@ typedef enum {
 #define MB_UpdateBFW 0xa566  // 42342 下载BMU信息文件
 #define MB_UpdateCFW 0x7567  // 30055 下载CMU信息文件
 #define MB_UpdBmuNDL 0xa533  // 42291 直接升级BMU应用程序
+#define MB_UpdRins   0xa5b6  // 42291 直接升级BMU应用程序
 //校准命令
 #define ADDR_ADJ     0xFFC0
 #define MB_Adj_IZero 0x11    //电流采样零刻度校准
@@ -176,20 +177,30 @@ typedef enum {
 #define MB_Adj_RZero 0x55  //绝缘电阻校准
 #define MB_Adj_RFull 0xaa55
 //其他命令
-#define ADDR_TIME_ADJ      0xFFE0
-#define ADDR_WR_LOCK       0xFFF0
-#define MB_UNLOCK          0x67A5
+#define ADDR_TIME_ADJ 0xFFE0
+#define ADDR_WR_LOCK  0xFFF0
+#define MB_UNLOCK     0x67A5
+
 #define ADDR_RESET_FACTORY 0xFFF1
 #define MB_FACTORY         0x1D32
 #define MB_BMU_LOCK        0x55aa
 #define MB_BMU_UNLOCK      0xaa55
-#define ADDR_CLEAR_ENG     0xFFF2
-#define MB_CLEAR_ENG       0x1EC6
-#define ADDR_REBOOT        0xFFF3
-#define MB_REBOOT          0x1D32
-#define ADDR_CLEAR_SOE     0xFFF8
-#define MB_CLR_SOE         0xAA55
-#define MB_CLR_ALL_SOE     0xBB66
+
+#define ADDR_CLEAR_ENG 0xFFF2
+#define MB_CLEAR_ENG   0x1EC6
+
+#define ADDR_REBOOT 0xFFF3
+#define MB_REBOOT   0x1D32
+
+#define ADDR_CLEAR_SOE 0xFFF8
+#define MB_CLR_SOE     0xAA55
+#define MB_CLR_ALL_SOE 0xBB66
+
+#define ADDR_CTRL_AUTO 0x2000
+#define MB_CTRL_ON     0xAA55
+#define MB_CTRL_OFF    0x55AA
+#define ADDR_CTRL_KMR  0xFFFA
+#define ADDR_CTRL_QF   0xFFFB
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间
@@ -205,6 +216,7 @@ typedef struct {
     CMU_SOE list_soe[500];
 } ST_SOE;
 /* 系统配置参数数据结构-------------------------------------------------------*/
+#pragma pack(1)  // 此结构体不可对齐
 typedef union {
     uint16_t array[11];
     struct {
@@ -216,10 +228,11 @@ typedef union {
         uint16_t u16AlarmMask;      // 40报警屏蔽,默认0,0:不使用1:使用
         uint16_t u16FaultMask;      //故障屏蔽,默认0,0:不使用1:使用
         uint16_t uFunCtrReg;        //使能(电流/电压/漏电/绝缘/双CAN等)
-        uint32_t u32LocalIP;  // 43本地IP低位,192.168 0xa8c0  2143格式
-        uint32_t u32TftpServIP;  // TFTP服务器地址低位192.168 0xA8C0 2143格式
+        uint32_t u32LocalIP;        // 43本地IP低位,192.168 0xa8c0  2143格式
+        uint32_t u32TftpServIP;     // TFTP服务器地址低位192.168 0xA8C0 2143格式
     } Name;
 } ST_SysPara;
+#pragma pack()
 typedef enum {
     SM_NONE = 0,
     SM_CONNECT,  //
@@ -227,18 +240,22 @@ typedef enum {
     SM_CTRL,     //
     SM_INIT,     //
 } STATE_MACHINE;
+typedef enum {
+    CMUV1 = 0,
+    CMUV2,  //
+} BMS_PROTOCOL;
 class mb_cmu : public QThread {
     Q_OBJECT
    protected:
-    void run();
+    virtual void run();
     void DealCMD(TMsgData &Msg);
 
    public:
     mb_cmu();
     ~mb_cmu();
-    int Init();     //初始化
-    int ReadALL();  //
-    int Close();    //释放资源
+    virtual int Init();  //初始化
+    int ReadALL();       //
+    int Close();         //释放资源
    public:
     uint16_t tab_reg[1000];
     uint16_t tab_AI[1000];
@@ -252,7 +269,7 @@ class mb_cmu : public QThread {
     MessageQueue *pMq;
     map<string, NodeReg> name_map;
 
-   private:
+   protected:
     modbus_t *cmu;
     int err_counter = 0;
     STATE_MACHINE state = SM_NONE;
@@ -274,5 +291,10 @@ class mb_cmu : public QThread {
    signals:
     void signal_message(const QString &msg);
 };
+class mb_cmu_v2 : public mb_cmu {
+    virtual int Init();  //初始化
+    virtual void run();
+};
+;
 
 #endif  // MB_CMU_H

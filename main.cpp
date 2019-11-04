@@ -1,14 +1,16 @@
-#include "main_ui.h"
-#include "appinit.h"
 #include <QApplication>
-#include <QTextCodec>
 #include <QFile>
 #include <QMainWindow>
-int main(int argc, char *argv[])
-{
+#include <QTextCodec>
+#include "appinit.h"
+#include "main_ui.h"
+int main(int argc, char *argv[]) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QApplication a(argc, argv);
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION <= QT_VERSION_CHECK(5, 0, 0))
 #if _MSC_VER
     QTextCodec *codec = QTextCodec::codecForName("gbk");
 #else
@@ -21,7 +23,6 @@ int main(int argc, char *argv[])
     QTextCodec *codec = QTextCodec::codecForName("utf-8");
     QTextCodec::setCodecForLocale(codec);
 #endif
-
     //加载样式表
     QFile file(":/qss/lightblue.css");
     if (file.open(QFile::ReadOnly)) {
@@ -34,12 +35,12 @@ int main(int argc, char *argv[])
 
     a.setFont(QFont("Microsoft Yahei", 9));
     AppInit::Instance()->start();
-    //QMainWindow w;
+    // QMainWindow w;
     MainUI w;
-    //w.setWindowFlags(Qt::FramelessWindowHint);
-    //w.setWindowFlags(Qt::CustomizeWindowHint);
-    //MainUI *main_ui = new MainUI;
-    //w.setCentralWidget( main_ui);
+    // w.setWindowFlags(Qt::FramelessWindowHint);
+    // w.setWindowFlags(Qt::CustomizeWindowHint);
+    // MainUI *main_ui = new MainUI;
+    // w.setCentralWidget( main_ui);
     w.show();
 
     return a.exec();

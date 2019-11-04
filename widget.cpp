@@ -80,7 +80,7 @@ void Widget::uiInit() {
 void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
     double dval = b->value();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改%1为 %2 ?")).arg(b->objectName()).arg(dval)) !=
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
         QDialog::Accepted)
         return;
     this->setFocus();
@@ -189,8 +189,8 @@ void Widget::flushData() {
     uint32_t* p32 = reinterpret_cast<uint32_t*>(&(mycmu->tab_reg[data_index]));
     mycmu->cmu_ver = *(p32++);
     //版本号
-    uint32_t comm_status1 = mycmu->tab_data.at(30).sysData.val.f64;
-    uint32_t comm_status2 = mycmu->tab_data.at(31).sysData.val.f64;
+    uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
+    uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
     uint64_t comm_status = (comm_status2 << 32) | comm_status1;
     for (int j = 0; j < config.bmu_num; j++) {
         QTableWidgetItem* item = new QTableWidgetItem();
@@ -201,7 +201,7 @@ void Widget::flushData() {
         else
             item->setTextColor(QColor(Qt::red));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setFlags(item->flags() & (~Qt::ItemIsUserCheckable));
+        item->setFlags(item->flags() & (Qt::NoItemFlags));
         ui->tableBMU->setItem(j, cloumn_offset, item);
         data_index++;
     }
@@ -222,8 +222,10 @@ void Widget::flushData() {
                 dspbox->blockSignals(false);
 
             } catch (exception& e) {
-                cout << e.what() << endl;
+                qDebug() << e.what();
             }
+        } else {
+
         }
     }
     dspboxs = ui->tabCMU->findChildren<QDoubleSpinBox*>();
@@ -236,7 +238,7 @@ void Widget::flushData() {
                 uint index = iter1->second.index;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
             } catch (exception& e) {
-                cout << e.what() << endl;
+                qDebug() << e.what();
             }
         }
     }
@@ -261,7 +263,7 @@ void Widget::flushData() {
     iter1 = mycmu->name_map.find("sysErrStatus");
     if (iter1 != mycmu->name_map.end()) {
         uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态")).arg(value));
+        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态1")).arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bErr0 << ui->bErr1 << ui->bErr2 << ui->bErr3 << ui->bErr4 << ui->bErr5 << ui->bErr6
                    << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11 << ui->bErr12 << ui->bErr13
@@ -275,14 +277,48 @@ void Widget::flushData() {
             }
         }
     }
+    iter1 = mycmu->name_map.find("sysErrStatus2");
+    if (iter1 != mycmu->name_map.end()) {
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_ErrStatus_2->setTitle(QString("%1(%2)").arg(tr("保护状态2")).arg(value));
+        QList<QLabel*> StatusList;
+        StatusList << ui->bErr0_2 << ui->bErr1_2 << ui->bErr2_2 << ui->bErr3_2 << ui->bErr4_2 << ui->bErr5_2
+                   << ui->bErr6_2 << ui->bErr7_2 << ui->bErr8_2 << ui->bErr9_2 << ui->bErr10_2 << ui->bErr11_2
+                   << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
+        foreach (QLabel* Label, StatusList) {
+            try {
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        }
+    }
     iter1 = mycmu->name_map.find("sysAlmStatus");
     if (iter1 != mycmu->name_map.end()) {
         uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
-        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态")).arg(value));
+        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态1")).arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bAlm0 << ui->bAlm1 << ui->bAlm2 << ui->bAlm3 << ui->bAlm4 << ui->bAlm5 << ui->bAlm6
                    << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11 << ui->bAlm12 << ui->bAlm13
                    << ui->bAlm14 << ui->bAlm15;
+        foreach (QLabel* Label, StatusList) {
+            try {
+                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "gold" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        }
+    }
+    iter1 = mycmu->name_map.find("sysAlmStatus2");
+    if (iter1 != mycmu->name_map.end()) {
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_AlmStatus_2->setTitle(QString("%1(%2)").arg(tr("告警状态2")).arg(value));
+        QList<QLabel*> StatusList;
+        StatusList << ui->bAlm0_2 << ui->bAlm1_2 << ui->bAlm2_2 << ui->bAlm3_2 << ui->bAlm4_2 << ui->bAlm5_2
+                   << ui->bAlm6_2 << ui->bAlm7_2 << ui->bAlm8_2 << ui->bAlm9_2 << ui->bAlm10_2 << ui->bAlm11_2
+                   << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         foreach (QLabel* Label, StatusList) {
             try {
                 QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "gold" : "green";

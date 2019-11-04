@@ -16,7 +16,7 @@ static MB_NODE tab_config[] = {
     {7, "TminID", 4, 5383, 514, 128, 1},
     {8, "TpMax", 4, 5384, 513, 128, 0.1},
     {9, "TpMaxID", 4, 5385, 514, 128, 1},
-    {10, "UdMax", 4, 5386, 513, 128, 0.001},
+    {10, "UdMax", 4, 5386, 513, 128, 0.0001},
     {11, "UdMaxID", 4, 5387, 514, 128, 0.1},
     {12, "TrMax", 4, 5388, 514, 128, 0.1},
     {13, "TrMaxID", 4, 5389, 514, 128, 1},
@@ -29,8 +29,8 @@ static MB_NODE tab_config[] = {
     {20, "ILeak", 4, 5396, 513, 128, 0.1},
     {21, "Idc", 4, 5397, 513, 128, 0.1},
     {22, "TExt", 4, 5398, 513, 128, 0.1},
-    {23, "TpExt", 4, 5399, 513, 128, 0.1},
-    {24, "TnExt", 4, 5400, 513, 128, 0.1},
+    {23, "ClusterT1", 4, 5399, 513, 128, 0.1},
+    {24, "ClusterT2", 4, 5400, 513, 128, 0.1},
     {25, "sysTime", 3, 1, 17410, 128, 1},
     {26, "sysStatus1", 3, 3, 514, 128, 1},
     {27, "sysStatus2", 3, 4, 514, 128, 1},
@@ -283,10 +283,10 @@ void mb_cmu::run() {
                 break;
             }
             case SM_INIT: {
-                rc = ReadData(0x03, 5411, TAB_CFG_LEN, sys_para.array);
+                rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
                 sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
                 sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
-                if (rc == TAB_CFG_LEN) {
+                if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
                         config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
@@ -448,6 +448,22 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             MsgCmd.msg_type = 1;
             pMq->sendMsg(99, MsgCmd);
         } break;
+        case CTRL_AO_ADDR: {
+            uint16_t nb = Msg.data.size();
+            if (nb < 2) break;
+            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+            if (p[0] > MAX_CFG) break;
+            if (nb == 2 * sizeof(uint16_t)) {
+                uint16_t addr = p[0];
+                uint16_t value = p[1];
+                ret = write_ao(addr, value);
+            } else {
+                uint16_t addr = p[0];
+                uint16_t* pv = (uint16_t*)&p[1];
+                ret = write_ao(addr, (nb - 1) / 2, pv);
+            }
+            break;
+        }
         default:
             break;
     }

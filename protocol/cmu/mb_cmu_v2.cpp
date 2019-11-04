@@ -1,6 +1,6 @@
-#include "mb_cmu_v2.h"
 #include <QDebug>
 #include <QTimerEvent>
+#include "mb_cmu.h"
 #include "myhelper.h"
 #include "utils.h"
 
@@ -16,7 +16,7 @@ static MB_NODE tab_config[] = {
     {7, "TminID", 4, 5383, 514, 128, 1},
     {8, "TpMax", 4, 5384, 513, 128, 0.1},
     {9, "TpMaxID", 4, 5385, 514, 128, 1},
-    {10, "UdMax", 4, 5386, 513, 128, 0.001},
+    {10, "UdMax", 4, 5386, 513, 128, 0.0001},
     {11, "UdMaxID", 4, 5387, 514, 128, 0.1},
     {12, "TrMax", 4, 5388, 514, 128, 0.1},
     {13, "TrMaxID", 4, 5389, 514, 128, 1},
@@ -31,9 +31,9 @@ static MB_NODE tab_config[] = {
     {22, "TExt", 4, 5398, 513, 128, 0.1},
     {23, "ClusterT1", 4, 5399, 513, 128, 0.1},
     {24, "ClusterT2", 4, 5400, 513, 128, 0.1},
-    {25, "ClusterT3", 4, 5398, 513, 128, 0.1},
-    {26, "ClusterT4", 4, 5399, 513, 128, 0.1},
-    {27, "ClusterT5", 4, 5400, 513, 128, 0.1},
+    {25, "ClusterT3", 4, 5401, 513, 128, 0.1},
+    {26, "ClusterT4", 4, 5402, 513, 128, 0.1},
+    {27, "ClusterT5", 4, 5403, 513, 128, 0.1},
     {28, "sysTime", 3, 1, 17410, 128, 1},
     {29, "sysStatus1", 3, 3, 514, 128, 1},
     {30, "sysStatus2", 3, 4, 514, 128, 1},
@@ -69,24 +69,24 @@ static MB_NODE tab_config[] = {
     {60, "充电停止时间", 3, 1061, 17410, 128, 1},
     {61, "放电开始时间", 3, 1063, 17410, 128, 1},
     {62, "放电停止时间", 3, 1065, 17410, 128, 1},
-    {63, "预充结束时间定值", 3, 5358, 514, 128, 1},
-    {64, "预充结束电流定值", 3, 5359, 514, 128, 0.1},
-    {65, "预留传感器量程", 3, 5360, 514, 128, 1},
-    {66, "簇电池额定Ah数", 3, 5361, 514, 128, 0.1},
-    {67, "簇电池充放电状态检测电流死区阈值", 3, 5362, 514, 128, 0.1},
-    {68, "簇电池充满回差值", 3, 5363, 514, 128, 1},
-    {69, "簇电池放空回差值", 3, 5364, 514, 128, 1},
-    {70, "环控温度回差值", 3, 5365, 513, 128, 0.1},
-    {71, "环控温度上限值", 3, 5366, 513, 128, 0.1},
-    {72, "环控温度下限值", 3, 5367, 513, 128, 0.1},
-    {73, "簇电池过放(SOC)下限告警值", 3, 5368, 514, 128, 0.1},
-    {74, "簇电池过放(SOC)下下限保护值", 3, 5369, 514, 128, 0.1},
-    {75, "簇极柱温度越上限告警值", 3, 5370, 513, 128, 0.1},
-    {76, "簇极柱温度越上上限保护值", 3, 5371, 513, 128, 0.1},
-    {77, "簇电池绝缘电阻告警值", 3, 5372, 514, 128, 1},
-    {78, "簇电池漏电流告警值", 3, 5373, 514, 128, 0.1},
-    {79, "单体电池压差越上限告警值", 3, 5374, 514, 128, 0.0001},
-    {80, "单体电池压差越上上限保护值", 3, 5375, 514, 128, 0.0001},
+    {63, "PreChgT", 3, 5358, 514, 128, 1},
+    {64, "PreChgI", 3, 5359, 514, 128, 0.1},
+    {65, "PreSensorRg", 3, 5360, 514, 128, 1},
+    {66, "RateAH", 3, 5361, 514, 128, 0.1},
+    {67, "IStaTH", 3, 5362, 514, 128, 0.1},
+    {68, "VFulDF", 3, 5363, 514, 128, 1},
+    {69, "VEmpDF", 3, 5364, 514, 128, 1},
+    {70, "EvmDfT", 3, 5365, 513, 128, 0.1},
+    {71, "TEvmH", 3, 5366, 513, 128, 0.1},
+    {72, "TEvmL", 3, 5367, 513, 128, 0.1},
+    {73, "SocL", 3, 5368, 514, 128, 0.1},
+    {74, "SocLL", 3, 5369, 514, 128, 0.1},
+    {75, "CPoleTH", 3, 5370, 513, 128, 0.1},
+    {76, "CPoleTHH", 3, 5371, 513, 128, 0.1},
+    {77, "ClusterRInsH", 3, 5372, 514, 128, 1},
+    {78, "ClusterCurLeakH", 3, 5373, 514, 128, 0.1},
+    {79, "CellUdH", 3, 5374, 514, 128, 0.0001},
+    {80, "CellUdHH", 3, 5375, 514, 128, 0.0001},
     {81, "CellVolH", 3, 5376, 514, 128, 0.0001},
     {82, "CellVolHH", 3, 5377, 514, 128, 0.0001},
     {83, "CellVolL", 3, 5378, 514, 128, 0.0001},
@@ -132,31 +132,7 @@ static MB_NODE tab_config[] = {
     {123, "IP", 3, 5418, 17410, 128, 1},
     {124, "ServerIP", 3, 5420, 17410, 128, 1},
 };
-#define MAX_CFG 101
-mb_cmu_v2::mb_cmu_v2() {
-    cmu = nullptr;
-    cmu_status = 0;
-    stop = false;
-    mb_ip = "192.168.1.120";
-    mb_port = 502;
-    pMq = MessageQueue::getInstance();
-    pMq->registMsgQueue(0);
-    tab_data.reserve(1000);
-    config = {0, 0, 0, 0, 0};
-    memset(&sys_para, 0, sizeof(sys_para));
-}
-
-mb_cmu_v2::~mb_cmu_v2() {
-    if (this->cmu) this->Close();
-    stop = true;
-}
-
-int mb_cmu_v2::Close() {
-    modbus_close(this->cmu);
-    modbus_free(this->cmu);
-    this->cmu = nullptr;
-    return 0;
-}
+#define MAX_CFG 125
 
 int mb_cmu_v2::Init() {
     qDebug() << "init config";
@@ -186,84 +162,7 @@ int mb_cmu_v2::Init() {
     return 0;
 }
 
-#define MAX_LEN 125
-/*
- * 读取数据
- **/
-int mb_cmu_v2::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) {
-    int status = 0;
-    int read_len = 0;
-    int rc = 0;
-    switch (type) {
-        case MODBUS_FC_READ_HOLDING_REGISTERS: {
-            do {
-                read_len = reg_num > MAX_LEN ? MAX_LEN : reg_num;
-                rc = modbus_read_registers(this->cmu, start_addr, read_len, dest);
-                if (rc > 0) {
-                    status += rc;
-                } else {
-                    qDebug() << type << ",err:" << start_addr << ",len:" << read_len;
-                }
-                reg_num -= read_len;
-                dest += read_len;
-                start_addr += read_len;
-            } while (reg_num);
-        } break;
-        case MODBUS_FC_READ_INPUT_REGISTERS: {
-            do {
-                read_len = reg_num > MAX_LEN ? MAX_LEN : reg_num;
-                rc = modbus_read_input_registers(this->cmu, start_addr, read_len, dest);
-                if (rc > 0) {
-                    status += rc;
-                } else {
-                    qDebug() << type << ",err:" << start_addr << ",len:" << read_len;
-                }
-                reg_num -= read_len;
-                dest += read_len;
-                start_addr += read_len;
-            } while (reg_num);
-        } break;
-        default:
-            break;
-    }
-    if (status <= 0) {
-        cmu_status &= ~(0x01U << CMU_ONLINE);
-        err_counter++;
-    } else {
-        err_counter = 0;
-        cmu_status |= (0x01 << CMU_ONLINE);
-    }
-
-    return status;
-}
-int mb_cmu_v2::ReadALL() {
-    /* Read 5 registers from the address 0 */
-
-    unsigned int reg_num = 0;
-    uint16_t* p = this->tab_reg;
-    int status = 0;
-    unsigned int offset = 0;
-    status += ReadAI();
-    //
-    if (config.bmu_num > 0) {
-        reg_num = config.bmu_num * config.vol_num;
-        status += ReadData(0x04, 0x01, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
-        status += ReadData(0x04, 0x1000, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * config.status_num;
-        status += ReadData(0x03, 0x100, reg_num, p + offset);
-        offset += reg_num;
-        //版本号
-        reg_num = config.bmu_num * 2 + 2;
-        status += ReadData(0x03, 0x500, reg_num, p + offset);
-        offset += reg_num;
-    }
-
-    return status;
-}
-#define TIME_OUTOFDATE 3 * 31 * 24 * 60 * 60
+#define TIME_OUTOFDATE 1 * 31 * 24 * 60 * 60
 
 void mb_cmu_v2::run() {
     qDebug() << time(nullptr);
@@ -275,7 +174,8 @@ void mb_cmu_v2::run() {
     int rc = -1;
     TMsgData MsgCmd;
 
-    Init();
+    this->Init();
+    qDebug() << name_map.size();
     while (1) {
         if (this->stop) break;
         while (pMq->readMsg(0, MsgCmd)) {
@@ -307,10 +207,10 @@ void mb_cmu_v2::run() {
                 break;
             }
             case SM_INIT: {
-                rc = ReadData(0x03, 5411, TAB_CFG_LEN, sys_para.array);
+                rc = ReadData(0x03, 5411, sizeof(sys_para)/2, sys_para.array);
                 sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
                 sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
-                if (rc == TAB_CFG_LEN) {
+                if (rc == sizeof(sys_para)/2) {
                     state = SM_READ;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
                         config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
@@ -340,313 +240,4 @@ void mb_cmu_v2::run() {
         usleep(500 * 1000);
     }
     qDebug() << "cmu exit..";
-}
-void mb_cmu_v2::DealCMD(TMsgData& Msg) {
-    int ret = -1;
-    switch (Msg.msg_type) {
-        case CONFIG_IP: {
-            if (mb_ip != Msg.data.toStdString()) {
-                mb_ip = Msg.data.toStdString();
-                state = SM_CONNECT;
-                qDebug() << "ip config:" << mb_ip.c_str();
-            }
-            return Msg.data.clear();
-        } break;
-        case CONFIG_PORT: {
-            uint16_t port = 0;
-            memcpy(&port, Msg.data.data(), sizeof(uint16_t));
-            // if (mb_port == port) break;
-            if (port != 0) {
-                mb_port = port;
-            }
-            qDebug() << "port config:" << port;
-            return Msg.data.clear();
-        } break;
-        case THREAD_EXIT:
-            stop = true;
-            qDebug() << "recv stop flag.";
-            break;
-        case CONFIG_INIT:
-            cmu_status = 0;
-            Init();
-            break;
-        case CTRL_DO: {
-            if (Msg.data.size() == 2 * sizeof(uint16_t)) {
-                uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-                uint16_t addr = p[0];
-                uint16_t value = p[1];
-                ret = modbus_write_bit(cmu, addr, value);
-                if (ret < 0)
-                    emit signal_message(QString(tr("操作失败")));
-                else {
-                    emit signal_message(QString(tr("操作成功")));
-                }
-            }
-        } break;
-        case CTRL_AO: {
-            uint16_t nb = Msg.data.size();
-            if (nb < 2) break;
-            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-            if (p[0] > MAX_CFG) break;
-            if (nb == 2 * sizeof(uint16_t)) {
-                uint16_t addr = tab_config[p[0]].reg_addr;
-                uint16_t value = p[1];
-                ret = write_ao(addr, value);
-            } else {
-                uint16_t addr = tab_config[p[0]].reg_addr;
-                uint16_t* pv = (uint16_t*)&p[1];
-                ret = write_ao(addr, (nb - 1) / 2, pv);
-            }
-
-            break;
-        }
-        case CTRL_DOWN_BMS: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateCMU);
-        } break;
-        case CTRL_DOWN_BMS_BTL: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTC);
-        } break;
-        case CTRL_DOWN_BMU: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBMU);
-        } break;
-        case CTRL_DOWN_BMU_BTL: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTB);
-        } break;
-        case CTRL_UPGRADE_BMU: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdBmuNDL);
-        } break;
-        case CTRL_ADJ_U_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VFull);
-        } break;
-        case CTRL_ADJ_U_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VZero);
-        } break;
-        case CTRL_ADJ_I_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IFull);
-        } break;
-        case CTRL_ADJ_I_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IZero);
-        } break;
-        case CTRL_ADJ_ILEAK_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LFull);
-        } break;
-        case CTRL_ADJ_ILEAK_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LZero);
-        } break;
-        case CTRL_ADJ_RINS_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RFull);
-        } break;
-        case CTRL_ADJ_RINS_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
-        } break;
-        case CTRL_CMD_BMU_UNLOCK: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_UNLOCK);
-            break;
-        }
-        case CTRL_CMD_BMU_LOCK: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_LOCK);
-        } break;
-        case CTRL_CMD_UNLOCK: {
-            ret = write_ao(ADDR_WR_LOCK, MB_UNLOCK);
-        } break;
-        case CTRL_CMD_RESET: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_FACTORY);
-        } break;
-        case CTRL_CMD_CLR_ENG: {
-            ret = write_ao(ADDR_CLEAR_ENG, MB_CLEAR_ENG);
-        } break;
-        case CTRL_CMD_CLR_ALL_SOE: {
-            ret = write_ao(ADDR_CLEAR_SOE, MB_CLR_ALL_SOE);
-        } break;
-        case CTRL_CMD_REBOOT: {
-            ret = write_ao(ADDR_REBOOT, MB_REBOOT);
-        } break;
-        case CERT_CMD_TIME_ADJ: {
-            uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
-            ret = write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
-        } break;
-        case CERT_CMD_READ_SOE: {
-            ret = ReadSOE();
-            TMsgData MsgCmd;
-            MsgCmd.data.clear();
-            MsgCmd.msg_type = 1;
-            pMq->sendMsg(99, MsgCmd);
-        } break;
-        default:
-            break;
-    }
-    Msg.data.clear();
-    if (ret < 0)
-        emit signal_message(QString(tr("操作失败")));
-    else {
-        emit signal_message(QString(tr("操作成功")));
-    }
-}
-int mb_cmu_v2::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
-    int ret = -1;
-    if (!pv) return ret;
-    if (len < 1) return ret;
-    if (len == 1) {
-        ret = write_ao(addr, *pv);
-        return ret;
-    }
-    ret = modbus_write_registers(cmu, addr, len, pv);
-    if (ret < 0)
-        qDebug() << "wr aos failed" << addr << ":" << ret;
-    else
-        qDebug() << "wr aos " << addr << ":" << len;
-    return ret;
-}
-int mb_cmu_v2::write_ao(uint16_t addr, uint16_t v) {
-    int ret = -1;
-    ret = modbus_write_register(cmu, addr, v);
-    if (ret < 0)
-        qDebug() << "wr ao failed" << addr << ":" << ret;
-    else
-        qDebug() << "wr ao " << addr << ":" << v;
-    return ret;
-}
-int mb_cmu_v2::sec_ctrl(uint16_t addr, uint16_t type) {
-    sec_cmd[8] = type;
-    return write_ao(addr, 9, sec_cmd);
-}
-int mb_cmu_v2::ParseData() {
-    int ret = -1;
-
-    return ret;
-}
-/**< 判别寄存器插入条件，返回可用报文序号，否则返回-1 */
-int mb_cmu_v2::JudgeReg(NodeReg& node_reg) {
-    int index = reg_list_.size();
-    const int max_frame_len = 229;
-    int shortnum = (max_frame_len - 9) / 2;
-    int bitnum = shortnum * 16;
-    int reg_len = GET_RAWDATALEN(node_reg.data_type) / 2;
-    reg_len = (reg_len) > 1 ? reg_len : 1;
-    uint8_t reg_type = node_reg.reg_type;
-    while (index--) {
-        DataReg data_reg = reg_list_.at(index);
-        if (reg_type == DO_REG || reg_type == DI_REG) {
-            if ((uint16_t)(node_reg.reg_addr - data_reg.reg_start) < bitnum && data_reg.reg_type == reg_type) {
-                return index;
-            }
-        }
-        if (reg_type == AO_REG || reg_type == AI_REG) {
-            if ((uint16_t)(node_reg.reg_addr + reg_len - data_reg.reg_start) < shortnum &&
-                data_reg.reg_type == reg_type) {
-                return index;
-            }
-        }
-    }
-    return -1;
-}
-void mb_cmu_v2::NewReg(NodeReg& node_reg) {
-    DataReg data_reg;
-    DatabaseIO data_io_tmp;
-    data_reg.data_io.clear();
-    data_reg.reg_type = node_reg.reg_type;
-    data_reg.reg_start = node_reg.reg_addr;
-    data_reg.data_num = 1;
-    int reg_len = GET_RAWDATALEN(node_reg.data_type) >> 1;
-    data_reg.reg_num = (reg_len) > 1 ? reg_len : 1;
-    data_io_tmp.index = node_reg.index;
-    data_io_tmp.factor = node_reg.factor;
-    data_io_tmp.data_type = node_reg.data_type;
-    data_io_tmp.offset = 0;
-    data_reg.data_io.push_back(data_io_tmp);
-    reg_list_.push_back(data_reg);
-}
-void mb_cmu_v2::InsertReg(NodeReg& node_reg, int index) {
-    try {
-        DataReg* pdata_reg;
-        pdata_reg = &reg_list_.at(index);
-        DatabaseIO data_io_tmp;
-        pdata_reg->data_num++;
-        data_io_tmp.index = node_reg.index;
-        data_io_tmp.factor = node_reg.factor;
-        data_io_tmp.data_type = node_reg.data_type;
-        data_io_tmp.offset = node_reg.reg_addr - pdata_reg->reg_start;
-        int reg_len = GET_RAWDATALEN(node_reg.data_type) >> 1;
-        reg_len = (reg_len) > 1 ? reg_len : 1;
-        int len = data_io_tmp.offset + reg_len;
-        if (pdata_reg->reg_num < len) pdata_reg->reg_num = len;
-        pdata_reg->data_io.push_back(data_io_tmp);
-    } catch (exception& e) {
-        cout << e.what() << endl;
-    }
-}
-
-int mb_cmu_v2::ReadAI() {
-    int res = -1;
-    uint16_t tab_buf[128];
-    for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
-        res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
-        if (res == iter->reg_num) {
-            for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
-                 data_iter++) {
-                if (tab_data.size() > data_iter->index) {
-                    tab_data.at(data_iter->index).isUpdate = true;
-                    tab_data.at(data_iter->index).UpdateCnt++;
-                    if (data_iter->data_type == 514) {
-                        tab_data.at(data_iter->index).sysData.val.f64 = tab_buf[data_iter->offset] * data_iter->factor;
-                    } else if (data_iter->data_type == 513) {
-                        tab_data.at(data_iter->index).sysData.val.f64 =
-                            (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
-                    } else if (data_iter->data_type == 17410) {
-                        tab_data.at(data_iter->index).sysData.val.f64 =
-                            MODBUS_GET_INT32_FROM_INT16(tab_buf, data_iter->offset) * data_iter->factor;
-                    }
-                }
-            }
-        }
-    }
-    return res;
-}
-#define MAX_SOE_COUNT 500
-#define SOE_REG_LEN   8
-
-static uint16_t get_data(const uint16_t* src, int index) {
-    uint16_t val = src[index];
-    return static_cast<uint16_t>((val >> 8) | (val << 8));
-}
-int mb_cmu_v2::ReadSOE() {
-    int res = -1;
-    uint16_t tab_buf[128] = {0};
-    res = ReadData(0x03, 0x2000, 2, tab_buf);
-    if (res != 2) return -1;
-    memset(&cmu_soe, 0, sizeof(cmu_soe));
-    cmu_soe.new_soe_count = tab_buf[0];
-    cmu_soe.soe_count = tab_buf[1];
-    int start = 0x2002;
-    int len = MAX_SOE_COUNT;
-    int soe_index = 0;
-    do {
-        int soe_len = len > 15 ? 15 : len;
-        len -= soe_len;
-        res = modbus_read_registers(cmu, start, soe_len * SOE_REG_LEN, tab_buf);
-        // qDebug() << start << "->" << start + soe_len * SOE_REG_LEN<<","<<soe_index;
-        if (res == soe_len * SOE_REG_LEN) {
-            start += (soe_len * SOE_REG_LEN);
-            for (int i = soe_len; --i >= 0;) {
-                uint64_t u64time = static_cast<uint32_t>((get_data(tab_buf, SOE_REG_LEN * i + 1) << 16) |
-                                                         get_data(tab_buf, SOE_REG_LEN * i));
-                if (u64time > 0xFFFFFFFF) {
-                    soe_index++;
-                    continue;
-                }
-                u64time = u64time * 1000 + get_data(tab_buf, SOE_REG_LEN * i + 2);
-                cmu_soe.list_soe[soe_index].soe_time = u64time;
-                cmu_soe.list_soe[soe_index].soe_stat = get_data(tab_buf, SOE_REG_LEN * i + 3);
-                cmu_soe.list_soe[soe_index].soe_type = get_data(tab_buf, SOE_REG_LEN * i + 4);
-                cmu_soe.list_soe[soe_index].soe_id = get_data(tab_buf, SOE_REG_LEN * i + 5);
-                cmu_soe.list_soe[soe_index].soe_val = get_data(tab_buf, SOE_REG_LEN * i + 6);
-                cmu_soe.list_soe[soe_index].soe_limit = get_data(tab_buf, SOE_REG_LEN * i + 7);
-                soe_index++;
-            }
-        } else {
-            return -1;
-        }
-    } while (len);
-    qDebug() << "read soe succeed.";
-    return res;
 }

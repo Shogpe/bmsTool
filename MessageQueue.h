@@ -11,6 +11,7 @@
 
 // 消息体
 typedef struct tagMsgData {
+    int msg_id;
     int msg_type;
     QByteArray data;
 } TMsgData;

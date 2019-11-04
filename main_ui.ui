@@ -47,7 +47,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="MainPage">
       <layout class="QGridLayout" name="gridLayout_5">
@@ -124,6 +124,20 @@
                 <property name="value">
                  <number>502</number>
                 </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cbProtocol">
+                <item>
+                 <property name="text">
+                  <string>CMU1.0</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>CMU2.0</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>

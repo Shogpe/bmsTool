@@ -10,14 +10,22 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-    this->pDev = new mb_cmu;
+    load_config();
+    QString protocol = settings->value("global/protocol", "CMU1.0").toString();
+    if (protocol == "CMU2.0") {
+        this->pDev = new mb_cmu_v2;
+        ui->cbProtocol->setCurrentIndex(CMUV2);
+    } else {
+        this->pDev = new mb_cmu;
+        ui->cbProtocol->setCurrentIndex(CMUV1);
+    }
     pmq = MessageQueue::getInstance();
     this->pDev->start();
     ui->cmuData->mycmu = pDev;
     connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::valueChange, Qt::UniqueConnection);
     connect(pDev, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
             static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
-    load_config();
+
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
     timer->start(1000);
@@ -76,7 +84,7 @@ void MainUI::initForm() {
         btn->setMinimumWidth(icoWidth);
         btn->setCheckable(true);
         connect(btn, SIGNAL(clicked()), this, SLOT(buttonClick()));
-        //btn->hide();
+        // btn->hide();
     }
     //
     ui->gridLayout_3->addWidget(new StateGroupBox());
@@ -307,4 +315,10 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
         }
     }
     return QFramelessWidget::eventFilter(obj, event);
+}
+
+void MainUI::on_comboBox_currentIndexChanged(const QString& arg1) {
+    qDebug() << arg1;
+    settings->setValue("global/protocol", arg1);
+    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
 }

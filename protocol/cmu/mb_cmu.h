@@ -121,6 +121,7 @@ typedef enum {
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
+    CTRL_SEC_AO,
     CTRL_DOWN_BMS,
     CTRL_DOWN_BMS_BTL,  // BMS BOOTLOADER
     CTRL_DOWN_BMU,
@@ -166,16 +167,24 @@ typedef enum {
 #define MB_UpdRins   0xa5b6  // 42291 直接升级BMU应用程序
 //校准命令
 #define ADDR_ADJ     0xFFC0
-#define MB_Adj_IZero 0x11    //电流采样零刻度校准
-#define MB_Adj_VZero 0x22    //电压采样零刻度校准
-#define MB_Adj_LZero 0x33    //漏电流零刻度校准
+#define MB_Adj_IZero 0x11  //电流采样零刻度校准
+#define MB_Adj_VZero 0x22  //电压采样零刻度校准
+#define MB_Adj_LZero 0x33  //漏电流零刻度校准
+#define MB_Adj_TZero 0x44  //温度校准
+#define MB_Adj_RZero 0x55  //绝缘电阻校准
+
 #define MB_Adj_IFull 0xaa11  //电流采样满刻度校准
 #define MB_Adj_VFull 0xaa22  //电压采样满刻度校准
 #define MB_Adj_LFull 0xaa33  //漏电流满刻度校准
-#define MB_Adj_TZero 0x44    //温度校准
 #define MB_Adj_TFull 0xaa44
-#define MB_Adj_RZero 0x55  //绝缘电阻校准
 #define MB_Adj_RFull 0xaa55
+
+#define MB_Adj_IBase 0xbb11  //电流采样基点校准
+#define MB_Adj_VBase 0xbb22  //电压采样基点校准
+#define MB_Adj_LBase 0xbb33  //漏电流基点校准
+#define MB_Adj_TBase 0xbb44
+#define MB_Adj_RBase 0xbb55
+
 //其他命令
 #define ADDR_TIME_ADJ 0xFFE0
 #define ADDR_WR_LOCK  0xFFF0
@@ -201,6 +210,10 @@ typedef enum {
 #define MB_CTRL_OFF    0x55AA
 #define ADDR_CTRL_KMR  0xFFFA
 #define ADDR_CTRL_QF   0xFFFB
+#define ADDR_CTRL_KMP   0xFFF4
+#define ADDR_CTRL_KMN   0xFFF5
+#define ADDR_CTRL_FAN   0xFFF6
+#define ADDR_CTRL_AC   0xFFF7
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间
@@ -244,6 +257,8 @@ typedef enum {
     CMUV1 = 0,
     CMUV2,  //
 } BMS_PROTOCOL;
+
+typedef std::function<void(TMsgData &Msg)> fp_msg;
 class mb_cmu : public QThread {
     Q_OBJECT
    protected:
@@ -294,6 +309,7 @@ class mb_cmu : public QThread {
 class mb_cmu_v2 : public mb_cmu {
     virtual int Init();  //初始化
     virtual void run();
+    void callback(TMsgData &Msg);
 };
 ;
 

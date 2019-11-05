@@ -1,4 +1,4 @@
-﻿#ifndef APPINIT_H
+#ifndef APPINIT_H
 #define APPINIT_H
 
 #include <QObject>
@@ -8,10 +8,10 @@ class AppInit : public QObject
     Q_OBJECT
 public:
     static AppInit *Instance();
-    explicit AppInit(QObject *parent = 0);    
+    explicit AppInit(QObject *parent = 0);
 
     void start();
-
+    void sendGetRequest();
 protected:
     bool eventFilter(QObject *obj, QEvent *evt);
 

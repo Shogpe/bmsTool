@@ -12,7 +12,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     this->installEventFilter(this);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
-    timer->start(2000);
+    timer->start(1000);
     mycmu = nullptr;
     pmq = MessageQueue::getInstance();
     pmq->registMsgQueue(99);
@@ -225,7 +225,6 @@ void Widget::flushData() {
                 qDebug() << e.what();
             }
         } else {
-
         }
     }
     dspboxs = ui->tabCMU->findChildren<QDoubleSpinBox*>();
@@ -404,36 +403,59 @@ void Widget::flushData() {
     id = mycmu->tab_data.at(mycmu->name_map["TrMaxID"].index).sysData.val.f64;
     ui->TrMaxID->setText(QString(tr("最大单体温升(%1)")).arg(myHelper::IDToString(id, config.T_num)));
 }
-
-static map<QString, int> btnMap = {{"btnDownBMS", CTRL_DOWN_BMS},
-                                   {"btnDownBMSBoot", CTRL_DOWN_BMS_BTL},
-                                   {"btnDownBMU", CTRL_DOWN_BMU},
-                                   {"btnDownBMUBoot", CTRL_DOWN_BMU_BTL},
-                                   {"btnUpBMU", CTRL_UPGRADE_BMU},
-                                   {"btnBMULock", CTRL_CMD_BMU_LOCK},
-                                   {"btnBMUUnlock", CTRL_CMD_BMU_UNLOCK},
-                                   {"btnClearEng", CTRL_CMD_CLR_ENG},
-                                   {"btnIFullAdj", CTRL_ADJ_I_FULL},
-                                   {"btnIzeroAdj", CTRL_ADJ_I_ZERO},
-                                   {"btnIleakFullAdj", CTRL_ADJ_ILEAK_FULL},
-                                   {"btnIleakZeroAdj", CTRL_ADJ_ILEAK_ZERO},
-                                   {"btnRFullAdj", CTRL_ADJ_RINS_FULL},
-                                   {"btnRZeroAdj", CTRL_ADJ_RINS_ZERO},
-                                   {"btnUfullAdj", CTRL_ADJ_U_FULL},
-                                   {"btnUzeroAdj", CTRL_ADJ_U_ZERO},
-                                   {"btnReboot", CTRL_CMD_REBOOT},
-                                   {"btnTimeAdj", CERT_CMD_TIME_ADJ},
-                                   {"btnResetDef", CTRL_CMD_RESET}};
+struct mb_cmd {
+    uint16_t type;
+    uint16_t addr;
+    uint16_t value;
+};
+static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateCMU}},
+                                      {"btnDownBMSBoot", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBTC}},
+                                      {"btnDownBMU", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBMU}},
+                                      {"btnDownBMUBoot", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBTB}},
+                                      {"btnUpBMU", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdBmuNDL}},
+                                      {"btnBMULock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
+                                      {"btnBMUUnlock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+                                      {"btnClearEng", {CTRL_AO_ADDR,ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
+                                      {"btnIFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IFull}},
+                                      {"btnIBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IBase}},
+                                      {"btnIzeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IZero}},
+                                      {"btnIleakFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LFull}},
+                                      {"btnIleakBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LBase}},
+                                      {"btnIleakZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LZero}},
+                                      {"btnRFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RFull}},
+                                      {"btnRZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RZero}},
+                                      {"btnUfullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VFull}},
+                                      {"btnUBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VBase}},
+                                      {"btnUzeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
+                                      {"btnReboot", {CTRL_AO_ADDR,ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
+                                      {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},
+                                      {"btnKMRON", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_ON}},
+                                      {"btKMROFF", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_OFF}},
+                                      {"btnQFON", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_ON}},
+                                      {"btnQFOFF", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_OFF}},
+                                      {"btnKMPON", {CTRL_AO_ADDR,ADDR_CTRL_KMP, MB_CTRL_ON}},
+                                      {"btnKMPOFF", {CTRL_AO_ADDR,ADDR_CTRL_KMP, MB_CTRL_OFF}},
+                                      {"btnKMNON", {CTRL_AO_ADDR,ADDR_CTRL_KMN, MB_CTRL_ON}},
+                                      {"btnKMNOFF", {CTRL_AO_ADDR,ADDR_CTRL_KMN, MB_CTRL_OFF}},
+                                      {"btnFanON", {CTRL_AO_ADDR,ADDR_CTRL_FAN, MB_CTRL_ON}},
+                                      {"btnFanOFF", {CTRL_AO_ADDR,ADDR_CTRL_FAN, MB_CTRL_OFF}},
+                                      {"btnAcON", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_ON}},
+                                      {"btnAcOFF", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_OFF}},
+                                      {"btnTimeAdj", {CERT_CMD_TIME_ADJ,0,0}},
+                                      {"btnResetDef", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_FACTORY}}};
 
 void Widget::btn_released() {
     TMsgData MsgCmd;
-    QPushButton* b = (QPushButton*)sender();
+    QPushButton* b = reinterpret_cast<QPushButton*>(sender());
     QString name = b->objectName();
-    map<QString, int>::iterator iter1;
+    map<QString, mb_cmd>::iterator iter1;
     iter1 = btnMap.find(name);
     if (iter1 != btnMap.end()) {
-        int type = iter1->second;
-        MsgCmd.msg_type = type;
+        mb_cmd cmd = iter1->second;
+        MsgCmd.msg_type = cmd.type;
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr),sizeof (uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value),sizeof (uint16_t));
         pmq->sendMsg(0, MsgCmd);
     } else
         qDebug() << name;
@@ -453,8 +475,9 @@ void Widget::stateChanged() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_AO;
     value[0] = 98;
-    MsgCmd.data.resize(2 * sizeof(uint16_t));
-    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    //    MsgCmd.data.resize(2 * sizeof(uint16_t));
+    //    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
 void Widget::checkChanged() {
@@ -545,20 +568,17 @@ void Widget::on_btnOutput_released() {
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
-
     QDomDocument document;
-
     QString strHeader("version=\"1.0\" encoding=\"UTF-8\"");
     document.appendChild(document.createProcessingInstruction("xml", strHeader));
-
     QDomElement root_elem = document.createElement("configtemplate");
     root_elem.setAttribute("ver", 1);
     document.appendChild(root_elem);
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         QDomElement item1 = document.createElement("item");
         item1.setAttribute("name", dspbox->objectName());
+        item1.setAttribute("name_cn", dspbox->toolTip());
         item1.setAttribute("value", dspbox->value());
         root_elem.appendChild(item1);
     }

@@ -255,7 +255,7 @@ void mb_cmu::run() {
     while (1) {
         if (this->stop) break;
         while (pMq->readMsg(0, MsgCmd)) {
-            qDebug() << "recv " << MsgCmd.msg_type << "," << MsgCmd.data.toHex();
+            qDebug() << "recv:" << MsgCmd.msg_type <<",len:"<< MsgCmd.data.size() << "," << MsgCmd.data.toHex();
             DealCMD(MsgCmd);
         }
         //状态机
@@ -317,6 +317,8 @@ void mb_cmu::run() {
     }
     qDebug() << "cmu exit..";
 }
+
+
 void mb_cmu::DealCMD(TMsgData& Msg) {
     int ret = -1;
     switch (Msg.msg_type) {
@@ -376,67 +378,19 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
 
             break;
         }
-        case CTRL_DOWN_BMS: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateCMU);
-        } break;
-        case CTRL_DOWN_BMS_BTL: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTC);
-        } break;
-        case CTRL_DOWN_BMU: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBMU);
-        } break;
-        case CTRL_DOWN_BMU_BTL: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdateBTB);
-        } break;
-        case CTRL_UPGRADE_BMU: {
-            ret = sec_ctrl(ADDR_UPGRADE, MB_UpdBmuNDL);
-        } break;
-        case CTRL_ADJ_U_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VFull);
-        } break;
-        case CTRL_ADJ_U_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_VZero);
-        } break;
-        case CTRL_ADJ_I_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IFull);
-        } break;
-        case CTRL_ADJ_I_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_IZero);
-        } break;
-        case CTRL_ADJ_ILEAK_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LFull);
-        } break;
-        case CTRL_ADJ_ILEAK_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_LZero);
-        } break;
-        case CTRL_ADJ_RINS_FULL: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RFull);
-        } break;
-        case CTRL_ADJ_RINS_ZERO: {
-            ret = sec_ctrl(ADDR_ADJ, MB_Adj_RZero);
-        } break;
-        case CTRL_CMD_BMU_UNLOCK: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_UNLOCK);
-            break;
-        }
-        case CTRL_CMD_BMU_LOCK: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_BMU_LOCK);
+        case CTRL_SEC_AO: {
+          uint16_t nb = Msg.data.size();
+          if (nb != 2*sizeof (uint16_t)) break;
+          uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+          ret = sec_ctrl(p[0],p[1]);
         } break;
         case CTRL_CMD_UNLOCK: {
             ret = write_ao(ADDR_WR_LOCK, MB_UNLOCK);
         } break;
-        case CTRL_CMD_RESET: {
-            ret = write_ao(ADDR_RESET_FACTORY, MB_FACTORY);
-        } break;
-        case CTRL_CMD_CLR_ENG: {
-            ret = write_ao(ADDR_CLEAR_ENG, MB_CLEAR_ENG);
-        } break;
         case CTRL_CMD_CLR_ALL_SOE: {
             ret = write_ao(ADDR_CLEAR_SOE, MB_CLR_ALL_SOE);
         } break;
-        case CTRL_CMD_REBOOT: {
-            ret = write_ao(ADDR_REBOOT, MB_REBOOT);
-        } break;
+
         case CERT_CMD_TIME_ADJ: {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
             ret = write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
@@ -452,11 +406,8 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;
             uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-            if (p[0] > MAX_CFG) break;
             if (nb == 2 * sizeof(uint16_t)) {
-                uint16_t addr = p[0];
-                uint16_t value = p[1];
-                ret = write_ao(addr, value);
+                ret = write_ao(p[0], p[1]);
             } else {
                 uint16_t addr = p[0];
                 uint16_t* pv = (uint16_t*)&p[1];

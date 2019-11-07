@@ -14,10 +14,14 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     QString protocol = settings->value("global/protocol", "CMU1.0").toString();
     if (protocol == "CMU2.0") {
         this->pDev = new mb_cmu_v2;
+        ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV2);
+        ui->cbProtocol->blockSignals(false);
     } else {
         this->pDev = new mb_cmu;
+        ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV1);
+        ui->cbProtocol->blockSignals(false);
     }
     pmq = MessageQueue::getInstance();
     this->pDev->start();
@@ -28,7 +32,7 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
-    timer->start(1000);
+    timer->start(500);
 }
 void MainUI::slot_message_call(const QString& msg) {
     // qDebug() << QString("msg:%1").arg(msg);
@@ -270,8 +274,10 @@ void MainUI::btnClick() {
         pmq->sendMsg(0, MsgCmd);
         MsgCmd.msg_type = CONFIG_PORT;
         MsgCmd.data.clear();
-        MsgCmd.data.reserve(sizeof(port));
-        memcpy(MsgCmd.data.data(), &port, sizeof(port));
+        MsgCmd.data.append((char*)&port, sizeof(port));
+        pmq->sendMsg(0, MsgCmd);
+        MsgCmd.msg_type = CONFIG_INIT;
+        MsgCmd.data.clear();
         pmq->sendMsg(0, MsgCmd);
     }
 }
@@ -317,7 +323,7 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
     return QFramelessWidget::eventFilter(obj, event);
 }
 
-void MainUI::on_comboBox_currentIndexChanged(const QString& arg1) {
+void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     qDebug() << arg1;
     settings->setValue("global/protocol", arg1);
     myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));

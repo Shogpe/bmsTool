@@ -208,12 +208,14 @@ typedef enum {
 #define ADDR_CTRL_AUTO 0x2000
 #define MB_CTRL_ON     0xAA55
 #define MB_CTRL_OFF    0x55AA
-#define ADDR_CTRL_KMR  0xFFFA
-#define ADDR_CTRL_QF   0xFFFB
-#define ADDR_CTRL_KMP   0xFFF4
-#define ADDR_CTRL_KMN   0xFFF5
-#define ADDR_CTRL_FAN   0xFFF6
-#define ADDR_CTRL_AC   0xFFF7
+
+#define ADDR_CTRL_KMP 0xFF00
+#define ADDR_CTRL_KMN 0xFF01
+#define ADDR_CTRL_KMR 0xFF02
+#define ADDR_CTRL_QF  0xFF03
+#define ADDR_CTRL_FAN 0xFF04
+#define ADDR_CTRL_AC  0xFF05
+#define ADDR_CTRL_RES  0xFF06
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间

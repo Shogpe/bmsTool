@@ -237,7 +237,7 @@ void mb_cmu_v2::run() {
                 sleep(1);
                 break;
         }
-        usleep(500 * 1000);
+        usleep(200 * 1000);
     }
     qDebug() << "cmu exit..";
 }

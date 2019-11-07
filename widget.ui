@@ -6070,6 +6070,32 @@
          </property>
         </widget>
        </item>
+       <item row="7" column="5">
+        <widget class="QPushButton" name="btnResON">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>电操合闸</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="6">
+        <widget class="QPushButton" name="btnResOFF">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>电操分闸</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab">
@@ -6600,28 +6626,28 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="bDO1">
             <property name="text">
-             <string>DO2(KM+分)</string>
+             <string>DO2(KM+)</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="bDO2">
             <property name="text">
-             <string>DO3(KM+合)</string>
+             <string>DO3(KM-)</string>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="bDO3">
             <property name="text">
-             <string>DO4(KM-分)</string>
+             <string>DO4(KMR)</string>
             </property>
            </widget>
           </item>
           <item row="4" column="0">
            <widget class="QCheckBox" name="bDO4">
             <property name="text">
-             <string>DO5(KM-合)</string>
+             <string>DO5(CMU告警)</string>
             </property>
            </widget>
           </item>
@@ -6642,14 +6668,14 @@
           <item row="7" column="0">
            <widget class="QCheckBox" name="bDO7">
             <property name="text">
-             <string>DO8(充满指示)</string>
+             <string>DO8(系统运行)</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="bDO8">
             <property name="text">
-             <string>DO9(放空指示)</string>
+             <string>DO9(BMU供电)</string>
             </property>
            </widget>
           </item>
@@ -7022,7 +7048,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>CCU告警(3)</string>
+               <string>KMR状态(3)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -7035,7 +7061,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>备用(4)</string>
+               <string>CCU告警(4)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -7048,7 +7074,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>备用(5)</string>
+               <string>主从状态(5)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -7061,7 +7087,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>备用(6)</string>
+               <string>预留1(6)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -7074,7 +7100,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>备用(7)</string>
+               <string>预留2(7)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -7094,7 +7120,7 @@
                <enum>QFrame::Box</enum>
               </property>
               <property name="text">
-               <string>备用(8)</string>
+               <string>预留3(8)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

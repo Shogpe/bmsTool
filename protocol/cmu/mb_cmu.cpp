@@ -346,7 +346,8 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
         case CONFIG_INIT:
             cmu_status = 0;
-            Init();
+            state = SM_CONNECT;
+            //Init();
             break;
         case CTRL_DO: {
             if (Msg.data.size() == 2 * sizeof(uint16_t)) {

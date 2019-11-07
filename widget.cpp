@@ -12,7 +12,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     this->installEventFilter(this);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
-    timer->start(1000);
+    timer->start(500);
     mycmu = nullptr;
     pmq = MessageQueue::getInstance();
     pmq->registMsgQueue(99);
@@ -89,13 +89,12 @@ void Widget::valueChange() {
     if (iter1 != mycmu->name_map.end()) {
         try {
             uint16_t val[2] = {0};
-            val[0] = iter1->second.index;
+            val[0] = iter1->second.reg_addr;
             //+0.5保障精度
             val[1] = static_cast<uint16_t>(dval / iter1->second.factor + 0.5 - (dval < 0));
             TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO;
-            MsgCmd.data.resize(2 * sizeof(uint16_t));
-            memcpy(MsgCmd.data.data(), &val, 2 * sizeof(uint16_t));
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(uint16_t));
             pmq->sendMsg(0, MsgCmd);
         } catch (exception& e) {
             qDebug() << e.what();
@@ -431,7 +430,7 @@ static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, 
                                       {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
                                       {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},
                                       {"btnKMRON", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_ON}},
-                                      {"btKMROFF", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_OFF}},
+                                      {"btnKMROFF", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_OFF}},
                                       {"btnQFON", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_ON}},
                                       {"btnQFOFF", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_OFF}},
                                       {"btnKMPON", {CTRL_AO_ADDR,ADDR_CTRL_KMP, MB_CTRL_ON}},
@@ -442,6 +441,8 @@ static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, 
                                       {"btnFanOFF", {CTRL_AO_ADDR,ADDR_CTRL_FAN, MB_CTRL_OFF}},
                                       {"btnAcON", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_ON}},
                                       {"btnAcOFF", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_OFF}},
+                                      {"btnResON", {CTRL_AO_ADDR,ADDR_CTRL_RES, MB_CTRL_ON}},
+                                      {"btnResOFF", {CTRL_AO_ADDR,ADDR_CTRL_RES, MB_CTRL_OFF}},
                                       {"btnTimeAdj", {CERT_CMD_TIME_ADJ,0,0}},
                                       {"btnResetDef", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_FACTORY}}};
 

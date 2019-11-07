@@ -65,7 +65,7 @@ class MainUI : public QFramelessWidget {
     void on_btnMenu_Close_clicked();
     void changeLangue();
     void changeTheme();
-    void on_comboBox_currentIndexChanged(const QString &arg1);
+    void on_cbProtocol_currentIndexChanged(const QString &arg1);
 };
 
 #endif  // UIDEMO08_H

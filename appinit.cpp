@@ -2,11 +2,16 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+#include "myhelper.h"
+#include "version.h"
 #include "qapplication.h"
 #include "qevent.h"
 #include "qmutex.h"
 #include "qwidget.h"
-AppInit *AppInit::self = 0;
+AppInit *AppInit::self = nullptr;
 AppInit *AppInit::Instance() {
     if (!self) {
         QMutex mutex;
@@ -90,23 +95,19 @@ static int CompareVersion(QString strVer1, QString strVer2) {
 
     return iTotal1 < iTotal2 ? -1 : 1;
 }
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonParseError>
-#include "myhelper.h"
-#include "version.h"
+
 void AppInit::sendGetRequest() {
-    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
-             << QSslSocket::sslLibraryVersionString();
+    //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
+    //             << QSslSocket::sslLibraryVersionString();
     QNetworkAccessManager *m_pHttpMgr = new QNetworkAccessManager();
-//    QSslConfiguration config;
-//    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-//    config.setProtocol(QSsl::TlsV1SslV3);
+    //    QSslConfiguration config;
+    //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    //    config.setProtocol(QSsl::TlsV1SslV3);
 
     //设置url
     QString url = "http://leeginger.coding.me/autoUpdate/bms_tool.json";
     QNetworkRequest requestInfo;
-    //requestInfo.setSslConfiguration(config);
+    // requestInfo.setSslConfiguration(config);
     requestInfo.setUrl(QUrl(url));
 
     //添加事件循环机制，返回后再运行后面的
@@ -131,17 +132,16 @@ void AppInit::sendGetRequest() {
     if (jsonpe.error == QJsonParseError::NoError) {
         if (json.isObject()) {
             QJsonObject obj = json.object();
-            if (obj.contains("error")) {
-                qDebug() << "error:" << obj["error"];
-            } else {
+            if (obj.contains("name") && obj.contains("verison")) {
                 QString name = obj["name"].toString();
+                QString version = obj["verison"].toString();
                 if (name == "bms_tool") {
-                    int rc = CompareVersion(VER_FILEVERSION_STR, obj["verison"].toString());
-                    qDebug() << rc;
-                    if (rc > 0) {
-                        qDebug() << VER_FILEVERSION_STR << "----" << obj["verison"].toString();
+                    int rc = CompareVersion(VER_FILEVERSION_STR, version);
+                    qDebug() << rc << ":" << obj;
+                    if (rc < 0) {
+                        myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)")).arg(version));
                     } else {
-                        myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)")).arg(obj["verison"].toString()));
+                        qDebug() << VER_FILEVERSION_STR << "===>" << version;
                     }
                 }
             }

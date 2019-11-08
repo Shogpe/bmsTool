@@ -4,7 +4,7 @@
 #include "myhelper.h"
 #include "utils.h"
 
-static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, WORD(0x9000), 0x1122, 0x3344, 0x5566};
+static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
 static MB_NODE tab_config[] = {
     {0, "Umax", 4, 5376, 514, 128, 0.0001},
     {1, "UmaxID", 4, 5377, 514, 128, 1},
@@ -284,10 +284,11 @@ void mb_cmu::run() {
             }
             case SM_INIT: {
                 rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
-                sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
-                sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
                 if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;
+                    sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
+                    sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
+                    isWrLocked = (sys_para.Name.uFunCtrReg &(0x01 << WR_LOCK_BIT)) > 0?true:false;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
                         config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
                         config.Tp_num != sys_para.Name.u16BmuPoleTNum) {
@@ -434,6 +435,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
         ret = write_ao(addr, *pv);
         return ret;
     }
+    if(isWrLocked) modbus_write_register(cmu,ADDR_WR_LOCK,MB_UNLOCK);
     ret = modbus_write_registers(cmu, addr, len, pv);
     if (ret < 0)
         qDebug() << "wr aos failed" << addr << ":" << ret;
@@ -443,6 +445,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
 }
 int mb_cmu::write_ao(uint16_t addr, uint16_t v) {
     int ret = -1;
+    if(isWrLocked) modbus_write_register(cmu,ADDR_WR_LOCK,MB_UNLOCK);
     ret = modbus_write_register(cmu, addr, v);
     if (ret < 0)
         qDebug() << "wr ao failed" << addr << ":" << ret;

@@ -1,8 +1,9 @@
 #ifndef MY_SPIN_BOX_H
 #define MY_SPIN_BOX_H
 #include <QDateTime>
+#include <QLineEdit>
 #include <QSpinBox>
-
+#include <QDebug>
 class MyDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT
 
@@ -13,10 +14,12 @@ class MyDoubleSpinBox : public QDoubleSpinBox {
         /* 4 - number of digits, 10 - base of number, '0' - pad character*/
         return QString("%1").arg(value);
     }
-    virtual void mousePressEvent(QMouseEvent* event) { this->selectAll(); }
+    virtual void mousePressEvent(QMouseEvent* event) { }
+    //virtual void focusInEvent(QFocusEvent* event) { qDebug() << "f_in:"<<this->objectName(); }
+    //virtual void focusOutEvent(QFocusEvent* event) { qDebug() << "f_out:"<<this->objectName();this->lineEdit()->deselect(); }
 
    private:
-    void wheelEvent(QWheelEvent* event) { return; };
+    void wheelEvent(QWheelEvent* event) { return; }
 };
 
 class MyTimeSpinBox : public QDoubleSpinBox {
@@ -72,7 +75,5 @@ class MyStatusSpinBox : public QDoubleSpinBox {
    public:
     MyStatusSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {}
 
-    virtual void mousePressEvent(QMouseEvent* event) {
-      this->setToolTip(this->objectName());
-    }
+    virtual void mousePressEvent(QMouseEvent* event) { this->setToolTip(this->objectName()); }
 };

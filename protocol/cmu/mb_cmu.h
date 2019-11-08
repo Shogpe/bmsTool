@@ -259,7 +259,7 @@ typedef enum {
     CMUV1 = 0,
     CMUV2,  //
 } BMS_PROTOCOL;
-
+#define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
 class mb_cmu : public QThread {
     Q_OBJECT
@@ -281,6 +281,7 @@ class mb_cmu : public QThread {
     CMU_CONF config;
     vector<ST_NODE_DATA> tab_data;
     uint32_t cmu_ver = 0;
+    bool isWrLocked = 0;
     uint32_t cmu_status;
     int max_offset;
     MessageQueue *pMq;

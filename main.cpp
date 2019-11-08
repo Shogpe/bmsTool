@@ -43,5 +43,11 @@ int main(int argc, char *argv[]) {
     // w.setCentralWidget( main_ui);
     w.show();
 
-    return a.exec();
+    int ret = a.exec();
+    if (ret == 773) {
+      QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+      return 0;
+    }
+
+    return ret;
 }

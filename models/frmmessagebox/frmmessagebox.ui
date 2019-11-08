@@ -125,13 +125,10 @@
         <item>
          <widget class="QPushButton" name="btnOk">
           <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
+           <cursorShape>BusyCursor</cursorShape>
           </property>
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
           </property>
           <property name="text">
            <string>确定(&amp;O)</string>

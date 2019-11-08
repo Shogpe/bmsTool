@@ -150,13 +150,13 @@ void MainUI::buttonClick() {
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
     } else if (name == "系统设置") {
-        ui->stackedWidget->setCurrentIndex(1);
+        //ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {
-        ui->stackedWidget->setCurrentIndex(2);
+        //ui->stackedWidget->setCurrentIndex(2);
     } else if (name == "使用帮助") {
-        ui->stackedWidget->setCurrentIndex(3);
-    } else if (name == "用户退出") {
-        exit(0);
+        //ui->stackedWidget->setCurrentIndex(3);
+    } else if (name == "重启") {
+        qApp->exit(773);
     }
 }
 

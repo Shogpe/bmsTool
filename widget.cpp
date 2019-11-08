@@ -83,7 +83,7 @@ void Widget::valueChange() {
     if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
         QDialog::Accepted)
         return;
-    this->setFocus();
+    b->clearFocus();
     map<string, NodeReg>::iterator iter1;
     iter1 = mycmu->name_map.find(b->objectName().toStdString());
     if (iter1 != mycmu->name_map.end()) {
@@ -417,15 +417,16 @@ static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, 
                                       {"btnClearEng", {CTRL_AO_ADDR,ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
                                       {"btnIFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IFull}},
                                       {"btnIBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IBase}},
-                                      {"btnIzeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IZero}},
+                                      {"btnIZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IZero}},
                                       {"btnIleakFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LFull}},
                                       {"btnIleakBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LBase}},
                                       {"btnIleakZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LZero}},
                                       {"btnRFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RFull}},
+                                      {"btnRBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RBase}},
                                       {"btnRZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RZero}},
-                                      {"btnUfullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VFull}},
+                                      {"btnUFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VFull}},
                                       {"btnUBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VBase}},
-                                      {"btnUzeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
+                                      {"btnUZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
                                       {"btnReboot", {CTRL_AO_ADDR,ADDR_REBOOT, MB_REBOOT}},
                                       {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
                                       {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},

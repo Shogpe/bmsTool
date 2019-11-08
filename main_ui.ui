@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="horizontalSpacing">
     <number>5</number>
@@ -142,6 +142,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="tbtnConnect">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="text">
                  <string>连接</string>
                 </property>
@@ -368,6 +371,9 @@
      </widget>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QWidget" name="widgetStatus" native="true"/>
+   </item>
    <item row="0" column="0">
     <widget class="QWidget" name="widgetTitle" native="true">
      <property name="sizePolicy">
@@ -378,7 +384,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <property name="leftMargin">
-       <number>10</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -389,7 +395,61 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="0" column="5" rowspan="2">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="2">
+       <widget class="QLabel" name="labTitle">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="labVersion">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="2">
+       <widget class="QLabel" name="labIco">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6" rowspan="2">
        <widget class="QWidget" name="widgetMenu" native="true">
         <layout class="QGridLayout" name="gridLayout_2">
          <property name="leftMargin">
@@ -420,6 +480,9 @@
              <width>30</width>
              <height>30</height>
             </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="toolTip">
             <string>菜单</string>
@@ -552,21 +615,14 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="labTitle">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3" rowspan="2">
+      <item row="1" column="4">
        <widget class="QWidget" name="widgetTop" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>28</height>
+         </size>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <property name="spacing">
           <number>0</number>
@@ -605,7 +661,7 @@
              <normaloff>:/image/main_main.png</normaloff>:/image/main_main.png</iconset>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
           </widget>
          </item>
@@ -631,7 +687,7 @@
              <normaloff>:/image/main_config.png</normaloff>:/image/main_config.png</iconset>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
           </widget>
          </item>
@@ -654,7 +710,7 @@
             <bool>false</bool>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
           </widget>
          </item>
@@ -677,14 +733,14 @@
              <normaloff>:/image/main_person.png</normaloff>:/image/main_person.png</iconset>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="btnExit">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -693,21 +749,21 @@
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>用户退出</string>
+            <string>重启</string>
            </property>
            <property name="icon">
             <iconset resource="other/main.qrc">
              <normaloff>:/image/main_exit.png</normaloff>:/image/main_exit.png</iconset>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
-      <item row="0" column="4" rowspan="2">
+      <item row="1" column="3">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -720,49 +776,8 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="labVersion">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="2">
-       <widget class="QLabel" name="labIco">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QWidget" name="widgetStatus" native="true"/>
    </item>
   </layout>
  </widget>

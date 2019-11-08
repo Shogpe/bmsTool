@@ -7,7 +7,7 @@ class QFramelessWidget : public QWidget {
     Q_OBJECT
    public:
     explicit QFramelessWidget(QWidget *parent = nullptr) : QWidget(parent) {
-        padding = 8;
+        padding = 5;
         moveEnable = true;
         resizeEnable = true;
         widget = 0;

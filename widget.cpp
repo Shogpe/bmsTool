@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
-
+#include <QLineEdit>
 #include "myhelper.h"
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -81,8 +81,9 @@ void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
     double dval = b->value();
     if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
-        QDialog::Accepted)
+        QDialog::Accepted) {
         return;
+    }
     b->clearFocus();
     map<string, NodeReg>::iterator iter1;
     iter1 = mycmu->name_map.find(b->objectName().toStdString());
@@ -102,20 +103,21 @@ void Widget::valueChange() {
     }
 }
 void Widget::timerUpDate() {
-    //    QTime t;
-    //    t.start();  //将此时间设置为当前时间
+    QTime t;
+    t.restart();  //将此时间设置为当前时间
     //
     TMsgData Msg;
-    if (pmq->readMsg(99, Msg) != 0) {
+    while (pmq->readMsg(99, Msg) != 0) {
         if (Msg.msg_type == 0) {
             memcpy(&config, Msg.data.data(), sizeof(config));
             Msg.data.clear();
             this->uiInit();
-            qDebug() << QString("table:%1x%2")
-                            .arg(config.bmu_num)
-                            .arg(config.vol_num + config.T_num + config.Tp_num + config.status_num);
         } else if (Msg.msg_type == 1) {
             if (!mycmu) return;
+            if(Msg.data.toInt()<0) {
+                ui->labelSOE->setText(tr("读取失败!!!"));
+                break;
+            }
             ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
             // qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
             for (int i = 0; i < 500; i++) {
@@ -133,7 +135,7 @@ void Widget::timerUpDate() {
     }
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
-    // qDebug() << t.elapsed() << "ms";
+    //qDebug() << t.elapsed() << "ms";
 }
 void Widget::flushData() {
     //一定要固定宽度，否则刷新很慢
@@ -190,7 +192,7 @@ void Widget::flushData() {
     //版本号
     uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
     uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
-    uint64_t comm_status = (comm_status2 << 32) | comm_status1;
+    uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
     for (int j = 0; j < config.bmu_num; j++) {
         QTableWidgetItem* item = new QTableWidgetItem();
         uint32_t val = *(p32 + j);
@@ -251,7 +253,7 @@ void Widget::flushData() {
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
         foreach (QLabel* Label, SysStatus) {
             try {
-                QString color = (value >> SysStatus.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -268,7 +270,7 @@ void Widget::flushData() {
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -285,7 +287,7 @@ void Widget::flushData() {
                    << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -302,7 +304,7 @@ void Widget::flushData() {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "gold" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -319,7 +321,7 @@ void Widget::flushData() {
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "gold" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -336,7 +338,7 @@ void Widget::flushData() {
                    << ui->bDI15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = (value >> StatusList.indexOf(Label)) & 0x01 > 0 ? "red" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -352,7 +354,7 @@ void Widget::flushData() {
                   << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
         foreach (QCheckBox* rb, RadioList) {
             try {
-                bool bit = (value >> RadioList.indexOf(rb)) & 0x01 > 0;
+                bool bit = ((value >> RadioList.indexOf(rb)) & 0x01 )> 0;
                 QString color = bit ? "red" : "green";
                 rb->setStyleSheet(QString("color:%1").arg(color));
                 rb->blockSignals(true);
@@ -374,7 +376,7 @@ void Widget::flushData() {
         foreach (QCheckBox* cb, CheckBoxList) {
             try {
                 cb->blockSignals(true);
-                cb->setChecked((value >> CheckBoxList.indexOf(cb)) & 0x01 > 0);
+                cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
                 cb->blockSignals(false);
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -475,10 +477,8 @@ void Widget::stateChanged() {
         QDialog::Accepted)
         return;
     TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO;
-    value[0] = 98;
-    //    MsgCmd.data.resize(2 * sizeof(uint16_t));
-    //    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+    value[0] = mycmu->name_map["FuncMask"].reg_addr;
     MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
@@ -516,25 +516,28 @@ void Widget::btn_contrl() {
 
 void Widget::on_lineEditIP_editingFinished() {
     QLineEdit* pEdit = ui->lineEditIP;
+    QString ip_str = pEdit->text();
     if (!pEdit->isModified()) return;
     pEdit->setModified(false);
-    if (!myHelper::IsIP(pEdit->text())) {
+    if (!myHelper::IsIP(ip_str)) {
         myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        pEdit->undo();
         return;
     }
     this->setFocus();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要设备IP为%1吗").arg(pEdit->text()))) != QDialog::Accepted)
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要设备IP为%1吗").arg(ip_str))) != QDialog::Accepted) {
+        pEdit->undo();
         return;
-    uint32_t ip = myHelper::IPV4StringToInteger(pEdit->text());
+    }
+    uint32_t ip = myHelper::IPV4StringToInteger(ip_str);
     uint16_t val[3];
-    val[0] = 99;
+    val[0] = mycmu->name_map["IP"].reg_addr;
     ip = bswap_32(ip);
     val[1] = ip & 0xFFFF;
     val[2] = ip >> 16 & 0xFFFF;
     TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO;
-    MsgCmd.data.resize(3 * sizeof(uint16_t));
-    memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+    MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
 
@@ -544,22 +547,24 @@ void Widget::on_lineEditServIP_editingFinished() {
     pEdit->setModified(false);
     if (!myHelper::IsIP(pEdit->text())) {
         myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        pEdit->undo();
         return;
     }
     this->setFocus();
     if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(pEdit->text()))) !=
-        QDialog::Accepted)
+        QDialog::Accepted) {
+        pEdit->undo();
         return;
+    }
     uint32_t ip = myHelper::IPV4StringToInteger(pEdit->text());
     uint16_t val[3];
-    val[0] = 100;
+    val[0] = mycmu->name_map["ServerIP"].reg_addr;
     ip = bswap_32(ip);
     val[1] = ip & 0xFFFF;
     val[2] = ip >> 16 & 0xFFFF;
     TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO;
-    MsgCmd.data.resize(3 * sizeof(uint16_t));
-    memcpy(MsgCmd.data.data(), &val, 3 * sizeof(uint16_t));
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+    MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
 
@@ -676,13 +681,14 @@ void Widget::on_btnInput_released() {
     }
     qDebug() << "to Int ok!";
     TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO;
-    MsgCmd.data.resize(43 * sizeof(uint16_t));
-    i_value[0] = 57;
-    memcpy(MsgCmd.data.data(), &i_value, 43 * sizeof(uint16_t));
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+    i_value[0] = mycmu->name_map["CellVolH"].reg_addr;
+    MsgCmd.data.append((char*)&i_value, 43 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
 //屏蔽本控件传递事件到父控件
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
+    Q_UNUSED(obj);
+    Q_UNUSED(event);
     return true;  // QWidget::eventFilter(obj, event);
 }

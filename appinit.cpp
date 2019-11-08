@@ -99,11 +99,10 @@ static int CompareVersion(QString strVer1, QString strVer2) {
 void AppInit::sendGetRequest() {
     //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
     //             << QSslSocket::sslLibraryVersionString();
-    QNetworkAccessManager *m_pHttpMgr = new QNetworkAccessManager();
     //    QSslConfiguration config;
     //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
     //    config.setProtocol(QSsl::TlsV1SslV3);
-
+    QNetworkAccessManager *m_pHttpMgr = new QNetworkAccessManager();
     //设置url
     QString url = "http://leeginger.coding.me/autoUpdate/bms_tool.json";
     QNetworkRequest requestInfo;
@@ -132,14 +131,14 @@ void AppInit::sendGetRequest() {
     if (jsonpe.error == QJsonParseError::NoError) {
         if (json.isObject()) {
             QJsonObject obj = json.object();
-            if (obj.contains("name") && obj.contains("verison")) {
+            if (obj.contains("name") && obj.contains("verison")&& obj.contains("desc")) {
                 QString name = obj["name"].toString();
                 QString version = obj["verison"].toString();
                 if (name == "bms_tool") {
                     int rc = CompareVersion(VER_FILEVERSION_STR, version);
                     qDebug() << rc << ":" << obj;
                     if (rc < 0) {
-                        myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)")).arg(version));
+                        myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)\n%2")).arg(version).arg(obj["desc"].toString()));
                     } else {
                         qDebug() << VER_FILEVERSION_STR << "===>" << version;
                     }

@@ -300,8 +300,7 @@ void mb_cmu::run() {
 
                         TMsgData MsgCmd;
                         MsgCmd.msg_type = 0;
-                        MsgCmd.data.resize(sizeof(config));
-                        memcpy(MsgCmd.data.data(), &config, sizeof(config));
+                        MsgCmd.data.append((char*)&config, sizeof(config));
                         pMq->sendMsg(99, MsgCmd);
                     }
 
@@ -348,7 +347,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CONFIG_INIT:
             cmu_status = 0;
             state = SM_CONNECT;
-            //Init();
+            ret = 0;
             break;
         case CTRL_DO: {
             if (Msg.data.size() == 2 * sizeof(uint16_t)) {
@@ -402,6 +401,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             TMsgData MsgCmd;
             MsgCmd.data.clear();
             MsgCmd.msg_type = 1;
+            MsgCmd.data.setNum(ret);
             pMq->sendMsg(99, MsgCmd);
         } break;
         case CTRL_AO_ADDR: {

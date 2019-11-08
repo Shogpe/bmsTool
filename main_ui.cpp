@@ -26,7 +26,7 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     pmq = MessageQueue::getInstance();
     this->pDev->start();
     ui->cmuData->mycmu = pDev;
-    connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::valueChange, Qt::UniqueConnection);
+    connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::IpChange, Qt::UniqueConnection);
     connect(pDev, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
             static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
 
@@ -60,6 +60,7 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
+    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
@@ -160,13 +161,14 @@ void MainUI::buttonClick() {
     }
 }
 
-void MainUI::valueChange() {
+void MainUI::IpChange() {
     QLineEdit* pEdit = (QLineEdit*)sender();
     if (!pEdit->isModified()) return;
     pEdit->setModified(false);
     QString ip = pEdit->text();
     if (!myHelper::IsIP(ip)) {
         myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        pEdit->undo();
         return;
     }
     TMsgData MsgCmd;
@@ -287,7 +289,9 @@ void MainUI::on_btnMenu_Max_clicked() {
     static bool max = false;
     if (max) {
         showNormal();
+        ui->btnMenu_Max->setToolTip(tr("最大化"));
     } else {
+        ui->btnMenu_Max->setToolTip(tr("恢复正常"));
         showMaximized();
     }
     setMoveEnable(max);

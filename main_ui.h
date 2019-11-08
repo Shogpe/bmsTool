@@ -51,7 +51,7 @@ class MainUI : public QFramelessWidget {
    private slots:
     void initForm();
     void buttonClick();
-    void valueChange();
+    void IpChange();
     void initLeftMain();
     void initLeftConfig();
     void leftMainClick();

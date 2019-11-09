@@ -486,19 +486,37 @@ void Widget::checkChanged() {
     QCheckBox* b = (QCheckBox*)sender();
     QList<QCheckBox*> RadioList;
     uint16_t value[2] = {0};
-
     RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
               << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
     value[0] = RadioList.indexOf(b) + 1;
+#if 0
     value[1] = b->isChecked();
     if (myHelper::ShowMessageBoxQuesion(
-            QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("-控合-") : tr("-控分-")))) !=
-        QDialog::Accepted)
+                QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("-控合-") : tr("-控分-")))) !=
+            QDialog::Accepted){
         return;
+    }
+#else
+    QMessageBox box(QMessageBox::Warning,"输出控制",QString("当前控制出口为：%1").arg(b->text()));
+    box.setStandardButtons (QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+    box.setButtonText (QMessageBox::Yes,QString("控 合"));
+    box.setButtonText (QMessageBox::No,QString("控 分"));
+    box.setButtonText (QMessageBox::Cancel,QString("取 消"));
+    int ret = box.exec ();
+    switch(ret){
+    case QMessageBox::Yes:
+        value[1] = true;
+        break;
+    case QMessageBox::No:
+        value[1] = false;
+        break;
+    default:
+        return;
+    }
+#endif
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_DO;
-    MsgCmd.data.resize(2 * sizeof(uint16_t));
-    memcpy(MsgCmd.data.data(), &value, 2 * sizeof(uint16_t));
+    MsgCmd.data.append((char*)&value, 2 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
 void Widget::btn_contrl() {

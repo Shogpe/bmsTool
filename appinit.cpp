@@ -1,7 +1,5 @@
 #include "appinit.h"
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
@@ -11,6 +9,7 @@
 #include "qevent.h"
 #include "qmutex.h"
 #include "qwidget.h"
+#include <QMessageBox>
 AppInit *AppInit::self = nullptr;
 AppInit *AppInit::Instance() {
     if (!self) {
@@ -26,37 +25,7 @@ AppInit *AppInit::Instance() {
 
 AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
-bool AppInit::eventFilter(QObject *obj, QEvent *evt) {
-    QWidget *w = (QWidget *)obj;
-    if (!w->property("canMove").toBool()) {
-        return QObject::eventFilter(obj, evt);
-    }
-
-    static QPoint mousePoint;
-    static bool mousePressed = false;
-
-    QMouseEvent *event = static_cast<QMouseEvent *>(evt);
-    if (event->type() == QEvent::MouseButtonPress) {
-        if (event->button() == Qt::LeftButton) {
-            mousePressed = true;
-            mousePoint = event->globalPos() - w->pos();
-            return true;
-        }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
-        mousePressed = false;
-        return true;
-    } else if (event->type() == QEvent::MouseMove) {
-        if (mousePressed && (event->buttons() && Qt::LeftButton)) {
-            w->move(event->globalPos() - mousePoint);
-            return true;
-        }
-    }
-
-    return QObject::eventFilter(obj, evt);
-}
-
 void AppInit::start() {
-    // qApp->installEventFilter(this);
     sendGetRequest();
 }
 static int CompareVersion(QString strVer1, QString strVer2) {
@@ -96,52 +65,37 @@ static int CompareVersion(QString strVer1, QString strVer2) {
     return iTotal1 < iTotal2 ? -1 : 1;
 }
 
-void AppInit::sendGetRequest() {
-    //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
-    //             << QSslSocket::sslLibraryVersionString();
-    //    QSslConfiguration config;
-    //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-    //    config.setProtocol(QSsl::TlsV1SslV3);
-    QNetworkAccessManager *m_pHttpMgr = new QNetworkAccessManager();
-    //设置url
-    QString url = "http://leeginger.coding.me/autoUpdate/bms_tool.json";
-    QNetworkRequest requestInfo;
-    // requestInfo.setSslConfiguration(config);
-    requestInfo.setUrl(QUrl(url));
-
-    //添加事件循环机制，返回后再运行后面的
-    QEventLoop eventLoop;
-    QNetworkReply *reply = m_pHttpMgr->get(requestInfo);
-    connect(reply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
-    eventLoop.exec();  // block until finish
-    //错误处理
-    if (reply->error() == QNetworkReply::NoError) {
-        qDebug() << "request protobufHttp NoError";
-    } else {
-        qDebug() << "request protobufHttp handle errors here";
-        QVariant statusCodeV = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        // statusCodeV是HTTP服务器的相应码，reply->error()是Qt定义的错误码，可以参考QT的文档
-        qDebug("request protobufHttp found error ....code: %d %d\n", statusCodeV.toInt(), (int)reply->error());
-        qDebug(qPrintable(reply->errorString()));
+void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
+{
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "request Error";
+        return ;
     }
     //请求返回的结果
     QByteArray responseByte = reply->readAll();
+    reply->deleteLater();   //最后要释放reply对象
+
     QJsonParseError jsonpe;
     QJsonDocument json = QJsonDocument::fromJson(responseByte, &jsonpe);
     if (jsonpe.error == QJsonParseError::NoError) {
         if (json.isObject()) {
             QJsonObject obj = json.object();
-            if (obj.contains("name") && obj.contains("verison")&& obj.contains("desc")) {
+            if(obj.contains("name")&&obj.contains("verison")&&obj.contains("url")&&obj.contains("date")&&obj.contains("desc")) {
                 QString name = obj["name"].toString();
                 QString version = obj["verison"].toString();
-                if (name == "bms_tool") {
-                    int rc = CompareVersion(VER_FILEVERSION_STR, version);
-                    qDebug() << rc << ":" << obj;
-                    if (rc < 0) {
-                        myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)\n%2")).arg(version).arg(obj["desc"].toString()));
-                    } else {
-                        qDebug() << VER_FILEVERSION_STR << "===>" << version;
+                QString url = obj["url"].toString();
+                QString date = obj["date"].toString();
+                QString desc = obj["desc"].toString();
+                if (CompareVersion(VER_FILEVERSION_STR, version)<0) {
+                    //myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)\n%2")).arg(version).arg(obj["desc"].toString()));
+                    QString warningStr =  "检测到新版本!\n版本号：" + version + "\n" + "更新时间：" + date + "\n" + "更新说明：" + desc;
+                    int ret = QMessageBox::warning(nullptr, "检查更新",  warningStr, "去下载", "不更新");
+                    if(ret == 0)    //点击更新
+                    {
+                        QDesktopServices::openUrl(QUrl(url));
                     }
+                } else {
+                    qDebug() << VER_FILEVERSION_STR << "===>" << version;
                 }
             }
         } else {
@@ -150,4 +104,23 @@ void AppInit::sendGetRequest() {
     } else {
         qDebug() << "error:" << jsonpe.errorString();
     }
+}
+void AppInit::sendGetRequest() {
+    //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
+    //             << QSslSocket::sslLibraryVersionString();
+    //    QSslConfiguration config;
+    //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    //    config.setProtocol(QSsl::TlsV1SslV3);
+    QNetworkAccessManager *accessManager = new QNetworkAccessManager();
+    //设置url
+    QString url = "http://leeginger.coding.me/autoUpdate/bms_tool.json";
+    QNetworkRequest requestInfo;
+    // requestInfo.setSslConfiguration(config);
+    requestInfo.setUrl(QUrl(url));
+
+    //添加事件循环机制，返回后再运行后面的
+    accessManager->get(requestInfo);
+    connect(accessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    //错误处理
+
 }

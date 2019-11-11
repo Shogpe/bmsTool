@@ -562,19 +562,20 @@ void Widget::on_lineEditIP_editingFinished() {
 void Widget::on_lineEditServIP_editingFinished() {
     QLineEdit* pEdit = ui->lineEditServIP;
     if (!pEdit->isModified()) return;
+    QString ip_str = pEdit->text();
     pEdit->setModified(false);
-    if (!myHelper::IsIP(pEdit->text())) {
+    if (!myHelper::IsIP(ip_str)) {
         myHelper::ShowMessageBoxError(tr("invalid ip address!"));
         pEdit->undo();
         return;
     }
     this->setFocus();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(pEdit->text()))) !=
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(ip_str))) !=
         QDialog::Accepted) {
         pEdit->undo();
         return;
     }
-    uint32_t ip = myHelper::IPV4StringToInteger(pEdit->text());
+    uint32_t ip = myHelper::IPV4StringToInteger(ip_str);
     uint16_t val[3];
     val[0] = mycmu->name_map["ServerIP"].reg_addr;
     ip = bswap_32(ip);

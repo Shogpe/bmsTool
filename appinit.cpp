@@ -26,6 +26,7 @@ AppInit *AppInit::Instance() {
 AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
 void AppInit::start() {
+    myHelper::SetStyle("lightblue");
     sendGetRequest();
 }
 static int CompareVersion(QString strVer1, QString strVer2) {

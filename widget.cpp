@@ -20,7 +20,6 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     //
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
-        // connect(dspbox, &QDoubleSpinBox::editingFinished, this, &Widget::valueChange, Qt::UniqueConnection);
         connect(dspbox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
                 &Widget::valueChange, Qt::UniqueConnection);
     }
@@ -429,7 +428,7 @@ static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, 
                                       {"btnUFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VFull}},
                                       {"btnUBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VBase}},
                                       {"btnUZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
-                                      {"btnReboot", {CTRL_AO_ADDR,ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnReboot", {CTRL_CMD_REBOOT,ADDR_REBOOT, MB_REBOOT}},
                                       {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
                                       {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},
                                       {"btnKMRON", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_ON}},

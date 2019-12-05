@@ -36,6 +36,8 @@ class MainUI : public QFramelessWidget {
     QMenu *title_menu;
     QMenu *langue_menu;
     QMenu *theme_menu;
+    QMenu *update_menu;
+    QList<QAction *> updateActs;
     QActionGroup *langueGroup;
     QActionGroup *themeGroup;
     QAction *setChinese;
@@ -63,6 +65,8 @@ class MainUI : public QFramelessWidget {
     void on_btnMenu_Min_clicked();
     void on_btnMenu_Max_clicked();
     void on_btnMenu_Close_clicked();
+    void onUpdateBtnMenu();
+    void initUpdateMenu();
     void changeLangue();
     void changeTheme();
     void on_cbProtocol_currentIndexChanged(const QString &arg1);

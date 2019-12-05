@@ -255,7 +255,7 @@ void mb_cmu::run() {
     while (1) {
         if (this->stop) break;
         while (pMq->readMsg(0, MsgCmd)) {
-            qDebug() << "recv:" << MsgCmd.msg_type <<",len:"<< MsgCmd.data.size() << "," << MsgCmd.data.toHex();
+            qDebug() << "recv:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," << MsgCmd.data.toHex();
             DealCMD(MsgCmd);
         }
         //状态机
@@ -288,7 +288,7 @@ void mb_cmu::run() {
                     state = SM_READ;
                     sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
                     sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
-                    isWrLocked = (sys_para.Name.uFunCtrReg &(0x01 << WR_LOCK_BIT)) > 0?true:false;
+                    isWrLocked = (sys_para.Name.uFunCtrReg & (0x01 << WR_LOCK_BIT)) > 0 ? true : false;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
                         config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
                         config.Tp_num != sys_para.Name.u16BmuPoleTNum) {
@@ -317,7 +317,6 @@ void mb_cmu::run() {
     }
     qDebug() << "cmu exit..";
 }
-
 
 void mb_cmu::DealCMD(TMsgData& Msg) {
     int ret = -1;
@@ -362,6 +361,16 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 }
             }
         } break;
+        case CTRL_CMD_REBOOT: {
+          uint16_t nb = Msg.data.size();
+          uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+          if (nb == 2 * sizeof(uint16_t)) {
+            ret = write_ao(p[0], p[1]);
+          }
+          ret = 0;
+          break;
+        }
+
         case CTRL_AO: {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;
@@ -380,10 +389,10 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
         }
         case CTRL_SEC_AO: {
-          uint16_t nb = Msg.data.size();
-          if (nb != 2*sizeof (uint16_t)) break;
-          uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-          ret = sec_ctrl(p[0],p[1]);
+            uint16_t nb = Msg.data.size();
+            if (nb != 2 * sizeof(uint16_t)) break;
+            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+            ret = sec_ctrl(p[0], p[1]);
         } break;
         case CTRL_CMD_UNLOCK: {
             ret = write_ao(ADDR_WR_LOCK, MB_UNLOCK);
@@ -435,7 +444,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
         ret = write_ao(addr, *pv);
         return ret;
     }
-    if(isWrLocked) modbus_write_register(cmu,ADDR_WR_LOCK,MB_UNLOCK);
+    if (isWrLocked) modbus_write_register(cmu, ADDR_WR_LOCK, MB_UNLOCK);
     ret = modbus_write_registers(cmu, addr, len, pv);
     if (ret < 0)
         qDebug() << "wr aos failed" << addr << ":" << ret;
@@ -445,7 +454,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
 }
 int mb_cmu::write_ao(uint16_t addr, uint16_t v) {
     int ret = -1;
-    if(isWrLocked) modbus_write_register(cmu,ADDR_WR_LOCK,MB_UNLOCK);
+    if (isWrLocked) modbus_write_register(cmu, ADDR_WR_LOCK, MB_UNLOCK);
     ret = modbus_write_register(cmu, addr, v);
     if (ret < 0)
         qDebug() << "wr ao failed" << addr << ":" << ret;
@@ -565,7 +574,7 @@ int mb_cmu::ReadSOE() {
     cmu_soe.new_soe_count = tab_buf[0];
     cmu_soe.soe_count = tab_buf[1];
     int start = 0x2002;
-    int len = MAX_SOE_COUNT;
+    int len = cmu_soe.soe_count > MAX_SOE_COUNT ? MAX_SOE_COUNT : cmu_soe.soe_count;
     int soe_index = 0;
     do {
         int soe_len = len > 15 ? 15 : len;

@@ -121,20 +121,7 @@ typedef enum {
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
-    CTRL_SEC_AO,
-    CTRL_DOWN_BMS,
-    CTRL_DOWN_BMS_BTL,  // BMS BOOTLOADER
-    CTRL_DOWN_BMU,
-    CTRL_DOWN_BMU_BTL,  // BMU BTL
-    CTRL_UPGRADE_BMU,   //升级BMU,不下载
-    CTRL_ADJ_U_FULL,
-    CTRL_ADJ_U_ZERO,
-    CTRL_ADJ_I_FULL,
-    CTRL_ADJ_I_ZERO,
-    CTRL_ADJ_ILEAK_FULL,
-    CTRL_ADJ_ILEAK_ZERO,
-    CTRL_ADJ_RINS_FULL,
-    CTRL_ADJ_RINS_ZERO,
+    CTRL_SEC_AO, //带密钥命令
     CTRL_CMD_CLR_ENG,
     CTRL_CMD_CLR_SOE,
     CTRL_CMD_CLR_ALL_SOE,
@@ -164,7 +151,7 @@ typedef enum {
 #define MB_UpdateBFW 0xa566  // 42342 下载BMU信息文件
 #define MB_UpdateCFW 0x7567  // 30055 下载CMU信息文件
 #define MB_UpdBmuNDL 0xa533  // 42291 直接升级BMU应用程序
-#define MB_UpdRins   0xa5b6  // 42291 直接升级BMU应用程序
+#define MB_UpdRins   0xa5b6  // 42422 下载升级绝缘板程序
 //校准命令
 #define ADDR_ADJ     0xFFC0
 #define MB_Adj_IZero 0x11  //电流采样零刻度校准

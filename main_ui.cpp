@@ -1,4 +1,3 @@
-#pragma execution_character_set("utf-8")
 #include "main_ui.h"
 #include <QTimer>
 #include "Toast.h"
@@ -60,7 +59,8 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
-    //this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
+    // this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
+    // Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
@@ -97,16 +97,16 @@ void MainUI::initForm() {
     ui->btnMain->click();
     //创建语言切换菜单
     langue_menu = new QMenu(tr("Langue"));
-    setChinese = new QAction(tr("Chinese"), this);
-    setChinese->setCheckable(true);
-    setEnglish = new QAction(tr("English"), this);
-    setEnglish->setCheckable(true);
-    setEnglish->setChecked(true);
-    langue_menu->addAction(setChinese);
-    langue_menu->addAction(setEnglish);
-    langueGroup = new QActionGroup(this);
-    langueGroup->addAction(setEnglish);
-    langueGroup->addAction(setChinese);
+    //    setChinese = new QAction(tr("Chinese"), this);
+    //    setChinese->setCheckable(true);
+    //    setEnglish = new QAction(tr("English"), this);
+    //    setEnglish->setCheckable(true);
+    //    setEnglish->setChecked(true);
+    langue_menu->addAction("Chinese", this, &MainUI::changeLangue);
+    langue_menu->addAction("English", this, &MainUI::changeLangue);
+    //    langueGroup = new QActionGroup(this);
+    //    langueGroup->addAction(setEnglish);
+    //    langueGroup->addAction(setChinese);
 
     //创建主题切换菜单
     theme_menu = new QMenu(tr("Theme"));
@@ -128,11 +128,13 @@ void MainUI::initForm() {
     title_menu = new QMenu;
     title_menu->addMenu(langue_menu);
     title_menu->addMenu(theme_menu);
+    title_menu->addAction("test", this, &MainUI::changeLangue);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
+
     //关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
-    connect(langueGroup, &QActionGroup::triggered, this, &MainUI::changeLangue);
     connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
+    initUpdateMenu();
 }
 
 void MainUI::buttonClick() {
@@ -151,11 +153,11 @@ void MainUI::buttonClick() {
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
     } else if (name == "系统设置") {
-        //ui->stackedWidget->setCurrentIndex(1);
+        // ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {
-        //ui->stackedWidget->setCurrentIndex(2);
+        // ui->stackedWidget->setCurrentIndex(2);
     } else if (name == "使用帮助") {
-        //ui->stackedWidget->setCurrentIndex(3);
+        // ui->stackedWidget->setCurrentIndex(3);
     } else if (name == "重启") {
         qApp->exit(773);
     }
@@ -244,6 +246,8 @@ void MainUI::leftConfigClick() {
 }
 void MainUI::changeLangue()  //切换语言
 {
+    QAction* b = (QAction*)sender();
+    qDebug() << b->objectName() << b->text();
     //  if(setChinese->isChecked()){//判断选中了哪个语言
     //    translator->load(":/langue/zh_cn.qm");//加载翻译文件
     //    qApp->installTranslator(translator);//安装翻译文件
@@ -309,7 +313,7 @@ void MainUI::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->pDev->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->pDev->cmu_ver;
-        ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
+        ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");
     } else {
         ui->labelStatus->setStyleSheet("color:red");
@@ -331,4 +335,50 @@ void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     qDebug() << arg1;
     settings->setValue("global/protocol", arg1);
     myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
+}
+
+void MainUI::initUpdateMenu() {
+    update_menu = new QMenu;
+    update_menu->addAction("下载升级BMS", this, &MainUI::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMU", this, &MainUI::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMS Boot", this, &MainUI::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMU Boot", this, &MainUI::onUpdateBtnMenu);
+    update_menu->addAction("下载升级绝缘板", this, &MainUI::onUpdateBtnMenu);
+    update_menu->addAction("升级BMU", this, &MainUI::onUpdateBtnMenu);
+    ui->btnVer->setMenu(update_menu);
+}
+
+void MainUI::onUpdateBtnMenu()
+{
+    QAction* b = (QAction*)sender();
+    TMsgData MsgCmd;
+    if (b->text() == "下载升级BMS") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateCMU};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMU") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBMU};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMS Boot") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTC};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMU Boot") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTB};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "升级BMU") {
+      MsgCmd.msg_type = CTRL_SEC_AO;
+      uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
+      MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级绝缘板") {
+      MsgCmd.msg_type = CTRL_SEC_AO;
+      uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
+      MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else {
+        return;
+    }
+    pmq->sendMsg(0, MsgCmd);
+    return;
 }

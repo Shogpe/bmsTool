@@ -59,6 +59,6 @@ RESOURCES   += other/qss.qrc
 CONFIG      += qt warn_off static
 CONFIG += c++11
 INCLUDEPATH += $$PWD
-win32: LIBS += -LC:\Qt\5.12.3\mingw73_32\lib -lws2_32
-
+win32: LIBS += -lws2_32
+unix:  LIBS += -licudata
 RC_FILE += main.rc

@@ -74,26 +74,29 @@
 #define HAVE_SELECT 1
 
 /* Define to 1 if you have the `socket' function. */
-#undef HAVE_SOCKET
+#define HAVE_SOCKET
 
 /* Define to 1 if you have the <stdint.h> header file. */
-#undef HAVE_STDINT_H
+#define HAVE_STDINT_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
-#undef HAVE_STDLIB_H
+#define HAVE_STDLIB_H
 
 /* Define to 1 if you have the `strerror' function. */
-#undef HAVE_STRERROR
+#define HAVE_STRERROR
 
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
 
 /* Define to 1 if you have the <string.h> header file. */
-#undef HAVE_STRING_H
+#define HAVE_STRING_H
 
 /* Define to 1 if you have the `strlcpy' function. */
+#if (defined __APPLE__)
+#define HAVE_STRLCPY
+#else
 #undef HAVE_STRLCPY
-
+#endif
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #undef HAVE_SYS_IOCTL_H
 
@@ -119,10 +122,10 @@
 #define HAVE_TIME_H 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
-#undef HAVE_UNISTD_H
+#define HAVE_UNISTD_H
 
 /* Define to 1 if you have the `vfork' function. */
-#undef HAVE_VFORK
+#define HAVE_VFORK
 
 /* Define to 1 if you have the <vfork.h> header file. */
 #undef HAVE_VFORK_H

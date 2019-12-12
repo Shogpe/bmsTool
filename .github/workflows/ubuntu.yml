@@ -46,5 +46,7 @@ jobs:
           fetch-depth: 1
       - name: build ubuntu
         run: |
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${env:QtPath}/lib/
+          ldd ${env:QtPath}/lib/libQt5Core.so
           qmake
           make

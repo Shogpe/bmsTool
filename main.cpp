@@ -4,6 +4,15 @@
 #include <QTextCodec>
 #include "appinit.h"
 #include "main_ui.h"
+void reboot()
+{
+    QString program = QApplication::applicationFilePath();
+    QStringList arguments = QApplication::arguments();
+    QString workingDirectory = QDir::currentPath();
+    QProcess::startDetached(program, arguments, workingDirectory);
+    QApplication::exit();
+}
+
 int main(int argc, char *argv[]) {
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -24,28 +33,13 @@ int main(int argc, char *argv[]) {
     QTextCodec::setCodecForLocale(codec);
 #endif
     //加载样式表
-    QFile file(":/qss/lightblue.css");
-    if (file.open(QFile::ReadOnly)) {
-        QString qss = QLatin1String(file.readAll());
-        QString paletteColor = qss.mid(20, 7);
-        qApp->setPalette(QPalette(QColor(paletteColor)));
-        qApp->setStyleSheet(qss);
-        file.close();
-    }
-
-    a.setFont(QFont("Microsoft Yahei", 9));
     AppInit::Instance()->start();
-    // QMainWindow w;
     MainUI w;
-    // w.setWindowFlags(Qt::FramelessWindowHint);
-    // w.setWindowFlags(Qt::CustomizeWindowHint);
-    // MainUI *main_ui = new MainUI;
-    // w.setCentralWidget( main_ui);
     w.show();
 
     int ret = a.exec();
-    if (ret == 773) {
-      QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+    if (ret == EXIT_CODE_REBOOT) {
+      reboot();
       return 0;
     }
 

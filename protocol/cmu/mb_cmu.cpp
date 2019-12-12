@@ -239,7 +239,6 @@ int mb_cmu::ReadALL() {
 
     return status;
 }
-#define TIME_OUTOFDATE 3 * 31 * 24 * 60 * 60
 
 void mb_cmu::run() {
     qDebug() << time(nullptr);

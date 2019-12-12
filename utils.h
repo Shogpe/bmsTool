@@ -5,6 +5,7 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+#define TIME_OUTOFDATE 24 * 31 * 24 * 60 * 60
 
 time_t cvt_TIME(char const *Date);
 

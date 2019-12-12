@@ -161,8 +161,6 @@ int mb_cmu_v2::Init() {
     return 0;
 }
 
-#define TIME_OUTOFDATE 1 * 31 * 24 * 60 * 60
-
 void mb_cmu_v2::run() {
     qDebug() << time(nullptr);
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {

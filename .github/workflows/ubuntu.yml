@@ -46,9 +46,5 @@ jobs:
           fetch-depth: 1
       - name: build ubuntu
         run: |
-          export qt_Path=${env:Qt5_Dir}
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$qt_Path/lib/
-          echo $LD_LIBRARY_PATH
-          locate libicuuc.so.56
           qmake
           make

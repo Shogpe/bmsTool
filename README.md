@@ -5,9 +5,9 @@
 演示github中的Qt项目，使用CI持续集成(Github actions)
 
 ## status
-| [Windows][win-link]| [Ubuntu][ubuntu-link]|[MacOS][macos-link]
-|---------------|---------------|-----------------|-----------------|----------------|
-| ![win-badge]  | ![ubuntu-badge]      | ![macos-badge]
+| [Windows][win-link]| [Ubuntu][ubuntu-link]|[MacOS][macos-link]|
+|---------------|---------------|-----------------|
+| ![win-badge]  | ![ubuntu-badge]      | ![macos-badge]|
 
 
 |[License][license-link]| [Release][release-link]|[Download][download-link]|[Issues][issues-link]|[Wiki][wiki-links]|

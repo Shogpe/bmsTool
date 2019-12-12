@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-Qt/${{matrix.qt_ver}}/${{matrix.qt_arch}}    
       - name: setupQt
         if: steps.UbuntuCacheQt.outputs.cache-hit == 'true'
-        shell: pwsh
+        shell: bash
         env:
           QtPath: ../Qt/${{matrix.qt_ver}}/${{matrix.qt_arch}}
         run: |
@@ -45,6 +45,8 @@ jobs:
         with:
           fetch-depth: 1
       - name: build ubuntu
+        env:
+          QtPath: ../Qt/${{matrix.qt_ver}}/${{matrix.qt_arch}}
         run: |
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${env:QtPath}/lib/
           ldd ${env:QtPath}/lib/libQt5Core.so

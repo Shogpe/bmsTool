@@ -34,7 +34,7 @@ jobs:
             msvc_arch: x86
             qt_arch_install: msvc2017
     env:
-      targetName: output\release\bms_tool.exe
+      targetName: bms_tool.exe
     # 步骤
     steps:
       - name: cacheQt

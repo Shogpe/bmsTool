@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     QTextCodec::setCodecForLocale(codec);
 #endif
     //加载样式表
+    a.setFont(QFont("Microsoft Yahei", 9));
     AppInit::Instance()->start();
     MainUI w;
     w.show();

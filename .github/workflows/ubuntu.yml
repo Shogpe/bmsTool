@@ -48,7 +48,8 @@ jobs:
         env:
           QtPath: ../Qt/${{matrix.qt_ver}}/${{matrix.qt_arch}}
         run: |
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${env:QtPath}/lib/
-          ldd ${env:QtPath}/lib/libQt5Core.so
+          $qt_Path=${env:QtPath}
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$qt_Path/lib/
+          ldd $qt_Path/lib/libQt5Core.so
           qmake
           make

@@ -92,10 +92,10 @@
 #define HAVE_STRING_H
 
 /* Define to 1 if you have the `strlcpy' function. */
-#if (defined _WIN32)
-#undef HAVE_STRLCPY
-#else
+#if (defined __APPLE__)
 #define HAVE_STRLCPY
+#else
+#undef HAVE_STRLCPY
 #endif
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #undef HAVE_SYS_IOCTL_H

@@ -56,8 +56,7 @@ FORMS       += \
 RESOURCES   += other/main.qrc
 RESOURCES   += other/qss.qrc
 # RESOURCES   += qml/dynamic.qml
-CONFIG      += qt warn_off static
-CONFIG += c++11
+CONFIG += qt warn_off c++11
 INCLUDEPATH += $$PWD
 win32: LIBS += -lws2_32
 macx {

@@ -49,7 +49,7 @@ jobs:
       - name: build ubuntu
         run: |
           qmake
-          make
+          make release
       # tag 打包
       - name: package
         if: startsWith(github.event.ref, 'refs/tags/')

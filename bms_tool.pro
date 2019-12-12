@@ -60,12 +60,5 @@ CONFIG      += qt warn_off static
 CONFIG += c++11
 INCLUDEPATH += $$PWD
 win32: LIBS += -lws2_32
-unix:  
-macx {
-# mac only
-}
-unix:!macx{
-# linux only
-LIBS += -licudata
-}
+unix:  LIBS += -licudata
 RC_FILE += main.rc

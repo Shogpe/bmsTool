@@ -56,7 +56,7 @@ jobs:
       - name: Install Qt
         if: steps.WindowsCacheQt.outputs.cache-hit != 'true'
         # 使用外部action。这个action专门用来安装Qt
-        uses: jurplel/install-qt-action@v2.0.0
+        uses: jurplel/install-qt-action@v2
         with:
           # Version of Qt to install
           version: ${{ matrix.qt_ver }}
@@ -167,7 +167,7 @@ jobs:
         if: startsWith(github.event.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ env.uploadUrl }}
           asset_path: ./${{ env.packageName }}.zip

@@ -60,9 +60,9 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
-    // this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-    // Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
+     Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
+//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
@@ -154,7 +154,7 @@ void MainUI::buttonClick() {
     if (name == "主界面") {
         ui->stackedWidget->setCurrentIndex(0);
     } else if (name == "系统设置") {
-        // ui->stackedWidget->setCurrentIndex(1);
+        ui->stackedWidget->setCurrentIndex(1);
     } else if (name == "事件查询") {
         // ui->stackedWidget->setCurrentIndex(2);
     } else if (name == "使用帮助") {
@@ -381,5 +381,6 @@ void MainUI::onUpdateBtnMenu()
         return;
     }
     pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
     return;
 }

@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -4795,9 +4795,6 @@
          <property name="singleStep">
           <double>0.000000000000000</double>
          </property>
-         <property name="stepType">
-          <enum>QAbstractSpinBox::DefaultStepType</enum>
-         </property>
         </widget>
        </item>
        <item row="4" column="5">
@@ -6400,9 +6397,6 @@
          <property name="singleStep">
           <double>0.000000000000000</double>
          </property>
-         <property name="stepType">
-          <enum>QAbstractSpinBox::DefaultStepType</enum>
-         </property>
         </widget>
        </item>
        <item row="12" column="5">
@@ -6552,9 +6546,6 @@
          </property>
          <property name="singleStep">
           <double>0.000000000000000</double>
-         </property>
-         <property name="stepType">
-          <enum>QAbstractSpinBox::DefaultStepType</enum>
          </property>
         </widget>
        </item>
@@ -6794,19 +6785,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="btnDownBMS">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMS</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="5">
            <widget class="QPushButton" name="btnKMPON">
             <property name="sizePolicy">
@@ -6846,19 +6824,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="btnDownBMU">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMU</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="5">
            <widget class="QPushButton" name="btnAutoKMON">
             <property name="sizePolicy">
@@ -6885,19 +6850,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnDownBMUBoot">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMU Boot</string>
-            </property>
-           </widget>
-          </item>
           <item row="7" column="5">
            <widget class="QPushButton" name="btnResON">
             <property name="sizePolicy">
@@ -6911,38 +6863,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="btnDownBMSBoot">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMS Boot</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnUpBMU_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级绝缘板</string>
-            </property>
-            <property name="default">
-             <bool>false</bool>
-            </property>
-            <property name="flat">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="5">
            <widget class="QPushButton" name="btnKMNON">
             <property name="sizePolicy">
@@ -6953,25 +6873,6 @@
             </property>
             <property name="text">
              <string>KM-控制合闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="btnUpBMU">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMU(不下载)</string>
-            </property>
-            <property name="default">
-             <bool>false</bool>
-            </property>
-            <property name="flat">
-             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -7882,12 +7783,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>btnDownBMS</tabstop>
-  <tabstop>btnDownBMSBoot</tabstop>
-  <tabstop>btnDownBMU</tabstop>
-  <tabstop>btnDownBMUBoot</tabstop>
-  <tabstop>btnUpBMU_2</tabstop>
-  <tabstop>btnUpBMU</tabstop>
   <tabstop>btnIZeroAdj</tabstop>
   <tabstop>btnIBaseAdj</tabstop>
   <tabstop>btnIFullAdj</tabstop>

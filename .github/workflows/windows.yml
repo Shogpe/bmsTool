@@ -6,12 +6,16 @@ on:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   # pull_request时触发workflow
   pull_request:
     # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 jobs:
   build:
     name: Build
@@ -99,8 +103,8 @@ jobs:
           # 打印环境变量packageName
           Write-Host 'packageName:'${env:packageName}
       # tag 查询github-Release
-      - name: queryReleaseWin
-        id: queryReleaseWin
+      - name: queryRelease
+        id: queryRelease
         if: startsWith(github.event.ref, 'refs/tags/')
         shell: pwsh
         env:
@@ -111,7 +115,10 @@ jobs:
           [string]$url = 'https://api.github.com/repos/' + ${env:githubFullName} + '/releases/tags/' + ${tag}
           $response={}
           try {
-            $response = Invoke-RestMethod -Uri $url -Method Get
+            $headers = @{
+              Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"
+            }
+            $response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
           } catch {
             Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
             Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
@@ -125,10 +132,10 @@ jobs:
             # 没查到，输出
             echo "::set-output name=needCreateRelease::true"  
           }
-      # tag 创建github-Release
-      - name: createReleaseWin
-        id: createReleaseWin
-        if: startsWith(github.event.ref, 'refs/tags/') && steps.queryReleaseWin.outputs.needCreateRelease == 'true'
+      # # tag 创建github-Release
+      - name: create_release
+        id: create_release
+        if: startsWith(github.event.ref, 'refs/tags/') && steps.queryRelease.outputs.needCreateRelease == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/create-release@v1.0.0
@@ -145,7 +152,7 @@ jobs:
         shell: pwsh
         env:
           githubFullName: ${{ github.event.repository.full_name }}
-          upUrl: ${{ steps.createReleaseWin.outputs.upload_url }}
+          upUrl: ${{ steps.queryRelease.outputs.upload_url }}
           ref: ${{ github.event.ref }}
         run: |
           # upUrl不为空，导出就完事
@@ -156,7 +163,10 @@ jobs:
           } 
           [string]$tag = ${env:ref}.Substring(${env:ref}.LastIndexOf('/') + 1)
           [string]$url = 'https://api.github.com/repos/' + ${env:githubFullName} + '/releases/tags/' + ${tag}
-          $response = Invoke-RestMethod -Uri $url -Method Get
+          $headers = @{
+            Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"
+          }
+          $response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
           [string]$latestUpUrl = $response.upload_url
           Write-Host 'latestUpUrl:'$latestUpUrl
           echo "::set-env name=uploadUrl::$latestUpUrl"
@@ -169,7 +179,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/upload-release-asset@v1.0.1
         with:
-          upload_url: ${{ env.uploadUrl }}
+          upload_url:  ${{ env.uploadUrl }}
           asset_path: ./${{ env.packageName }}.zip
           asset_name: ${{ env.packageName }}.zip
           asset_content_type: application/zip

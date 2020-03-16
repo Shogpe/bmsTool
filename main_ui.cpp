@@ -39,7 +39,6 @@ void MainUI::slot_message_call(const QString& msg) {
 }
 bool MainUI::load_config() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
-    settings->deleteLater();
     QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
     QByteArray ba = settings->value("global/layout").toByteArray();
     ui->lineEditIP->setText(target_ip);
@@ -53,6 +52,8 @@ MainUI::~MainUI() {
     pDev->wait();
     QByteArray ba = this->saveGeometry();
     settings->setValue("global/layout", ba);
+    settings->sync();
+    settings->deleteLater();
     delete settings;
     delete pDev;
     delete ui;
@@ -60,9 +61,9 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
-     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-     Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint);
-//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
+//                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));

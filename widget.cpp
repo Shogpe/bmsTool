@@ -408,13 +408,7 @@ struct mb_cmd {
     uint16_t addr;
     uint16_t value;
 };
-static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateCMU}},
-                                      {"btnDownBMSBoot", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBTC}},
-                                      {"btnDownBMU", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBMU}},
-                                      {"btnDownBMUBoot", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdateBTB}},
-                                      {"btnUpBMU", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdBmuNDL}},
-                                      {"btnUpIns", {CTRL_SEC_AO,ADDR_UPGRADE, MB_UpdRins}},
-                                      {"btnBMULock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
+static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
                                       {"btnBMUUnlock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_LOCK}},
                                       {"btnClearEng", {CTRL_AO_ADDR,ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
                                       {"btnIFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IFull}},
@@ -430,6 +424,8 @@ static map<QString, mb_cmd> btnMap = {{"btnDownBMS", {CTRL_SEC_AO,ADDR_UPGRADE, 
                                       {"btnUBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VBase}},
                                       {"btnUZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
                                       {"btnReboot", {CTRL_CMD_REBOOT,ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnIOunlock", {CTRL_AO_ADDR,ADDR_IO_EN, MB_IO_UNLOCK}},
+                                      {"btnIOlock", {CTRL_AO_ADDR,ADDR_IO_EN, MB_IO_LOCK}},
                                       {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
                                       {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},
                                       {"btnKMRON", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_ON}},

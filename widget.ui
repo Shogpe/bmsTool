@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -6772,19 +6772,6 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="4">
-           <widget class="QPushButton" name="btnQFOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>QF控制分闸</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="5">
            <widget class="QPushButton" name="btnKMPON">
             <property name="sizePolicy">
@@ -6863,38 +6850,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="btnDownBMSBoot">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级BMS Boot</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnUpIns">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>升级绝缘板</string>
-            </property>
-            <property name="default">
-             <bool>false</bool>
-            </property>
-            <property name="flat">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="5">
            <widget class="QPushButton" name="btnKMNON">
             <property name="sizePolicy">
@@ -6944,19 +6899,6 @@
             </property>
             <property name="text">
              <string>电操分闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QPushButton" name="btnBMUUnlock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU拨码解锁</string>
             </property>
            </widget>
           </item>
@@ -7234,6 +7176,58 @@
             </property>
             <property name="text">
              <string>预留传感器高点校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="btnIOunlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string> IO解锁</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btnIOlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string> IO锁定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QPushButton" name="btnQFOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>QF控制分闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QPushButton" name="btnBMUUnlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU拨码解锁</string>
             </property>
            </widget>
           </item>
@@ -7666,7 +7660,7 @@
           <item row="5" column="1">
            <widget class="QCheckBox" name="bFunc13">
             <property name="text">
-             <string>备用14</string>
+             <string>并列/解列</string>
             </property>
            </widget>
           </item>
@@ -7722,28 +7716,28 @@
           <item row="4" column="1">
            <widget class="QCheckBox" name="bFunc12">
             <property name="text">
-             <string>备用13</string>
+             <string>单簇/多簇</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QCheckBox" name="bFunc11">
             <property name="text">
-             <string>备用12</string>
+             <string>调试输出使能</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="QCheckBox" name="bFunc10">
             <property name="text">
-             <string>备用11</string>
+             <string>网络输出使能</string>
             </property>
            </widget>
           </item>
           <item row="6" column="1">
            <widget class="QCheckBox" name="bFunc14">
             <property name="text">
-             <string>备用15</string>
+             <string>禁用预充</string>
             </property>
            </widget>
           </item>
@@ -7764,7 +7758,7 @@
           <item row="7" column="1">
            <widget class="QCheckBox" name="bFunc15">
             <property name="text">
-             <string>备用16</string>
+             <string>禁用安防</string>
             </property>
            </widget>
           </item>
@@ -7815,12 +7809,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>btnDownBMS</tabstop>
-  <tabstop>btnDownBMSBoot</tabstop>
-  <tabstop>btnDownBMU</tabstop>
-  <tabstop>btnDownBMUBoot</tabstop>
-  <tabstop>btnUpIns</tabstop>
-  <tabstop>btnUpBMU</tabstop>
   <tabstop>btnIZeroAdj</tabstop>
   <tabstop>btnIBaseAdj</tabstop>
   <tabstop>btnIFullAdj</tabstop>
@@ -7838,9 +7826,7 @@
   <tabstop>btnClearEng</tabstop>
   <tabstop>btnTimeAdj</tabstop>
   <tabstop>btnResetDef</tabstop>
-  <tabstop>btnBMUUnlock</tabstop>
   <tabstop>btnBMULock</tabstop>
-  <tabstop>btnQFOFF</tabstop>
   <tabstop>btnAutoKMON</tabstop>
   <tabstop>btnAutoKMOFF</tabstop>
   <tabstop>btnKMPON</tabstop>

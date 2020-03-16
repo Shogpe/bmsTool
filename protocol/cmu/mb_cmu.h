@@ -100,6 +100,10 @@ typedef enum {
 #define ADDR_REBOOT 0xFFF3
 #define MB_REBOOT   0x1D32
 
+#define ADDR_IO_EN 0xFFF4
+#define MB_IO_UNLOCK   0xA5B6
+#define MB_IO_LOCK   0x0
+
 #define ADDR_CLEAR_SOE 0xFFF8
 #define MB_CLR_SOE     0xAA55
 #define MB_CLR_ALL_SOE 0xBB66

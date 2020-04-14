@@ -170,6 +170,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
     int status = 0;
     int read_len = 0;
     int rc = 0;
+    if(!reg_num) return status;
     switch (type) {
         case MODBUS_FC_READ_HOLDING_REGISTERS: {
             do {
@@ -231,12 +232,12 @@ int mb_cmu::ReadALL() {
         reg_num = config.bmu_num * config.status_num;
         status += ReadData(0x03, 0x100, reg_num, p + offset);
         offset += reg_num;
-        //版本号
-        reg_num = config.bmu_num * 2 + 2;
-        status += ReadData(0x03, 0x500, reg_num, p + offset);
-        offset += reg_num;
-    }
 
+    }
+    //版本号
+    reg_num = config.bmu_num * 2 + 2;
+    status += ReadData(0x03, 0x500, reg_num, p + offset);
+    offset += reg_num;
     return status;
 }
 

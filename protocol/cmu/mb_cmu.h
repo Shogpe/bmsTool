@@ -83,7 +83,11 @@ typedef enum {
 #define MB_Adj_LBase 0xbb33  //漏电流基点校准
 #define MB_Adj_TBase 0xbb44
 #define MB_Adj_RBase 0xbb55
-
+//绝缘校准
+#define ADDR_RINS_ADJ  0xF000
+#define MB_RU_ADJ     0xCC11
+#define MB_RP_ADJ     0xCC22
+#define MB_RN_ADJ     0xCC33
 //其他命令
 #define ADDR_TIME_ADJ 0xFFE0
 #define ADDR_WR_LOCK  0xFFF0

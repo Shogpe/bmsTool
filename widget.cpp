@@ -1,10 +1,10 @@
 #include "widget.h"
 #include <QDateTime>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
-#include <QLineEdit>
 #include "myhelper.h"
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -113,7 +113,7 @@ void Widget::timerUpDate() {
             this->uiInit();
         } else if (Msg.msg_type == 1) {
             if (!mycmu) return;
-            if(Msg.data.toInt()<0) {
+            if (Msg.data.toInt() < 0) {
                 ui->labelSOE->setText(tr("读取失败!!!"));
                 break;
             }
@@ -134,7 +134,7 @@ void Widget::timerUpDate() {
     }
     this->flushData();
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
-    //qDebug() << t.elapsed() << "ms";
+    // qDebug() << t.elapsed() << "ms";
 }
 void Widget::flushData() {
     //一定要固定宽度，否则刷新很慢
@@ -269,7 +269,7 @@ void Widget::flushData() {
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "red" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -303,7 +303,7 @@ void Widget::flushData() {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "gold" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -337,7 +337,7 @@ void Widget::flushData() {
                    << ui->bDI15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01 )> 0 ? "red" : "green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
                 qDebug() << e.what();
@@ -353,7 +353,7 @@ void Widget::flushData() {
                   << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
         foreach (QCheckBox* rb, RadioList) {
             try {
-                bool bit = ((value >> RadioList.indexOf(rb)) & 0x01 )> 0;
+                bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
                 QString color = bit ? "red" : "green";
                 rb->setStyleSheet(QString("color:%1").arg(color));
                 rb->blockSignals(true);
@@ -408,45 +408,46 @@ struct mb_cmd {
     uint16_t addr;
     uint16_t value;
 };
-static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
-                                      {"btnBMUUnlock", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_BMU_LOCK}},
-                                      {"btnClearEng", {CTRL_AO_ADDR,ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
-                                      {"btnIFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IFull}},
-                                      {"btnIBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IBase}},
-                                      {"btnIZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_IZero}},
-                                      {"btnIleakFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LFull}},
-                                      {"btnIleakBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LBase}},
-                                      {"btnIleakZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_LZero}},
-                                      {"btnRFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RFull}},
-                                      {"btnRBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RBase}},
-                                      {"btnRZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_RZero}},
-                                      {"btnUFullAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VFull}},
-                                      {"btnUBaseAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VBase}},
-                                      {"btnUZeroAdj", {CTRL_SEC_AO,ADDR_ADJ, MB_Adj_VZero}},
-                                      {"btnReboot", {CTRL_CMD_REBOOT,ADDR_REBOOT, MB_REBOOT}},
-                                      {"btnIOunlock", {CTRL_AO_ADDR,ADDR_IO_EN, MB_IO_UNLOCK}},
-                                      {"btnIOlock", {CTRL_AO_ADDR,ADDR_IO_EN, MB_IO_LOCK}},
-                                      {"btnAutoKMON", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_ON}},
-                                      {"btnAutoKMOFF", {CTRL_AO_ADDR,ADDR_CTRL_AUTO, MB_CTRL_OFF}},
-                                      {"btnKMRON", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_ON}},
-                                      {"btnKMROFF", {CTRL_AO_ADDR,ADDR_CTRL_KMR, MB_CTRL_OFF}},
-                                      {"btnQFON", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_ON}},
-                                      {"btnQFOFF", {CTRL_AO_ADDR,ADDR_CTRL_QF, MB_CTRL_OFF}},
-                                      {"btnKMPON", {CTRL_AO_ADDR,ADDR_CTRL_KMP, MB_CTRL_ON}},
-                                      {"btnKMPOFF", {CTRL_AO_ADDR,ADDR_CTRL_KMP, MB_CTRL_OFF}},
-                                      {"btnKMNON", {CTRL_AO_ADDR,ADDR_CTRL_KMN, MB_CTRL_ON}},
-                                      {"btnKMNOFF", {CTRL_AO_ADDR,ADDR_CTRL_KMN, MB_CTRL_OFF}},
-                                      {"btnFanON", {CTRL_AO_ADDR,ADDR_CTRL_FAN, MB_CTRL_ON}},
-                                      {"btnFanOFF", {CTRL_AO_ADDR,ADDR_CTRL_FAN, MB_CTRL_OFF}},
-                                      {"btnAcON", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_ON}},
-                                      {"btnAcOFF", {CTRL_AO_ADDR,ADDR_CTRL_AC, MB_CTRL_OFF}},
-                                      {"btnResON", {CTRL_AO_ADDR,ADDR_CTRL_RES, MB_CTRL_ON}},
-                                      {"btnResOFF", {CTRL_AO_ADDR,ADDR_CTRL_RES, MB_CTRL_OFF}},
-                                      {"btnTimeAdj", {CERT_CMD_TIME_ADJ,0,0}},
-                                      {"btnResetDef", {CTRL_AO_ADDR,ADDR_RESET_FACTORY, MB_FACTORY}}};
+static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
+                                      {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+                                      {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
+                                      {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
+                                      {"btnIBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IBase}},
+                                      {"btnIZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IZero}},
+                                      {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
+                                      {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
+                                      {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
+                                      {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RFull}},
+                                      {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RBase}},
+                                      {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RZero}},
+                                      {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
+                                      {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
+                                      {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
+                                      {"btnReboot", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
+                                      {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
+                                      {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
+                                      {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
+                                      {"btnKMRON", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_ON}},
+                                      {"btnKMROFF", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_OFF}},
+                                      {"btnQFON", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_ON}},
+                                      {"btnQFOFF", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_OFF}},
+                                      {"btnKMPON", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_ON}},
+                                      {"btnKMPOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_OFF}},
+                                      {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
+                                      {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
+                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
+                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+                                      {"btnAcON", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_ON}},
+                                      {"btnAcOFF", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_OFF}},
+                                      {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
+                                      {"btnResOFF", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_OFF}},
+                                      {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
+                                      {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}}};
 
 void Widget::btn_released() {
     TMsgData MsgCmd;
+    uint16_t val[3];
     QPushButton* b = reinterpret_cast<QPushButton*>(sender());
     QString name = b->objectName();
     map<QString, mb_cmd>::iterator iter1;
@@ -454,11 +455,56 @@ void Widget::btn_released() {
     if (iter1 != btnMap.end()) {
         mb_cmd cmd = iter1->second;
         MsgCmd.msg_type = cmd.type;
-        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr),sizeof (uint16_t));
-        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value),sizeof (uint16_t));
-        pmq->sendMsg(0, MsgCmd);
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+    } else if (name == "btnRUAdj") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        val[0] = ADDR_RINS_ADJ;
+        val[1] = MB_RU_ADJ;
+        bool lbok;
+        QString value = myHelper::showInputBox("绝缘电压校准值:", lbok);
+        if (lbok) {
+            val[2] = value.toDouble(&lbok)*10;
+            if (lbok) {
+                qDebug() << "Adj:" << val[2];
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+    } else if (name == "btnRpAdj") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        val[0] = ADDR_RINS_ADJ;
+        val[1] = MB_RP_ADJ;
+        bool lbok;
+        QString value = myHelper::showInputBox("正绝缘电阻校准值:", lbok);
+        if (lbok) {
+            val[2] = value.toDouble(&lbok)*10;
+            if (lbok) {
+                qDebug() << "Adj:" << val[2];
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+    } else if (name == "btnRnAdj") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        val[0] = ADDR_RINS_ADJ;
+        val[1] = MB_RN_ADJ;
+        bool lbok;
+        QString value = myHelper::showInputBox("负绝缘电阻校准值:", lbok);
+        if (lbok) {
+            val[2] = value.toDouble(&lbok)*10;
+            if (lbok) {
+                qDebug() << "Adj:" << val[2];
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
     } else
         qDebug() << name;
+    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
 }
 void Widget::stateChanged() {
     QCheckBox* b = (QCheckBox*)sender();
@@ -493,21 +539,21 @@ void Widget::checkChanged() {
         return;
     }
 #else
-    QMessageBox box(QMessageBox::Warning,"输出控制",QString("当前控制出口为：%1").arg(b->text()));
-    box.setStandardButtons (QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
-    box.setButtonText (QMessageBox::Yes,QString("控 合"));
-    box.setButtonText (QMessageBox::No,QString("控 分"));
-    box.setButtonText (QMessageBox::Cancel,QString("取 消"));
-    int ret = box.exec ();
-    switch(ret){
-    case QMessageBox::Yes:
-        value[1] = true;
-        break;
-    case QMessageBox::No:
-        value[1] = false;
-        break;
-    default:
-        return;
+    QMessageBox box(QMessageBox::Warning, "输出控制", QString("当前控制出口为：%1").arg(b->text()));
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    box.setButtonText(QMessageBox::Yes, QString("控 合"));
+    box.setButtonText(QMessageBox::No, QString("控 分"));
+    box.setButtonText(QMessageBox::Cancel, QString("取 消"));
+    int ret = box.exec();
+    switch (ret) {
+        case QMessageBox::Yes:
+            value[1] = true;
+            break;
+        case QMessageBox::No:
+            value[1] = false;
+            break;
+        default:
+            return;
     }
 #endif
     TMsgData MsgCmd;
@@ -566,8 +612,7 @@ void Widget::on_lineEditServIP_editingFinished() {
         return;
     }
     this->setFocus();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(ip_str))) !=
-        QDialog::Accepted) {
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(ip_str))) != QDialog::Accepted) {
         pEdit->undo();
         return;
     }

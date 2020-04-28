@@ -8,6 +8,7 @@
 #endif
 #include <QDesktopWidget>
 #include "frmmessagebox.h"
+#include "frminputbox.h"
 #if defined(HAVE_BYTESWAP_H)
 #include <byteswap.h>
 #endif
@@ -87,6 +88,16 @@ class myHelper : public QObject {
     static bool IsIP(QString IP) {
         QRegExp RegExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
         return RegExp.exactMatch(IP);
+    }
+
+    //显示输入框
+    static QString showInputBox(const QString info, bool &blok) {
+      frmInputBox input;
+
+      input.setMessage(info);
+      blok = input.exec();
+
+      return input.getValue();
     }
 
     //显示信息框,仅确定按钮

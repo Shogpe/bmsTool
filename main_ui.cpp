@@ -61,8 +61,8 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
-//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-//                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
+    //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
+    //                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
@@ -350,8 +350,7 @@ void MainUI::initUpdateMenu() {
     ui->btnVer->setMenu(update_menu);
 }
 
-void MainUI::onUpdateBtnMenu()
-{
+void MainUI::onUpdateBtnMenu() {
     QAction* b = (QAction*)sender();
     TMsgData MsgCmd;
     if (b->text() == "下载升级BMS") {
@@ -371,17 +370,32 @@ void MainUI::onUpdateBtnMenu()
         uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTB};
         MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
     } else if (b->text() == "升级BMU") {
-      MsgCmd.msg_type = CTRL_SEC_AO;
-      uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
-      MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
     } else if (b->text() == "下载升级绝缘板") {
-      MsgCmd.msg_type = CTRL_SEC_AO;
-      uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
-      MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
     } else {
         return;
     }
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();
     return;
+}
+
+void MainUI::on_checkBox_stateChanged(int arg1) {
+    qDebug() << QString("%1").arg(arg1);
+    TMsgData MsgCmd;
+    QCheckBox* cbox = (QCheckBox*)this->sender();
+    if (cbox->isChecked()) {
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.clear();
+    } else {
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.append("0");
+    }
+    pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
 }

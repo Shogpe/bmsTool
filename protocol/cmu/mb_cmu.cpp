@@ -48,69 +48,71 @@ static MB_NODE tab_config[] = {
     {39, "EDischarge", 3, 1031, 17410, 128, 0.1},
     {40, "ECurCharge", 3, 1033, 17410, 128, 0.1},
     {41, "ECurDischarge", 3, 1035, 17410, 128, 0.1},
-    {42, "当前剩余库伦", 3, 1037, 17410, 128, 0.1},
-    {43, "当前输入库伦", 3, 1039, 17410, 128, 0.1},
-    {44, "当前输出库伦", 3, 1041, 17410, 128, 0.1},
-    {45, "累计输入库伦", 3, 1043, 17410, 128, 0.1},
-    {46, "累计输出库伦", 3, 1045, 17410, 128, 0.1},
+    {42, "当前剩余库伦", 3, 1037, 17410, 129, 0.1},
+    {43, "当前输入库伦", 3, 1039, 17410, 129, 0.1},
+    {44, "当前输出库伦", 3, 1041, 17410, 129, 0.1},
+    {45, "累计输入库伦", 3, 1043, 17410, 129, 0.1},
+    {46, "累计输出库伦", 3, 1045, 17410, 129, 0.1},
     {47, "TCharge", 3, 1047, 17410, 128, 1},
     {48, "TDischarge", 3, 1049, 17410, 128, 1},
     {49, "TCurCharge", 3, 1051, 17410, 128, 1},
     {50, "TCurDischarge", 3, 1053, 17410, 128, 1},
     {51, "CountCharge", 3, 1055, 17410, 128, 1},
     {52, "CountDischarge", 3, 1057, 17410, 128, 1},
-    {53, "充电开始时间", 3, 1059, 17410, 128, 1},
-    {54, "充电停止时间", 3, 1061, 17410, 128, 1},
-    {55, "放电开始时间", 3, 1063, 17410, 128, 1},
-    {56, "放电停止时间", 3, 1065, 17410, 128, 1},
-    {57, "CellVolH", 3, 5376, 514, 128, 0.0001},
-    {58, "CellVolHH", 3, 5377, 514, 128, 0.0001},
-    {59, "CellVolL", 3, 5378, 514, 128, 0.0001},
-    {60, "CellVolLL", 3, 5379, 514, 128, 0.0001},
-    {61, "PackTH", 3, 5380, 513, 128, 0.1},
-    {62, "PackTHH", 3, 5381, 513, 128, 0.1},
-    {63, "PackTL", 3, 5382, 513, 128, 0.1},
-    {64, "PackTLL", 3, 5383, 513, 128, 0.1},
-    {65, "PackTdH", 3, 5384, 513, 128, 0.1},
-    {66, "PackTdHH", 3, 5385, 513, 128, 0.1},
-    {67, "PackTrH", 3, 5386, 513, 128, 0.1},
-    {68, "PackTrHH", 3, 5387, 513, 128, 0.1},
-    {69, "PoleTH", 3, 5388, 513, 128, 0.1},
-    {70, "PoleTHH", 3, 5389, 513, 128, 0.1},
-    {71, "ClusterCurH", 3, 5390, 514, 128, 1},
-    {72, "ClusterCurHH", 3, 5391, 514, 128, 1},
-    {73, "ClusterCurShort", 3, 5392, 514, 128, 1},
-    {74, "ClusterVolH", 3, 5393, 514, 128, 0.1},
-    {75, "ClusterVolHH", 3, 5394, 514, 128, 0.1},
-    {76, "ClusterVolL", 3, 5395, 514, 128, 0.1},
-    {77, "ClusterVolLL", 3, 5396, 514, 128, 0.1},
-    {78, "ClusterRIns", 3, 5397, 514, 128, 1},
-    {79, "ClusterCurLeak", 3, 5398, 514, 128, 0.1},
-    {80, "ClusterTAlm", 3, 5399, 514, 128, 1},
-    {81, "ClusterTErr", 3, 5400, 514, 128, 1},
-    {82, "ClusterE", 3, 5401, 514, 128, 0.1},
-    {83, "ClusterEAdj", 3, 5402, 514, 128, 0.1},
-    {84, "ClusterEremain", 3, 5403, 514, 128, 0.1},
-    {85, "ClusterIe", 3, 5404, 514, 128, 0.1},
-    {86, "ClusterCurRange", 3, 5405, 514, 128, 1},
-    {87, "ClusterILeakRg", 3, 5406, 514, 128, 1},
-    {88, "ClusterVolRange", 3, 5407, 514, 128, 1},
-    {89, "BalnceMask", 3, 5408, 514, 128, 1},
-    {90, "BalnceStart", 3, 5409, 514, 128, 0.0001},
-    {91, "BalnceStartDiff", 3, 5410, 514, 128, 0.1},
-    {92, "ClusterBmuNum", 3, 5411, 514, 128, 1},
-    {93, "BmuCellNum", 3, 5412, 514, 128, 1},
-    {94, "BmuPackTNum", 3, 5413, 514, 128, 1},
-    {95, "BmuPoleTNum", 3, 5414, 514, 128, 1},
-    {96, "ClusterAlmMask", 3, 5415, 514, 128, 1},
-    {97, "ClusterErrMask", 3, 5416, 514, 128, 1},
-    {98, "FuncMask", 3, 5417, 514, 128, 1},
-    {99, "IP", 3, 5418, 514, 128, 1},
-    {100, "ServerIP", 3, 5420, 514, 128, 1},
+    {53, "充电开始时间", 3, 1059, 17410, 129, 1},
+    {54, "充电停止时间", 3, 1061, 17410, 129, 1},
+    {55, "放电开始时间", 3, 1063, 17410, 129, 1},
+    {56, "放电停止时间", 3, 1065, 17410, 129, 1},
+    {57, "CellVolH", 3, 5376, 514, 129, 0.0001},
+    {58, "CellVolHH", 3, 5377, 514, 129, 0.0001},
+    {59, "CellVolL", 3, 5378, 514, 129, 0.0001},
+    {60, "CellVolLL", 3, 5379, 514, 129, 0.0001},
+    {61, "PackTH", 3, 5380, 513, 129, 0.1},
+    {62, "PackTHH", 3, 5381, 513, 129, 0.1},
+    {63, "PackTL", 3, 5382, 513, 129, 0.1},
+    {64, "PackTLL", 3, 5383, 513, 129, 0.1},
+    {65, "PackTdH", 3, 5384, 513, 129, 0.1},
+    {66, "PackTdHH", 3, 5385, 513, 129, 0.1},
+    {67, "PackTrH", 3, 5386, 513, 129, 0.1},
+    {68, "PackTrHH", 3, 5387, 513, 129, 0.1},
+    {69, "PoleTH", 3, 5388, 513, 129, 0.1},
+    {70, "PoleTHH", 3, 5389, 513, 129, 0.1},
+    {71, "ClusterCurH", 3, 5390, 514, 129, 1},
+    {72, "ClusterCurHH", 3, 5391, 514, 129, 1},
+    {73, "ClusterCurShort", 3, 5392, 514, 129, 1},
+    {74, "ClusterVolH", 3, 5393, 514, 129, 0.1},
+    {75, "ClusterVolHH", 3, 5394, 514, 129, 0.1},
+    {76, "ClusterVolL", 3, 5395, 514, 129, 0.1},
+    {77, "ClusterVolLL", 3, 5396, 514, 129, 0.1},
+    {78, "ClusterRIns", 3, 5397, 514, 129, 1},
+    {79, "ClusterCurLeak", 3, 5398, 514, 129, 0.1},
+    {80, "ClusterTAlm", 3, 5399, 514, 129, 1},
+    {81, "ClusterTErr", 3, 5400, 514, 129, 1},
+    {82, "ClusterE", 3, 5401, 514, 129, 0.1},
+    {83, "ClusterEAdj", 3, 5402, 514, 129, 0.1},
+    {84, "ClusterEremain", 3, 5403, 514, 129, 0.1},
+    {85, "ClusterIe", 3, 5404, 514, 129, 0.1},
+    {86, "ClusterCurRange", 3, 5405, 514, 129, 1},
+    {87, "ClusterILeakRg", 3, 5406, 514, 129, 1},
+    {88, "ClusterVolRange", 3, 5407, 514, 129, 1},
+    {89, "BalnceMask", 3, 5408, 514, 129, 1},
+    {90, "BalnceStart", 3, 5409, 514, 129, 0.0001},
+    {91, "BalnceStartDiff", 3, 5410, 514, 129, 0.1},
+    {92, "ClusterBmuNum", 3, 5411, 514, 129, 1},
+    {93, "BmuCellNum", 3, 5412, 514, 129, 1},
+    {94, "BmuPackTNum", 3, 5413, 514, 129, 1},
+    {95, "BmuPoleTNum", 3, 5414, 514, 129, 1},
+    {96, "ClusterAlmMask", 3, 5415, 514, 129, 1},
+    {97, "ClusterErrMask", 3, 5416, 514, 129, 1},
+    {98, "FuncMask", 3, 5417, 514, 129, 1},
+    {99, "IP", 3, 5418, 514, 129, 1},
+    {100, "ServerIP", 3, 5420, 514, 129, 1},
 };
-#define MAX_CFG 101
+#define MAX_CFG (sizeof(tab_config) / sizeof(tab_config[0]))
 mb_cmu::mb_cmu() {
     cmu = nullptr;
+    csvfile = nullptr;
+    stopDump = true;
     cmu_status = 0;
     stop = false;
     mb_ip = "192.168.1.120";
@@ -121,9 +123,81 @@ mb_cmu::mb_cmu() {
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
 }
+void mb_cmu::Dump2CsvTitle() {
+    if (stopDump) return;
+    QString fileName = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
+    fileName.append(".csv");
+    if(csvfile) csvfile->close();
+    csvfile = new QFile(fileName);
+    if (!csvfile->open(QIODevice::WriteOnly | QIODevice::Text)) {
+        delete csvfile;
+        csvfile = nullptr;
+        qDebug() << "Cannot open file for writing: " << qPrintable(csvfile->errorString());
+        return;
+    }
+    QTextStream data_buf(csvfile);
+    data_buf << "Time,";
+    for (int i = 0; i < MAX_CFG; i++) {
+        if (tab_config[i].val_type == 128) {
+            data_buf << (QString(tab_config[i].name.c_str())) << ",";
+        }
+    }
+    for (int i = 0; i < config.bmu_num; i++) {
+        for (int j = 0; j < config.vol_num; ++j) {
+            data_buf << (QString("BMU%1_U%2,").arg(i + 1).arg(j + 1));
+        }
+        for (int j = 0; j < config.T_num; j++) {
+            data_buf << (QString("BMU%1_T%2,").arg(i + 1).arg(j + 1));
+        }
+        for (int j = 0; j < config.Tp_num; j++) {
+            data_buf << (QString("BMU%1_Tp%2,").arg(i + 1).arg(j + 1));
+        }
+        //    for(int j=0;j<config.status_num;++j) {
+        //      data_buf.append(QString("Tpole%1").arg(j));
+        //    }
+    }
 
+    data_buf << endl;
+}
+void mb_cmu::Dump2Csv() {
+    if (stopDump) return;
+    if (!csvfile) {
+      Dump2CsvTitle();
+    };
+    QTextStream data_buf(csvfile);
+    data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
+    for (int i = 0; i < MAX_CFG; i++) {
+        if (tab_config[i].val_type == 128) {
+            data_buf << QString("%1,").arg(this->tab_data.at(i).sysData.val.f64);
+        }
+    }
+    for (int i = 0; i < config.bmu_num; i++) {
+        for (int j = 0; j < config.vol_num; j++) {
+            double val = *(tab_reg + i * config.vol_num + j) / 10000.0;
+            data_buf << (QString("%1,").arg(val));
+        }
+        for (int j = 0; j < config.T_num; j++) {
+            double val = *(tab_reg + config.bmu_num * config.vol_num + i * config.T_num + j) / 10.0;
+            data_buf << (QString("%1,").arg(val));
+        }
+        for (int j = 0; j < config.Tp_num; j++) {
+            double val =
+                *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num + i * config.Tp_num + j) /
+                10.0;
+            data_buf << (QString("%1,").arg(val));
+        }
+        //    for(int j=0;j<config.status_num;++j) {
+        //      data_buf.append(QString("Tpole%1").arg(j));
+        //      data_buf.append(",");
+        //    }
+    }
+    data_buf << endl;
+    csvfile->flush();
+}
 mb_cmu::~mb_cmu() {
     if (this->cmu) this->Close();
+    if (csvfile) csvfile->close();
+    csvfile = nullptr;
     stop = true;
 }
 
@@ -170,7 +244,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
     int status = 0;
     int read_len = 0;
     int rc = 0;
-    if(!reg_num) return status;
+    if (!reg_num) return status;
     switch (type) {
         case MODBUS_FC_READ_HOLDING_REGISTERS: {
             do {
@@ -232,7 +306,6 @@ int mb_cmu::ReadALL() {
         reg_num = config.bmu_num * config.status_num;
         status += ReadData(0x03, 0x100, reg_num, p + offset);
         offset += reg_num;
-
     }
     //版本号
     reg_num = config.bmu_num * 2 + 2;
@@ -268,6 +341,7 @@ void mb_cmu::run() {
             case SM_READ:
                 if (ReadALL()) {
                     state = SM_INIT;
+                    Dump2Csv();
                 }
                 break;
             case SM_CONNECT: {
@@ -297,7 +371,7 @@ void mb_cmu::run() {
                         config.T_num = sys_para.Name.u16BmuPackTNum;
                         config.Tp_num = sys_para.Name.u16BmuPoleTNum;
                         config.status_num = 4;
-
+                        Dump2CsvTitle();
                         TMsgData MsgCmd;
                         MsgCmd.msg_type = 0;
                         MsgCmd.data.append((char*)&config, sizeof(config));
@@ -362,13 +436,13 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             }
         } break;
         case CTRL_CMD_REBOOT: {
-          uint16_t nb = Msg.data.size();
-          uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-          if (nb == 2 * sizeof(uint16_t)) {
-            ret = write_ao(p[0], p[1]);
-          }
-          ret = 0;
-          break;
+            uint16_t nb = Msg.data.size();
+            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+            if (nb == 2 * sizeof(uint16_t)) {
+                ret = write_ao(p[0], p[1]);
+            }
+            ret = 0;
+            break;
         }
 
         case CTRL_AO: {
@@ -426,6 +500,16 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             }
             break;
         }
+        case CTRL_DUMP: {
+            uint16_t nb = Msg.data.size();
+            stopDump = (nb > 0);
+            if(stopDump && csvfile) {
+              csvfile->close();
+              delete csvfile;
+              csvfile = nullptr;
+            }
+            ret = 0;
+        } break;
         default:
             break;
     }

@@ -70,6 +70,7 @@ private slots:
   void changeTheme();
   void on_cbProtocol_currentIndexChanged(const QString &arg1);
 
+  void on_checkBox_stateChanged(int arg1);
 };
 
 #endif // UIDEMO08_H

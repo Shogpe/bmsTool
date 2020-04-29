@@ -189,6 +189,7 @@ void mb_cmu_v2::run() {
             case SM_READ:
                 if (ReadALL()) {
                     state = SM_INIT;
+                    Dump2Csv();
                 }
                 break;
             case SM_CONNECT: {
@@ -218,7 +219,7 @@ void mb_cmu_v2::run() {
                         config.T_num = sys_para.Name.u16BmuPackTNum;
                         config.Tp_num = sys_para.Name.u16BmuPoleTNum;
                         config.status_num = 4;
-
+                        Dump2CsvTitle();
                         TMsgData MsgCmd;
                         MsgCmd.msg_type = 0;
                         MsgCmd.data.resize(sizeof(config));

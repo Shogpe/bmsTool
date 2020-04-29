@@ -3,7 +3,7 @@
 
 #include <QThread>
 #include <iostream>
-
+#include <QFile>
 #include "MessageQueue.h"
 #include "modbus-tcp.h"
 #include "modbus-version.h"
@@ -44,7 +44,8 @@ typedef enum {
     CTRL_CMD_REBOOT,
     CERT_CMD_TIME_ADJ,
     CERT_CMD_READ_SOE,
-    CTRL_AO_ADDR,
+  CTRL_AO_ADDR,
+  CTRL_DUMP,
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -193,7 +194,9 @@ class mb_cmu : public QThread {
     int max_offset;
     MessageQueue *pMq;
     map<string, NodeReg> name_map;
-
+    QFile *csvfile;
+    void Dump2CsvTitle();
+    void Dump2Csv();
    protected:
     modbus_t *cmu;
     int err_counter = 0;
@@ -201,6 +204,7 @@ class mb_cmu : public QThread {
     string mb_ip;
     int mb_port;
     bool stop;
+    bool stopDump; //停止保存数据
     vector<DataReg> reg_list_;  //读取表
     vector<NodeReg> wr_list_;   //下发表
     int ReadAI();

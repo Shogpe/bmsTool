@@ -1,13 +1,13 @@
 #ifndef MB_CMU_H
 #define MB_CMU_H
 
+#include <QFile>
 #include <QThread>
 #include <iostream>
-#include <QFile>
 #include "MessageQueue.h"
+#include "mb_tcp.h"
 #include "modbus-tcp.h"
 #include "modbus-version.h"
-#include "mb_tcp.h"
 using namespace std;
 
 typedef struct {
@@ -33,7 +33,7 @@ typedef enum {
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
-    CTRL_SEC_AO, //带密钥命令
+    CTRL_SEC_AO,  //带密钥命令
     CTRL_CMD_CLR_ENG,
     CTRL_CMD_CLR_SOE,
     CTRL_CMD_CLR_ALL_SOE,
@@ -44,8 +44,9 @@ typedef enum {
     CTRL_CMD_REBOOT,
     CERT_CMD_TIME_ADJ,
     CERT_CMD_READ_SOE,
-  CTRL_AO_ADDR,
-  CTRL_DUMP,
+    CTRL_AO_ADDR,
+    CTRL_DUMP,
+    CTRL_SET_PRO,  //设置协议版本
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -85,7 +86,7 @@ typedef enum {
 #define MB_Adj_TBase 0xbb44
 #define MB_Adj_RBase 0xbb55
 //绝缘校准
-#define ADDR_RINS_ADJ  0xF000
+#define ADDR_RINS_ADJ 0xF000
 #define MB_RU_ADJ     0xCC11
 #define MB_RP_ADJ     0xCC22
 #define MB_RN_ADJ     0xCC33
@@ -105,8 +106,8 @@ typedef enum {
 #define ADDR_REBOOT 0xFFF3
 #define MB_REBOOT   0x1D32
 
-#define ADDR_IO_EN 0xFFF4
-#define MB_IO_UNLOCK   0xA5B6
+#define ADDR_IO_EN   0xFFF4
+#define MB_IO_UNLOCK 0xA5B6
 #define MB_IO_LOCK   0x0
 
 #define ADDR_CLEAR_SOE 0xFFF8
@@ -123,7 +124,7 @@ typedef enum {
 #define ADDR_CTRL_QF  0xFF03
 #define ADDR_CTRL_FAN 0xFF04
 #define ADDR_CTRL_AC  0xFF05
-#define ADDR_CTRL_RES  0xFF06
+#define ADDR_CTRL_RES 0xFF06
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间
@@ -177,6 +178,7 @@ class mb_cmu : public QThread {
 
    public:
     mb_cmu();
+    mb_cmu(BMS_PROTOCOL ver);
     ~mb_cmu();
     virtual int Init();  //初始化
     int ReadALL();       //
@@ -197,14 +199,19 @@ class mb_cmu : public QThread {
     QFile *csvfile;
     void Dump2CsvTitle();
     void Dump2Csv();
+
    protected:
     modbus_t *cmu;
     int err_counter = 0;
     STATE_MACHINE state = SM_NONE;
     string mb_ip;
     int mb_port;
+    // 配置表
+    MB_NODE *node_table;
+    int node_table_size;
+    BMS_PROTOCOL protocal_ver;
     bool stop;
-    bool stopDump; //停止保存数据
+    bool stopDump;              //停止保存数据
     vector<DataReg> reg_list_;  //读取表
     vector<NodeReg> wr_list_;   //下发表
     int ReadAI();
@@ -220,11 +227,6 @@ class mb_cmu : public QThread {
    signals:
     void signal_message(const QString &msg);
 };
-class mb_cmu_v2 : public mb_cmu {
-    virtual int Init();  //初始化
-    virtual void run();
-    void callback(TMsgData &Msg);
-};
-;
+
 
 #endif  // MB_CMU_H

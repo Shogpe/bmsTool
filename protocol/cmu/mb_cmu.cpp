@@ -2,113 +2,10 @@
 #include <QDebug>
 #include <QTimerEvent>
 #include "myhelper.h"
+#include "node_conf.h"
 #include "utils.h"
-
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
-static MB_NODE tab_config[] = {
-    {0, "Umax", 4, 5376, 514, 128, 0.0001},
-    {1, "UmaxID", 4, 5377, 514, 128, 1},
-    {2, "Umin", 4, 5378, 514, 128, 0.0001},
-    {3, "UminID", 4, 5379, 514, 128, 1},
-    {4, "Tmax", 4, 5380, 513, 128, 0.1},
-    {5, "TmaxID", 4, 5381, 514, 128, 1},
-    {6, "Tmin", 4, 5382, 513, 128, 0.1},
-    {7, "TminID", 4, 5383, 514, 128, 1},
-    {8, "TpMax", 4, 5384, 513, 128, 0.1},
-    {9, "TpMaxID", 4, 5385, 514, 128, 1},
-    {10, "UdMax", 4, 5386, 513, 128, 0.0001},
-    {11, "UdMaxID", 4, 5387, 514, 128, 0.1},
-    {12, "TrMax", 4, 5388, 514, 128, 0.1},
-    {13, "TrMaxID", 4, 5389, 514, 128, 1},
-    {14, "UmMax", 4, 5390, 514, 128, 0.001},
-    {15, "UmMaxID", 4, 5391, 514, 128, 1},
-    {16, "Udc", 4, 5392, 514, 128, 0.1},
-    {17, "RIns", 4, 5393, 514, 128, 0.1},
-    {18, "RpIns", 4, 5394, 514, 128, 0.1},
-    {19, "RnIns", 4, 5395, 514, 128, 0.1},
-    {20, "ILeak", 4, 5396, 513, 128, 0.1},
-    {21, "Idc", 4, 5397, 513, 128, 0.1},
-    {22, "TExt", 4, 5398, 513, 128, 0.1},
-    {23, "ClusterT1", 4, 5399, 513, 128, 0.1},
-    {24, "ClusterT2", 4, 5400, 513, 128, 0.1},
-    {25, "sysTime", 3, 1, 17410, 128, 1},
-    {26, "sysStatus1", 3, 3, 514, 128, 1},
-    {27, "sysStatus2", 3, 4, 514, 128, 1},
-    {28, "sysErrStatus", 3, 5, 514, 128, 1},
-    {29, "sysAlmStatus", 3, 6, 514, 128, 1},
-    {30, "sysComm1", 3, 7, 17410, 128, 1},
-    {31, "sysComm2", 3, 9, 17410, 128, 1},
-    {32, "sysDOStatus", 3, 11, 514, 128, 1},
-    {33, "sysDIStatus", 3, 12, 514, 128, 1},
-    {34, "SOC", 3, 1024, 514, 128, 0.1},
-    {35, "SOH", 3, 1025, 514, 128, 0.1},
-    {36, "Pdc", 3, 1026, 513, 128, 0.1},
-    {37, "ERemain", 3, 1027, 17410, 128, 0.1},
-    {38, "ECharge", 3, 1029, 17410, 128, 0.1},
-    {39, "EDischarge", 3, 1031, 17410, 128, 0.1},
-    {40, "ECurCharge", 3, 1033, 17410, 128, 0.1},
-    {41, "ECurDischarge", 3, 1035, 17410, 128, 0.1},
-    {42, "当前剩余库伦", 3, 1037, 17410, 129, 0.1},
-    {43, "当前输入库伦", 3, 1039, 17410, 129, 0.1},
-    {44, "当前输出库伦", 3, 1041, 17410, 129, 0.1},
-    {45, "累计输入库伦", 3, 1043, 17410, 129, 0.1},
-    {46, "累计输出库伦", 3, 1045, 17410, 129, 0.1},
-    {47, "TCharge", 3, 1047, 17410, 128, 1},
-    {48, "TDischarge", 3, 1049, 17410, 128, 1},
-    {49, "TCurCharge", 3, 1051, 17410, 128, 1},
-    {50, "TCurDischarge", 3, 1053, 17410, 128, 1},
-    {51, "CountCharge", 3, 1055, 17410, 128, 1},
-    {52, "CountDischarge", 3, 1057, 17410, 128, 1},
-    {53, "充电开始时间", 3, 1059, 17410, 129, 1},
-    {54, "充电停止时间", 3, 1061, 17410, 129, 1},
-    {55, "放电开始时间", 3, 1063, 17410, 129, 1},
-    {56, "放电停止时间", 3, 1065, 17410, 129, 1},
-    {57, "CellVolH", 3, 5376, 514, 129, 0.0001},
-    {58, "CellVolHH", 3, 5377, 514, 129, 0.0001},
-    {59, "CellVolL", 3, 5378, 514, 129, 0.0001},
-    {60, "CellVolLL", 3, 5379, 514, 129, 0.0001},
-    {61, "PackTH", 3, 5380, 513, 129, 0.1},
-    {62, "PackTHH", 3, 5381, 513, 129, 0.1},
-    {63, "PackTL", 3, 5382, 513, 129, 0.1},
-    {64, "PackTLL", 3, 5383, 513, 129, 0.1},
-    {65, "PackTdH", 3, 5384, 513, 129, 0.1},
-    {66, "PackTdHH", 3, 5385, 513, 129, 0.1},
-    {67, "PackTrH", 3, 5386, 513, 129, 0.1},
-    {68, "PackTrHH", 3, 5387, 513, 129, 0.1},
-    {69, "PoleTH", 3, 5388, 513, 129, 0.1},
-    {70, "PoleTHH", 3, 5389, 513, 129, 0.1},
-    {71, "ClusterCurH", 3, 5390, 514, 129, 1},
-    {72, "ClusterCurHH", 3, 5391, 514, 129, 1},
-    {73, "ClusterCurShort", 3, 5392, 514, 129, 1},
-    {74, "ClusterVolH", 3, 5393, 514, 129, 0.1},
-    {75, "ClusterVolHH", 3, 5394, 514, 129, 0.1},
-    {76, "ClusterVolL", 3, 5395, 514, 129, 0.1},
-    {77, "ClusterVolLL", 3, 5396, 514, 129, 0.1},
-    {78, "ClusterRIns", 3, 5397, 514, 129, 1},
-    {79, "ClusterCurLeak", 3, 5398, 514, 129, 0.1},
-    {80, "ClusterTAlm", 3, 5399, 514, 129, 1},
-    {81, "ClusterTErr", 3, 5400, 514, 129, 1},
-    {82, "ClusterE", 3, 5401, 514, 129, 0.1},
-    {83, "ClusterEAdj", 3, 5402, 514, 129, 0.1},
-    {84, "ClusterEremain", 3, 5403, 514, 129, 0.1},
-    {85, "ClusterIe", 3, 5404, 514, 129, 0.1},
-    {86, "ClusterCurRange", 3, 5405, 514, 129, 1},
-    {87, "ClusterILeakRg", 3, 5406, 514, 129, 1},
-    {88, "ClusterVolRange", 3, 5407, 514, 129, 1},
-    {89, "BalnceMask", 3, 5408, 514, 129, 1},
-    {90, "BalnceStart", 3, 5409, 514, 129, 0.0001},
-    {91, "BalnceStartDiff", 3, 5410, 514, 129, 0.1},
-    {92, "ClusterBmuNum", 3, 5411, 514, 129, 1},
-    {93, "BmuCellNum", 3, 5412, 514, 129, 1},
-    {94, "BmuPackTNum", 3, 5413, 514, 129, 1},
-    {95, "BmuPoleTNum", 3, 5414, 514, 129, 1},
-    {96, "ClusterAlmMask", 3, 5415, 514, 129, 1},
-    {97, "ClusterErrMask", 3, 5416, 514, 129, 1},
-    {98, "FuncMask", 3, 5417, 514, 129, 1},
-    {99, "IP", 3, 5418, 514, 129, 1},
-    {100, "ServerIP", 3, 5420, 514, 129, 1},
-};
-#define MAX_CFG (sizeof(tab_config) / sizeof(tab_config[0]))
+
 mb_cmu::mb_cmu() {
     cmu = nullptr;
     csvfile = nullptr;
@@ -119,15 +16,25 @@ mb_cmu::mb_cmu() {
     mb_port = 502;
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
-    tab_data.reserve(1000);
-    config = {0, 0, 0, 0, 0};
-    memset(&sys_para, 0, sizeof(sys_para));
 }
+mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
+    cmu = nullptr;
+    csvfile = nullptr;
+    stopDump = true;
+    cmu_status = 0;
+    stop = false;
+    mb_ip = "192.168.1.120";
+    mb_port = 502;
+    protocal_ver = ver;
+    pMq = MessageQueue::getInstance();
+    pMq->registMsgQueue(0);
+}
+
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
     QString fileName = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
     fileName.append(".csv");
-    if(csvfile) csvfile->close();
+    if (csvfile) csvfile->close();
     csvfile = new QFile(fileName);
     if (!csvfile->open(QIODevice::WriteOnly | QIODevice::Text)) {
         delete csvfile;
@@ -137,9 +44,9 @@ void mb_cmu::Dump2CsvTitle() {
     }
     QTextStream data_buf(csvfile);
     data_buf << "Time,";
-    for (int i = 0; i < MAX_CFG; i++) {
-        if (tab_config[i].val_type == 128) {
-            data_buf << (QString(tab_config[i].name.c_str())) << ",";
+    for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type == 128) {
+            data_buf << (QString(node_table[i].name)) << ",";
         }
     }
     for (int i = 0; i < config.bmu_num; i++) {
@@ -162,13 +69,14 @@ void mb_cmu::Dump2CsvTitle() {
 void mb_cmu::Dump2Csv() {
     if (stopDump) return;
     if (!csvfile) {
-      Dump2CsvTitle();
+        Dump2CsvTitle();
     };
     QTextStream data_buf(csvfile);
     data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
-    for (int i = 0; i < MAX_CFG; i++) {
-        if (tab_config[i].val_type == 128) {
-            data_buf << QString("%1,").arg(this->tab_data.at(i).sysData.val.f64);
+    for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type == 128) {
+            // QString("%1,").arg();
+            data_buf << QString::number(this->tab_data.at(i).sysData.val.f64, 'g', 15) << ",";
         }
     }
     for (int i = 0; i < config.bmu_num; i++) {
@@ -216,14 +124,24 @@ int mb_cmu::Init() {
     int index = -1;
     ST_NODE_DATA tmp_data;
     tmp_data.sysData.val.f64 = 0;
-    for (int i = 0; i < MAX_CFG; i++) {
+    tab_data.reserve(1000);
+    config = {0, 0, 0, 0, 0};
+    memset(&sys_para, 0, sizeof(sys_para));
+    if (protocal_ver == CMUV2) {
+        this->node_table = cmu_v2_config;
+        this->node_table_size = cmu_v2_config_len;
+    } else {
+        this->node_table = cmu_v1_config;
+        this->node_table_size = cmu_v1_config_len;
+    }
+    for (int i = 0; i < node_table_size; i++) {
         node_reg_tmp.default_val = 0;
-        if (tab_config[i].reg_type > NONE_REG) {
-            node_reg_tmp.reg_type = tab_config[i].reg_type;
-            node_reg_tmp.reg_addr = tab_config[i].reg_addr;
-            node_reg_tmp.data_type = tab_config[i].data_type;
-            node_reg_tmp.index = tab_config[i].index;
-            node_reg_tmp.factor = tab_config[i].factor;
+        if (node_table[i].reg_type > NONE_REG) {
+            node_reg_tmp.reg_type = node_table[i].reg_type;
+            node_reg_tmp.reg_addr = node_table[i].reg_addr;
+            node_reg_tmp.data_type = node_table[i].data_type;
+            node_reg_tmp.index = node_table[i].index;
+            node_reg_tmp.factor = node_table[i].factor;
             if ((index = JudgeReg(node_reg_tmp)) != -1) {
                 InsertReg(node_reg_tmp, index);
             } else {
@@ -231,7 +149,7 @@ int mb_cmu::Init() {
             }
         }
         tab_data.push_back(tmp_data);
-        name_map[tab_config[i].name] = node_reg_tmp;
+        name_map[node_table[i].name] = node_reg_tmp;
     }
     return 0;
 }
@@ -372,6 +290,7 @@ void mb_cmu::run() {
                         config.Tp_num = sys_para.Name.u16BmuPoleTNum;
                         config.status_num = 4;
                         Dump2CsvTitle();
+                        qDebug() << "table changed!";
                         TMsgData MsgCmd;
                         MsgCmd.msg_type = 0;
                         MsgCmd.data.append((char*)&config, sizeof(config));
@@ -449,13 +368,13 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;
             uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-            if (p[0] > MAX_CFG) break;
+            if (p[0] > node_table_size) break;
             if (nb == 2 * sizeof(uint16_t)) {
-                uint16_t addr = tab_config[p[0]].reg_addr;
+                uint16_t addr = node_table[p[0]].reg_addr;
                 uint16_t value = p[1];
                 ret = write_ao(addr, value);
             } else {
-                uint16_t addr = tab_config[p[0]].reg_addr;
+                uint16_t addr = node_table[p[0]].reg_addr;
                 uint16_t* pv = (uint16_t*)&p[1];
                 ret = write_ao(addr, (nb - 1) / 2, pv);
             }
@@ -503,10 +422,23 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_DUMP: {
             uint16_t nb = Msg.data.size();
             stopDump = (nb > 0);
-            if(stopDump && csvfile) {
-              csvfile->close();
-              delete csvfile;
-              csvfile = nullptr;
+            qDebug() << "stop storage:" << stopDump;
+            if (stopDump && csvfile) {
+                qDebug() << "close old data file";
+                csvfile->close();
+                delete csvfile;
+                csvfile = nullptr;
+            }
+
+            ret = 0;
+        } break;
+        case CTRL_SET_PRO: {
+            uint16_t nb = Msg.data.size();
+            if (nb == 1) {
+                protocal_ver = Msg.data.toInt() == 1 ? CMUV2 : CMUV1;
+                qDebug() << "new cmu version:" << protocal_ver + 1;
+                Init();
+                Dump2CsvTitle();
             }
             ret = 0;
         } break;

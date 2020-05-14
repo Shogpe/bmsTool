@@ -12,12 +12,12 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     load_config();
     QString protocol = settings->value("global/protocol", "CMU1.0").toString();
     if (protocol == "CMU2.0") {
-        this->pDev = new mb_cmu_v2;
+      this->pDev = new mb_cmu(CMUV2);
         ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV2);
         ui->cbProtocol->blockSignals(false);
     } else {
-        this->pDev = new mb_cmu;
+        this->pDev = new mb_cmu(CMUV1);
         ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV1);
         ui->cbProtocol->blockSignals(false);
@@ -336,7 +336,17 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
 void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     qDebug() << arg1;
     settings->setValue("global/protocol", arg1);
-    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
+//    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
+    TMsgData MsgCmd;
+    if (arg1 == "CMU2.0") {
+      MsgCmd.msg_type = CTRL_SET_PRO;
+      MsgCmd.data.setNum(CMUV2);
+    } else {
+      MsgCmd.msg_type = CTRL_SET_PRO;
+      MsgCmd.data.setNum(CMUV1);
+    }
+    pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
 }
 
 void MainUI::initUpdateMenu() {
@@ -390,11 +400,11 @@ void MainUI::on_checkBox_stateChanged(int arg1) {
     TMsgData MsgCmd;
     QCheckBox* cbox = (QCheckBox*)this->sender();
     if (cbox->isChecked()) {
-        MsgCmd.msg_type = CTRL_DUMP;
-        MsgCmd.data.clear();
+      MsgCmd.msg_type = CTRL_DUMP;
+      MsgCmd.data.clear();
     } else {
-        MsgCmd.msg_type = CTRL_DUMP;
-        MsgCmd.data.append("0");
+      MsgCmd.msg_type = CTRL_DUMP;
+      MsgCmd.data.append("0");
     }
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();

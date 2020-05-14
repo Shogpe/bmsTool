@@ -49,7 +49,7 @@ typedef struct structTable {
 } NodeReg;
 typedef struct {
     int index;           // 数据索引
-    string name;         // 控件名
+    char name[64];         // 控件名
     uint16_t reg_type;   // 数据类型
     uint16_t reg_addr;   // 数据类型
     uint32_t data_type;  // 数据类型

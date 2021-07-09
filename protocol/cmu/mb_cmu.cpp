@@ -1,10 +1,13 @@
 #include "mb_cmu.h"
 #include <QDebug>
+#include <QJsonObject>
 #include <QTimerEvent>
 #include "myhelper.h"
 #include "node_conf.h"
 #include "utils.h"
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
+const QString recPath = "Rec";
+const QString dataPath = "Data";
 
 mb_cmu::mb_cmu() {
     cmu = nullptr;
@@ -14,6 +17,8 @@ mb_cmu::mb_cmu() {
     stop = false;
     mb_ip = "192.168.1.120";
     mb_port = 502;
+    isDirExist(recPath);
+    isDirExist(dataPath);
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
 }
@@ -26,16 +31,19 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     mb_ip = "192.168.1.120";
     mb_port = 502;
     protocal_ver = ver;
+    isDirExist(recPath);
+    isDirExist(dataPath);
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
 }
 
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
+    if ((rec & 0x02) != 0x02) return;
     QString fileName = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
     fileName.append(".csv");
     if (csvfile) csvfile->close();
-    csvfile = new QFile(fileName);
+    csvfile = new QFile(dataPath + "/" + fileName);
     if (!csvfile->open(QIODevice::WriteOnly | QIODevice::Text)) {
         delete csvfile;
         csvfile = nullptr;
@@ -68,39 +76,110 @@ void mb_cmu::Dump2CsvTitle() {
 }
 void mb_cmu::Dump2Csv() {
     if (stopDump) return;
-    if (!csvfile) {
-        Dump2CsvTitle();
-    };
-    QTextStream data_buf(csvfile);
-    data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
-    for (int i = 0; i < node_table_size; i++) {
-        if (node_table[i].val_type == 128) {
-            // QString("%1,").arg();
-            data_buf << QString::number(this->tab_data.at(i).sysData.val.f64, 'g', 15) << ",";
+    if (rec & 0x01) {
+        if (!csvfile) {
+            Dump2CsvTitle();
+        };
+        QTextStream data_buf(csvfile);
+        data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
+        for (int i = 0; i < node_table_size; i++) {
+            if (node_table[i].val_type == 128) {
+                // QString("%1,").arg();
+                data_buf << QString::number(this->tab_data.at(i).sysData.val.f64, 'g', 15) << ",";
+            }
         }
+        for (int i = 0; i < config.bmu_num; i++) {
+            for (int j = 0; j < config.vol_num; j++) {
+                double val = *(tab_reg + i * config.vol_num + j) / 10000.0;
+                data_buf << (QString("%1,").arg(val));
+            }
+            for (int j = 0; j < config.T_num; j++) {
+                double val = *(tab_reg + config.bmu_num * config.vol_num + i * config.T_num + j) / 10.0;
+                data_buf << (QString("%1,").arg(val));
+            }
+            for (int j = 0; j < config.Tp_num; j++) {
+                double val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
+                               i * config.Tp_num + j) /
+                             10.0;
+                data_buf << (QString("%1,").arg(val));
+            }
+            //    for(int j=0;j<config.status_num;++j) {
+            //      data_buf.append(QString("Tpole%1").arg(j));
+            //      data_buf.append(",");
+            //    }
+        }
+        data_buf << endl;
+        csvfile->flush();
     }
-    for (int i = 0; i < config.bmu_num; i++) {
-        for (int j = 0; j < config.vol_num; j++) {
-            double val = *(tab_reg + i * config.vol_num + j) / 10000.0;
-            data_buf << (QString("%1,").arg(val));
+
+    // dump bin文件
+    if (rec & 0x02) {
+        QJsonObject object;
+        for (int i = 0; i < node_table_size; i++) {
+            if (node_table[i].val_type == 128) {
+                object.insert(QString(node_table[i].name), this->tab_data.at(i).sysData.val.f64);
+            }
         }
-        for (int j = 0; j < config.T_num; j++) {
-            double val = *(tab_reg + config.bmu_num * config.vol_num + i * config.T_num + j) / 10.0;
-            data_buf << (QString("%1,").arg(val));
+        int offset = 0;
+        for (int i = 0; i < config.bmu_num; i++) {
+            for (int j = 0; j < config.vol_num; j++) {
+                double val = *(tab_reg + offset + i * config.vol_num + j) / 10000.0;
+                object.insert((QString("BMU%1_U%2").arg(i + 1).arg(j + 1)), val);
+            }
+            offset += config.bmu_num * config.vol_num;
+            for (int j = 0; j < config.T_num; j++) {
+                double val = *(tab_reg + offset + i * config.T_num + j) / 10.0;
+                object.insert((QString("BMU%1_T%2").arg(i + 1).arg(j + 1)), val);
+            }
+            offset += config.bmu_num * config.T_num;
+            for (int j = 0; j < config.Tp_num; j++) {
+                double val = *(tab_reg + offset + i * config.Tp_num + j) / 10.0;
+                object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
+            }
+            offset += config.bmu_num * config.Tp_num;
+            for (int j = 0; j < config.bmu_num; ++j) {
+                double val = *(tab_reg + offset + j);
+                object.insert((QString("BMU%1_Ubreak").arg(j + 1)), val);
+            }
+            offset += config.bmu_num;
+            for (int j = 0; j < config.bmu_num; ++j) {
+                double val = *(tab_reg + offset + j);
+                object.insert((QString("BMU%1_Tbreak").arg(j + 1)), val);
+            }
+            offset += config.bmu_num;
+            for (int j = 0; j < config.bmu_num; ++j) {
+                double val = *(tab_reg + offset + j);
+                object.insert((QString("BMU%1_Run").arg(j + 1)), val);
+            }
+            offset += config.bmu_num;
+            for (int j = 0; j < config.bmu_num; ++j) {
+                double val = *(tab_reg + offset + j);
+                object.insert((QString("BMU%1_Err").arg(j + 1)), val);
+            }
+            offset += config.bmu_num;
+            double val = *(tab_reg + offset);
+            object.insert(QString("CMU_Ver"), val);
+            offset += 1;
+            for (int j = 0; j < config.bmu_num; ++j) {
+                double val = *(tab_reg + offset + j);
+                object.insert((QString("BMU%1_Ver").arg(j + 1)), val);
+            }
         }
-        for (int j = 0; j < config.Tp_num; j++) {
-            double val =
-                *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num + i * config.Tp_num + j) /
-                10.0;
-            data_buf << (QString("%1,").arg(val));
-        }
-        //    for(int j=0;j<config.status_num;++j) {
-        //      data_buf.append(QString("Tpole%1").arg(j));
-        //      data_buf.append(",");
-        //    }
+        // 以读写方式打开主目录下的1.json文件，若该文件不存在则会自动创建
+        QFile file(recPath + "/" + QDateTime::currentDateTime().toString("yyyyMMddThhmmss") + ".rec");
+        if (!file.open(QIODevice::ReadWrite)) {
+            qDebug() << "File open error";
+        } /* else {
+             qDebug() << "File open!";
+         }*/
+        // 使用QJsonDocument设置该json对象
+        QJsonDocument jsonDoc;
+        jsonDoc.setObject(object);
+        // 将json以文本形式写入文件并关闭文件。
+        QByteArray b = gzipCompress(jsonDoc.toBinaryData());
+        file.write(b);
+        file.close();
     }
-    data_buf << endl;
-    csvfile->flush();
 }
 mb_cmu::~mb_cmu() {
     if (this->cmu) this->Close();
@@ -124,16 +203,21 @@ int mb_cmu::Init() {
     int index = -1;
     ST_NODE_DATA tmp_data;
     tmp_data.sysData.val.f64 = 0;
+    tab_data.clear();
     tab_data.reserve(1000);
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
     if (protocal_ver == CMUV2) {
         this->node_table = cmu_v2_config;
         this->node_table_size = cmu_v2_config_len;
+    } else if (protocal_ver == CMUV3) {
+        this->node_table = cmu_v3_config;
+        this->node_table_size = cmu_v3_config_len;
     } else {
         this->node_table = cmu_v1_config;
         this->node_table_size = cmu_v1_config_len;
     }
+    name_map.clear();
     for (int i = 0; i < node_table_size; i++) {
         node_reg_tmp.default_val = 0;
         if (node_table[i].reg_type > NONE_REG) {
@@ -151,6 +235,10 @@ int mb_cmu::Init() {
         tab_data.push_back(tmp_data);
         name_map[node_table[i].name] = node_reg_tmp;
     }
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = 0;
+    MsgCmd.data.append((char*)&config, sizeof(config));
+    pMq->sendMsg(99, MsgCmd);
     return 0;
 }
 
@@ -422,6 +510,9 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_DUMP: {
             uint16_t nb = Msg.data.size();
             stopDump = (nb > 0);
+            QSettings* settings = new QSettings("config.ini", QSettings::IniFormat);
+            rec = settings->value("global/rec", "1").toInt();
+            settings->deleteLater();
             qDebug() << "stop storage:" << stopDump;
             if (stopDump && csvfile) {
                 qDebug() << "close old data file";
@@ -435,7 +526,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_SET_PRO: {
             uint16_t nb = Msg.data.size();
             if (nb == 1) {
-                protocal_ver = Msg.data.toInt() == 1 ? CMUV2 : CMUV1;
+                protocal_ver = BMS_PROTOCOL(Msg.data.toInt());
                 qDebug() << "new cmu version:" << protocal_ver + 1;
                 Init();
                 Dump2CsvTitle();

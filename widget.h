@@ -30,6 +30,7 @@ class Widget : public QWidget {
     CMU_CONF config;
     SOEModel m_model;
     bool eventFilter(QObject* obj, QEvent* event);
+    int setValue(string name, double dval);
    private slots:
     void timerUpDate();
     void valueChange();

@@ -75,6 +75,42 @@ void Widget::uiInit() {
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+
+    //定值显示和隐藏
+    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
+    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+        dspbox->hide();
+        map<string, NodeReg>::iterator iter1;
+        iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
+        if (iter1 != mycmu->name_map.end()) {
+            try {
+                dspbox->show();
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        }
+    }
+}
+int Widget::setValue(string name, double dval) {
+    map<string, NodeReg>::iterator iter1;
+    iter1 = mycmu->name_map.find(name);
+    if (iter1 != mycmu->name_map.end()) {
+        try {
+            uint16_t val[2] = {0};
+            val[0] = iter1->second.reg_addr;
+            //+0.5保障精度
+            val[1] = static_cast<uint16_t>(std::round(dval / iter1->second.factor));
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(uint16_t));
+            pmq->sendMsg(0, MsgCmd);
+        } catch (exception& e) {
+            qDebug() << e.what();
+        }
+    } else {
+        qDebug() << "can't find " << name.c_str();
+    }
+    return 0;
 }
 void Widget::valueChange() {
     QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
@@ -84,23 +120,10 @@ void Widget::valueChange() {
         return;
     }
     b->clearFocus();
-    map<string, NodeReg>::iterator iter1;
-    iter1 = mycmu->name_map.find(b->objectName().toStdString());
-    if (iter1 != mycmu->name_map.end()) {
-        try {
-            uint16_t val[2] = {0};
-            val[0] = iter1->second.reg_addr;
-            //+0.5保障精度
-            val[1] = static_cast<uint16_t>(dval / iter1->second.factor + 0.5 - (dval < 0));
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(uint16_t));
-            pmq->sendMsg(0, MsgCmd);
-        } catch (exception& e) {
-            qDebug() << e.what();
-        }
-    }
+    qDebug() << b->objectName() << ":" << dval;
+    setValue(b->objectName().toStdString(), dval);
 }
+
 void Widget::timerUpDate() {
     QTime t;
     t.restart();  //将此时间设置为当前时间
@@ -208,7 +231,7 @@ void Widget::flushData() {
     //数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    //刷新设置
+    //刷新定值
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         map<string, NodeReg>::iterator iter1;
@@ -417,9 +440,9 @@ static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_F
                                       {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
                                       {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
                                       {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
-                                      {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RFull}},
-                                      {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RBase}},
-                                      {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_RZero}},
+                                      {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  //预留
+                                      {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TBase}},
+                                      {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
                                       {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
                                       {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
                                       {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
@@ -464,7 +487,7 @@ void Widget::btn_released() {
         bool lbok;
         QString value = myHelper::showInputBox("绝缘电压校准值:", lbok);
         if (lbok) {
-            val[2] = value.toDouble(&lbok)*10;
+            val[2] = value.toDouble(&lbok) * 10;
             if (lbok) {
                 qDebug() << "Adj:" << val[2];
                 MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
@@ -479,7 +502,7 @@ void Widget::btn_released() {
         bool lbok;
         QString value = myHelper::showInputBox("正绝缘电阻校准值:", lbok);
         if (lbok) {
-            val[2] = value.toDouble(&lbok)*10;
+            val[2] = value.toDouble(&lbok) * 10;
             if (lbok) {
                 qDebug() << "Adj:" << val[2];
                 MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
@@ -494,7 +517,7 @@ void Widget::btn_released() {
         bool lbok;
         QString value = myHelper::showInputBox("负绝缘电阻校准值:", lbok);
         if (lbok) {
-            val[2] = value.toDouble(&lbok)*10;
+            val[2] = value.toDouble(&lbok) * 10;
             if (lbok) {
                 qDebug() << "Adj:" << val[2];
                 MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
@@ -643,11 +666,13 @@ void Widget::on_btnOutput_released() {
     document.appendChild(root_elem);
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
-        QDomElement item1 = document.createElement("item");
-        item1.setAttribute("name", dspbox->objectName());
-        item1.setAttribute("name_cn", dspbox->toolTip());
-        item1.setAttribute("value", dspbox->value());
-        root_elem.appendChild(item1);
+        if (!dspbox->isHidden()) {
+            QDomElement item1 = document.createElement("item");
+            item1.setAttribute("name", dspbox->objectName());
+            item1.setAttribute("name_cn", dspbox->toolTip());
+            item1.setAttribute("value", dspbox->value());
+            root_elem.appendChild(item1);
+        }
     }
     QTextStream out(&file);
     document.save(out, 4);
@@ -666,56 +691,6 @@ void Widget::on_btnInput_released() {
         return;
     }
     file.close();
-    QList<QString> name_list;
-    name_list << "CellVolH"
-              << "CellVolHH"
-              << "CellVolL"
-              << "CellVolLL"
-              << "PackTH"
-              << "PackTHH"
-              << "PackTL"
-              << "PackTLL"
-              << "PackTdH"
-              << "PackTdHH"
-              << "PackTrH"
-              << "PackTrHH"
-              << "PoleTH"
-              << "PoleTHH"
-              << "ClusterCurH"
-              << "ClusterCurHH"
-              << "ClusterCurShort"
-              << "ClusterVolH"
-              << "ClusterVolHH"
-              << "ClusterVolL"
-              << "ClusterVolLL"
-              << "ClusterRIns"
-              << "ClusterCurLeak"
-              << "ClusterTAlm"
-              << "ClusterTErr"
-              << "ClusterE"
-              << "ClusterEAdj"
-              << "ClusterEremain"
-              << "ClusterIe"
-              << "ClusterCurRange"
-              << "ClusterILeakRg"
-              << "ClusterVolRange"
-              << "BalnceMask"
-              << "BalnceStart"
-              << "BalnceStartDiff"
-              << "ClusterBmuNum"
-              << "BmuCellNum"
-              << "BmuPackTNum"
-              << "BmuPoleTNum"
-              << "ClusterAlmMask"
-              << "ClusterErrMask"
-              << "FuncMask";
-    double d_value[42];
-    uint16_t i_value[43];
-    foreach (const QString cur_name, name_list) {
-        uint index = mycmu->name_map[cur_name.toStdString()].index;
-        d_value[name_list.indexOf(cur_name)] = mycmu->tab_data.at(index).sysData.val.f64;
-    }
-
     QDomElement root = doc.documentElement();  //返回根节点
     QDomNode node = root.firstChild();         //获得第一个子节点
     while (!node.isNull())                     //如果节点不空
@@ -723,28 +698,18 @@ void Widget::on_btnInput_released() {
         if (node.isElement())  //如果节点是元素
         {
             QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
-            int i = name_list.indexOf(e.attribute("name"));
-            if (i != -1) d_value[i] = e.attribute("value").toDouble();
+            QDoubleSpinBox* dspbox = ui->tabSet->findChild<QDoubleSpinBox*>(e.attribute("name"));
+            if (dspbox != nullptr) {
+                if (!dspbox->isHidden()) {
+                    double value = e.attribute("value").toDouble();
+                    if (value != dspbox->value()) setValue(dspbox->objectName().toStdString(), value);
+                }
+            }
         }
         node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
     qDebug() << "load ok!";
-    try {
-        for (int i = 1; i < 43; i++) {
-            i_value[i] =
-                static_cast<uint16_t>(d_value[i - 1] / mycmu->name_map[name_list.at(i - 1).toStdString()].factor + 0.5 -
-                                      (d_value[i - 1] < 0));
-        }
-    } catch (exception& e) {
-        qDebug() << e.what();
-    }
-    qDebug() << "to Int ok!";
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO_ADDR;
-    i_value[0] = mycmu->name_map["CellVolH"].reg_addr;
-    MsgCmd.data.append((char*)&i_value, 43 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
 }
 //屏蔽本控件传递事件到父控件
 bool Widget::eventFilter(QObject* obj, QEvent* event) {

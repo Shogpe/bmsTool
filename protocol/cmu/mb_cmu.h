@@ -167,6 +167,7 @@ typedef enum {
 typedef enum {
     CMUV1 = 0,
     CMUV2,  //
+    CMUV3,  //
 } BMS_PROTOCOL;
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
@@ -203,6 +204,7 @@ class mb_cmu : public QThread {
    protected:
     modbus_t *cmu;
     int err_counter = 0;
+    int rec = 1;
     STATE_MACHINE state = SM_NONE;
     string mb_ip;
     int mb_port;
@@ -227,6 +229,5 @@ class mb_cmu : public QThread {
    signals:
     void signal_message(const QString &msg);
 };
-
 
 #endif  // MB_CMU_H

@@ -3,13 +3,13 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QMessageBox>
 #include "myhelper.h"
 #include "version.h"
-#include "qapplication.h"
-#include "qevent.h"
-#include "qmutex.h"
-#include "qwidget.h"
-#include <QMessageBox>
+
+const QString url_gitee = "https://gitee.com/lganing/demo/raw/master/uploads/bms_tool.json";
+const QString url_coding = "https://leeginger.coding.net/p/autoUpdate/d/autoUpdate/git/raw/master/bms_tool.json";
+
 AppInit *AppInit::self = nullptr;
 AppInit *AppInit::Instance() {
     if (!self) {
@@ -27,8 +27,9 @@ AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
 void AppInit::start() {
     myHelper::SetStyle("lightblue");
-    sendGetRequest();
+    updateCheck(url_coding);
 }
+
 static int CompareVersion(QString strVer1, QString strVer2) {
     if (!strVer1.compare(strVer2)) {
         return 0;
@@ -70,33 +71,40 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
 {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "request Error";
-        return ;
+        // 请求错误时二次检查
+        if (reply->request().url().toString() == url_gitee) return;
+        updateCheck(url_gitee);
     }
     //请求返回的结果
     QByteArray responseByte = reply->readAll();
-    reply->deleteLater();   //最后要释放reply对象
+    reply->deleteLater();  //最后要释放reply对象
 
     QJsonParseError jsonpe;
     QJsonDocument json = QJsonDocument::fromJson(responseByte, &jsonpe);
     if (jsonpe.error == QJsonParseError::NoError) {
         if (json.isObject()) {
             QJsonObject obj = json.object();
-            if(obj.contains("name")&&obj.contains("verison")&&obj.contains("url")&&obj.contains("date")&&obj.contains("desc")) {
+            if (obj.contains("name") && obj.contains("verison") && obj.contains("url") && obj.contains("date") &&
+                obj.contains("desc")) {
                 QString name = obj["name"].toString();
+                int type = obj["type"].toInt();
                 QString version = obj["verison"].toString();
                 QString url = obj["url"].toString();
                 QString date = obj["date"].toString();
                 QString desc = obj["desc"].toString();
-                if (CompareVersion(VER_FILEVERSION_STR, version)<0) {
-                    //myHelper::ShowMessageBoxInfo(QString(tr("检测到新版本(%1)\n%2")).arg(version).arg(obj["desc"].toString()));
-                    QString warningStr =  "检测到新版本!\n版本号：" + version + "\n" + "更新时间：" + date + "\n" + "更新说明：" + desc;
-                    int ret = QMessageBox::warning(nullptr, "检查更新",  warningStr, "去下载", "不更新");
-                    if(ret == 0)    //点击更新
+                if (type == 1) {
+                    url = QString(QByteArray::fromBase64((url + "=").toUtf8()));
+                }
+                qDebug() << VER_FILEVERSION_STR << "===>" << version << CompareVersion(VER_FILEVERSION_STR, version);
+                if (CompareVersion(VER_FILEVERSION_STR, version) < 0) {
+                    QMessageBox box;
+                    QString warningStr =
+                        "检测到新版本!\n版本号：" + version + "\n" + "更新时间：" + date + "\n" + "更新说明：" + desc;
+                    int ret = box.warning(nullptr, "检查更新", warningStr, "去下载", "不更新");
+                    if (ret == 0)  //点击更新
                     {
                         QDesktopServices::openUrl(QUrl(url));
                     }
-                } else {
-                    qDebug() << VER_FILEVERSION_STR << "===>" << version;
                 }
             }
         } else {
@@ -106,22 +114,20 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
         qDebug() << "error:" << jsonpe.errorString();
     }
 }
-void AppInit::sendGetRequest() {
+
+void AppInit::updateCheck(QString url) {
     //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
     //             << QSslSocket::sslLibraryVersionString();
-    //    QSslConfiguration config;
-    //    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-    //    config.setProtocol(QSsl::TlsV1SslV3);
-    QNetworkAccessManager *accessManager = new QNetworkAccessManager();
+    QSslConfiguration config;
+    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    config.setProtocol(QSsl::TlsV1SslV3);
+    QNetworkAccessManager *accessManager = new QNetworkAccessManager(this);
     //设置url
-    QString url = "http://leeginger.coding.me/autoUpdate/bms_tool.json";
     QNetworkRequest requestInfo;
-    // requestInfo.setSslConfiguration(config);
+    requestInfo.setSslConfiguration(config);
     requestInfo.setUrl(QUrl(url));
-
     //添加事件循环机制，返回后再运行后面的
     accessManager->get(requestInfo);
-    connect(accessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    connect(accessManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(replyFinished(QNetworkReply *)));
     //错误处理
-
 }

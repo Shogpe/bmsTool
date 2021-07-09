@@ -66,7 +66,7 @@ private slots:
   void on_btnMenu_Close_clicked();
   void onUpdateBtnMenu();
   void initUpdateMenu();
-  void changeLangue();
+  void menuClick();
   void changeTheme();
   void on_cbProtocol_currentIndexChanged(const QString &arg1);
 

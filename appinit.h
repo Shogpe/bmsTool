@@ -5,26 +5,23 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
-class AppInit : public QObject
-{
+class AppInit : public QObject {
     Q_OBJECT
-public:
+   public:
     static AppInit *Instance();
     explicit AppInit(QObject *parent = 0);
-
     void start();
-protected:
 
-private:
+   protected:
+   private:
     static AppInit *self;
-    QNetworkAccessManager *manager;		//定义网络请求对象
-    void sendGetRequest();
+    QNetworkAccessManager *manager;  //定义网络请求对象
+    void updateCheck(QString url);
 
-signals:
+   signals:
 
-private slots:
+   private slots:
     void replyFinished(QNetworkReply *reply);
-
 };
 
-#endif // APPINIT_H
+#endif  // APPINIT_H

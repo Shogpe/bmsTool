@@ -3,18 +3,24 @@
 #include "Toast.h"
 #include "iconhelper.h"
 #include "ui_main_ui.h"
+#include "utils.h"
 #include "version.h"
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
+    load_config();
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-    load_config();
     QString protocol = settings->value("global/protocol", "CMU1.0").toString();
     if (protocol == "CMU2.0") {
-      this->pDev = new mb_cmu(CMUV2);
+        this->pDev = new mb_cmu(CMUV2);
         ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV2);
+        ui->cbProtocol->blockSignals(false);
+    } else if (protocol == "CMU3.0") {
+        this->pDev = new mb_cmu(CMUV3);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV3);
         ui->cbProtocol->blockSignals(false);
     } else {
         this->pDev = new mb_cmu(CMUV1);
@@ -79,7 +85,6 @@ void MainUI::initForm() {
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
     ui->labVersion->setText(QString("battery management system v") + VER_PRODUCTVERSION_STR);
-    ui->labUser->setText("Ganing");
 
     QSize icoSize(32, 32);
     int icoWidth = 85;
@@ -91,7 +96,7 @@ void MainUI::initForm() {
         btn->setMinimumWidth(icoWidth);
         btn->setCheckable(true);
         connect(btn, SIGNAL(clicked()), this, SLOT(buttonClick()));
-        // btn->hide();
+        btn->hide();
     }
     //
     ui->gridLayout_3->addWidget(new StateGroupBox());
@@ -104,8 +109,8 @@ void MainUI::initForm() {
     //    setEnglish = new QAction(tr("English"), this);
     //    setEnglish->setCheckable(true);
     //    setEnglish->setChecked(true);
-    langue_menu->addAction("Chinese", this, &MainUI::changeLangue);
-    langue_menu->addAction("English", this, &MainUI::changeLangue);
+    langue_menu->addAction("Chinese", this, &MainUI::menuClick);
+    langue_menu->addAction("English", this, &MainUI::menuClick);
     //    langueGroup = new QActionGroup(this);
     //    langueGroup->addAction(setEnglish);
     //    langueGroup->addAction(setChinese);
@@ -130,8 +135,12 @@ void MainUI::initForm() {
     title_menu = new QMenu;
     title_menu->addMenu(langue_menu);
     title_menu->addMenu(theme_menu);
-    title_menu->addAction("test", this, &MainUI::changeLangue);
+    title_menu->addAction("Rec转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
+    QString user = settings->value("global/user", "").toString();
+    QString token = settings->value("global/token", "").toString();
+    if (user != "Ganing" && token != "0a1d0f157771521bad3b9579bcf13c35") ui->btnMenu->hide();
+    ui->labUser->setText(user);
 
     //关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
@@ -246,10 +255,15 @@ void MainUI::leftConfigClick() {
     if (name == "其他设置") {
     }
 }
-void MainUI::changeLangue()  //切换语言
+void MainUI::menuClick()  //切换语言
 {
     QAction* b = (QAction*)sender();
     qDebug() << b->objectName() << b->text();
+    if (b->text() == "Rec转换") {
+        QString path = QFileDialog::getExistingDirectory();
+        FindFile(path);
+        Toast::showTip("记录文件转换完毕。", nullptr);
+    }
     //  if(setChinese->isChecked()){//判断选中了哪个语言
     //    translator->load(":/langue/zh_cn.qm");//加载翻译文件
     //    qApp->installTranslator(translator);//安装翻译文件
@@ -336,14 +350,17 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
 void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     qDebug() << arg1;
     settings->setValue("global/protocol", arg1);
-//    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
+    //    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
     TMsgData MsgCmd;
     if (arg1 == "CMU2.0") {
-      MsgCmd.msg_type = CTRL_SET_PRO;
-      MsgCmd.data.setNum(CMUV2);
+        MsgCmd.msg_type = CTRL_SET_PRO;
+        MsgCmd.data.setNum(CMUV2);
+    } else if (arg1 == "CMU3.0") {
+        MsgCmd.msg_type = CTRL_SET_PRO;
+        MsgCmd.data.setNum(CMUV3);
     } else {
-      MsgCmd.msg_type = CTRL_SET_PRO;
-      MsgCmd.data.setNum(CMUV1);
+        MsgCmd.msg_type = CTRL_SET_PRO;
+        MsgCmd.data.setNum(CMUV1);
     }
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();
@@ -400,11 +417,11 @@ void MainUI::on_checkBox_stateChanged(int arg1) {
     TMsgData MsgCmd;
     QCheckBox* cbox = (QCheckBox*)this->sender();
     if (cbox->isChecked()) {
-      MsgCmd.msg_type = CTRL_DUMP;
-      MsgCmd.data.clear();
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.clear();
     } else {
-      MsgCmd.msg_type = CTRL_DUMP;
-      MsgCmd.data.append("0");
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.append("0");
     }
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();

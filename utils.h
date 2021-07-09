@@ -2,15 +2,11 @@
 #define UTILS_H
 #include <time.h>
 
-#ifdef  __cplusplus
-extern "C" {
-#endif
 #define TIME_OUTOFDATE 24 * 31 * 24 * 60 * 60
-
+#include <QByteArray>
 time_t cvt_TIME(char const *Date);
-
-
-#ifdef  __cplusplus
-}
-#endif
-#endif // UTILS_H
+QByteArray gzipCompress(const QByteArray &in);
+QByteArray gzipUncompress(const QByteArray &data);
+int FindFile(const QString &_filePath);
+bool isDirExist(QString fullPath);
+#endif  // UTILS_H

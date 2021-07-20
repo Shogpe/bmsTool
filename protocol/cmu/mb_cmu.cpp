@@ -39,7 +39,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
 
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
-    if ((rec & 0x02) != 0x02) return;
+    if ((rec & 0x01) != 0x01) return;
     QString fileName = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
     fileName.append(".csv");
     if (csvfile) csvfile->close();

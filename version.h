@@ -1,7 +1,7 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define VER_PRODUCTVERSION     1, 0, 0, 9
+#define VER_PRODUCTVERSION     1, 0, 0, 1
 #define VER_PRODUCTVERSION_STR "1.0.0.9"  //产品版本
 
 #define VER_FILEVERSION     VER_PRODUCTVERSION  //文件版本

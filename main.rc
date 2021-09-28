@@ -2,6 +2,7 @@ IDI_ICON1 ICON "other/main.ico"
 #if defined(UNDER_CE)
 #include <winbase.h>
 #else
+
 #include <winver.h>
 #endif
 #include "version.h"

@@ -7,7 +7,8 @@
 QT       += core gui xml network
 # QT += quickwidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+win32 {
+}
 TARGET      = bms_tool
 TEMPLATE    = app
 #CONFIG(debug, debug|release){
@@ -58,7 +59,9 @@ RESOURCES   += other/qss.qrc
 # RESOURCES   += qml/dynamic.qml
 CONFIG += qt warn_off c++11 utf8_source
 INCLUDEPATH += $$PWD
-win32: LIBS += -lws2_32
+win32 {
+LIBS += -lws2_32
+}
 macx {
 # mac only
 }
@@ -67,3 +70,6 @@ unix:!macx{
 LIBS += -licudata
 }
 RC_FILE += main.rc
+OTHER_FILES += main.rc touch.bat
+
+

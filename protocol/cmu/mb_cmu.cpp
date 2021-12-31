@@ -36,7 +36,36 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
 }
+QString mb_cmu::GetBalanceStatus(uint16_t status) {
+    QStringList statusList;
+    if ((((status >> 0) & 0x01) > 0)) statusList << "1";
+    if ((((status >> 1) & 0x01) > 0)) statusList << "2";
+    if ((((status >> 2) & 0x01) > 0)) statusList << "3";
+    if ((((status >> 3) & 0x01) > 0)) statusList << "4";
+    if ((((status >> 4) & 0x01) > 0)) statusList << "5";
+    if ((((status >> 5) & 0x01) > 0)) statusList << "6";
+    if ((((status >> 6) & 0x01) > 0)) statusList << "7";
+    if ((((status >> 7) & 0x01) > 0)) statusList << "8";
+    if ((((status >> 8) & 0x01) > 0)) statusList << "9";
+    if ((((status >> 9) & 0x01) > 0)) statusList << "10";
+    if ((((status >> 10) & 0x01) > 0)) statusList << "11";
+    if ((((status >> 11) & 0x01) > 0)) statusList << "12";
+    if ((((status >> 12) & 0x01) > 0)) statusList << "13";
+    if ((((status >> 13) & 0x01) > 0)) statusList << "14";
+    if ((((status >> 14) & 0x01) > 0)) statusList << "15";
+    if ((((status >> 15) & 0x01) > 0)) statusList << "16";
+    //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+    return statusList.join("|");
+}
+QString mb_cmu::GetBalanceValue(uint16_t status) {
+    QStringList statusList;
+    double Ib = (int8_t)(status & 0xFF);
+    statusList.insert(0, QString::number(Ib / 10.0));
+    statusList.insert(0, QString::number(status >> 0xFF, 16));
 
+    //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+    return statusList.join("|");
+}
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
     if ((rec & 0x01) != 0x01) return;
@@ -311,6 +340,9 @@ int mb_cmu::ReadALL() {
         offset += reg_num;
         reg_num = config.bmu_num * config.status_num;
         status += ReadData(0x03, 0x100, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * 2;  // 均衡状态，模式+电流
+        status += ReadData(0x03, 0x900, reg_num, p + offset);
         offset += reg_num;
     }
     //版本号

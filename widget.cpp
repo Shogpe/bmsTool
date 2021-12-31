@@ -51,7 +51,6 @@ Widget::~Widget() {
 }
 
 void Widget::uiInit() {
-    ui->tableBMU->setColumnCount(config.vol_num + config.T_num + config.Tp_num + config.status_num + 1);
     ui->tableBMU->setRowCount(config.bmu_num);
     /* 设置 tableWidget */
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
@@ -71,7 +70,10 @@ void Widget::uiInit() {
     hdr_list.append(tr("温度断线"));
     hdr_list.append(tr("运行状态"));
     hdr_list.append(tr("故障状态"));
+    hdr_list.append(tr("均衡状态"));
+    hdr_list.append(tr("均衡模式"));
     hdr_list.append(tr("版本号"));
+    ui->tableBMU->setColumnCount(hdr_list.size());
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
@@ -209,6 +211,20 @@ void Widget::flushData() {
         }
     }
     cloumn_offset += config.status_num;
+    //均衡状态和模式+电流
+    pStatus = (uint16_t*)&(mycmu->tab_reg[data_index]);
+    for (int j = 0; j < config.bmu_num; j++) {
+        QTableWidgetItem* item = new QTableWidgetItem();
+        uint16_t val = *(pStatus + 2 * j);
+        item->setText(mycmu->GetBalanceStatus(val));
+        ui->tableBMU->setItem(j, cloumn_offset, item);
+        val = *(pStatus + 1 + 2 * j);
+        QTableWidgetItem* item1 = new QTableWidgetItem();
+        item1->setText(mycmu->GetBalanceValue(val));
+        ui->tableBMU->setItem(j, cloumn_offset + 1, item1);
+        data_index += 2;
+    }
+    cloumn_offset += 2;
     uint32_t* p32 = reinterpret_cast<uint32_t*>(&(mycmu->tab_reg[data_index]));
     mycmu->cmu_ver = *(p32++);
     //版本号

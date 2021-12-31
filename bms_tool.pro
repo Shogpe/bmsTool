@@ -42,6 +42,7 @@ HEADERS     += iconhelper.h \
     myhelper.h \
     models/MyDoubleSpinBox/MyDoubleSpinBox.h \
     models/SOEModel/SOEModel.h \
+    tableModel.h \
     models/QFramelessWidget/qframelesswidget.h \
     stategroupbox.h \
     utils.h \

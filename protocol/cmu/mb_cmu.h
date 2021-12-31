@@ -168,6 +168,7 @@ typedef enum {
     CMUV1 = 0,
     CMUV2,  //
     CMUV3,  //
+    CMUV4,  //主动均衡
 } BMS_PROTOCOL;
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
@@ -200,6 +201,8 @@ class mb_cmu : public QThread {
     QFile *csvfile;
     void Dump2CsvTitle();
     void Dump2Csv();
+    QString GetBalanceStatus(uint16_t status);
+    QString GetBalanceValue(uint16_t status);
 
    protected:
     modbus_t *cmu;

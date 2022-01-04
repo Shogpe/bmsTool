@@ -22,6 +22,11 @@ MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
         ui->cbProtocol->blockSignals(true);
         ui->cbProtocol->setCurrentIndex(CMUV3);
         ui->cbProtocol->blockSignals(false);
+    } else if (protocol == "CMU4.0") {
+        this->pDev = new mb_cmu(CMUV4);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV4);
+        ui->cbProtocol->blockSignals(false);
     } else {
         this->pDev = new mb_cmu(CMUV1);
         ui->cbProtocol->blockSignals(true);
@@ -350,18 +355,9 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
 void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     qDebug() << arg1;
     settings->setValue("global/protocol", arg1);
-    //    myHelper::ShowMessageBoxInfo(tr("修改协议，请重启软件方可生效！"));
     TMsgData MsgCmd;
-    if (arg1 == "CMU2.0") {
-        MsgCmd.msg_type = CTRL_SET_PRO;
-        MsgCmd.data.setNum(CMUV2);
-    } else if (arg1 == "CMU3.0") {
-        MsgCmd.msg_type = CTRL_SET_PRO;
-        MsgCmd.data.setNum(CMUV3);
-    } else {
-        MsgCmd.msg_type = CTRL_SET_PRO;
-        MsgCmd.data.setNum(CMUV1);
-    }
+    MsgCmd.msg_type = CTRL_SET_PRO;
+    MsgCmd.data.setNum(ui->cbProtocol->currentIndex());
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();
 }

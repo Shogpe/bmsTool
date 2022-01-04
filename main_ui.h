@@ -1,12 +1,12 @@
 #ifndef UIDEMO08_H
 #define UIDEMO08_H
 
+#include <QWidget>
 #include "mb_cmu.h"
 #include "models/ListView/ListView.h"
 #include "models/QFramelessWidget/qframelesswidget.h"
 #include "myhelper.h"
 #include "widget.h"
-#include <QWidget>
 
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
@@ -16,61 +16,61 @@ class MainUI;
 }
 
 class MainUI : public QFramelessWidget {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  explicit MainUI(QWidget *parent = nullptr);
-  ~MainUI();
+   public:
+    explicit MainUI(QWidget *parent = nullptr);
+    ~MainUI();
 
-private:
-  Ui::MainUI *ui;
-  Widget *data_view;
-  QList<int> pixCharMain;
-  QList<QToolButton *> btnsMain;
-  QList<int> pixCharConfig;
-  QList<QToolButton *> btnsConfig;
-  QTimer *timer;
-  mb_cmu *pDev;
-  MessageQueue *pmq;
-  // StringListModel list_model;
-  QMenu *title_menu;
-  QMenu *langue_menu;
-  QMenu *theme_menu;
-  QMenu *update_menu;
-  QList<QAction *> updateActs;
-  QActionGroup *langueGroup;
-  QActionGroup *themeGroup;
-  QAction *setChinese;
-  QAction *setEnglish;
-  QAction *setBlue;
-  QAction *setBlack;
-  QAction *setWhite;
+   private:
+    Ui::MainUI *ui;
+    Widget *data_view;
+    QList<int> pixCharMain;
+    QList<QToolButton *> btnsMain;
+    QList<int> pixCharConfig;
+    QList<QToolButton *> btnsConfig;
+    QTimer *timer;
+    mb_cmu *pDev;
+    MessageQueue *pmq;
+    // StringListModel list_model;
+    QMenu *title_menu;
+    QMenu *langue_menu;
+    QMenu *theme_menu;
+    QMenu *update_menu;
+    QList<QAction *> updateActs;
+    QActionGroup *langueGroup;
+    QActionGroup *themeGroup;
+    QAction *setChinese;
+    QAction *setEnglish;
+    QAction *setBlue;
+    QAction *setBlack;
+    QAction *setWhite;
 
-  bool eventFilter(QObject *obj, QEvent *event);
-  //
-  QSettings *settings;
-  bool load_config();
-private slots:
-  void initForm();
-  void buttonClick();
-  void IpChange();
-  void initLeftMain();
-  void initLeftConfig();
-  void leftMainClick();
-  void leftConfigClick();
-  void btnClick();
-  void timerUpDate();
-  void slot_message_call(const QString &msg);
-  void on_btnMenu_Min_clicked();
-  void on_btnMenu_Max_clicked();
-  void on_btnMenu_Close_clicked();
-  void onUpdateBtnMenu();
-  void initUpdateMenu();
-  void menuClick();
-  void changeTheme();
-  void on_cbProtocol_currentIndexChanged(const QString &arg1);
+    bool eventFilter(QObject *obj, QEvent *event);
+    //
+    QSettings *settings;
+    bool load_config();
+   private slots:
+    void initForm();
+    void buttonClick();
+    void IpChange();
+    void initLeftMain();
+    void initLeftConfig();
+    void leftMainClick();
+    void leftConfigClick();
+    void btnClick();
+    void timerUpDate();
+    void slot_message_call(const QString &msg);
+    void on_btnMenu_Min_clicked();
+    void on_btnMenu_Max_clicked();
+    void on_btnMenu_Close_clicked();
+    void onUpdateBtnMenu();
+    void initUpdateMenu();
+    void menuClick();
+    void changeTheme();
+    void on_cbProtocol_currentIndexChanged(const QString &arg1);
 
-  void on_checkBox_stateChanged(int arg1);
+    void on_checkBox_stateChanged(int arg1);
 };
 
-#endif // UIDEMO08_H
+#endif  // UIDEMO08_H

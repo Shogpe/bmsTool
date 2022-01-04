@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
+#include "frmbalancebox.h"
 #include "myhelper.h"
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -177,7 +178,7 @@ void Widget::flushData() {
             double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
             // QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
             // item->setText(QString("%1").arg(val, 0, 'g', 5));
@@ -192,12 +193,13 @@ void Widget::flushData() {
             double val = *(pTemp + i * (config.T_num + config.Tp_num) + j) / 10.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
             data_index++;
         }
     }
     cloumn_offset += (config.T_num + config.Tp_num);
+    // 电压断线，温度断线，运行状态，故障状态
     uint16_t* pStatus = (uint16_t*)&(mycmu->tab_reg[data_index]);
     for (int i = 0; i < config.status_num; i++) {
         for (int j = 0; j < config.bmu_num; j++) {
@@ -205,7 +207,7 @@ void Widget::flushData() {
             uint16_t val = *(pStatus + i * config.bmu_num + j);
             item->setText(QString("0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
             //      item->setBackground(QBrush(QColor(Qt::lightGray)));
-            //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(j, i + cloumn_offset, item);
             data_index++;
         }
@@ -240,7 +242,7 @@ void Widget::flushData() {
         else
             item->setTextColor(QColor(Qt::red));
         //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setFlags(item->flags() & (Qt::NoItemFlags));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(j, cloumn_offset, item);
         data_index++;
     }
@@ -259,7 +261,6 @@ void Widget::flushData() {
                 dspbox->blockSignals(true);
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
                 dspbox->blockSignals(false);
-
             } catch (exception& e) {
                 qDebug() << e.what();
             }
@@ -272,12 +273,16 @@ void Widget::flushData() {
         map<string, NodeReg>::iterator iter1;
         iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
         if (iter1 != mycmu->name_map.end()) {
+            dspbox->show();
+
             try {
                 uint index = iter1->second.index;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
             } catch (exception& e) {
                 qDebug() << e.what();
             }
+        } else {
+            dspbox->hide();
         }
     }
     map<string, NodeReg>::iterator iter1;
@@ -540,6 +545,15 @@ void Widget::btn_released() {
             } else {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
+        }
+    } else if (name == "btnBalance") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        bool lbok;
+        frmBalanceBox input;
+        lbok = input.exec();
+        if (lbok) {
+            QByteArray b = input.getValue();
+            MsgCmd.data.append(b);
         }
     } else
         qDebug() << name;

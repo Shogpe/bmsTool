@@ -61,7 +61,7 @@ QString mb_cmu::GetBalanceValue(uint16_t status) {
     QStringList statusList;
     double Ib = (int8_t)(status & 0xFF);
     statusList.insert(0, QString::number(Ib / 10.0));
-    statusList.insert(0, QString::number(status >> 0xFF, 16));
+    statusList.insert(0, QString::number(status >> 8, 16));
 
     //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
@@ -242,6 +242,9 @@ int mb_cmu::Init() {
     } else if (protocal_ver == CMUV3) {
         this->node_table = cmu_v3_config;
         this->node_table_size = cmu_v3_config_len;
+    } else if (protocal_ver == CMUV4) {
+        this->node_table = cmu_v4_config;
+        this->node_table_size = cmu_v4_config_len;
     } else {
         this->node_table = cmu_v1_config;
         this->node_table_size = cmu_v1_config_len;
@@ -288,7 +291,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 if (rc > 0) {
                     status += rc;
                 } else {
-                    qDebug() << type << ",err:" << start_addr << ",len:" << read_len;
+                    qDebug() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -302,7 +305,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 if (rc > 0) {
                     status += rc;
                 } else {
-                    qDebug() << type << ",err:" << start_addr << ",len:" << read_len;
+                    qDebug() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
                 }
                 reg_num -= read_len;
                 dest += read_len;

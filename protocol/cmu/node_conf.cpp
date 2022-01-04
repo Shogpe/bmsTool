@@ -512,5 +512,8 @@ MB_NODE cmu_v4_config[] = {
     {134, "CVFulDF", 3, 5431, 514, 129, 1},
     {135, "UBlock", 3, 5432, 514, 129, 1},
     {136, "TBlock", 3, 5433, 514, 129, 1},
+    // V4增加
+    {137, "chgBalance", 3, 16, 514, 129, 1},
+    {138, "dischgBalance", 3, 17, 514, 129, 1},
 };
 const int cmu_v4_config_len = ARRAY_SIZE(cmu_v4_config);

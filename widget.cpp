@@ -43,6 +43,50 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
     ui->ViewSOE->setModel(&m_model);
+
+    //
+    ui->tableBMU->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableBMU,
+            static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
+            [=](const QPoint& pos) {  // Handle global position
+                QPoint globalPos = ui->tableBMU->mapToGlobal(pos);
+
+                // Create menu and insert some actions
+                QMenu myMenu;
+                myMenu.addAction(tr("导出当前数据"), this, [=]() {
+                    QTableWidget* table = ui->tableBMU;
+                    QFile file;
+                    QString fileName = QFileDialog::getSaveFileName(
+                        this, tr("保存数据"), QDir::currentPath() + "/" + "data.csv", tr("csv File(*.csv)"));
+                    if (fileName.isNull()) {
+                        return;
+                    }
+
+                    file.setFileName(fileName);
+                    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                        qDebug() << "open file fail";
+                        return;
+                    }
+                    QTextStream data(&file);
+                    QStringList strList;
+                    strList.clear();
+                    for (int c = 0; c < table->columnCount(); ++c) {
+                        strList << table->horizontalHeaderItem(c)->data(Qt::DisplayRole).toString();
+                    }
+                    data << strList.join(",") << endl;
+
+                    for (int r = 0; r < table->rowCount(); ++r) {
+                        strList.clear();
+                        for (int c = 0; c < table->columnCount(); ++c) {
+                            strList << table->item(r, c)->data(Qt::DisplayRole).toString();
+                        }
+                        data << strList.join(",") << endl;
+                    }
+                    file.close();
+                });
+                // Show context menu at handling position
+                myMenu.exec(globalPos);
+            });
 }
 
 Widget::~Widget() {
@@ -745,5 +789,9 @@ void Widget::on_btnInput_released() {
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
     Q_UNUSED(obj);
     Q_UNUSED(event);
+    if (obj == ui->tableBMU) {
+        qDebug() << obj << event;
+    }
+
     return true;  // QWidget::eventFilter(obj, event);
 }

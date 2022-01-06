@@ -57,14 +57,35 @@ QString mb_cmu::GetBalanceStatus(uint16_t status) {
     //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
 }
-QString mb_cmu::GetBalanceValue(uint16_t status) {
-    QStringList statusList;
-    double Ib = (int8_t)(status & 0xFF);
-    statusList.insert(0, QString::number(Ib / 10.0));
-    statusList.insert(0, QString::number(status >> 8, 16));
+// 0:停止均衡;0x55:强制;0xAA:自动;0x88:手动
 
-    //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
-    return statusList.join("|");
+enum BALANCE_MODE {
+    BALANCE_STOP = 0x0,
+    BALANCE_FORCE = 0x55,
+    BALANCE_AUTO = 0x88,
+    BALANCE_MANUAL = 0xAA,
+};
+QString mb_cmu::GetBalanceValue(uint16_t status) {
+    int mode = (status >> 8) & 0xFF;
+    double Ib = (int8_t)(status & 0xFF);
+    Ib *= 0.1;
+    switch (mode) {
+        case BALANCE_STOP:
+            return "STOP";
+            break;
+        case BALANCE_FORCE:
+            return QString("FORCE:%1 A").arg(QString::number(Ib));
+            break;
+        case BALANCE_AUTO:
+            return QString("AUTO:%1 A").arg(QString::number(Ib));
+            break;
+        case BALANCE_MANUAL:
+            return QString("MANUAL:%1 A").arg(QString::number(Ib));
+            break;
+        default:
+            break;
+    }
+    return QString("ERR:%1").arg(QString::number(mode, 16));
 }
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;

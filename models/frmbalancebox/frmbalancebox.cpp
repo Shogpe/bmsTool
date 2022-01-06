@@ -27,7 +27,7 @@ void frmBalanceBox::initStyle() {
 void frmBalanceBox::on_btnManually_clicked() {
     uint16_t val[4] = {0};
     val[0] = 0xF0A0;
-    val[1] = 0x66;
+    val[1] = 0x88;
     val[2] = ((uint16_t)ui->BmuID1->value() && 0xFF) << 8 | ((uint16_t)ui->CellID->value() && 0xF) << 4 |
              ((uint16_t)(ui->cbDirection->currentIndex() + 1) && 0xF);
     val[3] = ((uint16_t)(ui->doubleI->value() * 10) && 0xFF) << 8 | ((uint16_t)ui->time->value() && 0xFF);
@@ -40,7 +40,7 @@ void frmBalanceBox::on_btnManually_clicked() {
 void frmBalanceBox::on_btnForce_clicked() {
     uint16_t val[4] = {0};
     val[0] = 0xF0A0;
-    val[1] = 0xBB;
+    val[1] = 0x55;
     if (ui->cbClose) {
         val[2] = 0x55 << 8 | ((uint16_t)ui->BmuID1->value() && 0xFF);
     } else {

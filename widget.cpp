@@ -591,17 +591,38 @@ void Widget::btn_released() {
             }
         }
     } else if (name == "btnBalance") {
-        MsgCmd.msg_type = CTRL_AO_ADDR;
+        uint8_t mode = 0;
+        map<string, NodeReg>::iterator iter1;
+        iter1 = mycmu->name_map.find("BalnceMask");
+        if (iter1 != mycmu->name_map.end()) {
+            try {
+                int index = iter1->second.index;
+                mode = mycmu->tab_data.at(index).sysData.val.f64;
+            } catch (exception& e) {
+                qDebug() << e.what();
+            }
+        } else {
+        }
         bool lbok;
         frmBalanceBox input;
+        input.setMode(mode);
         lbok = input.exec();
         if (lbok) {
+            mode = input.getMode();
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {5408, mode};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            MsgCmd.data.clear();
             QByteArray b = input.getValue();
-            MsgCmd.data.append(b);
+            if (b.size() > 0) {
+                MsgCmd.msg_type = CTRL_AO_ADDR;
+                MsgCmd.data.append(b);
+                if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            }
         }
     } else
         qDebug() << name;
-    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
 }
 void Widget::stateChanged() {
     QCheckBox* b = (QCheckBox*)sender();

@@ -62,8 +62,8 @@ QString mb_cmu::GetBalanceStatus(uint16_t status) {
 enum BALANCE_MODE {
     BALANCE_STOP = 0x0,
     BALANCE_FORCE = 0x55,
-    BALANCE_AUTO = 0x88,
-    BALANCE_MANUAL = 0xAA,
+    BALANCE_MANUAL = 0x88,
+    BALANCE_AUTO = 0xAA,
 };
 QString mb_cmu::GetBalanceValue(uint16_t status) {
     int mode = (status >> 8) & 0xFF;

@@ -545,6 +545,7 @@ void Widget::btn_released() {
         MsgCmd.msg_type = cmd.type;
         MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
         MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
     } else if (name == "btnRUAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = ADDR_RINS_ADJ;
@@ -560,6 +561,8 @@ void Widget::btn_released() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+
     } else if (name == "btnRpAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = ADDR_RINS_ADJ;
@@ -575,6 +578,8 @@ void Widget::btn_released() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+
     } else if (name == "btnRnAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = ADDR_RINS_ADJ;
@@ -590,6 +595,7 @@ void Widget::btn_released() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
     } else if (name == "btnBalance") {
         uint8_t mode = 0;
         map<string, NodeReg>::iterator iter1;

@@ -17,6 +17,7 @@ enum BALANCE_MODE {
 };
 void frmBalanceBox::initStyle() {
     this->setWindowTitle("均衡控制");
+    loadValue();
     //设置窗体标题栏隐藏
     //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     this->setWindowFlags(Qt::WindowCloseButtonHint);
@@ -51,7 +52,31 @@ void frmBalanceBox::initStyle() {
         }
     });
 }
+void frmBalanceBox::saveValue() {
+    QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);
+    settings->value("balance/BMUID", "1").toInt();
+    settings->setValue("balance/BMUID1", ui->BmuID1->value());
+    settings->setValue("balance/cellId", ui->CellID->value());
+    settings->setValue("balance/chg", ui->cbDirection->currentIndex());
+    settings->setValue("balance/Icell", ui->doubleI->value());
+    settings->setValue("balance/delay", ui->time->value());
 
+    settings->setValue("balance/BMUID2", ui->BMUID2->value());
+    settings->setValue("balance/Ucell", ui->targetU->value());
+    done(1);
+    this->close();
+}
+void frmBalanceBox::loadValue() {
+    QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);
+    ui->BmuID1->setValue(settings->value("balance/BMUID1", "0").toInt());
+    ui->CellID->setValue(settings->value("balance/cellId", "0").toInt());
+    ui->cbDirection->setCurrentIndex(settings->value("balance/chg", "1").toInt());
+    ui->doubleI->setValue(settings->value("balance/Icell", "2").toDouble());
+    ui->time->setValue(settings->value("balance/delay", "10").toInt());
+
+    ui->BMUID2->setValue(settings->value("balance/BMUID2", "0").toInt());
+    ui->targetU->setValue(settings->value("balance/Ucell", "3.3").toDouble());
+}
 void frmBalanceBox::on_btnManually_clicked() {
     uint16_t val[4] = {0};
     val[0] = 0xF0A0;
@@ -61,8 +86,7 @@ void frmBalanceBox::on_btnManually_clicked() {
     val[3] = ((uint16_t)(ui->doubleI->value()) & 0xFF) << 8 | ((uint16_t)ui->time->value() & 0xFF);
     Value.clear();
     Value.append(reinterpret_cast<char *>(&val), sizeof(val));
-    done(1);
-    this->close();
+    this->saveValue();
 }
 bool frmBalanceBox::setMode(uint8_t mode) {
     ui->cbMode->blockSignals(true);
@@ -98,12 +122,10 @@ void frmBalanceBox::on_btnForce_clicked() {
     val[3] = ui->targetU->value() * 10000;
     Value.clear();
     Value.append(reinterpret_cast<char *>(&val), sizeof(val));
-    done(1);
-    this->close();
+    this->saveValue();
 }
 
 void frmBalanceBox::on_btnMode_clicked() {
     Value.clear();
-    done(1);
-    this->close();
+    this->saveValue();
 }

@@ -34,6 +34,8 @@ class frmBalanceBox : public QDialog {
     void initStyle();  //初始化无边框窗体
     uint8_t curMode;
     QByteArray Value;
+    void loadValue();
+    void saveValue();
 };
 
 #endif  // FRMBALANCEBOX_H

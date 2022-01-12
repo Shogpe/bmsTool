@@ -63,6 +63,7 @@ void frmBalanceBox::saveValue() {
 
     settings->setValue("balance/BMUID2", ui->BMUID2->value());
     settings->setValue("balance/Ucell", ui->targetU->value());
+    delete settings;
     done(1);
     this->close();
 }
@@ -76,6 +77,7 @@ void frmBalanceBox::loadValue() {
 
     ui->BMUID2->setValue(settings->value("balance/BMUID2", "0").toInt());
     ui->targetU->setValue(settings->value("balance/Ucell", "3.3").toDouble());
+    delete settings;
 }
 void frmBalanceBox::on_btnManually_clicked() {
     uint16_t val[4] = {0};

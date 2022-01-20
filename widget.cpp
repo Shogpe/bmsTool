@@ -43,7 +43,42 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->ViewSOE->verticalHeader()->hide();
     ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
     ui->ViewSOE->setModel(&m_model);
+    ui->ViewSOE->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->ViewSOE, static_cast<void (QTableView::*)(const QPoint& pos)>(&QTableView::customContextMenuRequested),
+            this,
+            [=](const QPoint& pos) {  // Handle global position
+                QPoint globalPos = ui->ViewSOE->mapToGlobal(pos);
 
+                // Create menu and insert some actions
+                QMenu myMenu;
+                myMenu.addAction(tr("导出当前SOE"), this, [=]() {
+                    QString fileName = QFileDialog::getSaveFileName(
+                        this, tr("Save File"), tr("导出SOE") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        tr("Excel(*.csv)"));
+                    if (fileName.isEmpty()) return;
+                    QFile file(fileName);
+                    if (file.open(QIODevice::WriteOnly)) {
+                        QTextStream stream(&file);
+                        stream << QChar(0xfeff);
+                        int cc = m_model.columnCount();
+                        QStringList list;
+                        for (int i = 0; i < cc; i++) {
+                            list << m_model.headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
+                        }
+                        stream << list.join(",") << endl;
+                        for (int i = 0; i < m_model.rowCount(); i++) {
+                            list.clear();
+                            for (int j = 0; j < cc; j++) {
+                                list << m_model.index(i, j).data().toString();
+                            }
+                            stream << list.join(",") << endl;
+                        }
+                        file.close();
+                    }
+                });
+                // Show context menu at handling position
+                myMenu.exec(globalPos);
+            });
     //
     ui->tableBMU->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tableBMU,

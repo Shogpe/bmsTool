@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QThread>
 #include <iostream>
+#include <QDateTime>
 #include "MessageQueue.h"
 #include "mb_tcp.h"
 #include "modbus-tcp.h"
@@ -199,6 +200,7 @@ class mb_cmu : public QThread {
     MessageQueue *pMq;
     map<string, NodeReg> name_map;
     QFile *csvfile;
+    QDateTime fileTime;
     void Dump2CsvTitle();
     void Dump2Csv();
     QString GetBalanceStatus(uint16_t status);
@@ -207,7 +209,13 @@ class mb_cmu : public QThread {
    protected:
     modbus_t *cmu;
     int err_counter = 0;
-    int rec = 1;
+    enum FILE_FORMAT {
+        NONE = 0,
+        CSV = 0x01,
+        BIN = 0x02,
+    };
+
+    int rec = 1;  // 存储格式，1:csv格式，0x02:bin格式（json+zip压缩）
     STATE_MACHINE state = SM_NONE;
     string mb_ip;
     int mb_port;

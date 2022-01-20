@@ -89,8 +89,9 @@ QString mb_cmu::GetBalanceValue(uint16_t status) {
 }
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
-    if ((rec & 0x01) != 0x01) return;
-    QString fileName = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
+    if ((rec & CSV) != CSV) return;
+    fileTime = QDateTime::currentDateTime();
+    QString fileName = fileTime.toString("yyyyMMdd_hhmmss");
     fileName.append(".csv");
     if (csvfile) csvfile->close();
     csvfile = new QFile(dataPath + "/" + fileName);
@@ -101,6 +102,8 @@ void mb_cmu::Dump2CsvTitle() {
         return;
     }
     QTextStream data_buf(csvfile);
+    // 写入UTF-BOM头部
+    data_buf << QChar(0xfeff);
     data_buf << "Time,";
     for (int i = 0; i < node_table_size; i++) {
         if (node_table[i].val_type == 128) {
@@ -117,19 +120,29 @@ void mb_cmu::Dump2CsvTitle() {
         for (int j = 0; j < config.Tp_num; j++) {
             data_buf << (QString("BMU%1_Tp%2,").arg(i + 1).arg(j + 1));
         }
-        //    for(int j=0;j<config.status_num;++j) {
-        //      data_buf.append(QString("Tpole%1").arg(j));
-        //    }
+        data_buf << (QString("BMU%1_电压断线,").arg(i + 1));
+        data_buf << (QString("BMU%1_温度断线,").arg(i + 1));
+        data_buf << (QString("BMU%1_运行状态,").arg(i + 1));
+        data_buf << (QString("BMU%1_故障状态,").arg(i + 1));
+        data_buf << (QString("BMU%1_均衡状态,").arg(i + 1));
+        data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
     }
 
     data_buf << endl;
 }
+#define FILE_ROTATE_TIME 60 * 60 * 12
 void mb_cmu::Dump2Csv() {
     if (stopDump) return;
     if (rec & 0x01) {
         if (!csvfile) {
             Dump2CsvTitle();
-        };
+        } else {
+            // 检查csv文件以便分割文件 12小时
+//            qDebug() << fileTime.secsTo(QDateTime::currentDateTime());
+            if (fileTime.secsTo(QDateTime::currentDateTime()) >= FILE_ROTATE_TIME) {
+                Dump2CsvTitle();
+            }
+        }
         QTextStream data_buf(csvfile);
         data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
         for (int i = 0; i < node_table_size; i++) {
@@ -153,10 +166,23 @@ void mb_cmu::Dump2Csv() {
                              10.0;
                 data_buf << (QString("%1,").arg(val));
             }
-            //    for(int j=0;j<config.status_num;++j) {
-            //      data_buf.append(QString("Tpole%1").arg(j));
-            //      data_buf.append(",");
-            //    }
+            // 20220115添加
+            //状态量个数，电压断线+温度断线+运行状态+故障状态
+            for (int j = 0; j < config.status_num; j++) {
+                double val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
+                               config.bmu_num * config.Tp_num + i * config.status_num + j);
+                data_buf << (QString("%1,").arg(val));
+            }
+
+            //获取均衡状态
+            uint16_t val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
+                             config.bmu_num * config.Tp_num + config.bmu_num * config.status_num + 2 * i);
+            data_buf << (QString("%1,").arg(this->GetBalanceStatus(val)));
+
+            //获取均衡模式
+            val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
+                    config.bmu_num * config.Tp_num + config.bmu_num * config.status_num + 2 * i + 1);
+            data_buf << (QString("%1,").arg(this->GetBalanceValue(val)));
         }
         data_buf << endl;
         csvfile->flush();

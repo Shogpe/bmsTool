@@ -516,7 +516,7 @@ MB_NODE cmu_v4_config[] = {
     {136, "TBlock", 3, 5433, 514, 129, 1},
     {137, "ClusterIremain", 4, 5404, 513, 128, 0.1},
     // V4增加
-    {138, "chgBalance", 3, 16, 514, 129, 1},
-    {139, "dischgBalance", 3, 17, 514, 129, 1},
+    {138, "chgBalance", 3, 16, 514, 128, 1},
+    {139, "dischgBalance", 3, 17, 514, 128, 1},
 };
 const int cmu_v4_config_len = ARRAY_SIZE(cmu_v4_config);

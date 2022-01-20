@@ -64,8 +64,10 @@ void frmBalanceBox::saveValue() {
     settings->setValue("balance/BMUID2", ui->BMUID2->value());
     settings->setValue("balance/Ucell", ui->targetU->value());
     delete settings;
-    done(1);
-    this->close();
+    emit valueChange(Value);
+
+//    done(1);
+//    this->close();
 }
 void frmBalanceBox::loadValue() {
     QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);

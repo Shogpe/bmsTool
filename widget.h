@@ -7,6 +7,8 @@
 #include "mb_cmu.h"
 #include "models/MyDoubleSpinBox/MyDoubleSpinBox.h"
 #include "models/SOEModel/SOEModel.h"
+#include "frmbalancebox.h"
+
 using namespace std;
 
 namespace Ui {
@@ -29,6 +31,7 @@ class Widget : public QWidget {
     QTimer* timer;
     CMU_CONF config;
     SOEModel m_model;
+    frmBalanceBox *inputBalance = nullptr;
     bool eventFilter(QObject* obj, QEvent* event);
     int setValue(string name, double dval);
    private slots:

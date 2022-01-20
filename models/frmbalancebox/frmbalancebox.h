@@ -27,6 +27,8 @@ class frmBalanceBox : public QDialog {
     void on_btnForce_clicked();
 
     void on_btnMode_clicked();
+   signals:
+    void valueChange(QByteArray b);
 
    private:
     Ui::frmBalanceBox *ui;

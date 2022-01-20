@@ -324,7 +324,11 @@ void MainUI::on_btnMenu_Max_clicked() {
     max = !max;
 }
 
-void MainUI::on_btnMenu_Close_clicked() { close(); }
+void MainUI::on_btnMenu_Close_clicked() {
+    close();
+    delete ui;
+    this->deleteLater();
+}
 
 void MainUI::timerUpDate() {
     ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss"));

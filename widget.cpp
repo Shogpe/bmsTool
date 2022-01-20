@@ -5,7 +5,6 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
-#include "frmbalancebox.h"
 #include "myhelper.h"
 #include "ui_widget.h"
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
@@ -125,6 +124,10 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
 }
 
 Widget::~Widget() {
+    if (inputBalance) {
+        inputBalance->close();
+        inputBalance->deleteLater();
+    }
     timer->stop();
     delete timer;
     delete ui;
@@ -644,24 +647,30 @@ void Widget::btn_released() {
             }
         } else {
         }
-        bool lbok;
-        frmBalanceBox input;
-        input.setMode(mode);
-        lbok = input.exec();
-        if (lbok) {
-            mode = input.getMode();
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {5408, mode};
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-            MsgCmd.data.clear();
-            QByteArray b = input.getValue();
-            if (b.size() > 0) {
+        qDebug() << mode;
+        //        bool lbok;
+        if (inputBalance == nullptr) {
+            inputBalance = new frmBalanceBox();
+            connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
+                TMsgData MsgCmd;
+                uint16_t mode = inputBalance->getMode();
+                qDebug() << mode;
                 MsgCmd.msg_type = CTRL_AO_ADDR;
-                MsgCmd.data.append(b);
+                uint16_t value[2] = {5408, mode};
+                MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
                 if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-            }
+                MsgCmd.data.clear();
+                QByteArray b = inputBalance->getValue();
+                if (b.size() > 0) {
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    MsgCmd.data.append(b);
+                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                }
+            });
         }
+        inputBalance->setMode(mode);
+        inputBalance->open();
+        inputBalance->activateWindow();
     } else
         qDebug() << name;
 }

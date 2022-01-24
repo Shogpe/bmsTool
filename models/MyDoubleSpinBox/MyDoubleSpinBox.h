@@ -8,7 +8,9 @@ class MyDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT
 
    public:
-    MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {}
+    MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {
+        setAlignment(Qt::AlignJustify);
+    }
 
     virtual QString textFromValue(double value) const {
         /* 4 - number of digits, 10 - base of number, '0' - pad character*/

@@ -52,7 +52,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                 QMenu myMenu;
                 myMenu.addAction(tr("导出当前SOE"), this, [=]() {
                     QString fileName = QFileDialog::getSaveFileName(
-                        this, tr("Save File"), tr("导出SOE") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        this, tr("Save File"), tr("SOE导出") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
                         tr("Excel(*.csv)"));
                     if (fileName.isEmpty()) return;
                     QFile file(fileName);
@@ -87,11 +87,12 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
 
                 // Create menu and insert some actions
                 QMenu myMenu;
-                myMenu.addAction(tr("导出当前数据"), this, [=]() {
+                myMenu.addAction(tr("冻结当前数据"), this, [=]() {
                     QTableWidget* table = ui->tableBMU;
                     QFile file;
                     QString fileName = QFileDialog::getSaveFileName(
-                        this, tr("保存数据"), QDir::currentPath() + "/" + "data.csv", tr("csv File(*.csv)"));
+                        this, tr("Save File"), tr("冻结数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        tr("csv File(*.csv)"));
                     if (fileName.isNull()) {
                         return;
                     }
@@ -104,6 +105,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                     QTextStream data(&file);
                     QStringList strList;
                     strList.clear();
+                    strList << tr("序号");
                     for (int c = 0; c < table->columnCount(); ++c) {
                         strList << table->horizontalHeaderItem(c)->data(Qt::DisplayRole).toString();
                     }
@@ -111,6 +113,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
 
                     for (int r = 0; r < table->rowCount(); ++r) {
                         strList.clear();
+                        strList << QString::number(r + 1);
                         for (int c = 0; c < table->columnCount(); ++c) {
                             strList << table->item(r, c)->data(Qt::DisplayRole).toString();
                         }

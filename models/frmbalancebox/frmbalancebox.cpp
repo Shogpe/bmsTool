@@ -108,6 +108,7 @@ bool frmBalanceBox::setMode(uint8_t mode) {
             ui->gManual->show();
             break;
         default:
+            curMode = 0;
             ui->cbMode->setCurrentIndex(0);
             break;
     }

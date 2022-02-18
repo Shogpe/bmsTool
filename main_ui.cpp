@@ -1,72 +1,25 @@
 #include "main_ui.h"
 #include <QTimer>
-#include "Toast.h"
 #include "iconhelper.h"
 #include "ui_main_ui.h"
 #include "utils.h"
+#include "Toast.h"
 #include "version.h"
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
-    load_config();
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-    QString protocol = settings->value("global/protocol", "CMU1.0").toString();
-    if (protocol == "CMU2.0") {
-        this->pDev = new mb_cmu(CMUV2);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV2);
-        ui->cbProtocol->blockSignals(false);
-    } else if (protocol == "CMU3.0") {
-        this->pDev = new mb_cmu(CMUV3);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV3);
-        ui->cbProtocol->blockSignals(false);
-    } else if (protocol == "CMU4.0") {
-        this->pDev = new mb_cmu(CMUV4);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV4);
-        ui->cbProtocol->blockSignals(false);
-    } else {
-        this->pDev = new mb_cmu(CMUV1);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV1);
-        ui->cbProtocol->blockSignals(false);
-    }
-    pmq = MessageQueue::getInstance();
-    this->pDev->start();
-    ui->cmuData->mycmu = pDev;
-    connect(ui->lineEditIP, &QLineEdit::editingFinished, this, &MainUI::IpChange, Qt::UniqueConnection);
-    connect(pDev, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
-            static_cast<void (MainUI::*)(const QString&)>(&MainUI::slot_message_call), Qt::UniqueConnection);
 
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDate()));
-    timer->start(500);
 }
-void MainUI::slot_message_call(const QString& msg) {
-    // qDebug() << QString("msg:%1").arg(msg);
-    Toast::showTip(msg, nullptr);
-}
-bool MainUI::load_config() {
-    settings = new QSettings("config.ini", QSettings::IniFormat);
-    QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
-    QByteArray ba = settings->value("global/layout").toByteArray();
-    ui->lineEditIP->setText(target_ip);
-    this->restoreGeometry(ba);
-    return true;
-}
+
 MainUI::~MainUI() {
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = THREAD_EXIT;
-    pmq->sendMsg(0, MsgCmd);
-    pDev->wait();
+    if(timer) timer->deleteLater();
     QByteArray ba = this->saveGeometry();
     settings->setValue("global/layout", ba);
     settings->sync();
     settings->deleteLater();
     delete settings;
-    delete pDev;
     delete ui;
 }
 #include "stategroupbox.h"
@@ -142,6 +95,9 @@ void MainUI::initForm() {
     title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
+    settings = new QSettings("config.ini", QSettings::IniFormat);
+    QByteArray ba = settings->value("global/layout").toByteArray();
+    this->restoreGeometry(ba);
     QString user = settings->value("global/user", "").toString();
     QString token = settings->value("global/token", "").toString();
     if (user != "Ganing" && token != "0a1d0f157771521bad3b9579bcf13c35") ui->btnMenu->hide();
@@ -150,7 +106,11 @@ void MainUI::initForm() {
     //关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
     connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
-    initUpdateMenu();
+    this->timer = new QTimer(this);
+
+    connect(timer, &QTimer::timeout, this,
+            [=]() { ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss")); });
+    timer->start(500);
 }
 
 void MainUI::buttonClick() {
@@ -179,23 +139,6 @@ void MainUI::buttonClick() {
     }
 }
 
-void MainUI::IpChange() {
-    QLineEdit* pEdit = (QLineEdit*)sender();
-    if (!pEdit->isModified()) return;
-    pEdit->setModified(false);
-    QString ip = pEdit->text();
-    if (!myHelper::IsIP(ip)) {
-        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
-        pEdit->undo();
-        return;
-    }
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CONFIG_IP;
-    MsgCmd.data.append(ip);
-    pmq->sendMsg(0, MsgCmd);
-    settings->setValue("global/target_ip", ip);
-}
-
 void MainUI::initLeftMain() {
     pixCharMain << 0xf030 << 0xf03e << 0xf247;
     int count = btnsMain.count();
@@ -204,7 +147,6 @@ void MainUI::initLeftMain() {
         btnsMain.at(i)->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         connect(btnsMain.at(i), SIGNAL(clicked(bool)), this, SLOT(leftMainClick()));
     }
-    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
 }
 
 void MainUI::initLeftConfig() {
@@ -290,24 +232,7 @@ void MainUI::changeTheme()  //切换主题
         myHelper::SetStyle("flatwhite");
     }
 }
-void MainUI::btnClick() {
-    QToolButton* b = (QToolButton*)sender();
-    QString name = b->text();
-    if (name == "连接" || name == "重连") {
-        uint16_t port = ui->spinBoxPort->value();
-        TMsgData MsgCmd;
-        MsgCmd.msg_type = CONFIG_IP;
-        MsgCmd.data.append(ui->lineEditIP->text());
-        pmq->sendMsg(0, MsgCmd);
-        MsgCmd.msg_type = CONFIG_PORT;
-        MsgCmd.data.clear();
-        MsgCmd.data.append((char*)&port, sizeof(port));
-        pmq->sendMsg(0, MsgCmd);
-        MsgCmd.msg_type = CONFIG_INIT;
-        MsgCmd.data.clear();
-        pmq->sendMsg(0, MsgCmd);
-    }
-}
+
 void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
 
 void MainUI::on_btnMenu_Max_clicked() {
@@ -330,22 +255,6 @@ void MainUI::on_btnMenu_Close_clicked() {
     this->deleteLater();
 }
 
-void MainUI::timerUpDate() {
-    ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss"));
-    if (pDev == nullptr) return;
-    if (this->pDev->cmu_status) {
-        ui->labelStatus->setStyleSheet("color:green");
-        ui->labelStatus->setText(tr("已连接"));
-        if (this->pDev->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
-        uint32_t val = this->pDev->cmu_ver;
-        ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
-        ui->tbtnConnect->setText("重连");
-    } else {
-        ui->labelStatus->setStyleSheet("color:red");
-        ui->labelStatus->setText(tr("未连接"));
-        ui->tbtnConnect->setText("连接");
-    }
-}
 bool MainUI::eventFilter(QObject* obj, QEvent* event) {
     if (obj == ui->widgetTitle) {
         if (event->type() == QEvent::MouseButtonDblClick) {
@@ -354,75 +263,4 @@ bool MainUI::eventFilter(QObject* obj, QEvent* event) {
         }
     }
     return QFramelessWidget::eventFilter(obj, event);
-}
-
-void MainUI::on_cbProtocol_currentIndexChanged(const QString& arg1) {
-    qDebug() << arg1;
-    settings->setValue("global/protocol", arg1);
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(ui->cbProtocol->currentIndex());
-    pmq->sendMsg(0, MsgCmd);
-    MsgCmd.data.clear();
-}
-
-void MainUI::initUpdateMenu() {
-    update_menu = new QMenu;
-    update_menu->addAction("下载升级BMS", this, &MainUI::onUpdateBtnMenu);
-    update_menu->addAction("下载升级BMU", this, &MainUI::onUpdateBtnMenu);
-    update_menu->addAction("下载升级BMS Boot", this, &MainUI::onUpdateBtnMenu);
-    update_menu->addAction("下载升级BMU Boot", this, &MainUI::onUpdateBtnMenu);
-    update_menu->addAction("下载升级绝缘板", this, &MainUI::onUpdateBtnMenu);
-    update_menu->addAction("升级BMU", this, &MainUI::onUpdateBtnMenu);
-    ui->btnVer->setMenu(update_menu);
-}
-
-void MainUI::onUpdateBtnMenu() {
-    QAction* b = (QAction*)sender();
-    TMsgData MsgCmd;
-    if (b->text() == "下载升级BMS") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateCMU};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else if (b->text() == "下载升级BMU") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBMU};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else if (b->text() == "下载升级BMS Boot") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTC};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else if (b->text() == "下载升级BMU Boot") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTB};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else if (b->text() == "升级BMU") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else if (b->text() == "下载升级绝缘板") {
-        MsgCmd.msg_type = CTRL_SEC_AO;
-        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
-        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-    } else {
-        return;
-    }
-    pmq->sendMsg(0, MsgCmd);
-    MsgCmd.data.clear();
-    return;
-}
-
-void MainUI::on_checkBox_stateChanged(int arg1) {
-    qDebug() << QString("%1").arg(arg1);
-    TMsgData MsgCmd;
-    QCheckBox* cbox = (QCheckBox*)this->sender();
-    if (cbox->isChecked()) {
-        MsgCmd.msg_type = CTRL_DUMP;
-        MsgCmd.data.clear();
-    } else {
-        MsgCmd.msg_type = CTRL_DUMP;
-        MsgCmd.data.append("0");
-    }
-    pmq->sendMsg(0, MsgCmd);
-    MsgCmd.data.clear();
 }

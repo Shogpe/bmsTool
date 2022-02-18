@@ -401,7 +401,36 @@ int mb_cmu::ReadALL() {
     offset += reg_num;
     return status;
 }
+// CMU4.0主动均衡版本
+int mb_cmu::ReadALLV4() {
+    /* Read 5 registers from the address 0 */
 
+    unsigned int reg_num = 0;
+    uint16_t* p = this->tab_reg;
+    int status = 0;
+    unsigned int offset = 0;
+    status += ReadAI();
+    //
+    if (config.bmu_num > 0) {
+        reg_num = config.bmu_num * config.vol_num;
+        status += ReadData(0x04, 0x01, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
+        status += ReadData(0x04, 0x1000, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * config.status_num;
+        status += ReadData(0x03, 0x100, reg_num, p + offset);
+        offset += reg_num;
+        reg_num = config.bmu_num * 4;  // 均衡状态等
+        status += ReadData(0x03, 0x900, reg_num, p + offset);
+        offset += reg_num;
+    }
+    //版本号
+    reg_num = config.bmu_num * 2 + 2;
+    status += ReadData(0x03, 0x500, reg_num, p + offset);
+    offset += reg_num;
+    return status;
+}
 void mb_cmu::run() {
     qDebug() << time(nullptr);
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {

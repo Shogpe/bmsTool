@@ -5,23 +5,93 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
+#include "Toast.h"
 #include "myhelper.h"
 #include "ui_widget.h"
+
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     this->installEventFilter(this);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
-    timer->start(500);
     mycmu = nullptr;
     pmq = MessageQueue::getInstance();
     pmq->registMsgQueue(99);
+    initUpdateMenu();
+    load_config();
     config = {0, 0, 0, 0, 0};
+    //
+    QString protocol = settings->value("global/protocol", "CMU1.0").toString();
+    if (protocol == "CMU2.0") {
+        this->mycmu = new mb_cmu(CMUV2);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV2);
+        ui->cbProtocol->blockSignals(false);
+    } else if (protocol == "CMU3.0") {
+        this->mycmu = new mb_cmu(CMUV3);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV3);
+        ui->cbProtocol->blockSignals(false);
+    } else if (protocol == "CMU4.0") {
+        this->mycmu = new mb_cmu(CMUV4);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV4);
+        ui->cbProtocol->blockSignals(false);
+    } else {
+        this->mycmu = new mb_cmu(CMUV1);
+        ui->cbProtocol->blockSignals(true);
+        ui->cbProtocol->setCurrentIndex(CMUV1);
+        ui->cbProtocol->blockSignals(false);
+    }
+    mycmu->start();
+    connect(ui->connectIP, &QLineEdit::editingFinished, this, &Widget::IpChange, Qt::UniqueConnection);
+    connect(mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
+            static_cast<void (Widget::*)(const QString&)>(&Widget::slot_message_call), Qt::UniqueConnection);
+    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
+
     //
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         connect(dspbox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
                 &Widget::valueChange, Qt::UniqueConnection);
+        connect(dspbox,
+                static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested),
+                this,
+                [=](const QPoint& pos) {  // Handle global position
+                    QPoint globalPos = dspbox->mapToGlobal(pos);
+                    // Create menu and insert some actions
+                    QMenu myMenu;
+                    myMenu.addAction(tr("修改"), this, [=]() {
+                        qDebug() << dspbox->objectName();
+                        if (dspbox->objectName() == "BalnceMask") {
+                            int mode = dspbox->value();
+                            if (inputBalance == nullptr) {
+                                inputBalance = new frmBalanceBox();
+                                connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
+                                    TMsgData MsgCmd;
+                                    uint16_t mode = inputBalance->getMode();
+                                    qDebug() << mode;
+                                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                                    uint16_t value[2] = {5408, mode};
+                                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                    MsgCmd.data.clear();
+                                    QByteArray b = inputBalance->getValue();
+                                    if (b.size() > 0) {
+                                        MsgCmd.msg_type = CTRL_AO_ADDR;
+                                        MsgCmd.data.append(b);
+                                        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                    }
+                                });
+                            }
+                            inputBalance->setMode(mode);
+                            inputBalance->open();
+                            inputBalance->activateWindow();
+                        }
+                    });
+                    // Show context menu at handling position
+                    myMenu.exec(globalPos);
+                });
     }
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
@@ -87,11 +157,11 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
 
                 // Create menu and insert some actions
                 QMenu myMenu;
-                myMenu.addAction(tr("冻结当前数据"), this, [=]() {
+                myMenu.addAction(tr("导出当前数据"), this, [=]() {
                     QTableWidget* table = ui->tableBMU;
                     QFile file;
                     QString fileName = QFileDialog::getSaveFileName(
-                        this, tr("Save File"), tr("冻结数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
                         tr("csv File(*.csv)"));
                     if (fileName.isNull()) {
                         return;
@@ -103,6 +173,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                         return;
                     }
                     QTextStream data(&file);
+                    data << QChar(0xfeff);
                     QStringList strList;
                     strList.clear();
                     strList << tr("序号");
@@ -122,11 +193,15 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                     file.close();
                 });
                 // Show context menu at handling position
-                myMenu.exec(globalPos);
+                myMenu.exec();
             });
+    timer->start(500);
 }
 
 Widget::~Widget() {
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = THREAD_EXIT;
+    pmq->sendMsg(0, MsgCmd);
     if (inputBalance) {
         inputBalance->close();
         inputBalance->deleteLater();
@@ -216,6 +291,19 @@ void Widget::timerUpDate() {
     QTime t;
     t.restart();  //将此时间设置为当前时间
     //
+    if (mycmu == nullptr) return;
+    if (this->mycmu->cmu_status) {
+        ui->labelStatus->setStyleSheet("color:green");
+        ui->labelStatus->setText(tr("已连接"));
+        if (this->mycmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
+        uint32_t val = this->mycmu->cmu_ver;
+        ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
+        ui->tbtnConnect->setText("重连");
+    } else {
+        ui->labelStatus->setStyleSheet("color:red");
+        ui->labelStatus->setText(tr("未连接"));
+        ui->tbtnConnect->setText("连接");
+    }
     TMsgData Msg;
     while (pmq->readMsg(99, Msg) != 0) {
         if (Msg.msg_type == 0) {
@@ -540,6 +628,7 @@ struct mb_cmd {
 static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
                                       {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
                                       {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
+                                      {"btnUploadTrig", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_UPLOAD_Trig}},
                                       {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
                                       {"btnIBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IBase}},
                                       {"btnIZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IZero}},
@@ -868,4 +957,119 @@ bool Widget::eventFilter(QObject* obj, QEvent* event) {
     }
 
     return true;  // QWidget::eventFilter(obj, event);
+}
+void Widget::on_cbProtocol_currentIndexChanged(const QString& arg1) {
+    qDebug() << arg1;
+    settings->setValue("global/protocol", arg1);
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_SET_PRO;
+    MsgCmd.data.setNum(ui->cbProtocol->currentIndex());
+    pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
+}
+
+void Widget::initUpdateMenu() {
+    update_menu = new QMenu;
+    update_menu->addAction("下载升级BMS", this, &Widget::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMU", this, &Widget::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMS Boot", this, &Widget::onUpdateBtnMenu);
+    update_menu->addAction("下载升级BMU Boot", this, &Widget::onUpdateBtnMenu);
+    update_menu->addAction("下载升级绝缘板", this, &Widget::onUpdateBtnMenu);
+    update_menu->addAction("升级BMU", this, &Widget::onUpdateBtnMenu);
+    ui->btnVer->setMenu(update_menu);
+}
+
+void Widget::onUpdateBtnMenu() {
+    QAction* b = (QAction*)sender();
+    TMsgData MsgCmd;
+    if (b->text() == "下载升级BMS") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateCMU};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMU") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBMU};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMS Boot") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTC};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级BMU Boot") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTB};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "升级BMU") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else if (b->text() == "下载升级绝缘板") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
+        MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
+    } else {
+        return;
+    }
+    pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
+    return;
+}
+
+void Widget::on_checkBox_stateChanged(int arg1) {
+    qDebug() << QString("%1").arg(arg1);
+    TMsgData MsgCmd;
+    QCheckBox* cbox = (QCheckBox*)this->sender();
+    if (cbox->isChecked()) {
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.clear();
+    } else {
+        MsgCmd.msg_type = CTRL_DUMP;
+        MsgCmd.data.append("0");
+    }
+    pmq->sendMsg(0, MsgCmd);
+    MsgCmd.data.clear();
+}
+void Widget::btnClick() {
+    QToolButton* b = (QToolButton*)sender();
+    QString name = b->text();
+    if (name == "连接" || name == "重连") {
+        uint16_t port = ui->spinBoxPort->value();
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CONFIG_IP;
+        MsgCmd.data.append(ui->connectIP->text());
+        pmq->sendMsg(0, MsgCmd);
+        MsgCmd.msg_type = CONFIG_PORT;
+        MsgCmd.data.clear();
+        MsgCmd.data.append((char*)&port, sizeof(port));
+        pmq->sendMsg(0, MsgCmd);
+        MsgCmd.msg_type = CONFIG_INIT;
+        MsgCmd.data.clear();
+        pmq->sendMsg(0, MsgCmd);
+    }
+}
+void Widget::IpChange() {
+    QLineEdit* pEdit = (QLineEdit*)sender();
+    if (!pEdit->isModified()) return;
+    pEdit->setModified(false);
+    QString ip = pEdit->text();
+    if (!myHelper::IsIP(ip)) {
+        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
+        pEdit->undo();
+        return;
+    }
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CONFIG_IP;
+    MsgCmd.data.append(ip);
+    pmq->sendMsg(0, MsgCmd);
+    settings->setValue("global/target_ip", ip);
+}
+
+void Widget::slot_message_call(const QString& msg) {
+    // qDebug() << QString("msg:%1").arg(msg);
+    Toast::showTip(msg, nullptr);
+}
+bool Widget::load_config() {
+    settings = new QSettings("config.ini", QSettings::IniFormat);
+    QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
+    ui->connectIP->setText(target_ip);
+    return true;
 }

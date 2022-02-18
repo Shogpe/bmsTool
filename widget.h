@@ -4,11 +4,11 @@
 #include <QTableWidget>
 #include <QWidget>
 #include <iostream>
+#include "frmbalancebox.h"
 #include "mb_cmu.h"
 #include "models/MyDoubleSpinBox/MyDoubleSpinBox.h"
 #include "models/SOEModel/SOEModel.h"
-#include "frmbalancebox.h"
-
+#include <QSettings>
 using namespace std;
 
 namespace Ui {
@@ -31,9 +31,14 @@ class Widget : public QWidget {
     QTimer* timer;
     CMU_CONF config;
     SOEModel m_model;
-    frmBalanceBox *inputBalance = nullptr;
+    QSettings* settings;
+    QMenu *update_menu;
+
+    frmBalanceBox* inputBalance = nullptr;
     bool eventFilter(QObject* obj, QEvent* event);
     int setValue(string name, double dval);
+    bool load_config();
+
    private slots:
     void timerUpDate();
     void valueChange();
@@ -44,9 +49,17 @@ class Widget : public QWidget {
     void on_lineEditIP_editingFinished();
     void on_lineEditServIP_editingFinished();
     //
+    void on_cbProtocol_currentIndexChanged(const QString& arg1);
+    void btnClick();
 
+    void on_checkBox_stateChanged(int arg1);
     void on_btnOutput_released();
     void on_btnInput_released();
+    void onUpdateBtnMenu();
+    void initUpdateMenu();
+    void slot_message_call(const QString& msg);
+    void IpChange();
+
 };
 
 #endif

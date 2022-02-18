@@ -1,10 +1,10 @@
 #ifndef MB_CMU_H
 #define MB_CMU_H
 
+#include <QDateTime>
 #include <QFile>
 #include <QThread>
 #include <iostream>
-#include <QDateTime>
 #include "MessageQueue.h"
 #include "mb_tcp.h"
 #include "modbus-tcp.h"
@@ -103,6 +103,7 @@ typedef enum {
 
 #define ADDR_CLEAR_ENG 0xFFF2
 #define MB_CLEAR_ENG   0x1EC6
+#define MB_UPLOAD_Trig 0x1D32
 
 #define ADDR_REBOOT 0xFFF3
 #define MB_REBOOT   0x1D32
@@ -135,6 +136,27 @@ typedef struct {
     uint16_t soe_limit;  // 限值
     uint16_t soe_stat;   // 系统状态
 } CMU_SOE;
+// BMU 数据
+#define MAX_U  32
+#define MAX_T  8
+#define MAX_Tp 2
+typedef struct {
+    uint16_t Ucell[MAX_U];   // 单体电压
+    uint16_t Tcell[MAX_T];   // 模组温度
+    uint16_t Tpole[MAX_Tp];  // 极柱温度
+    uint16_t Ubreak;         // 电压断线
+    uint16_t Tbreak;         // 温度断线
+    uint16_t RunStat;        // 运行状态
+    uint16_t ErrStat;        // 故障状态
+    uint16_t Version;        // 版本号
+    uint16_t BalStat;        // 均衡状态
+    uint16_t BalErr;         // 通道故障(闭锁)状态
+    uint16_t BalU24;         // 均衡24V电压
+    uint16_t BalMode;        // 均衡模式+电流
+    uint16_t CanErr;         // 通信错误计数
+    uint16_t BalChgAh;       // 充电均衡Ah
+    uint16_t BalDischgAh;    // 放电均衡Ah
+} BMU_DATA_T;
 typedef struct {
     uint16_t soe_count;
     uint16_t new_soe_count;
@@ -185,10 +207,12 @@ class mb_cmu : public QThread {
     ~mb_cmu();
     virtual int Init();  //初始化
     int ReadALL();       //
+    int ReadALLV4();       //
     int Close();         //释放资源
    public:
     uint16_t tab_reg[1000];
     uint16_t tab_AI[1000];
+    BMU_DATA_T bmu_data[60];
     ST_SysPara sys_para;
     ST_SOE cmu_soe;
     CMU_CONF config;

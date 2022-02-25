@@ -138,7 +138,7 @@ void mb_cmu::Dump2Csv() {
             Dump2CsvTitle();
         } else {
             // 检查csv文件以便分割文件 12小时
-//            qDebug() << fileTime.secsTo(QDateTime::currentDateTime());
+            //            qDebug() << fileTime.secsTo(QDateTime::currentDateTime());
             if (fileTime.secsTo(QDateTime::currentDateTime()) >= FILE_ROTATE_TIME) {
                 Dump2CsvTitle();
             }
@@ -156,16 +156,12 @@ void mb_cmu::Dump2Csv() {
                 double val = *(tab_reg + i * config.vol_num + j) / 10000.0;
                 data_buf << (QString("%1,").arg(val));
             }
-            for (int j = 0; j < config.T_num; j++) {
-                double val = *(tab_reg + config.bmu_num * config.vol_num + i * config.T_num + j) / 10.0;
+            for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
+                double val =
+                    *(tab_reg + config.bmu_num * config.vol_num + i * (config.T_num + config.Tp_num) + j) / 10.0;
                 data_buf << (QString("%1,").arg(val));
             }
-            for (int j = 0; j < config.Tp_num; j++) {
-                double val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
-                               i * config.Tp_num + j) /
-                             10.0;
-                data_buf << (QString("%1,").arg(val));
-            }
+
             // 20220115添加
             //状态量个数，电压断线+温度断线+运行状态+故障状态
             for (int j = 0; j < config.status_num; j++) {
@@ -208,15 +204,15 @@ void mb_cmu::Dump2Csv() {
                 object.insert((QString("BMU%1_T%2").arg(i + 1).arg(j + 1)), val);
             }
             offset += config.bmu_num * config.T_num;
-            for (int j = 0; j < config.Tp_num; j++) {
-                double val = *(tab_reg + offset + i * config.Tp_num + j) / 10.0;
-                object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
+            for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
+                double val = *(tab_reg + offset + i * (config.T_num + config.Tp_num) + j) / 10.0;
+                if (j < config.T_num) {
+                    object.insert((QString("BMU%1_T%2").arg(i + 1).arg(j + 1)), val);
+                } else {
+                    object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
+                }
             }
             offset += config.bmu_num * config.Tp_num;
-            for (int j = 0; j < config.bmu_num; ++j) {
-                double val = *(tab_reg + offset + j);
-                object.insert((QString("BMU%1_Ubreak").arg(j + 1)), val);
-            }
             offset += config.bmu_num;
             for (int j = 0; j < config.bmu_num; ++j) {
                 double val = *(tab_reg + offset + j);
@@ -372,63 +368,87 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
 
     return status;
 }
+// int mb_cmu::ReadALL() {
+//     /* Read 5 registers from the address 0 */
+
+//    unsigned int reg_num = 0;
+//    uint16_t* p = this->tab_reg;
+//    int status = 0;
+//    unsigned int offset = 0;
+//    status += ReadAI();
+//    //
+//    if (config.bmu_num > 0) {
+//        reg_num = config.bmu_num * config.vol_num;
+//        status += ReadData(0x04, 0x01, reg_num, p + offset);
+//        offset += reg_num;
+//        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
+//        status += ReadData(0x04, 0x1000, reg_num, p + offset);
+//        offset += reg_num;
+//        reg_num = config.bmu_num * config.status_num;
+//        status += ReadData(0x03, 0x100, reg_num, p + offset);
+//        offset += reg_num;
+//        reg_num = config.bmu_num * 2;  // 均衡状态，模式+电流
+//        status += ReadData(0x03, 0x900, reg_num, p + offset);
+//        offset += reg_num;
+//    }
+//    //版本号
+//    reg_num = config.bmu_num * 2 + 2;
+//    status += ReadData(0x03, 0x500, reg_num, p + offset);
+//    offset += reg_num;
+//    return status;
+//}
+// CMU4.0主动均衡版本
+#define STAT_NUM    4
+#define BALANCE_NUM 5
 int mb_cmu::ReadALL() {
     /* Read 5 registers from the address 0 */
-
     unsigned int reg_num = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
-    unsigned int offset = 0;
     status += ReadAI();
     //
     if (config.bmu_num > 0) {
         reg_num = config.bmu_num * config.vol_num;
-        status += ReadData(0x04, 0x01, reg_num, p + offset);
-        offset += reg_num;
+        status += ReadData(0x04, 0x01, reg_num, p);
+        for (int i = 0; i < config.bmu_num; i++) {
+            for (int j = 0; j < config.vol_num; j++) {
+                bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
+            }
+        }
         reg_num = config.bmu_num * (config.T_num + config.Tp_num);
-        status += ReadData(0x04, 0x1000, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * config.status_num;
-        status += ReadData(0x03, 0x100, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * 2;  // 均衡状态，模式+电流
-        status += ReadData(0x03, 0x900, reg_num, p + offset);
-        offset += reg_num;
+        status += ReadData(0x04, 0x1000, reg_num, p);
+        for (int i = 0; i < config.bmu_num; i++) {
+            for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
+                bmu_data[i].Tcell[j] = *(p + i * (config.T_num + config.Tp_num) + j);
+            }
+        }
+        reg_num = config.bmu_num * 4;
+        status += ReadData(0x03, 0x100, reg_num, p);
+        for (int i = 0; i < config.bmu_num; i++) {
+            bmu_data[i].Ubreak = *(p + i * STAT_NUM);
+            bmu_data[i].Tbreak = *(p + i * STAT_NUM + 1);
+            bmu_data[i].RunStat = *(p + i * STAT_NUM + 2);
+            bmu_data[i].ErrStat = *(p + i * STAT_NUM + 3);
+        }
+        if (protocal_ver > CMUV3) {
+            reg_num = config.bmu_num * 5;  // 均衡状态等
+            status += ReadData(0x03, 0x900, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].BalIdc = *(p + i * BALANCE_NUM);
+                bmu_data[i].BalU24 = *(p + i * BALANCE_NUM + 1);
+                bmu_data[i].BalErr = *(p + i * BALANCE_NUM + 2);
+                bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
+                bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
+            }
+        }
     }
     //版本号
     reg_num = config.bmu_num * 2 + 2;
-    status += ReadData(0x03, 0x500, reg_num, p + offset);
-    offset += reg_num;
-    return status;
-}
-// CMU4.0主动均衡版本
-int mb_cmu::ReadALLV4() {
-    /* Read 5 registers from the address 0 */
-
-    unsigned int reg_num = 0;
-    uint16_t* p = this->tab_reg;
-    int status = 0;
-    unsigned int offset = 0;
-    status += ReadAI();
-    //
-    if (config.bmu_num > 0) {
-        reg_num = config.bmu_num * config.vol_num;
-        status += ReadData(0x04, 0x01, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
-        status += ReadData(0x04, 0x1000, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * config.status_num;
-        status += ReadData(0x03, 0x100, reg_num, p + offset);
-        offset += reg_num;
-        reg_num = config.bmu_num * 4;  // 均衡状态等
-        status += ReadData(0x03, 0x900, reg_num, p + offset);
-        offset += reg_num;
+    status += ReadData(0x03, 0x500, reg_num, p);
+    this->cmu_ver = *(uint32_t*)(p);
+    for (int i = 0; i < config.bmu_num; i++) {
+        bmu_data[i].Version = *(uint32_t*)(p + 2 + i * 2);
     }
-    //版本号
-    reg_num = config.bmu_num * 2 + 2;
-    status += ReadData(0x03, 0x500, reg_num, p + offset);
-    offset += reg_num;
     return status;
 }
 void mb_cmu::run() {

@@ -139,19 +139,18 @@ typedef struct {
 // BMU 数据
 #define MAX_U  32
 #define MAX_T  8
-#define MAX_Tp 2
 typedef struct {
     uint16_t Ucell[MAX_U];   // 单体电压
-    uint16_t Tcell[MAX_T];   // 模组温度
-    uint16_t Tpole[MAX_Tp];  // 极柱温度
+    int16_t Tcell[MAX_T];   // 温度
     uint16_t Ubreak;         // 电压断线
     uint16_t Tbreak;         // 温度断线
     uint16_t RunStat;        // 运行状态
     uint16_t ErrStat;        // 故障状态
-    uint16_t Version;        // 版本号
+    uint32_t Version;        // 版本号
     uint16_t BalStat;        // 均衡状态
     uint16_t BalErr;         // 通道故障(闭锁)状态
     uint16_t BalU24;         // 均衡24V电压
+    uint16_t BalIdc;         // 均衡DC电流
     uint16_t BalMode;        // 均衡模式+电流
     uint16_t CanErr;         // 通信错误计数
     uint16_t BalChgAh;       // 充电均衡Ah
@@ -229,7 +228,9 @@ class mb_cmu : public QThread {
     void Dump2Csv();
     QString GetBalanceStatus(uint16_t status);
     QString GetBalanceValue(uint16_t status);
-
+    BMS_PROTOCOL GetProtocalVer(){
+        return protocal_ver;
+    }
    protected:
     modbus_t *cmu;
     int err_counter = 0;

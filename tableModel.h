@@ -7,14 +7,14 @@
 #include <QWidget>
 #include <iostream>
 
-class GroupModel : public QAbstractTableModel {
+class TableModel : public QAbstractTableModel {
     Q_OBJECT
     QList<QStringList> m_data;
     QStringList headers;
 
    private:
    public:
-    GroupModel(QObject* parent = nullptr) : QAbstractTableModel{parent} {}
+    TableModel(QObject* parent = nullptr) : QAbstractTableModel{parent} {}
     int rowCount(const QModelIndex& = QModelIndex()) const override { return m_data.size(); }
     int columnCount(const QModelIndex& = QModelIndex()) const override { return headers.size(); }
     QVariant data(const QModelIndex& index, int role) const override {

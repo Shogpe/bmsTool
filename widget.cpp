@@ -218,22 +218,44 @@ void Widget::uiInit() {
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     QStringList hdr_list;
-    for (int i = 0; i < config.vol_num; i++) {
-        hdr_list.append(("Vol" + QString::number(i + 1)));
+
+    if (this->mycmu->GetProtocalVer() < CMUV4) {
+        for (int i = 0; i < config.vol_num; i++) {
+            hdr_list.append(("Vol" + QString::number(i + 1)));
+        }
+        for (int i = 0; i < config.T_num; i++) {
+            hdr_list.append(("Tpack" + QString::number(i + 1)));
+        }
+        for (int i = 0; i < config.Tp_num; i++) {
+            hdr_list.append(("Tp" + QString::number(i + 1)));
+        }
+        hdr_list.append(tr("电压断线"));
+        hdr_list.append(tr("温度断线"));
+        hdr_list.append(tr("运行状态"));
+        hdr_list.append(tr("故障状态"));
+        hdr_list.append(tr("版本号"));
+    } else if (this->mycmu->GetProtocalVer() == CMUV4) {
+        for (int i = 0; i < config.vol_num; i++) {
+            hdr_list.append(("Vol" + QString::number(i + 1)));
+        }
+        for (int i = 0; i < config.T_num; i++) {
+            hdr_list.append(("Tpack" + QString::number(i + 1)));
+        }
+        for (int i = 0; i < config.Tp_num; i++) {
+            hdr_list.append(("Tp" + QString::number(i + 1)));
+        }
+        hdr_list.append(tr("电压断线"));
+        hdr_list.append(tr("温度断线"));
+        hdr_list.append(tr("运行状态"));
+        hdr_list.append(tr("故障状态"));
+        hdr_list.append(tr("母线电压"));
+        hdr_list.append(tr("均衡电流"));
+        hdr_list.append(tr("均衡故障"));
+        hdr_list.append(tr("通道状态"));
+        hdr_list.append(tr("均衡模式"));
+        hdr_list.append(tr("版本号"));
     }
-    for (int i = 0; i < config.T_num; i++) {
-        hdr_list.append(("Tpack" + QString::number(i + 1)));
-    }
-    for (int i = 0; i < config.Tp_num; i++) {
-        hdr_list.append(("Tp" + QString::number(i + 1)));
-    }
-    hdr_list.append(tr("电压断线"));
-    hdr_list.append(tr("温度断线"));
-    hdr_list.append(tr("运行状态"));
-    hdr_list.append(tr("故障状态"));
-    hdr_list.append(tr("均衡状态"));
-    hdr_list.append(tr("均衡模式"));
-    hdr_list.append(tr("版本号"));
+
     ui->tableBMU->setColumnCount(hdr_list.size());
     ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
@@ -343,81 +365,82 @@ void Widget::flushData() {
     // memcpy(&config, &mycmu->config, sizeof(config));
     if (config.bmu_num > ui->tableBMU->rowCount()) return;
     int cloumn_offset = 0;
-    int data_index = 0;
-    uint16_t* pVol = (uint16_t*)&(mycmu->tab_reg[data_index]);
+    QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
         for (int j = 0; j < config.vol_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
-            double val = *(pVol + i * mycmu->config.vol_num + j) / 10000.0;
+            item = new QTableWidgetItem();
+            double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
-            // QTableWidgetItem* item = ui->tableBMU->item(i, j + cloumn_offset);
-            // item->setText(QString("%1").arg(val, 0, 'g', 5));
-            data_index++;
         }
-    }
-    cloumn_offset += config.vol_num;
-    int16_t* pTemp = (int16_t*)&(mycmu->tab_reg[data_index]);
-    for (int i = 0; i < config.bmu_num; i++) {
+
+        cloumn_offset += config.vol_num;
+
         for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
             QTableWidgetItem* item = new QTableWidgetItem();
-            double val = *(pTemp + i * (config.T_num + config.Tp_num) + j) / 10.0;
+            double val = this->mycmu->bmu_data[i].Tcell[j] / 10.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
-            data_index++;
         }
-    }
-    cloumn_offset += (config.T_num + config.Tp_num);
-    // 电压断线，温度断线，运行状态，故障状态
-    uint16_t* pStatus = (uint16_t*)&(mycmu->tab_reg[data_index]);
-    for (int i = 0; i < config.status_num; i++) {
-        for (int j = 0; j < config.bmu_num; j++) {
-            QTableWidgetItem* item = new QTableWidgetItem();
-            uint16_t val = *(pStatus + i * config.bmu_num + j);
-            item->setText(QString("0x%1").arg(int(val), 4, 16, QLatin1Char('0')));
-            //      item->setBackground(QBrush(QColor(Qt::lightGray)));
+
+        cloumn_offset += (config.T_num + config.Tp_num);
+
+        // 电压断线，温度断线，运行状态，故障状态
+        item = new QTableWidgetItem();
+        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Ubreak, 4, 16, QLatin1Char('0')));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+        item = new QTableWidgetItem();
+        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Tbreak, 4, 16, QLatin1Char('0')));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+        item = new QTableWidgetItem();
+        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].RunStat, 4, 16, QLatin1Char('0')));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+        item = new QTableWidgetItem();
+        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0')));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+        if (mycmu->GetProtocalVer() > CMUV3) {
+            item = new QTableWidgetItem();
+            item->setText(QString("0x%1").arg(mycmu->bmu_data[i].BalU24));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(j, i + cloumn_offset, item);
-            data_index++;
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            item = new QTableWidgetItem();
+            item->setText(QString("0x%1").arg(mycmu->bmu_data[i].BalIdc));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            item = new QTableWidgetItem();
+            item->setText(mycmu->GetBalanceStatus(mycmu->bmu_data[i].BalErr));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            item = new QTableWidgetItem();
+            item->setText(mycmu->GetBalanceStatus(mycmu->bmu_data[i].BalStat));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            item = new QTableWidgetItem();
+            item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
-    }
-    cloumn_offset += config.status_num;
-    //均衡状态和模式+电流
-    pStatus = (uint16_t*)&(mycmu->tab_reg[data_index]);
-    for (int j = 0; j < config.bmu_num; j++) {
-        QTableWidgetItem* item = new QTableWidgetItem();
-        uint16_t val = *(pStatus + 2 * j);
-        item->setText(mycmu->GetBalanceStatus(val));
-        ui->tableBMU->setItem(j, cloumn_offset, item);
-        val = *(pStatus + 1 + 2 * j);
-        QTableWidgetItem* item1 = new QTableWidgetItem();
-        item1->setText(mycmu->GetBalanceValue(val));
-        ui->tableBMU->setItem(j, cloumn_offset + 1, item1);
-        data_index += 2;
-    }
-    cloumn_offset += 2;
-    uint32_t* p32 = reinterpret_cast<uint32_t*>(&(mycmu->tab_reg[data_index]));
-    mycmu->cmu_ver = *(p32++);
-    //版本号
-    uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
-    uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
-    uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
-    for (int j = 0; j < config.bmu_num; j++) {
-        QTableWidgetItem* item = new QTableWidgetItem();
-        uint32_t val = *(p32 + j);
-        item->setText(myHelper::IntegerToHexString(val));
-        if (comm_status >> j & 0x01)
+        uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
+        uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
+        uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
+        item = new QTableWidgetItem();
+        item->setText(myHelper::IntegerToHexString(mycmu->cmu_ver));
+        if (comm_status >> i & 0x01)
             item->setTextColor(QColor(Qt::darkGreen));
         else
             item->setTextColor(QColor(Qt::red));
-        //      item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableBMU->setItem(j, cloumn_offset, item);
-        data_index++;
+        ui->tableBMU->setItem(i, cloumn_offset, item);
     }
     //数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);

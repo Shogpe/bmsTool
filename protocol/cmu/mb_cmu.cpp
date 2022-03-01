@@ -124,8 +124,13 @@ void mb_cmu::Dump2CsvTitle() {
         data_buf << (QString("BMU%1_温度断线,").arg(i + 1));
         data_buf << (QString("BMU%1_运行状态,").arg(i + 1));
         data_buf << (QString("BMU%1_故障状态,").arg(i + 1));
-        data_buf << (QString("BMU%1_均衡状态,").arg(i + 1));
-        data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
+        if (protocal_ver > CMUV3) {
+            data_buf << (QString("BMU%1_母线电压,").arg(i + 1));
+            data_buf << (QString("BMU%1_均衡电流,").arg(i + 1));
+            data_buf << (QString("BMU%1_均衡故障,").arg(i + 1));
+            data_buf << (QString("BMU%1_通道状态,").arg(i + 1));
+            data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
+        }
     }
 
     data_buf << endl;
@@ -153,32 +158,34 @@ void mb_cmu::Dump2Csv() {
         }
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < config.vol_num; j++) {
-                double val = *(tab_reg + i * config.vol_num + j) / 10000.0;
+                double val = this->bmu_data[i].Ucell[j] / 10000.0;
                 data_buf << (QString("%1,").arg(val));
             }
             for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
-                double val =
-                    *(tab_reg + config.bmu_num * config.vol_num + i * (config.T_num + config.Tp_num) + j) / 10.0;
+                double val = this->bmu_data[i].Tcell[j] / 10.0;
                 data_buf << (QString("%1,").arg(val));
             }
 
             // 20220115添加
             //状态量个数，电压断线+温度断线+运行状态+故障状态
-            for (int j = 0; j < config.status_num; j++) {
-                double val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
-                               config.bmu_num * config.Tp_num + i * config.status_num + j);
+            double val = this->bmu_data[i].Ubreak;
+            data_buf << (QString("%1,").arg(val));
+            val = this->bmu_data[i].Tbreak;
+            data_buf << (QString("%1,").arg(val));
+            val = this->bmu_data[i].RunStat;
+            data_buf << (QString("%1,").arg(val));
+            val = this->bmu_data[i].ErrStat;
+            data_buf << (QString("%1,").arg(val));
+
+            if (protocal_ver > CMUV3) {
+                val = this->bmu_data[i].BalU24;
                 data_buf << (QString("%1,").arg(val));
+                val = this->bmu_data[i].BalIdc;
+                data_buf << (QString("%1,").arg(val));
+                data_buf << GetBalanceStatus(this->bmu_data[i].BalErr) << ",";
+                data_buf << GetBalanceStatus(this->bmu_data[i].BalStat) << ",";
+                data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
             }
-
-            //获取均衡状态
-            uint16_t val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
-                             config.bmu_num * config.Tp_num + config.bmu_num * config.status_num + 2 * i);
-            data_buf << (QString("%1,").arg(this->GetBalanceStatus(val)));
-
-            //获取均衡模式
-            val = *(tab_reg + config.bmu_num * config.vol_num + config.bmu_num * config.T_num +
-                    config.bmu_num * config.Tp_num + config.bmu_num * config.status_num + 2 * i + 1);
-            data_buf << (QString("%1,").arg(this->GetBalanceValue(val)));
         }
         data_buf << endl;
         csvfile->flush();
@@ -192,51 +199,43 @@ void mb_cmu::Dump2Csv() {
                 object.insert(QString(node_table[i].name), this->tab_data.at(i).sysData.val.f64);
             }
         }
-        int offset = 0;
+        double val = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < config.vol_num; j++) {
-                double val = *(tab_reg + offset + i * config.vol_num + j) / 10000.0;
+                val = this->bmu_data[i].Ucell[j] / 10000.0;
                 object.insert((QString("BMU%1_U%2").arg(i + 1).arg(j + 1)), val);
             }
-            offset += config.bmu_num * config.vol_num;
-            for (int j = 0; j < config.T_num; j++) {
-                double val = *(tab_reg + offset + i * config.T_num + j) / 10.0;
-                object.insert((QString("BMU%1_T%2").arg(i + 1).arg(j + 1)), val);
-            }
-            offset += config.bmu_num * config.T_num;
+
             for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
-                double val = *(tab_reg + offset + i * (config.T_num + config.Tp_num) + j) / 10.0;
+                double val = this->bmu_data[i].Tcell[j] / 10.0;
                 if (j < config.T_num) {
                     object.insert((QString("BMU%1_T%2").arg(i + 1).arg(j + 1)), val);
                 } else {
                     object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
                 }
             }
-            offset += config.bmu_num * config.Tp_num;
-            offset += config.bmu_num;
-            for (int j = 0; j < config.bmu_num; ++j) {
-                double val = *(tab_reg + offset + j);
-                object.insert((QString("BMU%1_Tbreak").arg(j + 1)), val);
+            val = this->bmu_data[i].Ubreak;
+            object.insert((QString("BMU%1_Ubreak,").arg(i + 1)), val);
+            val = this->bmu_data[i].Tbreak;
+            object.insert((QString("BMU%1_Tbreak,").arg(i + 1)), val);
+            val = this->bmu_data[i].RunStat;
+            object.insert((QString("BMU%1_Run,").arg(i + 1)), val);
+            val = this->bmu_data[i].ErrStat;
+            object.insert((QString("BMU%1_Err,").arg(i + 1)), val);
+            if (protocal_ver > CMUV3) {
+                val = this->bmu_data[i].BalU24;
+                object.insert((QString("BMU%1_BalU24,").arg(i + 1)), val);
+                val = this->bmu_data[i].BalIdc;
+                object.insert((QString("BMU%1_BalIdc,").arg(i + 1)), val);
+                object.insert((QString("BMU%1_BalErr,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalErr));
+                object.insert((QString("BMU%1_BalStat,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalStat));
+                object.insert((QString("BMU%1_BalMode,").arg(i + 1)), GetBalanceValue(this->bmu_data[i].BalMode));
             }
-            offset += config.bmu_num;
-            for (int j = 0; j < config.bmu_num; ++j) {
-                double val = *(tab_reg + offset + j);
-                object.insert((QString("BMU%1_Run").arg(j + 1)), val);
-            }
-            offset += config.bmu_num;
-            for (int j = 0; j < config.bmu_num; ++j) {
-                double val = *(tab_reg + offset + j);
-                object.insert((QString("BMU%1_Err").arg(j + 1)), val);
-            }
-            offset += config.bmu_num;
-            double val = *(tab_reg + offset);
-            object.insert(QString("CMU_Ver"), val);
-            offset += 1;
-            for (int j = 0; j < config.bmu_num; ++j) {
-                double val = *(tab_reg + offset + j);
-                object.insert((QString("BMU%1_Ver").arg(j + 1)), val);
-            }
+            //            object.insert((QString("BMU%1_Ver").arg(i + 1)),
+            //            myHelper::IntegerToHexString(this->bmu_data[i].Version));
         }
+        //        object.insert(QString("CMU_Ver"), myHelper::IntegerToHexString(cmu_ver));
+
         // 以读写方式打开主目录下的1.json文件，若该文件不存在则会自动创建
         QFile file(recPath + "/" + QDateTime::currentDateTime().toString("yyyyMMddThhmmss") + ".rec");
         if (!file.open(QIODevice::ReadWrite)) {
@@ -368,35 +367,29 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
 
     return status;
 }
-// int mb_cmu::ReadALL() {
-//     /* Read 5 registers from the address 0 */
-
-//    unsigned int reg_num = 0;
-//    uint16_t* p = this->tab_reg;
-//    int status = 0;
-//    unsigned int offset = 0;
-//    status += ReadAI();
-//    //
-//    if (config.bmu_num > 0) {
-//        reg_num = config.bmu_num * config.vol_num;
-//        status += ReadData(0x04, 0x01, reg_num, p + offset);
-//        offset += reg_num;
-//        reg_num = config.bmu_num * (config.T_num + config.Tp_num);
-//        status += ReadData(0x04, 0x1000, reg_num, p + offset);
-//        offset += reg_num;
-//        reg_num = config.bmu_num * config.status_num;
-//        status += ReadData(0x03, 0x100, reg_num, p + offset);
-//        offset += reg_num;
-//        reg_num = config.bmu_num * 2;  // 均衡状态，模式+电流
-//        status += ReadData(0x03, 0x900, reg_num, p + offset);
-//        offset += reg_num;
-//    }
-//    //版本号
-//    reg_num = config.bmu_num * 2 + 2;
-//    status += ReadData(0x03, 0x500, reg_num, p + offset);
-//    offset += reg_num;
-//    return status;
-//}
+int mb_cmu::ReadCapData() {
+    /* Read 5 registers from the address 0 */
+    unsigned int reg_num = 0;
+    uint16_t* p = this->tab_reg;
+    int status = 0;
+    status += ReadAI();
+    //
+    if (config.bmu_num > 0) {
+        // BMU通信丢包计数
+        reg_num = config.bmu_num * 1;
+        status += ReadData(0x03, 0xA00, reg_num, p);
+        for (int i = 0; i < config.bmu_num; i++) {
+            bmu_data[i].CanErr = *(p + i);
+        }
+        reg_num = config.bmu_num * 2;
+        status += ReadData(0x04, 0xA00 + config.bmu_num * 1, reg_num, p);
+        for (int i = 0; i < config.bmu_num; i++) {
+            bmu_data[i].BalChgAh = *(p + 2 * i);
+            bmu_data[i].BalDischgAh = *(p + 2 * i + 1);
+        }
+    }
+    return status;
+}
 // CMU4.0主动均衡版本
 #define STAT_NUM    4
 #define BALANCE_NUM 5
@@ -460,7 +453,7 @@ void mb_cmu::run() {
     }
     int rc = -1;
     TMsgData MsgCmd;
-
+    uint32_t counter = 0;
     Init();
     while (1) {
         if (this->stop) break;
@@ -477,6 +470,10 @@ void mb_cmu::run() {
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
+                    if (counter % (60 * 5) == 0) {
+                        ReadCapData();
+                    }
+                    counter++;
                     state = SM_INIT;
                     Dump2Csv();
                 }
@@ -494,6 +491,7 @@ void mb_cmu::run() {
                 break;
             }
             case SM_INIT: {
+                counter = 0;
                 rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
                 if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;

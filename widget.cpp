@@ -159,45 +159,83 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                 QMenu myMenu;
                 myMenu.addAction(tr("导出当前数据"), this, [=]() {
                     QTableWidget* table = ui->tableBMU;
-                    QFile file;
                     QString fileName = QFileDialog::getSaveFileName(
                         this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
                         tr("csv File(*.csv)"));
                     if (fileName.isNull()) {
                         return;
                     }
-
-                    file.setFileName(fileName);
-                    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                        qDebug() << "open file fail";
-                        return;
-                    }
-                    QTextStream data(&file);
-                    data << QChar(0xfeff);
-                    QStringList strList;
-                    strList.clear();
-                    strList << tr("序号");
-                    for (int c = 0; c < table->columnCount(); ++c) {
-                        strList << table->horizontalHeaderItem(c)->data(Qt::DisplayRole).toString();
-                    }
-                    data << strList.join(",") << endl;
-
-                    for (int r = 0; r < table->rowCount(); ++r) {
-                        strList.clear();
-                        strList << QString::number(r + 1);
-                        for (int c = 0; c < table->columnCount(); ++c) {
-                            strList << table->item(r, c)->data(Qt::DisplayRole).toString();
-                        }
-                        data << strList.join(",") << endl;
-                    }
-                    file.close();
+                    exportExecl(table, fileName);
                 });
                 // Show context menu at handling position
-                myMenu.exec();
+                myMenu.exec(globalPos);
+            });
+    ui->tableExtView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableExtView,
+            static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
+            [=](const QPoint& pos) {  // Handle global position
+                QTableWidget* table = (QTableWidget*)sender();
+                QPoint globalPos = table->mapToGlobal(pos);
+
+                // Create menu and insert some actions
+                QMenu myMenu;
+                myMenu.addAction(tr("导出当前数据"), this, [=]() {
+                    QString fileName = QFileDialog::getSaveFileName(
+                        this, tr("Save File"),
+                        tr("BMU扩展数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        tr("csv File(*.csv)"));
+                    if (fileName.isNull()) {
+                        return;
+                    }
+
+                    exportExecl(table, fileName);
+                });
+                // Show context menu at handling position
+                myMenu.exec(globalPos);
             });
     timer->start(500);
 }
+bool Widget::exportExecl(QTableWidget* tableWidget, QString dirFile) {
+    QFile file(dirFile);
+    bool ret = file.open(QIODevice::Truncate | QIODevice::ReadWrite);
+    if (!ret) {
+        qDebug() << "open failure";
+        return ret;
+    }
 
+    QTextStream stream(&file);
+    stream << QChar(0xfeff);
+    QString conTents;
+    // 写入头
+    QHeaderView* header = tableWidget->horizontalHeader();
+    if (NULL != header) {
+        for (int i = 0; i < header->count(); i++) {
+            QTableWidgetItem* item = tableWidget->horizontalHeaderItem(i);
+            if (NULL != item) {
+                conTents += item->text() + ",";
+            }
+        }
+        conTents += "\n";
+    }
+
+    // 写内容
+    for (int row = 0; row < tableWidget->rowCount(); row++) {
+        for (int column = 0; column < tableWidget->columnCount(); column++) {
+            QTableWidgetItem* item = tableWidget->item(row, column);
+            if (NULL != item) {
+                QString str = item->text();
+
+                str.replace(",", "|");
+                conTents += str + ",";
+            }
+        }
+        conTents += "\n";
+    }
+    stream << conTents;
+
+    file.close();
+    return true;
+}
 Widget::~Widget() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
@@ -274,6 +312,21 @@ void Widget::uiInit() {
                 qDebug() << e.what();
             }
         }
+    }
+    // 扩展表格
+    if (this->mycmu->GetProtocalVer() > CMUV3) {
+        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
+        QStringList hdr_list2;
+        hdr_list2 << "CAN通信错误数"
+                  << "充电均衡Ah数"
+                  << "放电均衡Ah数";
+        ui->tableExtView->setRowCount(config.bmu_num);
+        ui->tableExtView->setColumnCount(hdr_list2.size());
+        ui->tableExtView->setHorizontalHeaderLabels(hdr_list2);
+        ui->tableExtView->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
+        ui->tableExtView->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+    } else {
+        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), false);
     }
 }
 int Widget::setValue(string name, double dval) {
@@ -642,6 +695,27 @@ void Widget::flushData() {
     ui->TpMaxID->setText(QString(tr("最大极柱温度(%1)")).arg(myHelper::IDToString(id, config.Tp_num)));
     id = mycmu->tab_data.at(mycmu->name_map["TrMaxID"].index).sysData.val.f64;
     ui->TrMaxID->setText(QString(tr("最大单体温升(%1)")).arg(myHelper::IDToString(id, config.T_num)));
+    if (ui->DataWidget->currentWidget()->objectName() == tr("tabBalance")) {
+        QTableWidgetItem* item;
+        int offset = 0;
+        for (int i = 0; i < config.bmu_num; i++) {
+            item = new QTableWidgetItem();
+            double val = this->mycmu->bmu_data[i].CanErr;
+            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableExtView->setItem(i, offset++, item);
+            item = new QTableWidgetItem();
+            val = this->mycmu->bmu_data[i].BalChgAh;
+            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableExtView->setItem(i, offset++, item);
+            item = new QTableWidgetItem();
+            val = this->mycmu->bmu_data[i].BalDischgAh;
+            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableExtView->setItem(i, offset++, item);
+        }
+    }
 }
 struct mb_cmd {
     uint16_t type;

@@ -38,7 +38,7 @@ class Widget : public QWidget {
     bool eventFilter(QObject* obj, QEvent* event);
     int setValue(string name, double dval);
     bool load_config();
-
+    bool exportExecl(QTableWidget* tableWidget, QString dirFile);
    private slots:
     void timerUpDate();
     void valueChange();

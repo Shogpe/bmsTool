@@ -178,7 +178,7 @@ void mb_cmu::Dump2Csv() {
             data_buf << (QString("%1,").arg(val));
 
             if (protocal_ver > CMUV3) {
-                val = this->bmu_data[i].BalU24;
+                val = this->bmu_data[i].BalU24/1000.0;
                 data_buf << (QString("%1,").arg(val));
                 val = this->bmu_data[i].BalIdc;
                 data_buf << (QString("%1,").arg(val));
@@ -382,7 +382,7 @@ int mb_cmu::ReadCapData() {
             bmu_data[i].CanErr = *(p + i);
         }
         reg_num = config.bmu_num * 2;
-        status += ReadData(0x04, 0xA00 + config.bmu_num * 1, reg_num, p);
+        status += ReadData(0x03, 0xA00 + config.bmu_num * 1, reg_num, p);
         for (int i = 0; i < config.bmu_num; i++) {
             bmu_data[i].BalChgAh = *(p + 2 * i);
             bmu_data[i].BalDischgAh = *(p + 2 * i + 1);

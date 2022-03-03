@@ -54,45 +54,42 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
         connect(dspbox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
                 &Widget::valueChange, Qt::UniqueConnection);
-        connect(dspbox,
-                static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested),
-                this,
-                [=](const QPoint& pos) {  // Handle global position
-                    QPoint globalPos = dspbox->mapToGlobal(pos);
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("修改"), this, [=]() {
-                        qDebug() << dspbox->objectName();
-                        if (dspbox->objectName() == "BalnceMask") {
-                            int mode = dspbox->value();
-                            if (inputBalance == nullptr) {
-                                inputBalance = new frmBalanceBox();
-                                connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
-                                    TMsgData MsgCmd;
-                                    uint16_t mode = inputBalance->getMode();
-                                    qDebug() << mode;
-                                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                                    uint16_t value[2] = {5408, mode};
-                                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-                                    MsgCmd.data.clear();
-                                    QByteArray b = inputBalance->getValue();
-                                    if (b.size() > 0) {
-                                        MsgCmd.msg_type = CTRL_AO_ADDR;
-                                        MsgCmd.data.append(b);
-                                        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-                                    }
-                                });
-                            }
-                            inputBalance->setMode(mode);
-                            inputBalance->open();
-                            inputBalance->activateWindow();
-                        }
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
     }
+    connect(ui->BalnceMask,
+            static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested), this,
+            [=](const QPoint& pos) {  // Handle global position
+                QPoint globalPos = ui->BalnceMask->mapToGlobal(pos);
+                // Create menu and insert some actions
+                QMenu myMenu;
+                myMenu.addAction(tr("修改"), this, [=]() {
+                        int mode = ui->BalnceMask->value();
+                        if (inputBalance == nullptr) {
+                            inputBalance = new frmBalanceBox();
+                            connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
+                                TMsgData MsgCmd;
+                                uint16_t mode = inputBalance->getMode();
+                                qDebug() << mode;
+                                MsgCmd.msg_type = CTRL_AO_ADDR;
+                                uint16_t value[2] = {5408, mode};
+                                MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                                if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                MsgCmd.data.clear();
+                                QByteArray b = inputBalance->getValue();
+                                if (b.size() > 0) {
+                                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                                    MsgCmd.data.append(b);
+                                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                }
+                            });
+                        }
+                        inputBalance->setMode(mode);
+                        inputBalance->open();
+                        inputBalance->activateWindow();
+
+                });
+                // Show context menu at handling position
+                myMenu.exec(globalPos);
+            });
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
         connect(btn, &QPushButton::released, this, &Widget::btn_released, Qt::UniqueConnection);
@@ -286,8 +283,8 @@ void Widget::uiInit() {
         hdr_list.append(tr("温度断线"));
         hdr_list.append(tr("运行状态"));
         hdr_list.append(tr("故障状态"));
-        hdr_list.append(tr("母线电压"));
-        hdr_list.append(tr("均衡电流"));
+        hdr_list.append(tr("母线电压(V)"));
+        hdr_list.append(tr("均衡电流(mA)"));
         hdr_list.append(tr("均衡故障"));
         hdr_list.append(tr("通道状态"));
         hdr_list.append(tr("均衡模式"));
@@ -420,6 +417,7 @@ void Widget::flushData() {
     int cloumn_offset = 0;
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
+        cloumn_offset = 0;
         for (int j = 0; j < config.vol_num; j++) {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
@@ -463,11 +461,11 @@ void Widget::flushData() {
 
         if (mycmu->GetProtocalVer() > CMUV3) {
             item = new QTableWidgetItem();
-            item->setText(QString("0x%1").arg(mycmu->bmu_data[i].BalU24));
+            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24/1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
             item = new QTableWidgetItem();
-            item->setText(QString("0x%1").arg(mycmu->bmu_data[i].BalIdc));
+            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
             item = new QTableWidgetItem();
@@ -699,6 +697,7 @@ void Widget::flushData() {
         QTableWidgetItem* item;
         int offset = 0;
         for (int i = 0; i < config.bmu_num; i++) {
+            offset = 0;
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].CanErr;
             item->setText(QString("%1").arg(val, 0, 'g', 5));

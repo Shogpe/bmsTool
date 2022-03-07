@@ -178,7 +178,7 @@ void mb_cmu::Dump2Csv() {
             data_buf << (QString("%1,").arg(val));
 
             if (protocal_ver > CMUV3) {
-                val = this->bmu_data[i].BalU24/1000.0;
+                val = this->bmu_data[i].BalU24 / 1000.0;
                 data_buf << (QString("%1,").arg(val));
                 val = this->bmu_data[i].BalIdc;
                 data_buf << (QString("%1,").arg(val));
@@ -470,10 +470,13 @@ void mb_cmu::run() {
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
-                    if (counter % (60 * 5) == 0) {
-                        ReadCapData();
+                    if (protocal_ver > CMUV3) {
+                        if (counter % (60 * 5) == 0) {
+                            ReadCapData();
+                        }
+                        counter++;
+                        qDebug()<<counter;
                     }
-                    counter++;
                     state = SM_INIT;
                     Dump2Csv();
                 }

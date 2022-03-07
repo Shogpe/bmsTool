@@ -485,7 +485,7 @@ void Widget::flushData() {
         uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
         uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
         item = new QTableWidgetItem();
-        item->setText(myHelper::IntegerToHexString(mycmu->cmu_ver));
+        item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
         if (comm_status >> i & 0x01)
             item->setTextColor(QColor(Qt::darkGreen));
         else

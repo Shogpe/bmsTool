@@ -62,30 +62,29 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                 // Create menu and insert some actions
                 QMenu myMenu;
                 myMenu.addAction(tr("修改"), this, [=]() {
-                        int mode = ui->BalnceMask->value();
-                        if (inputBalance == nullptr) {
-                            inputBalance = new frmBalanceBox();
-                            connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
-                                TMsgData MsgCmd;
-                                uint16_t mode = inputBalance->getMode();
-                                qDebug() << mode;
+                    int mode = ui->BalnceMask->value();
+                    if (inputBalance == nullptr) {
+                        inputBalance = new frmBalanceBox();
+                        connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
+                            TMsgData MsgCmd;
+                            uint16_t mode = inputBalance->getMode();
+                            qDebug() << mode;
+                            MsgCmd.msg_type = CTRL_AO_ADDR;
+                            uint16_t value[2] = {5408, mode};
+                            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                            MsgCmd.data.clear();
+                            QByteArray b = inputBalance->getValue();
+                            if (b.size() > 0) {
                                 MsgCmd.msg_type = CTRL_AO_ADDR;
-                                uint16_t value[2] = {5408, mode};
-                                MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                                MsgCmd.data.append(b);
                                 if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-                                MsgCmd.data.clear();
-                                QByteArray b = inputBalance->getValue();
-                                if (b.size() > 0) {
-                                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                                    MsgCmd.data.append(b);
-                                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-                                }
-                            });
-                        }
-                        inputBalance->setMode(mode);
-                        inputBalance->open();
-                        inputBalance->activateWindow();
-
+                            }
+                        });
+                    }
+                    inputBalance->setMode(mode);
+                    inputBalance->open();
+                    inputBalance->activateWindow();
                 });
                 // Show context menu at handling position
                 myMenu.exec(globalPos);
@@ -284,7 +283,7 @@ void Widget::uiInit() {
         hdr_list.append(tr("运行状态"));
         hdr_list.append(tr("故障状态"));
         hdr_list.append(tr("母线电压(V)"));
-        hdr_list.append(tr("均衡电流(mA)"));
+        hdr_list.append(tr("均衡电流(A)"));
         hdr_list.append(tr("均衡故障"));
         hdr_list.append(tr("通道状态"));
         hdr_list.append(tr("均衡模式"));
@@ -461,11 +460,11 @@ void Widget::flushData() {
 
         if (mycmu->GetProtocalVer() > CMUV3) {
             item = new QTableWidgetItem();
-            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24/1000.0));
+            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
             item = new QTableWidgetItem();
-            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc));
+            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
             item = new QTableWidgetItem();

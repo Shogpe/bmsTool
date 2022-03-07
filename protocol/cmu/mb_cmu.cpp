@@ -66,8 +66,8 @@ enum BALANCE_MODE {
     BALANCE_AUTO = 0xAA,
 };
 QString mb_cmu::GetBalanceValue(uint16_t status) {
-    int mode = (status >> 8) & 0xFF;
-    double Ib = (int8_t)(status & 0xFF);
+    int mode = (status & 0xFF);
+    double Ib = (int8_t)((status >> 8) & 0xFF);
     Ib *= 0.1;
     switch (mode) {
         case BALANCE_STOP:
@@ -85,7 +85,7 @@ QString mb_cmu::GetBalanceValue(uint16_t status) {
         default:
             break;
     }
-    return QString("ERR:%1").arg(QString::number(mode, 16));
+    return QString("ERR:%1").arg(QString::number(mode));
 }
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
@@ -180,7 +180,7 @@ void mb_cmu::Dump2Csv() {
             if (protocal_ver > CMUV3) {
                 val = this->bmu_data[i].BalU24 / 1000.0;
                 data_buf << (QString("%1,").arg(val));
-                val = this->bmu_data[i].BalIdc;
+                val = this->bmu_data[i].BalIdc / 1000.0;
                 data_buf << (QString("%1,").arg(val));
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalErr) << ",";
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalStat) << ",";
@@ -225,7 +225,7 @@ void mb_cmu::Dump2Csv() {
             if (protocal_ver > CMUV3) {
                 val = this->bmu_data[i].BalU24;
                 object.insert((QString("BMU%1_BalU24,").arg(i + 1)), val);
-                val = this->bmu_data[i].BalIdc;
+                val = this->bmu_data[i].BalIdc / 1000.0;
                 object.insert((QString("BMU%1_BalIdc,").arg(i + 1)), val);
                 object.insert((QString("BMU%1_BalErr,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalErr));
                 object.insert((QString("BMU%1_BalStat,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalStat));
@@ -418,10 +418,10 @@ int mb_cmu::ReadALL() {
         reg_num = config.bmu_num * 4;
         status += ReadData(0x03, 0x100, reg_num, p);
         for (int i = 0; i < config.bmu_num; i++) {
-            bmu_data[i].Ubreak = *(p + i * STAT_NUM);
-            bmu_data[i].Tbreak = *(p + i * STAT_NUM + 1);
-            bmu_data[i].RunStat = *(p + i * STAT_NUM + 2);
-            bmu_data[i].ErrStat = *(p + i * STAT_NUM + 3);
+            bmu_data[i].Ubreak = *(p + i);
+            bmu_data[i].Tbreak = *(p + i + 1 * config.bmu_num);
+            bmu_data[i].RunStat = *(p + i + 2 * config.bmu_num);
+            bmu_data[i].ErrStat = *(p + i + 3 * config.bmu_num);
         }
         if (protocal_ver > CMUV3) {
             reg_num = config.bmu_num * 5;  // 均衡状态等
@@ -475,7 +475,7 @@ void mb_cmu::run() {
                             ReadCapData();
                         }
                         counter++;
-                        qDebug()<<counter;
+                        qDebug() << counter;
                     }
                     state = SM_INIT;
                     Dump2Csv();

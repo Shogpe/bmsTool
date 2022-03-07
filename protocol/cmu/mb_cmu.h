@@ -150,7 +150,7 @@ typedef struct {
     uint16_t BalStat;       // 均衡状态
     uint16_t BalErr;        // 通道故障(闭锁)状态
     uint16_t BalU24;        // 均衡24V电压
-    uint16_t BalIdc;        // 均衡DC电流
+    int16_t BalIdc;        // 均衡DC电流
     uint16_t BalMode;       // 均衡模式+电流
     uint16_t CanErr;        // 通信错误计数
     uint16_t BalChgAh;      // 充电均衡Ah

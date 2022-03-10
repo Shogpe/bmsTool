@@ -130,6 +130,11 @@ void mb_cmu::Dump2CsvTitle() {
             data_buf << (QString("BMU%1_均衡故障,").arg(i + 1));
             data_buf << (QString("BMU%1_通道状态,").arg(i + 1));
             data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
+            data_buf << (QString("BMU%1_CAN错误,").arg(i + 1));
+            for (int j = 0; j < config.vol_num; ++j) {
+                data_buf << (QString("BMU%1_%2充电Ah,").arg(i + 1).arg(j + 1));
+                data_buf << (QString("BMU%1_%2放电Ah,").arg(i + 1).arg(j + 1));
+            }
         }
     }
 
@@ -143,7 +148,6 @@ void mb_cmu::Dump2Csv() {
             Dump2CsvTitle();
         } else {
             // 检查csv文件以便分割文件 12小时
-            //            qDebug() << fileTime.secsTo(QDateTime::currentDateTime());
             if (fileTime.secsTo(QDateTime::currentDateTime()) >= FILE_ROTATE_TIME) {
                 Dump2CsvTitle();
             }
@@ -185,6 +189,11 @@ void mb_cmu::Dump2Csv() {
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalErr) << ",";
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalStat) << ",";
                 data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
+                data_buf << (this->bmu_data[i].CanErr) << ",";
+                for (int j = 0; j < config.vol_num; j++) {
+                    data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
+                    data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
+                }
             }
         }
         data_buf << endl;
@@ -222,15 +231,18 @@ void mb_cmu::Dump2Csv() {
             object.insert((QString("BMU%1_Run,").arg(i + 1)), val);
             val = this->bmu_data[i].ErrStat;
             object.insert((QString("BMU%1_Err,").arg(i + 1)), val);
-            if (protocal_ver > CMUV3) {
-                val = this->bmu_data[i].BalU24;
-                object.insert((QString("BMU%1_BalU24,").arg(i + 1)), val);
-                val = this->bmu_data[i].BalIdc / 1000.0;
-                object.insert((QString("BMU%1_BalIdc,").arg(i + 1)), val);
-                object.insert((QString("BMU%1_BalErr,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalErr));
-                object.insert((QString("BMU%1_BalStat,").arg(i + 1)), GetBalanceStatus(this->bmu_data[i].BalStat));
-                object.insert((QString("BMU%1_BalMode,").arg(i + 1)), GetBalanceValue(this->bmu_data[i].BalMode));
-            }
+            //            if (protocal_ver > CMUV3) {
+            //                val = this->bmu_data[i].BalU24;
+            //                object.insert((QString("BMU%1_BalU24,").arg(i + 1)), val);
+            //                val = this->bmu_data[i].BalIdc / 1000.0;
+            //                object.insert((QString("BMU%1_BalIdc,").arg(i + 1)), val);
+            //                object.insert((QString("BMU%1_BalErr,").arg(i + 1)),
+            //                GetBalanceStatus(this->bmu_data[i].BalErr));
+            //                object.insert((QString("BMU%1_BalStat,").arg(i + 1)),
+            //                GetBalanceStatus(this->bmu_data[i].BalStat));
+            //                object.insert((QString("BMU%1_BalMode,").arg(i + 1)),
+            //                GetBalanceValue(this->bmu_data[i].BalMode));
+            //            }
             //            object.insert((QString("BMU%1_Ver").arg(i + 1)),
             //            myHelper::IntegerToHexString(this->bmu_data[i].Version));
         }
@@ -372,20 +384,15 @@ int mb_cmu::ReadCapData() {
     unsigned int reg_num = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
-    status += ReadAI();
-    //
     if (config.bmu_num > 0) {
         // BMU通信丢包计数
-        reg_num = config.bmu_num * 1;
-        status += ReadData(0x03, 0xA00, reg_num, p);
-        for (int i = 0; i < config.bmu_num; i++) {
-            bmu_data[i].CanErr = *(p + i);
-        }
-        reg_num = config.bmu_num * 2;
+        reg_num = config.bmu_num * 2 * config.vol_num;
         status += ReadData(0x03, 0xA00 + config.bmu_num * 1, reg_num, p);
         for (int i = 0; i < config.bmu_num; i++) {
-            bmu_data[i].BalChgAh = *(p + 2 * i);
-            bmu_data[i].BalDischgAh = *(p + 2 * i + 1);
+            for (int j = 0; j < config.vol_num; j++) {
+                bmu_data[i].BalChgAh[j] = *(p + i * 2 * config.vol_num + 2 * j);
+                bmu_data[i].BalDischgAh[j] = *(p + i * 2 * config.vol_num + 2 * j + 1);
+            }
         }
     }
     return status;
@@ -433,6 +440,11 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
                 bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
             }
+            reg_num = config.bmu_num * 1;
+            status += ReadData(0x03, 0xA00, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].CanErr = *(p + i);
+            }
         }
     }
     //版本号
@@ -475,7 +487,7 @@ void mb_cmu::run() {
                             ReadCapData();
                         }
                         counter++;
-                        qDebug() << counter;
+                        qDebug() << "counter" << counter;
                     }
                     state = SM_INIT;
                     Dump2Csv();
@@ -491,10 +503,10 @@ void mb_cmu::run() {
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
                 qDebug() << "ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
+                counter = 0;
                 break;
             }
             case SM_INIT: {
-                counter = 0;
                 rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
                 if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;

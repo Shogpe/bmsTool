@@ -287,6 +287,7 @@ void Widget::uiInit() {
         hdr_list.append(tr("均衡故障"));
         hdr_list.append(tr("通道状态"));
         hdr_list.append(tr("均衡模式"));
+        hdr_list.append(tr("CAN错误数"));
         hdr_list.append(tr("版本号"));
     }
 
@@ -313,9 +314,10 @@ void Widget::uiInit() {
     if (this->mycmu->GetProtocalVer() > CMUV3) {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
         QStringList hdr_list2;
-        hdr_list2 << "CAN通信错误数"
-                  << "充电均衡Ah数"
-                  << "放电均衡Ah数";
+        for (int i = 0; i < config.vol_num; i++) {
+            hdr_list2.append(("充电Ah" + QString::number(i + 1)));
+            hdr_list2.append(("放电Ah" + QString::number(i + 1)));
+        }
         ui->tableExtView->setRowCount(config.bmu_num);
         ui->tableExtView->setColumnCount(hdr_list2.size());
         ui->tableExtView->setHorizontalHeaderLabels(hdr_list2);
@@ -480,6 +482,12 @@ void Widget::flushData() {
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
+        // CAN通信错误计数
+        item = new QTableWidgetItem();
+        item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableExtView->setItem(i, cloumn_offset++, item);
+        //版本号
         uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
         uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
         uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
@@ -490,7 +498,7 @@ void Widget::flushData() {
         else
             item->setTextColor(QColor(Qt::red));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableBMU->setItem(i, cloumn_offset, item);
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
     }
     //数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -697,22 +705,22 @@ void Widget::flushData() {
         int offset = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             offset = 0;
-            item = new QTableWidgetItem();
-            double val = this->mycmu->bmu_data[i].CanErr;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableExtView->setItem(i, offset++, item);
-            item = new QTableWidgetItem();
-            val = this->mycmu->bmu_data[i].BalChgAh;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableExtView->setItem(i, offset++, item);
-            item = new QTableWidgetItem();
-            val = this->mycmu->bmu_data[i].BalDischgAh;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableExtView->setItem(i, offset++, item);
+            double val = 0;
+            for (int j = 0; j < config.vol_num; j++) {
+                item = new QTableWidgetItem();
+                val = this->mycmu->bmu_data[i].BalChgAh[j];
+                item->setText(QString("%1").arg(val, 0, 'g', 5));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableExtView->setItem(i, offset++, item);
+                item = new QTableWidgetItem();
+                val = this->mycmu->bmu_data[i].BalDischgAh[j];
+                item->setText(QString("%1").arg(val, 0, 'g', 5));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableExtView->setItem(i, offset++, item);
+            }
         }
+        ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+        ui->tableExtView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 }
 struct mb_cmd {

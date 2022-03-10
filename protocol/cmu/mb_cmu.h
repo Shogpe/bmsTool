@@ -153,8 +153,8 @@ typedef struct {
     int16_t BalIdc;        // 均衡DC电流
     uint16_t BalMode;       // 均衡模式+电流
     uint16_t CanErr;        // 通信错误计数
-    uint16_t BalChgAh;      // 充电均衡Ah
-    uint16_t BalDischgAh;   // 放电均衡Ah
+    uint16_t BalChgAh[MAX_U];      // 充电均衡Ah
+    uint16_t BalDischgAh[MAX_U];   // 放电均衡Ah
 } BMU_DATA_T;
 typedef struct {
     uint16_t soe_count;

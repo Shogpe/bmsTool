@@ -9,7 +9,7 @@ QT       += core gui xml network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 win32 {
 }
-TARGET      = bms_tool
+#TARGET      = bms_tool
 TEMPLATE    = app
 #CONFIG(debug, debug|release){
 DESTDIR     = $$PWD/output/release
@@ -50,7 +50,8 @@ HEADERS     += iconhelper.h \
     version.h \
     widget.h
 HEADERS     += appinit.h
-
+HEADERS     += socImporter.h
+SOURCES     += socImporter.cpp
 FORMS       += \
     main_ui.ui \
     stategroupbox.ui \

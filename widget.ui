@@ -228,7 +228,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -391,6 +391,9 @@
              <widget class="QLabel" name="bSysDischarge">
               <property name="frameShape">
                <enum>QFrame::Box</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
               </property>
               <property name="text">
                <string>放电</string>
@@ -7625,6 +7628,19 @@
             </property>
             <property name="text">
              <string>上送触发</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="btnImportSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>导入SOC表</string>
             </property>
            </widget>
           </item>

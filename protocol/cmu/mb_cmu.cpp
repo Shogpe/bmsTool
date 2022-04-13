@@ -467,6 +467,7 @@ void mb_cmu::run() {
     TMsgData MsgCmd;
     uint32_t counter = 0;
     Init();
+    emit signal_message("init complete.");
     while (1) {
         if (this->stop) break;
         while (pMq->readMsg(0, MsgCmd)) {
@@ -579,11 +580,6 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 uint16_t addr = p[0];
                 uint16_t value = p[1];
                 ret = modbus_write_bit(cmu, addr, value);
-                if (ret < 0)
-                    emit signal_message(QString(tr("操作失败")));
-                else {
-                    emit signal_message(QString(tr("操作成功")));
-                }
             }
         } break;
         case CTRL_CMD_REBOOT: {
@@ -681,9 +677,11 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             break;
     }
     Msg.data.clear();
-    if (ret < 0)
+    if (ret < 0) {
+        qDebug()<<tr("操作失败");
         emit signal_message(QString(tr("操作失败")));
-    else {
+    } else {
+        qDebug()<<tr("操作成功");
         emit signal_message(QString(tr("操作成功")));
     }
 }
@@ -801,7 +799,7 @@ int mb_cmu::ReadAI() {
                             (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 17410) {
                         tab_data.at(data_iter->index).sysData.val.f64 =
-                            MODBUS_GET_INT32_FROM_INT16(tab_buf, data_iter->offset) * data_iter->factor;
+                            MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
                     }
                 }
             }

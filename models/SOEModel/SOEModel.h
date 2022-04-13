@@ -16,8 +16,9 @@ typedef struct {
     QString limit_name;
 } ST_SOE_CONF;
 typedef QMap<uint16_t, ST_SOE_CONF> SOE_MAP;
-#define UINT16 1
-#define INT16  2
+#define UINT16          1
+#define INT16           2
+#define GET_BIT(x, bit) (((x) & (1 << (bit))) >> (bit))
 class SOEModel : public QAbstractTableModel {
     QList<CMU_SOE> m_data;
 
@@ -125,15 +126,15 @@ class SOEModel : public QAbstractTableModel {
                             val = *(int16_t*)&index_soe.soe_val * SOEIter->val_factor;
                             val_limit = *(int16_t*)&index_soe.soe_limit * SOEIter->val_factor;
                         }
-                        return QString(tr("%1: ID=%2,%3=%4,限值=%5,系统状态=%6"))
+                        return QString(tr("%1: ID=%2,%3=%4,限值=%5,系统状态:[%6]"))
                             .arg(SOEIter->evt_name)
                             .arg(index_soe.soe_id)
                             .arg(SOEIter->val_name)
                             .arg(val)
                             .arg(val_limit)
-                            .arg(index_soe.soe_stat);
+                            .arg(getStatusString(index_soe.soe_stat));
                     } else {
-                        return QString("未知类型(%1):ID=%2,值=%3,限值=%4,系统状态=%5")
+                        return QString("未知类型(%1):ID=%2,值=%3,限值=%4,系统状态:%5")
                             .arg(index_soe.soe_type)
                             .arg(index_soe.soe_id)
                             .arg(index_soe.soe_val)
@@ -174,7 +175,27 @@ class SOEModel : public QAbstractTableModel {
         }
         return false;
     }
-
+    QString getStatusString(uint16_t status) const {
+        QStringList statusList;
+        if (GET_BIT(status, 0)) statusList << "总故障";
+        if (GET_BIT(status, 1)) statusList << "总告警";
+        if (GET_BIT(status, 2)) statusList << "充满";
+        if (GET_BIT(status, 3)) statusList << "放空";
+        if (GET_BIT(status, 4)) statusList << "未初始化";
+        if (GET_BIT(status, 5)) statusList << "通信故障";
+        if (GET_BIT(status, 6)) statusList << "均衡";
+        if (GET_BIT(status, 7)) statusList << "充电";
+        if (GET_BIT(status, 8)) statusList << "放电";
+        if (GET_BIT(status, 9)) statusList << "停机";
+        if (GET_BIT(status, 10)) statusList << "升级";
+        if (GET_BIT(status, 11)) statusList << "绝缘通信故障";
+        if (GET_BIT(status, 12)) statusList << "自检故障";
+        if (GET_BIT(status, 13)) statusList << "拨码故障";
+        if (GET_BIT(status, 14)) statusList << "BMU故障";
+        if (GET_BIT(status, 15)) statusList << "并网";
+        // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+        return statusList.join("|");
+    }
 };
 
 #endif

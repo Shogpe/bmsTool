@@ -7,11 +7,11 @@
 #include <QtXml>
 #include "Toast.h"
 #include "myhelper.h"
+#include "socImporter.h"
 #include "ui_widget.h"
-
 Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
-    this->installEventFilter(this);
+    //    this->installEventFilter(this);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Widget::timerUpDate);
     mycmu = nullptr;
@@ -43,12 +43,17 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
         ui->cbProtocol->setCurrentIndex(CMUV1);
         ui->cbProtocol->blockSignals(false);
     }
+    qDebug() << connect(
+        this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
+        [this](const QString& msg) {
+            // qDebug() << QString("msg:%1").arg(msg);
+            Toast::showTip(msg, nullptr);
+        },
+        Qt::UniqueConnection);
     mycmu->start();
-    connect(ui->connectIP, &QLineEdit::editingFinished, this, &Widget::IpChange, Qt::UniqueConnection);
-    connect(mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
-            static_cast<void (Widget::*)(const QString&)>(&Widget::slot_message_call), Qt::UniqueConnection);
-    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
 
+    connect(ui->connectIP, &QLineEdit::editingFinished, this, &Widget::IpChange, Qt::UniqueConnection);
+    connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
     //
     QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
     foreach (QDoubleSpinBox* dspbox, dspboxs) {
@@ -190,6 +195,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                 myMenu.exec(globalPos);
             });
     timer->start(500);
+    Toast::showTip(tr("初始化完成"), nullptr);
 }
 bool Widget::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -866,6 +872,21 @@ void Widget::btn_released() {
         inputBalance->setMode(mode);
         inputBalance->open();
         inputBalance->activateWindow();
+    } else if (name == "btnImportSOC") {
+        QByteArray b = SOCImport();
+        //        if ((sizeof(uint16_t) * 101) != b.size()) {
+        //            myHelper::ShowMessageBoxInfo("数据长度不合法！");
+        //            return;
+        //        }
+        if (0 == b.size()) {
+            return;
+        }
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        uint16_t value = 4096;
+        MsgCmd.data.append(reinterpret_cast<char*>(&value), sizeof(uint16_t));
+        MsgCmd.data.append(b);
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
     } else
         qDebug() << name;
 }
@@ -1166,10 +1187,6 @@ void Widget::IpChange() {
     settings->setValue("global/target_ip", ip);
 }
 
-void Widget::slot_message_call(const QString& msg) {
-    // qDebug() << QString("msg:%1").arg(msg);
-    Toast::showTip(msg, nullptr);
-}
 bool Widget::load_config() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();

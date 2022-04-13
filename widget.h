@@ -57,7 +57,6 @@ class Widget : public QWidget {
     void on_btnInput_released();
     void onUpdateBtnMenu();
     void initUpdateMenu();
-    void slot_message_call(const QString& msg);
     void IpChange();
 
 };

@@ -1,20 +1,20 @@
 #include "main_ui.h"
 #include <QTimer>
+#include "Toast.h"
 #include "iconhelper.h"
 #include "ui_main_ui.h"
 #include "utils.h"
-#include "Toast.h"
 #include "version.h"
+#include "models/frmcustomplot/frmsimple.h"
 MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
-
 }
 
 MainUI::~MainUI() {
-    if(timer) timer->deleteLater();
+    if (timer) timer->deleteLater();
     QByteArray ba = this->saveGeometry();
     settings->setValue("global/layout", ba);
     settings->sync();
@@ -94,6 +94,7 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
+//    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QByteArray ba = settings->value("global/layout").toByteArray();
@@ -209,6 +210,12 @@ void MainUI::menuClick()  //切换语言
     if (b->text() == "Rec转换") {
         QString path = QFileDialog::getExistingDirectory();
         FindFile(path);
+        Toast::showTip("记录文件转换完毕。", nullptr);
+    } else if (b->text() == "录波转换") {
+        frmSimple *view = new frmSimple(nullptr);
+//        view->setWindowFlags(Qt::WindowCloseButtonHint);
+        view->show();
+//        log2csv();
         Toast::showTip("记录文件转换完毕。", nullptr);
     }
     //  if(setChinese->isChecked()){//判断选中了哪个语言

@@ -168,7 +168,7 @@ int mb_tcp::ReadAI() {
                             (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 17410) {
                         tab_data.at(data_iter->index).sysData.val.f64 =
-                            MODBUS_GET_INT32_FROM_INT16(tab_buf, data_iter->offset) * data_iter->factor;
+                            MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
                     }
                 }
             }

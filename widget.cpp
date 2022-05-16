@@ -487,12 +487,12 @@ void Widget::flushData() {
             item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
+            // CAN通信错误计数
+            item = new QTableWidgetItem();
+            item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
-        // CAN通信错误计数
-        item = new QTableWidgetItem();
-        item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
-        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableExtView->setItem(i, cloumn_offset++, item);
         //版本号
         uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
         uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;

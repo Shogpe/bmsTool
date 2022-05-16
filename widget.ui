@@ -89,6 +89,15 @@
       </item>
       <item>
        <widget class="QSpinBox" name="spinBoxPort">
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="maximum">
          <number>65535</number>
         </property>

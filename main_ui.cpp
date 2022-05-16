@@ -6,7 +6,8 @@
 #include "utils.h"
 #include "version.h"
 #include "models/frmcustomplot/frmsimple.h"
-MainUI::MainUI(QWidget* parent) : QFramelessWidget(parent), ui(new Ui::MainUI) {
+#include "FramelessHelper.h"
+MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
     this->initLeftMain();
@@ -34,11 +35,25 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));
     IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf067));
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
+#if 1  // use FramelessHelper on windows
+    auto helper = new FramelessHelper(this);
+    helper->setDraggableMargins(3, 3, 3, 3);
+    helper->setMaximizedMargins(3, 3, 3, 3);
+    helper->setTitleBarHeight(32);
 
+    helper->addExcludeItem(ui->btnMenu_Max);
+    helper->addExcludeItem(ui->btnMenu_Min);
+    helper->addExcludeItem(ui->btnMenu_Close);
+    helper->addExcludeItem(ui->btnMenu);
+    connect(ui->btnMenu_Min, &QPushButton::clicked, helper, &FramelessHelper::triggerMinimizeButtonAction);
+    connect(ui->btnMenu_Max, &QPushButton::clicked, helper, &FramelessHelper::triggerMaximizeButtonAction);
+    connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
+#else
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTitle->installEventFilter(this);
     this->setWidget(this);
     ui->widgetTop->setProperty("nav", "top");
+#endif
     ui->labTitle->setText("库博BMS监控软件");
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
@@ -240,34 +255,34 @@ void MainUI::changeTheme()  //切换主题
     }
 }
 
-void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
+//void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
 
-void MainUI::on_btnMenu_Max_clicked() {
-    static bool max = false;
-    if (max) {
-        showNormal();
-        ui->btnMenu_Max->setToolTip(tr("最大化"));
-    } else {
-        ui->btnMenu_Max->setToolTip(tr("恢复正常"));
-        showMaximized();
-    }
-    setMoveEnable(max);
-    setResizeEnable(max);
-    max = !max;
-}
+//void MainUI::on_btnMenu_Max_clicked() {
+//    static bool max = false;
+//    if (max) {
+//        showNormal();
+//        ui->btnMenu_Max->setToolTip(tr("最大化"));
+//    } else {
+//        ui->btnMenu_Max->setToolTip(tr("恢复正常"));
+//        showMaximized();
+//    }
+//    setMoveEnable(max);
+//    setResizeEnable(max);
+//    max = !max;
+//}
 
-void MainUI::on_btnMenu_Close_clicked() {
-    close();
-    delete ui;
-    this->deleteLater();
-}
+//void MainUI::on_btnMenu_Close_clicked() {
+//    close();
+//    delete ui;
+//    this->deleteLater();
+//}
 
-bool MainUI::eventFilter(QObject* obj, QEvent* event) {
-    if (obj == ui->widgetTitle) {
-        if (event->type() == QEvent::MouseButtonDblClick) {
-            this->on_btnMenu_Max_clicked();
-            return true;
-        }
-    }
-    return QFramelessWidget::eventFilter(obj, event);
-}
+//bool MainUI::eventFilter(QObject* obj, QEvent* event) {
+//    if (obj == ui->widgetTitle) {
+//        if (event->type() == QEvent::MouseButtonDblClick) {
+//            this->on_btnMenu_Max_clicked();
+//            return true;
+//        }
+//    }
+//    return QFramelessWidget::eventFilter(obj, event);
+//}

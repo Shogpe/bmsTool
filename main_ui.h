@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "mb_cmu.h"
 #include "models/ListView/ListView.h"
-#include "models/QFramelessWidget/qframelesswidget.h"
 #include "myhelper.h"
 #include "widget.h"
 
@@ -15,7 +14,7 @@ namespace Ui {
 class MainUI;
 }
 
-class MainUI : public QFramelessWidget {
+class MainUI : public QWidget {  // public QFramelessWidget {
     Q_OBJECT
 
    public:
@@ -44,7 +43,7 @@ class MainUI : public QFramelessWidget {
     QAction *setBlack;
     QAction *setWhite;
 
-    bool eventFilter(QObject *obj, QEvent *event);
+    //    bool eventFilter(QObject *obj, QEvent *event);
     //
     QSettings *settings;
    private slots:
@@ -55,13 +54,12 @@ class MainUI : public QFramelessWidget {
     void leftMainClick();
     void leftConfigClick();
 
-    void on_btnMenu_Min_clicked();
-    void on_btnMenu_Max_clicked();
-    void on_btnMenu_Close_clicked();
+    //    void on_btnMenu_Min_clicked();
+    //    void on_btnMenu_Max_clicked();
+    //    void on_btnMenu_Close_clicked();
 
     void menuClick();
     void changeTheme();
-
 };
 
 #endif  // UIDEMO08_H

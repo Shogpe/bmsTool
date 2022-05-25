@@ -7,8 +7,9 @@
 #include <QtWidgets>
 #endif
 #include <QDesktopWidget>
-#include "frmmessagebox.h"
 #include "frminputbox.h"
+#include "frmmessagebox.h"
+#include "version.h"
 #if defined(HAVE_BYTESWAP_H)
 #include <byteswap.h>
 #endif
@@ -92,12 +93,12 @@ class myHelper : public QObject {
 
     //显示输入框
     static QString showInputBox(const QString info, bool &blok) {
-      frmInputBox input;
+        frmInputBox input;
 
-      input.setMessage(info);
-      blok = input.exec();
+        input.setMessage(info);
+        blok = input.exec();
 
-      return input.getValue();
+        return input.getValue();
     }
 
     //显示信息框,仅确定按钮
@@ -167,6 +168,14 @@ class myHelper : public QObject {
             .arg((ip >> 16) & 0xFF, 0, 16)
             .arg((ip >> 8) & 0xFF, 0, 16)
             .arg(ip & 0xFF, 0, 16);
+    }
+    static void SetAppValue(const QString &key, const QVariant &value) {
+        QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)
+            .setValue(key, value);
+    }
+    static QVariant GetAppValue(const QString &key, const QVariant &defaultValue = QVariant()) {
+        return QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)
+            .value(key, defaultValue);
     }
 };
 

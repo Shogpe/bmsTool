@@ -3,9 +3,9 @@
 #include <QMainWindow>
 #include <QTextCodec>
 #include "appinit.h"
+#include "logindialog.h"
 #include "main_ui.h"
-void reboot()
-{
+void reboot() {
     QString program = QApplication::applicationFilePath();
     QStringList arguments = QApplication::arguments();
     QString workingDirectory = QDir::currentPath();
@@ -36,13 +36,17 @@ int main(int argc, char *argv[]) {
     //加载样式表
     a.setFont(QFont("Microsoft Yahei", 9));
     AppInit::Instance()->start();
+    logindialog *dlg = new logindialog();
+    if (dlg->exec() != QDialog::Accepted) {
+        return -1;
+    }
+    dlg->deleteLater();
     MainUI w;
     w.show();
-
     int ret = a.exec();
     if (ret == EXIT_CODE_REBOOT) {
-      reboot();
-      return 0;
+        reboot();
+        return 0;
     }
 
     return ret;

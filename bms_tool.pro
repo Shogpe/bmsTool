@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml network
+QT       += core gui xml network sql
 # QT += quickwidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 win32 {
@@ -50,8 +50,8 @@ HEADERS     += iconhelper.h \
     version.h \
     widget.h
 HEADERS     += appinit.h
-HEADERS     += socImporter.h
-SOURCES     += socImporter.cpp
+HEADERS     += socImporter.h db_manager.h
+SOURCES     += socImporter.cpp db_manager.cpp
 FORMS       += \
     main_ui.ui \
     stategroupbox.ui \

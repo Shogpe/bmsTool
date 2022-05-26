@@ -40,18 +40,22 @@ bool db_manager::getNode() {
     }
     return true;
 }
-bool db_manager::getUser(QString name, QString password) {
+bool db_manager::getUser(QString name, QString password, int &level) {
     bool flag = false;
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
-    qDebug() << db.isOpen() << db.isValid();
+//    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
-    QString str = QString("SELECT user,level FROM user WHERE user='%1' AND password='%2';").arg(name, password);
+    QString str =
+        QString("SELECT user,level FROM user WHERE user='%1' AND password='%2'").arg(name, password);
     flag = query.exec(str);
+//    qDebug() << str << flag;
     if (!flag) qDebug() << "exec failed: " << query.lastError().text();
-//    while (query.next()) {
-//        qDebug() << query.value(0).toString() << ": " << query.value(1).toInt();
-//    }
-    return flag;
+    while (query.next()) {
+        qDebug() << query.value(0).toString() << ": " << query.value(1).toInt();
+        level = query.value(1).toInt();
+        return true;
+    }
+    return false;
 }
 void db_manager::closed() {
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);

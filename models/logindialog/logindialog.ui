@@ -82,7 +82,7 @@
         </font>
        </property>
        <property name="text">
-        <string>admin</string>
+        <string>user</string>
        </property>
       </widget>
      </item>

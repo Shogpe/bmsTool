@@ -4,11 +4,12 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QMessageBox>
+#include "downloadmanager.h"
 #include "myhelper.h"
 #include "version.h"
-
-const QString url_gitee = "https://gitee.com/lganing/demo/raw/master/uploads/bms_tool.json";
-const QString url_coding = "https://leeginger.coding.net/p/autoUpdate/d/autoUpdate/git/raw/master/bms_tool.json";
+const QString url1 = "https://gitee.com/lganing/demo/raw/master/uploads/bms_tool.json";
+const QString url1_db = "https://gitee.com/lganing/demo/raw/master/uploads/bms_tool.db";
+const QString url2 = "https://leeginger.coding.net/p/autoUpdate/d/autoUpdate/git/raw/master/bms_tool.json";
 
 AppInit *AppInit::self = nullptr;
 AppInit *AppInit::Instance() {
@@ -27,7 +28,12 @@ AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
 void AppInit::start() {
     myHelper::SetStyle("lightblue");
-    updateCheck(url_coding);
+//    DownLoadManager *m_download = new DownLoadManager();
+//    if (!m_download->syncDownloadFile(url1, "bms_tool.json")) {
+        //        return;
+//    }
+//    m_download->deleteLater();
+//    updateCheck(url1);
 }
 
 static int CompareVersion(QString strVer1, QString strVer2) {
@@ -72,8 +78,8 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "request Error";
         // 请求错误时二次检查
-        if (reply->request().url().toString() == url_gitee) return;
-        updateCheck(url_gitee);
+        if (reply->request().url().toString() == url2) return;
+        updateCheck(url2);
     }
     //请求返回的结果
     QByteArray responseByte = reply->readAll();
@@ -106,7 +112,24 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
                         QDesktopServices::openUrl(QUrl(url));
                     }
                 }
+                if (obj.contains("db_version")) {
+                    QString db_version = obj["db_version"].toString();
+                    QString db_file_ver = "0.0.0.0";
+                    QString dbfileName = "data.db3";
+                    QFileInfo info(dbfileName);
+                    if (info.exists()) {
+                        db_file_ver = info.lastModified().toString("yyyy.MM.dd.hh");
+                    }
+                    if (CompareVersion(db_file_ver, db_version) < 0) {
+                        DownLoadManager *m_download = new DownLoadManager();
+                        if (!m_download->syncDownloadFile(url1_db, dbfileName)) {
+//                            return;
+                        }
+                        m_download->deleteLater();
+                    }
+                }
             }
+
         } else {
             qDebug() << "error, shoud json object";
         }
@@ -130,4 +153,5 @@ void AppInit::updateCheck(QString url) {
     accessManager->get(requestInfo);
     connect(accessManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(replyFinished(QNetworkReply *)));
     //错误处理
+
 }

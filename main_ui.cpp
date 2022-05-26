@@ -1,12 +1,14 @@
 #include "main_ui.h"
 #include <QTimer>
+#include "FramelessHelper.h"
 #include "Toast.h"
+#include "cmu4u.h"
 #include "iconhelper.h"
+#include "models/frmcustomplot/frmsimple.h"
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-#include "models/frmcustomplot/frmsimple.h"
-#include "FramelessHelper.h"
+#include "widget.h"
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -17,7 +19,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
 MainUI::~MainUI() {
     if (timer) timer->deleteLater();
     QByteArray ba = this->saveGeometry();
-    settings->setValue("global/layout", ba);
+    myHelper::SetAppValue("global/layout", ba);
     settings->sync();
     settings->deleteLater();
     delete settings;
@@ -71,6 +73,7 @@ void MainUI::initForm() {
         connect(btn, SIGNAL(clicked()), this, SLOT(buttonClick()));
         btn->hide();
     }
+    ui->widgetTop->hide();
     //
     ui->gridLayout_3->addWidget(new StateGroupBox());
 
@@ -109,14 +112,20 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
-//    title_menu->addAction("录波转换", this, &MainUI::menuClick);
+    //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
-    QByteArray ba = settings->value("global/layout").toByteArray();
+    QByteArray ba = myHelper::GetAppValue("global/layout").toByteArray();
     this->restoreGeometry(ba);
-    QString user = settings->value("global/user", "").toString();
-    QString token = settings->value("global/token", "").toString();
-    if (user != "Ganing" && token != "0a1d0f157771521bad3b9579bcf13c35") ui->btnMenu->hide();
+    QString user = myHelper::user;  // settings->value("global/user", "").toString();
+    if (myHelper::level < 16) ui->btnMenu->hide();
+    if (myHelper::level > 0 && myHelper::level != 31) {
+        int index = ui->stackedWidget->addWidget(new cmu4u());
+        ui->stackedWidget->setCurrentIndex(index);
+    } else if (myHelper::level == 31) {
+        int index = ui->stackedWidget->addWidget(new Widget());
+        ui->stackedWidget->setCurrentIndex(index);
+    }
     ui->labUser->setText(user);
 
     //关联换肤和切换语言功能
@@ -227,10 +236,10 @@ void MainUI::menuClick()  //切换语言
         FindFile(path);
         Toast::showTip("记录文件转换完毕。", nullptr);
     } else if (b->text() == "录波转换") {
-        frmSimple *view = new frmSimple(nullptr);
-//        view->setWindowFlags(Qt::WindowCloseButtonHint);
+        frmSimple* view = new frmSimple(nullptr);
+        //        view->setWindowFlags(Qt::WindowCloseButtonHint);
         view->show();
-//        log2csv();
+        //        log2csv();
         Toast::showTip("记录文件转换完毕。", nullptr);
     }
     //  if(setChinese->isChecked()){//判断选中了哪个语言
@@ -255,34 +264,34 @@ void MainUI::changeTheme()  //切换主题
     }
 }
 
-//void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
+// void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
 
-//void MainUI::on_btnMenu_Max_clicked() {
-//    static bool max = false;
-//    if (max) {
-//        showNormal();
-//        ui->btnMenu_Max->setToolTip(tr("最大化"));
-//    } else {
-//        ui->btnMenu_Max->setToolTip(tr("恢复正常"));
-//        showMaximized();
-//    }
-//    setMoveEnable(max);
-//    setResizeEnable(max);
-//    max = !max;
-//}
+// void MainUI::on_btnMenu_Max_clicked() {
+//     static bool max = false;
+//     if (max) {
+//         showNormal();
+//         ui->btnMenu_Max->setToolTip(tr("最大化"));
+//     } else {
+//         ui->btnMenu_Max->setToolTip(tr("恢复正常"));
+//         showMaximized();
+//     }
+//     setMoveEnable(max);
+//     setResizeEnable(max);
+//     max = !max;
+// }
 
-//void MainUI::on_btnMenu_Close_clicked() {
-//    close();
-//    delete ui;
-//    this->deleteLater();
-//}
+// void MainUI::on_btnMenu_Close_clicked() {
+//     close();
+//     delete ui;
+//     this->deleteLater();
+// }
 
-//bool MainUI::eventFilter(QObject* obj, QEvent* event) {
-//    if (obj == ui->widgetTitle) {
-//        if (event->type() == QEvent::MouseButtonDblClick) {
-//            this->on_btnMenu_Max_clicked();
-//            return true;
-//        }
-//    }
-//    return QFramelessWidget::eventFilter(obj, event);
-//}
+// bool MainUI::eventFilter(QObject* obj, QEvent* event) {
+//     if (obj == ui->widgetTitle) {
+//         if (event->type() == QEvent::MouseButtonDblClick) {
+//             this->on_btnMenu_Max_clicked();
+//             return true;
+//         }
+//     }
+//     return QFramelessWidget::eventFilter(obj, event);
+// }

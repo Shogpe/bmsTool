@@ -299,6 +299,9 @@ int mb_cmu::Init() {
     } else if (protocal_ver == CMUV4) {
         this->node_table = cmu_v4_config;
         this->node_table_size = cmu_v4_config_len;
+    } else if (protocal_ver == CMUV4_1) {
+        this->node_table = cmu_v4_1_config;
+        this->node_table_size = cmu_v4_1_config_len;
     } else {
         this->node_table = cmu_v1_config;
         this->node_table_size = cmu_v1_config_len;
@@ -488,7 +491,7 @@ void mb_cmu::run() {
                             ReadCapData();
                         }
                         counter++;
-                        qDebug() << "counter" << counter;
+//                        qDebug() << "counter" << counter;
                     }
                     state = SM_INIT;
                     Dump2Csv();
@@ -678,10 +681,10 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
     }
     Msg.data.clear();
     if (ret < 0) {
-        qDebug()<<tr("操作失败");
+        qDebug() << tr("操作失败");
         emit signal_message(QString(tr("操作失败")));
     } else {
-        qDebug()<<tr("操作成功");
+        qDebug() << tr("操作成功");
         emit signal_message(QString(tr("操作成功")));
     }
 }

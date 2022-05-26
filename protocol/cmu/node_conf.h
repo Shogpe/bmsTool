@@ -14,6 +14,8 @@ extern MB_NODE cmu_v3_config[];
 extern const int cmu_v3_config_len;
 extern MB_NODE cmu_v4_config[];
 extern const int cmu_v4_config_len;
+extern MB_NODE cmu_v4_1_config[];
+extern const int cmu_v4_1_config_len;
 #ifdef __cplusplus
 }
 #endif

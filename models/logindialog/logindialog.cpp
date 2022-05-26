@@ -3,6 +3,8 @@
 #include "db_manager.h"
 #include "myhelper.h"
 #include "ui_logindialog.h"
+QString myHelper::user = "";
+int myHelper::level = 0;
 // 加解密都用此方法
 QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
     for (int i = 0; i < src.count(); i++) {
@@ -26,7 +28,7 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
         ui->lineEdit_pwd->setText(qstrpasswd);
     }
 }
-//cubenergy
+// cubenergy
 logindialog::~logindialog() { delete ui; }
 
 void logindialog::on_pushButton_login_clicked() {
@@ -39,7 +41,11 @@ void logindialog::on_pushButton_login_clicked() {
     pwd.append(ui->lineEdit_pwd->text());
     pwd = QString(QCryptographicHash::hash(pwd.toLocal8Bit(), QCryptographicHash::Md5).toHex());
     qDebug() << pwd;
-    if (db_manager::Instance()->getUser(ui->lineEdit_uname->text(), pwd)) {
+    int level = 0;
+    if (db_manager::Instance()->getUser(ui->lineEdit_uname->text(), pwd, level)) {
+        myHelper::user = ui->lineEdit_uname->text();
+        myHelper::level = level;
+        qDebug() << level;
         accept();
         if (ui->isRemember->isChecked()) {
             // 保存密码
@@ -58,3 +64,12 @@ void logindialog::on_pushButton_login_clicked() {
 }
 
 void logindialog::on_pushButton_exit_clicked() { close(); }
+
+void logindialog::on_isRemember_stateChanged(int arg1) {
+    Q_UNUSED(arg1)
+    if (!ui->isRemember->isChecked()) {
+        myHelper::SetAppValue("user/name", "");
+        myHelper::SetAppValue("user/password", "");
+        myHelper::SetAppValue("user/remenber", ui->isRemember->isChecked());
+    }
+}

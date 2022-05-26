@@ -69,7 +69,7 @@ class MyIPSpinBox : public QDoubleSpinBox {
 
     virtual void mousePressEvent(QMouseEvent* event) {}
 };
-#endif
+
 #include <QToolTip>
 class MyStatusSpinBox : public QDoubleSpinBox {
     Q_OBJECT
@@ -79,3 +79,5 @@ class MyStatusSpinBox : public QDoubleSpinBox {
 
     virtual void mousePressEvent(QMouseEvent* event) { this->setToolTip(this->objectName()); }
 };
+
+#endif

@@ -20,7 +20,9 @@ private slots:
 
     void on_pushButton_exit_clicked();
 
-private:
+    void on_isRemember_stateChanged(int arg1);
+
+   private:
     Ui::logindialog *ui;
 };
 

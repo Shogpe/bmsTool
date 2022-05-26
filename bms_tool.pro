@@ -12,9 +12,9 @@ win32 {
 #TARGET      = bms_tool
 TEMPLATE    = app
 #CONFIG(debug, debug|release){
-DESTDIR     = $$PWD/output/release
+DESTDIR     = $$PWD/output/
 #} else {
-DESTDIR     = $$PWD/output/debug
+#DESTDIR     = $$PWD/output/debug
 #}
 #MOC_DIR     = $$DESTDIR/temp/moc
 #RCC_DIR     = $$DESTDIR/temp/rcc
@@ -49,10 +49,10 @@ HEADERS     += iconhelper.h \
     utils.h \
     version.h \
     widget.h
-HEADERS     += appinit.h
-HEADERS     += socImporter.h db_manager.h
-SOURCES     += socImporter.cpp db_manager.cpp
-FORMS       += \
+HEADERS     += appinit.h cmu4u.h
+HEADERS     += socImporter.h db_manager.h downloadmanager.h
+SOURCES     += socImporter.cpp db_manager.cpp cmu4u.cpp  downloadmanager.cpp
+FORMS       += cmu4u.ui \
     main_ui.ui \
     stategroupbox.ui \
     widget.ui
@@ -75,4 +75,4 @@ LIBS += -licudata
 RC_FILE += main.rc
 OTHER_FILES += main.rc touch.bat
 
-
+#DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出

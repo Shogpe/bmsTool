@@ -1,0 +1,3872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cmu4u</class>
+ <widget class="QWidget" name="cmu4u">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>912</width>
+    <height>538</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>200</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Widget</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>连接</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="connectIP">
+        <property name="toolTip">
+         <string>输入IP地址</string>
+        </property>
+        <property name="inputMask">
+         <string>000.000.000.000</string>
+        </property>
+        <property name="text">
+         <string>127.000.000.001</string>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBoxPort">
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+        <property name="value">
+         <number>502</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbProtocol">
+        <item>
+         <property name="text">
+          <string>CMU1.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CMU2.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CMU3.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CMU4.0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>存储</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tbtnConnect">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>连接</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelStatus">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string>未连接</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::PlainText</enum>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="btnVer">
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>0.0.0.0</string>
+        </property>
+        <property name="autoExclusive">
+         <bool>false</bool>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="DataWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::North</enum>
+     </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="tabCMU">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>CMU数据</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="topMargin">
+          <number>9</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>9</number>
+         </property>
+         <item>
+          <widget class="QGroupBox" name="G_SysStatus">
+           <property name="title">
+            <string>系统状态(?)</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bSysErr">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>总故障</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysAlm">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>总告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysFull">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>充满</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysEmpty">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>放空</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysInit">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>1</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysCommErr">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>通信故障</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysBalance">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysCharge">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bSysDischarge">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSysStop">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys10">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys11">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys12">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys13">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys14">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bSys15">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="G_ErrStatus">
+           <property name="title">
+            <string>保护状态1(?)</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bErr0">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体过压保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr1">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体欠压保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr2">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体过温保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr3">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体低温保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr4">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr5">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr6">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>极柱过温保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr7">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>过负荷保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_7">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bErr8">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>短路保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr9">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇过压保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr10">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇欠压保护</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr11">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr12">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr13">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇极柱过温</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr14">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bErr15">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="G_AlmStatus">
+           <property name="title">
+            <string>告警状态(?)</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bAlm0">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体过压告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm1">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体欠压告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm2">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体过温告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm3">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>单体低温告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm4">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm5">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm6">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>极柱过温告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm7">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>过负荷告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bAlm8">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm9">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇过压告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm10">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇欠压告警</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm11">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm12">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm13">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>簇极柱过温</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm14">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bAlm15">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="G_DIStatus">
+           <property name="title">
+            <string>DI状态(?)</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bDI0">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>QF状态(0)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI1">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>KM+状态(1)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI2">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string>KM-状态(2)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI3">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI4">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI5">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI6">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI7">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_11">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="bDI8">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI9">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI10">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI11">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI12">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI13">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI14">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="bDI15">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxCMU">
+         <property name="title">
+          <string>极值与传感器</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_9">
+          <item row="3" column="6">
+           <widget class="QDoubleSpinBox" name="ClusterT4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇外接温度4 </string>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QDoubleSpinBox" name="Umin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> V</string>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="UmaxID">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最大单体ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QDoubleSpinBox" name="UmMax">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> V</string>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QDoubleSpinBox" name="ClusterT2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇外接温度2 </string>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QDoubleSpinBox" name="Umax">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> V</string>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="6">
+           <widget class="QDoubleSpinBox" name="ClusterT5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇外接温度5 </string>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="UminID">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最小单体ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QDoubleSpinBox" name="ClusterT1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇外接温度1 </string>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="UmMaxID">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最大模组ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="6">
+           <widget class="QDoubleSpinBox" name="ClusterT3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇外接温度3 </string>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QDoubleSpinBox" name="ERemain">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>剩余电量 </string>
+            </property>
+            <property name="suffix">
+             <string> kWh</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>5000000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="7">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="5" column="6">
+           <widget class="QDoubleSpinBox" name="chgBalance">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>充电均衡通道数 </string>
+            </property>
+            <property name="suffix">
+             <string/>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>5000000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="6">
+           <widget class="QDoubleSpinBox" name="dischgBalance">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>放电均衡通道数 </string>
+            </property>
+            <property name="suffix">
+             <string/>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>5000000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QDoubleSpinBox" name="Udc">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇电压 </string>
+            </property>
+            <property name="suffix">
+             <string> V</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QDoubleSpinBox" name="Idc">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇电流 </string>
+            </property>
+            <property name="suffix">
+             <string> A</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QDoubleSpinBox" name="Pdc">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string/>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>簇功率 </string>
+            </property>
+            <property name="suffix">
+             <string> kW</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QDoubleSpinBox" name="SOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>SOC </string>
+            </property>
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>200.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QDoubleSpinBox" name="SOH">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>SOH </string>
+            </property>
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>200.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="TmaxID">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最高模组ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QDoubleSpinBox" name="Tmax">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="TminID">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最低模组ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QDoubleSpinBox" name="Tmin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="TpMaxID">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>最高极柱ID</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QDoubleSpinBox" name="TpMax">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="suffix">
+             <string> ℃</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-10000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabBMU">
+      <property name="accessibleName">
+       <string/>
+      </property>
+      <attribute name="title">
+       <string>BMU数据</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>7</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tableBMU">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSet">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string>定值</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="7" column="3">
+        <widget class="MyDoubleSpinBox" name="CPoleTHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇极柱温度上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇极柱温度上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="MyDoubleSpinBox" name="CellVolL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压下限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="7">
+        <widget class="QLabel" name="label_48">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="0">
+        <widget class="QPushButton" name="btnOutput">
+         <property name="toolTip">
+          <string>导出本页定值至xml文件</string>
+         </property>
+         <property name="text">
+          <string> 导出</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="MyDoubleSpinBox" name="CellVolHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="MyDoubleSpinBox" name="PackTL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体温度下限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="4" colspan="2">
+        <widget class="QLineEdit" name="lineEditServIP">
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="maxLength">
+          <number>15</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="MyDoubleSpinBox" name="CellVolLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压下下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压下下限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="3">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>BMS IP设定</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="MyDoubleSpinBox" name="ClusterVolH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇电压上限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="MyDoubleSpinBox" name="PackTHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体温度上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="MyDoubleSpinBox" name="PoleTHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>极柱温度上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>极柱温度上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="3">
+        <widget class="QLabel" name="label_91">
+         <property name="text">
+          <string>服务器IP设定</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="5">
+        <widget class="MyDoubleSpinBox" name="BalnceStart">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="toolTip">
+          <string>均衡配置</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>均衡配置 </string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="MyDoubleSpinBox" name="ClusterVolLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压下下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇电压下下限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="9">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="3">
+        <widget class="MyDoubleSpinBox" name="PackTLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度下下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体温度下下限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-50.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="4" colspan="2">
+        <widget class="QLineEdit" name="lineEditIP">
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="maxLength">
+          <number>15</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="MyDoubleSpinBox" name="ClusterVolHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇电压上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="7">
+        <widget class="QLabel" name="label_46">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="MyDoubleSpinBox" name="CellVolH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压上限</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhFormattedNumbersOnly</set>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="correctionMode">
+          <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压上限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>4</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="5">
+        <widget class="MyDoubleSpinBox" name="BalnceStartDiff">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>均衡启动差值</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>均衡启动差值 </string>
+         </property>
+         <property name="suffix">
+          <string> mV</string>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="7">
+        <widget class="QLabel" name="label_49">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="7">
+        <widget class="QLabel" name="label_47">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="MyDoubleSpinBox" name="PoleTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>极柱温度上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>极柱温度上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QPushButton" name="btnInput">
+         <property name="toolTip">
+          <string>从xml文件导入定值</string>
+         </property>
+         <property name="text">
+          <string> 导入</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="MyDoubleSpinBox" name="PackTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体温度上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3">
+        <widget class="MyDoubleSpinBox" name="CPoleTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇极柱温度上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇极柱温度上限 </string>
+         </property>
+         <property name="suffix">
+          <string> ℃</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="MyDoubleSpinBox" name="ClusterVolL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压下限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>簇电压下限 </string>
+         </property>
+         <property name="suffix">
+          <string> V</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="MyDoubleSpinBox" name="ClusterIe">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>额定电流</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>额定电流 </string>
+         </property>
+         <property name="suffix">
+          <string> A</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="MyDoubleSpinBox" name="ClusterCurShort">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>短路电流限值</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>短路电流限值 </string>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="MyDoubleSpinBox" name="ClusterCurH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电流上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>电流上限 </string>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="5">
+        <widget class="MyDoubleSpinBox" name="ClusterCurHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电流上上限</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>电流上上限 </string>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="5">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>均衡配置右键可修改↓</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabCtrl">
+      <attribute name="title">
+       <string>系统控制</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QPushButton" name="btnAutoKMON">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>综合命令合闸</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnAutoKMOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>综合命令分闸</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="3">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_1">
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="text">
+            <string>时钟</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="MyTimeSpinBox" name="sysTime">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>180</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="wrapping">
+            <bool>false</bool>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::NoButtons</enum>
+           </property>
+           <property name="specialValueText">
+            <string/>
+           </property>
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="prefix">
+            <string/>
+           </property>
+           <property name="suffix">
+            <string/>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>10000000000000000000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnTimeAdj">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>对时</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSOE">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>SOE</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="1" column="0" colspan="2">
+        <widget class="QTableView" name="ViewSOE"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSOE">
+         <property name="text">
+          <string>新SOE:--,总计:--</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="btnReadSOE">
+         <property name="text">
+          <string>读取</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabExt">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>BMU扩展信息</string>
+      </attribute>
+      <attribute name="toolTip">
+       <string>仅CMU4.0支持</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="tableExtView">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>MyDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyTimeSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>widget.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>PackTHH</tabstop>
+  <tabstop>tableBMU</tabstop>
+  <tabstop>ViewSOE</tabstop>
+  <tabstop>btnReadSOE</tabstop>
+  <tabstop>btnInput</tabstop>
+  <tabstop>btnOutput</tabstop>
+  <tabstop>lineEditIP</tabstop>
+  <tabstop>lineEditServIP</tabstop>
+  <tabstop>PackTH</tabstop>
+  <tabstop>PackTLL</tabstop>
+  <tabstop>PackTL</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

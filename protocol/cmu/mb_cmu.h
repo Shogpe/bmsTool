@@ -140,21 +140,21 @@ typedef struct {
 #define MAX_U 32
 #define MAX_T 8
 typedef struct {
-    uint16_t Ucell[MAX_U];  // 单体电压
-    int16_t Tcell[MAX_T];   // 温度
-    uint16_t Ubreak;        // 电压断线
-    uint16_t Tbreak;        // 温度断线
-    uint16_t RunStat;       // 运行状态
-    uint16_t ErrStat;       // 故障状态
-    uint32_t Version;       // 版本号
-    uint16_t BalStat;       // 均衡状态
-    uint16_t BalErr;        // 通道故障(闭锁)状态
-    uint16_t BalU24;        // 均衡24V电压
-    int16_t BalIdc;        // 均衡DC电流
-    uint16_t BalMode;       // 均衡模式+电流
-    uint16_t CanErr;        // 通信错误计数
-    uint16_t BalChgAh[MAX_U];      // 充电均衡Ah
-    uint16_t BalDischgAh[MAX_U];   // 放电均衡Ah
+    uint16_t Ucell[MAX_U];        // 单体电压
+    int16_t Tcell[MAX_T];         // 温度
+    uint16_t Ubreak;              // 电压断线
+    uint16_t Tbreak;              // 温度断线
+    uint16_t RunStat;             // 运行状态
+    uint16_t ErrStat;             // 故障状态
+    uint32_t Version;             // 版本号
+    uint16_t BalStat;             // 均衡状态
+    uint16_t BalErr;              // 通道故障(闭锁)状态
+    uint16_t BalU24;              // 均衡24V电压
+    int16_t BalIdc;               // 均衡DC电流
+    uint16_t BalMode;             // 均衡模式+电流
+    uint16_t CanErr;              // 通信错误计数
+    uint16_t BalChgAh[MAX_U];     // 充电均衡Ah
+    uint16_t BalDischgAh[MAX_U];  // 放电均衡Ah
 } BMU_DATA_T;
 typedef struct {
     uint16_t soe_count;
@@ -188,9 +188,10 @@ typedef enum {
 } STATE_MACHINE;
 typedef enum {
     CMUV1 = 0,
-    CMUV2,  //
-    CMUV3,  //
-    CMUV4,  //主动均衡
+    CMUV2,    //
+    CMUV3,    //
+    CMUV4,    //主动均衡
+    CMUV4_1,  //主动均衡-对外
 } BMS_PROTOCOL;
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;

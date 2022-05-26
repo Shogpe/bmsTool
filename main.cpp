@@ -5,6 +5,7 @@
 #include "appinit.h"
 #include "logindialog.h"
 #include "main_ui.h"
+//#include "logmanager.h"
 void reboot() {
     QString program = QApplication::applicationFilePath();
     QStringList arguments = QApplication::arguments();
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]) {
 #endif
     //加载样式表
     a.setFont(QFont("Microsoft Yahei", 9));
+//    LogManager::instance()->debug_log_console_on();
     AppInit::Instance()->start();
     logindialog *dlg = new logindialog();
     if (dlg->exec() != QDialog::Accepted) {

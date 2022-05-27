@@ -27,6 +27,7 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
         ui->lineEdit_uname->setText(qstrname);
         ui->lineEdit_pwd->setText(qstrpasswd);
     }
+    this->adjustSize();
 }
 // cubenergy
 logindialog::~logindialog() { delete ui; }

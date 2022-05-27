@@ -38,9 +38,16 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf067));
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 #if 1  // use FramelessHelper on windows
+       //    this->setProperty("disableMaximized", true);
+
     auto helper = new FramelessHelper(this);
+    if (myHelper::level > 0 && myHelper::level != 31) {
+        helper->setDisableMaximized(true);
+        this->setWindowFlags(Qt::FramelessWindowHint);
+
+    }
     helper->setDraggableMargins(3, 3, 3, 3);
-    helper->setMaximizedMargins(3, 3, 3, 3);
+    helper->setMaximizedMargins(0, 0, 0, 0);
     helper->setTitleBarHeight(32);
 
     helper->addExcludeItem(ui->btnMenu_Max);
@@ -50,6 +57,8 @@ void MainUI::initForm() {
     connect(ui->btnMenu_Min, &QPushButton::clicked, helper, &FramelessHelper::triggerMinimizeButtonAction);
     connect(ui->btnMenu_Max, &QPushButton::clicked, helper, &FramelessHelper::triggerMaximizeButtonAction);
     connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
+    //    ui->btnMenu_Max->setDisabled(true);
+
 #else
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTitle->installEventFilter(this);
@@ -122,9 +131,11 @@ void MainUI::initForm() {
     if (myHelper::level > 0 && myHelper::level != 31) {
         int index = ui->stackedWidget->addWidget(new cmu4u());
         ui->stackedWidget->setCurrentIndex(index);
+        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {
         int index = ui->stackedWidget->addWidget(new Widget());
         ui->stackedWidget->setCurrentIndex(index);
+        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
 

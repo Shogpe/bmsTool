@@ -16,7 +16,8 @@ void reboot() {
 
 int main(int argc, char *argv[]) {
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+//    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+//    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
     QApplication a(argc, argv);
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]) {
     QTextCodec::setCodecForLocale(codec);
 #endif
     //加载样式表
-    a.setFont(QFont("Microsoft Yahei", 9));
+    a.setFont(QFont("Microsoft Yahei",11));
 //    LogManager::instance()->debug_log_console_on();
     AppInit::Instance()->start();
     logindialog *dlg = new logindialog();

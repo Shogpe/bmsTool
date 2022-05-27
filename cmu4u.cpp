@@ -239,7 +239,8 @@ cmu4u::cmu4u(QWidget* parent) : QWidget(parent), ui(new Ui::cmu4u) {
                 myMenu.exec(globalPos);
             });
     timer->start(500);
-    Toast::showTip(tr("初始化完成"), nullptr);
+    this->adjustSize();
+    //    Toast::showTip(tr("初始化完成"), nullptr);
 }
 bool cmu4u::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -754,8 +755,8 @@ void cmu4u::flushData() {
     ui->TmaxID->setText(QString(tr("最高单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
     id = mycmu->tab_data.at(mycmu->name_map["TminID"].index).sysData.val.f64;
     ui->TminID->setText(QString(tr("最低单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
-    id = mycmu->tab_data.at(mycmu->name_map["UmMaxID"].index).sysData.val.f64;
-    ui->UmMaxID->setText(QString(tr("最大模组电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+//    id = mycmu->tab_data.at(mycmu->name_map["UmMaxID"].index).sysData.val.f64;
+//    ui->UmMaxID->setText(QString(tr("最大模组电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
     //    id = mycmu->tab_data.at(mycmu->name_map["UdMaxID"].index).sysData.val.f64;
     //    ui->UdMaxID->setText(QString(tr("最大单体压差(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
     id = mycmu->tab_data.at(mycmu->name_map["TpMaxID"].index).sysData.val.f64;
@@ -809,8 +810,6 @@ static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_F
                                       {"btnReboot", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
                                       {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
                                       {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
-                                      {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
-                                      {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
                                       {"btnKMRON", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_ON}},
                                       {"btnKMROFF", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_OFF}},
                                       {"btnQFON", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_ON}},
@@ -890,6 +889,46 @@ void cmu4u::btn_released() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnAutoKMON") {
+        //        {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
+        //        {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
+        //        {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
+        //        {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
+        mb_cmd cmd;
+        cmd.addr = ADDR_IO_EN;
+        cmd.value = MB_IO_UNLOCK;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        MsgCmd.data.clear();
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        cmd.addr = ADDR_CTRL_AUTO;
+        cmd.value = MB_CTRL_ON;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        MsgCmd.data.clear();
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnAutoKMOFF") {
+        //        {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
+        //        {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
+        //        {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
+        //        {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
+        mb_cmd cmd;
+        cmd.addr = ADDR_IO_EN;
+        cmd.value = MB_IO_UNLOCK;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        MsgCmd.data.clear();
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        cmd.addr = ADDR_CTRL_AUTO;
+        cmd.value = MB_CTRL_OFF;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        MsgCmd.data.clear();
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
         if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
     } else if (name == "btnBalance") {
         uint8_t mode = 0;

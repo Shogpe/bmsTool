@@ -26,6 +26,7 @@ include(ThirdParty/ThirdParty.pri)
 include(models/models.pri)
 include(3rdParty.pri)
 include(protocol/protocol.pri)
+include(views/views.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \

@@ -6,9 +6,9 @@
 #include <QThread>
 #include <iostream>
 #include "MessageQueue.h"
-#include "mb_tcp.h"
 #include "modbus-tcp.h"
 #include "modbus-version.h"
+#include "node_conf.h"
 using namespace std;
 
 typedef struct {

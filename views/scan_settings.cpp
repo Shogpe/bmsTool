@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QtDebug>
+#include <QtGlobal>
 #include <QtXml>
 #include "Toast.h"
 #include "myhelper.h"
@@ -50,6 +51,34 @@ void scan_settings::uiInit() {
     //    }
 }
 void scan_settings::flushData() {
+    // 从xml加载配置
+    QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QDomDocument doc;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+    QDomElement root = doc.documentElement();  //返回根节点
+    QDomNode node = root.firstChild();         //获得第一个子节点
+    QMap<QString, double> setMap;
+    while (!node.isNull())  //如果节点不空
+    {
+        if (node.isElement())  //如果节点是元素
+        {
+            QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
+            if (e.attribute("name") != nullptr) {
+                setMap[e.attribute("name")] = e.attribute("value").toDouble();
+            }
+        }
+        node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
+    }
+    doc.clear();
+    //
     if (m_mbtcp == nullptr) {
         m_mbtcp = new mb_tcp(ui->connectIP->text(), ui->spinBoxPort->value());
     }
@@ -58,13 +87,20 @@ void scan_settings::flushData() {
     MB_NODE* node_table = cmu_v4_config;
     int node_table_size = cmu_v4_config_len;
     for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type != 129) continue;
+        node_table[i].index = tab_config.size();
         tab_config.push_back(node_table[i]);
     }
     m_mbtcp->init_config(tab_config);
     m_mbtcp->Connect();
     vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
     for (int i = 0; i < data.size(); i++) {
-        qDebug() << i << cmu_v4_config[i].name << data.at(i).sysData.val.f64;
+        if (setMap.contains(tab_config.at(i).name)) {
+            qDebug() << i << tab_config.at(i).name << data.at(i).sysData.val.f64 << setMap.value(tab_config.at(i).name)
+                     << qFuzzyCompare(data.at(i).sysData.val.f64, setMap.value(tab_config.at(i).name));
+        }
     };
     m_mbtcp->close();
+    m_mbtcp->deleteLater();
+    m_mbtcp = nullptr;
 }

@@ -295,6 +295,10 @@ void Widget::uiInit() {
         hdr_list.append(tr("均衡模式"));
         hdr_list.append(tr("CAN错误数"));
         hdr_list.append(tr("版本号"));
+        ui->BalnceStart->setPrefix("均衡配置 ");
+        ui->BalnceStart->setSuffix("");
+        ui->BalnceStart->setMaximum(100000);
+        ui->BalnceStart->setDecimals(0);
     }
 
     ui->tableBMU->setColumnCount(hdr_list.size());

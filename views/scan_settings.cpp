@@ -10,17 +10,186 @@
 #include "myhelper.h"
 #include "socImporter.h"
 #include "ui_scan_settings.h"
+void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
+    QStringList ip_list = ip.split(":");
+    int port = 502;
+    if (ip_list.size() > 1) {
+        port = ip_list.at(1).toInt();
+    }
+
+    mb_tcp* m_mbtcp = new mb_tcp(ip_list.at(0), port);
+
+    vector<MB_NODE> tab_config;
+    tab_config.clear();
+    MB_NODE* node_table = cmu_v4_config;
+    int node_table_size = cmu_v4_config_len;
+
+    for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type != 129) continue;
+        if (!setMap.contains(node_table[i].name)) continue;
+        node_table[i].index = tab_config.size();
+        tab_config.push_back(node_table[i]);
+    }
+    m_mbtcp->init_config(tab_config);
+    m_mbtcp->Connect();
+    vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
+    int ok_count = 0;
+    for (int i = 0; i < data.size(); i++) {
+        if (setMap.contains(tab_config.at(i).name)) {
+            qDebug() << i << tab_config.at(i).name << data.at(i).sysData.val.f64 << setMap.value(tab_config.at(i).name)
+                     << qFuzzyCompare(data.at(i).sysData.val.f64, setMap.value(tab_config.at(i).name));
+            //            if (qFuzzyCompare(data.at(i).sysData.val.f64, setMap.value(tab_config.at(i).name)))
+            //            ok_count++;
+            if (QString("%1").arg(data.at(i).sysData.val.f64) ==
+                QString("%1").arg(setMap.value(tab_config.at(i).name))) {
+                ok_count++;
+            } else {
+                qDebug() << QString("%1").arg(data.at(i).sysData.val.f64)
+                         << QString("%1").arg(setMap.value(tab_config.at(i).name));
+            }
+        }
+    };
+    if (ok_count == setMap.size()) {
+        emit workFinished(1, "OK");
+    } else {
+        emit workFinished(0, "FAIL");
+    }
+    m_mbtcp->close();
+    m_mbtcp->deleteLater();
+    m_mbtcp = nullptr;
+}
+QString ipv4int_to_str(quint32 ipint) {
+    return QString("%1.%2.%3.%4")
+        .arg((ipint >> 24) & 0xff)
+        .arg((ipint >> 16) & 0xff)
+        .arg((ipint >> 8) & 0xff)
+        .arg(ipint & 0xff);
+}
+
+quint32 ipv4str_to_int(const QString& ipstr) {
+    QStringList ip4 = ipstr.split(".");
+    if (ip4.size() == 4) {
+        return ip4.at(3).toInt() | ip4.at(2).toInt() << 8 | ip4.at(1).toInt() << 16 | ip4.at(0).toInt() << 24;
+    } else {
+        return 0;
+    }
+}
 scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan_settings) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    uiInit();
     m_mbtcp = nullptr;
     //
-    connect(ui->tbtnConnect, &QPushButton::released, this, &scan_settings::flushData);
+    connect(ui->btnTest, &QPushButton::released, this, [=]() {
+        if (target_ips.size()) ui->btnTest->setDisabled(true);
+        ip_analyze();
+        for (int i = 0; i < target_ips.size(); i++) {
+            QThread* thread = new QThread();
+            testWorker* task = new testWorker(target_ips.at(i), this->m_setMap);
+            task->moveToThread(thread);
+
+            connect(thread, &QThread::started, task, &testWorker::doWork);
+            connect(task, &testWorker::workFinished, thread, &QThread::quit);
+            // automatically delete thread and task object when work is done:
+            connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
+            connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+            connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
+                m_mutex.lock();
+                target_count++;
+                m_mutex.unlock();
+                if (target_count == target_ips.size()) {
+                    ui->btnTest->setDisabled(false);
+                    Toast::showTip("测试完毕");
+                }
+                qDebug() << i << state << msg;
+                m_result_model->updateData(i, msg);
+            });
+
+            thread->start();
+        }
+    });
+    connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
 }
 
 scan_settings::~scan_settings() {
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = THREAD_EXIT;
+    qDebug() << "delete";
     delete ui;
+}
+void scan_settings::ip_analyze() {
+    QStringList host_list = ui->connectIP->text().split(",");
+    //        QStringList target_ips;
+    m_mutex.lock();
+    target_ips.clear();
+    target_count = 0;
+    for (int i = 0; i < host_list.size(); ++i) {
+        QStringList tmp_ips;
+        QList<int> tmp_ports;
+        QStringList tmp = host_list.at(i).split(":");
+        if (tmp.size() > 0) {
+            QStringList ips = tmp.at(0).split("-");
+            if (ips.size() == 2) {
+                if (myHelper::IsIP(ips.at(0)) && myHelper::IsIP(ips.at(1))) {
+                    quint32 ip_start = ipv4str_to_int(ips.at(0));
+                    quint32 ip_end = ipv4str_to_int(ips.at(1));
+                    for (; ip_start <= ip_end; ip_start++) {
+                        if (!ip_start) continue;
+                        tmp_ips << ipv4int_to_str(ip_start);
+                    }
+                }
+            } else if (ips.size() == 1) {
+                if (myHelper::IsIP(tmp.at(0))) {
+                    tmp_ips << tmp.at(0);
+                }
+            }
+        }
+        if (tmp.size() > 1) {
+            QStringList ports = tmp.at(1).split("-");
+            if (ports.size() == 2) {
+                bool ok1 = false, ok2 = false;
+                QString port_str1 = ports.at(0);
+                QString port_str2 = ports.at(1);
+                int port1 = port_str1.toInt(&ok1);
+                int port2 = port_str2.toInt(&ok2);
+                if (ok1 && ok2) {
+                    for (; port1 <= port2; port1++) {
+                        if (!port1) continue;
+                        tmp_ports << port1;
+                    }
+                }
+            } else if (ports.size() == 1) {
+                bool ok = false;
+                QString port_str = ports.at(0);
+                int port = port_str.toInt(&ok);
+                if (ok) {
+                    tmp_ports << port;
+                }
+            }
+        }
+        if (tmp_ports.size() == 0) {
+            for (int j = 0; j < tmp_ips.size(); j++) {
+                target_ips << QString("%1:502").arg(tmp_ips.at(j));
+            }
+        } else {
+            for (int k = 0; k < tmp_ports.size(); k++) {
+                for (int j = 0; j < tmp_ips.size(); j++) {
+                    target_ips << QString("%1:%2").arg(tmp_ips.at(j)).arg(tmp_ports.at(k));
+                }
+            }
+        }
+    }
+    qDebug() << target_ips;
+    QList<ST_PARA> plist;
+    for (int i = 0; i < target_ips.size(); i++) {
+        ST_PARA p;
+        p.index = i;
+        QString name = target_ips.at(i);
+        p.name = name.toStdString();
+        p.name_cn = "";
+        p.type = TP_STR;
+        plist << p;
+    }
+    m_result_model->updateData(plist);
+    m_mutex.unlock();
 }
 
 void scan_settings::uiInit() {
@@ -28,29 +197,58 @@ void scan_settings::uiInit() {
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
-    QStringList hdr_list;
+    m_para_model = new ParaModel(this);
+    m_result_model = new ParaModel(this);
+    QTableView* tableView = ui->stdSetting;
+    tableView->setAlternatingRowColors(true);
+    QStringList headerList;
+    headerList << "No"
+               << "Name"
+               << "Value";
+    m_para_model->setHorizontalHeaderLabels(headerList);
+    tableView->verticalHeader()->setVisible(false);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  //选中行
+    tableView->horizontalHeader()->setStretchLastSection(true);
 
-    ui->tableBMU->setColumnCount(hdr_list.size());
-    ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
-    ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
-    ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+    //
+    ReadOnlyDelegate* readOnlyDelegate = new ReadOnlyDelegate(this);
+    ValueDelegate* valDelegate = new ValueDelegate(this);
+    tableView->setItemDelegateForColumn(0, readOnlyDelegate);
+    tableView->setItemDelegateForColumn(1, readOnlyDelegate);
+    tableView->setItemDelegateForColumn(2, valDelegate);
 
-    //定值显示和隐藏
-    //    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-    //    foreach (QDoubleSpinBox* dspbox, dspboxs) {
-    //        dspbox->hide();
-    //        map<string, NodeReg>::iterator iter1;
-    //        iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
-    //        if (iter1 != mycmu->name_map.end()) {
-    //            try {
-    //                dspbox->show();
-    //            } catch (exception& e) {
-    //                qDebug() << e.what();
-    //            }
-    //        }
-    //    }
+    //    m_model->updateData(plist);
+
+    QObject::connect(m_para_model, &ParaModel::dataChanged, [=](const QModelIndex& index) {
+        QString name = QString::fromStdString(m_para_model->vals.at(index.row()).name);
+        double dval = index.data().toDouble();
+        if (this->m_setMap.contains(name)) {
+            this->m_setMap[name] = dval;
+            qDebug() << name << dval;
+        }
+    });
+    tableView->setModel(m_para_model);
+
+    // 结果显示
+    tableView = ui->testResult;
+    tableView->setAlternatingRowColors(true);
+    QStringList resultList;
+    resultList << "No"
+               << "Name"
+               << "Result";
+    m_result_model->setHorizontalHeaderLabels(resultList);
+    tableView->verticalHeader()->setVisible(false);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  //选中行
+    tableView->horizontalHeader()->setStretchLastSection(true);
+
+    //
+    tableView->setItemDelegateForColumn(0, readOnlyDelegate);
+    tableView->setItemDelegateForColumn(1, readOnlyDelegate);
+    tableView->setItemDelegateForColumn(2, readOnlyDelegate);
+
+    tableView->setModel(m_result_model);
 }
-void scan_settings::flushData() {
+void scan_settings::loadXml() {
     // 从xml加载配置
     QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
     QFile file(filename);
@@ -65,42 +263,24 @@ void scan_settings::flushData() {
     file.close();
     QDomElement root = doc.documentElement();  //返回根节点
     QDomNode node = root.firstChild();         //获得第一个子节点
-    QMap<QString, double> setMap;
+    m_setMap.clear();
+    QList<ST_PARA> plist;
     while (!node.isNull())  //如果节点不空
     {
         if (node.isElement())  //如果节点是元素
         {
             QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
-            if (e.attribute("name") != nullptr) {
-                setMap[e.attribute("name")] = e.attribute("value").toDouble();
+            if ((e.attribute("name") != nullptr) && (e.attribute("name_cn") != nullptr)) {
+                m_setMap[e.attribute("name")] = e.attribute("value").toDouble();
+                ST_PARA p;
+                p.name = e.attribute("name_cn").toStdString();
+                p.val = e.attribute("value").toDouble();
+                //                p.name_cn = e.attribute("name_cn").toStdString();
+                plist.append(p);
             }
         }
         node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
-    //
-    if (m_mbtcp == nullptr) {
-        m_mbtcp = new mb_tcp(ui->connectIP->text(), ui->spinBoxPort->value());
-    }
-    vector<MB_NODE> tab_config;
-    tab_config.clear();
-    MB_NODE* node_table = cmu_v4_config;
-    int node_table_size = cmu_v4_config_len;
-    for (int i = 0; i < node_table_size; i++) {
-        if (node_table[i].val_type != 129) continue;
-        node_table[i].index = tab_config.size();
-        tab_config.push_back(node_table[i]);
-    }
-    m_mbtcp->init_config(tab_config);
-    m_mbtcp->Connect();
-    vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
-    for (int i = 0; i < data.size(); i++) {
-        if (setMap.contains(tab_config.at(i).name)) {
-            qDebug() << i << tab_config.at(i).name << data.at(i).sysData.val.f64 << setMap.value(tab_config.at(i).name)
-                     << qFuzzyCompare(data.at(i).sysData.val.f64, setMap.value(tab_config.at(i).name));
-        }
-    };
-    m_mbtcp->close();
-    m_mbtcp->deleteLater();
-    m_mbtcp = nullptr;
+    m_para_model->updateData(plist);
 }

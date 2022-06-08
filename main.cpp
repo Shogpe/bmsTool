@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     dlg->deleteLater();
-//    MainUI w;
-    scan_settings w;
+    MainUI w;
+//    scan_settings w;
     w.show();
     int ret = a.exec();
     if (ret == EXIT_CODE_REBOOT) {

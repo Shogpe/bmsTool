@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "version.h"
 #include "widget.h"
+#include "views/scan_settings.h"
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -44,7 +45,6 @@ void MainUI::initForm() {
     if (myHelper::level > 0 && myHelper::level != 31) {
         helper->setDisableMaximized(true);
         this->setWindowFlags(Qt::FramelessWindowHint);
-
     }
     helper->setDraggableMargins(3, 3, 3, 3);
     helper->setMaximizedMargins(0, 0, 0, 0);
@@ -121,6 +121,7 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
+    title_menu->addAction("参数检查", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
@@ -250,8 +251,10 @@ void MainUI::menuClick()  //切换语言
         frmSimple* view = new frmSimple(nullptr);
         //        view->setWindowFlags(Qt::WindowCloseButtonHint);
         view->show();
-        //        log2csv();
         Toast::showTip("记录文件转换完毕。", nullptr);
+    } else if (b->text() == "参数检查") {
+        scan_settings* w = new scan_settings(nullptr);
+        w->show();
     }
     //  if(setChinese->isChecked()){//判断选中了哪个语言
     //    translator->load(":/langue/zh_cn.qm");//加载翻译文件

@@ -750,6 +750,8 @@ void Widget::flushData() {
     if (ui->DataWidget->currentWidget()->objectName() == tr("tabBalance")) {
         QTableWidgetItem* item;
         int offset = 0;
+        ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        ui->tableExtView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         for (int i = 0; i < config.bmu_num; i++) {
             offset = 0;
             double val = 0;

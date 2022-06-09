@@ -39,8 +39,6 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf067));
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 #if 1  // use FramelessHelper on windows
-       //    this->setProperty("disableMaximized", true);
-
     auto helper = new FramelessHelper(this);
     if (myHelper::level > 0 && myHelper::level != 31) {
         helper->setDisableMaximized(true);
@@ -57,8 +55,6 @@ void MainUI::initForm() {
     connect(ui->btnMenu_Min, &QPushButton::clicked, helper, &FramelessHelper::triggerMinimizeButtonAction);
     connect(ui->btnMenu_Max, &QPushButton::clicked, helper, &FramelessHelper::triggerMaximizeButtonAction);
     connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
-    //    ui->btnMenu_Max->setDisabled(true);
-
 #else
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTitle->installEventFilter(this);
@@ -130,11 +126,11 @@ void MainUI::initForm() {
     QString user = myHelper::user;  // settings->value("global/user", "").toString();
     if (myHelper::level < 16) ui->btnMenu->hide();
     if (myHelper::level > 0 && myHelper::level != 31) {
-        int index = ui->stackedWidget->addWidget(new cmu4u());
+        int index = ui->stackedWidget->addWidget(new cmu4u(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {
-        int index = ui->stackedWidget->addWidget(new Widget());
+        int index = ui->stackedWidget->addWidget(new Widget(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
@@ -277,35 +273,3 @@ void MainUI::changeTheme()  //切换主题
         myHelper::SetStyle("flatwhite");
     }
 }
-
-// void MainUI::on_btnMenu_Min_clicked() { showMinimized(); }
-
-// void MainUI::on_btnMenu_Max_clicked() {
-//     static bool max = false;
-//     if (max) {
-//         showNormal();
-//         ui->btnMenu_Max->setToolTip(tr("最大化"));
-//     } else {
-//         ui->btnMenu_Max->setToolTip(tr("恢复正常"));
-//         showMaximized();
-//     }
-//     setMoveEnable(max);
-//     setResizeEnable(max);
-//     max = !max;
-// }
-
-// void MainUI::on_btnMenu_Close_clicked() {
-//     close();
-//     delete ui;
-//     this->deleteLater();
-// }
-
-// bool MainUI::eventFilter(QObject* obj, QEvent* event) {
-//     if (obj == ui->widgetTitle) {
-//         if (event->type() == QEvent::MouseButtonDblClick) {
-//             this->on_btnMenu_Max_clicked();
-//             return true;
-//         }
-//     }
-//     return QFramelessWidget::eventFilter(obj, event);
-// }

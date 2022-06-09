@@ -43,10 +43,9 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
         ui->cbProtocol->setCurrentIndex(CMUV1);
         ui->cbProtocol->blockSignals(false);
     }
-    qDebug() << connect(
+    connect(
         this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
         [this](const QString& msg) {
-            // qDebug() << QString("msg:%1").arg(msg);
             Toast::showTip(msg, nullptr);
         },
         Qt::UniqueConnection);
@@ -90,6 +89,30 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
                     inputBalance->setMode(mode);
                     inputBalance->open();
                     inputBalance->activateWindow();
+                });
+                // Show context menu at handling position
+                myMenu.exec(globalPos);
+            });
+    connect(ui->BalnceStart,
+            static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested), this,
+            [=](const QPoint& pos) {  // Handle global position
+                QPoint globalPos = ui->BalnceStart->mapToGlobal(pos);
+                // Create menu and insert some actions
+                QMenu myMenu;
+                myMenu.addAction(tr("修改均衡配置"), this, [=]() {
+                    int mode = ui->BalnceStart->value();
+                    if (configBalance == nullptr) {
+                        configBalance = new frmbalanceConfig();
+                    }
+                    configBalance->setValue(mode);
+                    if (configBalance->exec() == QDialog::Accepted) {
+                        TMsgData MsgCmd;
+                        MsgCmd.msg_type = CTRL_AO_ADDR;
+                        uint16_t value[2] = {5409, 0};
+                        value[1] = configBalance->getValue();
+                        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                    }
                 });
                 // Show context menu at handling position
                 myMenu.exec(globalPos);
@@ -274,6 +297,15 @@ void Widget::uiInit() {
         hdr_list.append(tr("运行状态"));
         hdr_list.append(tr("故障状态"));
         hdr_list.append(tr("版本号"));
+        ui->BalnceStart->blockSignals(true);
+        ui->BalnceStart->setPrefix("均衡启动阈值(V) ");
+        ui->BalnceStart->setSuffix("");
+        ui->BalnceStart->setMaximum(6);
+        ui->BalnceStart->setDecimals(4);
+        ui->BalnceStart->setToolTip("均衡启动阈值");
+        ui->BalnceStart->blockSignals(false);
+        ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
+
     } else if (this->mycmu->GetProtocalVer() == CMUV4) {
         for (int i = 0; i < config.vol_num; i++) {
             hdr_list.append(("Vol" + QString::number(i + 1)));
@@ -295,10 +327,15 @@ void Widget::uiInit() {
         hdr_list.append(tr("均衡模式"));
         hdr_list.append(tr("CAN错误数"));
         hdr_list.append(tr("版本号"));
+        // 特殊处理
+        ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setPrefix("均衡配置 ");
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
         ui->BalnceStart->setDecimals(0);
+        ui->BalnceStart->setToolTip("均衡配置");
+        ui->BalnceStart->blockSignals(false);
+        ui->BalnceStart->setContextMenuPolicy(Qt::CustomContextMenu);
     }
 
     ui->tableBMU->setColumnCount(hdr_list.size());
@@ -316,7 +353,7 @@ void Widget::uiInit() {
             try {
                 dspbox->show();
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -351,7 +388,7 @@ int Widget::setValue(string name, double dval) {
             MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(uint16_t));
             pmq->sendMsg(0, MsgCmd);
         } catch (exception& e) {
-            qDebug() << e.what();
+            qWarning() << e.what();
         }
     } else {
         qDebug() << "can't find " << name.c_str();
@@ -526,7 +563,7 @@ void Widget::flushData() {
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
                 dspbox->blockSignals(false);
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         } else {
         }
@@ -543,7 +580,7 @@ void Widget::flushData() {
                 uint index = iter1->second.index;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         } else {
             dspbox->hide();
@@ -563,7 +600,7 @@ void Widget::flushData() {
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -580,7 +617,7 @@ void Widget::flushData() {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -597,7 +634,7 @@ void Widget::flushData() {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -614,7 +651,7 @@ void Widget::flushData() {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -631,7 +668,7 @@ void Widget::flushData() {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -648,7 +685,7 @@ void Widget::flushData() {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
                 Label->setStyleSheet(QString("color:%1").arg(color));
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -668,7 +705,7 @@ void Widget::flushData() {
                 rb->setChecked(bit);
                 rb->blockSignals(false);
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -686,7 +723,7 @@ void Widget::flushData() {
                 cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
                 cb->blockSignals(false);
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         }
     }
@@ -848,7 +885,7 @@ void Widget::btn_released() {
                 int index = iter1->second.index;
                 mode = mycmu->tab_data.at(index).sysData.val.f64;
             } catch (exception& e) {
-                qDebug() << e.what();
+                qWarning() << e.what();
             }
         } else {
         }

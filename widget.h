@@ -1,14 +1,15 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QSettings>
 #include <QTableWidget>
 #include <QWidget>
 #include <iostream>
+#include "frmbalanceConfig.h"
 #include "frmbalancebox.h"
 #include "mb_cmu.h"
 #include "models/MyDoubleSpinBox/MyDoubleSpinBox.h"
 #include "models/SOEModel/SOEModel.h"
-#include <QSettings>
 using namespace std;
 
 namespace Ui {
@@ -32,9 +33,10 @@ class Widget : public QWidget {
     CMU_CONF config;
     SOEModel m_model;
     QSettings* settings;
-    QMenu *update_menu;
+    QMenu* update_menu;
 
     frmBalanceBox* inputBalance = nullptr;
+    frmbalanceConfig* configBalance = nullptr;
     bool eventFilter(QObject* obj, QEvent* event);
     int setValue(string name, double dval);
     bool load_config();
@@ -58,7 +60,6 @@ class Widget : public QWidget {
     void onUpdateBtnMenu();
     void initUpdateMenu();
     void IpChange();
-
 };
 
 #endif

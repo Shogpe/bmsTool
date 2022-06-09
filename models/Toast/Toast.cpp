@@ -10,6 +10,7 @@ Toast::Toast(QWidget* parent) : QWidget(parent) {
 
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::Tool);  // 无边框 无任务栏
     setAttribute(Qt::WA_TranslucentBackground, true);                    // 背景透明
+    setAttribute(Qt::WA_DeleteOnClose);                                  // 关闭自动删除
 }
 
 Toast::~Toast() {}
@@ -53,12 +54,12 @@ void Toast::showTip(const QString& text, QWidget* parent /*= nullptr*/) {
 
 void Toast::paintEvent(QPaintEvent* event) {
     QPainter paint(this);
-    //paint.begin(this);
+    // paint.begin(this);
     auto kBackgroundColor = QColor(255, 255, 255);
     kBackgroundColor.setAlpha(0.0 * 255);  // 透明度为0
     paint.setRenderHint(QPainter::Antialiasing, true);
     paint.setPen(Qt::NoPen);
     paint.setBrush(QBrush(kBackgroundColor, Qt::SolidPattern));  //设置画刷形式
     paint.drawRect(0, 0, width(), height());
-    //paint.end();
+    // paint.end();
 }

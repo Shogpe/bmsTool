@@ -165,9 +165,10 @@ class testWorker : public QObject {
     Q_OBJECT
    public:
     explicit testWorker(QObject *parent = nullptr) {}
-    testWorker(QString ip, const QMap<QString, double> setMap) {
+    testWorker(QString ip, const QMap<QString, double> setMap, int mode = 0) {
         m_ip = ip;
         m_setMap = setMap;
+        m_mode = mode;
     }
     ~testWorker() {}
 
@@ -175,12 +176,20 @@ class testWorker : public QObject {
    private:
     QMutex m_mutex;
     QString m_ip;
+    int m_mode;
     QMap<QString, double> m_setMap;
    signals:
     void workFinished(int state, QString msg);
    public slots:
-    void doWork() { this->doTest(m_ip, m_setMap); }
+    void doWork() {
+        if (m_mode != 1)
+            this->doTest(m_ip, m_setMap);
+        else {
+            this->doSetData(m_ip, m_setMap);
+        }
+    }
     void doTest(QString ip, const QMap<QString, double> setMap);
+    void doSetData(QString ip, const QMap<QString, double> setMap);
 };
 class scan_settings : public QWidget {
     Q_OBJECT
@@ -205,6 +214,7 @@ class scan_settings : public QWidget {
     QList<ST_PARA> target_result;
     void ip_analyze();
    private slots:
+    void on_btnWrite_released();
 };
 
 #endif  //_SCAN_SETTING_H

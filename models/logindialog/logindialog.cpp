@@ -41,7 +41,7 @@ void logindialog::on_pushButton_login_clicked() {
     QString pwd = ui->lineEdit_pwd->text().append(ui->lineEdit_uname->text());
     pwd.append(ui->lineEdit_pwd->text());
     pwd = QString(QCryptographicHash::hash(pwd.toLocal8Bit(), QCryptographicHash::Md5).toHex());
-    qDebug() << pwd;
+//    qDebug() << pwd;
     int level = 0;
     if (db_manager::Instance()->getUser(ui->lineEdit_uname->text(), pwd, level)) {
         myHelper::user = ui->lineEdit_uname->text();

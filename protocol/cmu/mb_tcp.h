@@ -21,6 +21,8 @@ class mb_tcp : public QObject {
     ~mb_tcp();
     int init_config(vector<MB_NODE> &tab_config);  //初始化
     vector<ST_NODE_DATA> ReadALL();                                 //
+    int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
+    int write_ao(uint16_t addr, uint16_t v);
     void close();                                   //释放资源
     int Connect();                                   //释放资源
    public:
@@ -43,8 +45,7 @@ class mb_tcp : public QObject {
     void NewReg(NodeReg &node_reg);
     void InsertReg(NodeReg &node_reg, int index);
     int ReadData(uint8_t type, int start, int len, uint16_t *dest);
-    int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
-    int write_ao(uint16_t addr, uint16_t v);
+
     int ParseData();
    signals:
     void signal_message(const QString &msg);

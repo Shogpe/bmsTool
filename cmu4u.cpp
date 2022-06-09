@@ -47,7 +47,7 @@ cmu4u::cmu4u(QWidget* parent) : QWidget(parent), ui(new Ui::cmu4u) {
     //        ui->cbProtocol->blockSignals(false);
     //    }
     ui->checkBox->hide();
-    qDebug() << connect(
+    connect(
         this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
         [this](const QString& msg) {
             // qDebug() << QString("msg:%1").arg(msg);
@@ -109,21 +109,6 @@ cmu4u::cmu4u(QWidget* parent) : QWidget(parent), ui(new Ui::cmu4u) {
                     int mode = ui->BalnceStart->value();
                     if (configBalance == nullptr) {
                         configBalance = new frmbalanceConfig();
-                        //                        connect(configBalance, &frmbalanceConfig::valueChange, [this]() {
-                        //                            TMsgData MsgCmd;
-                        //                            uint16_t mode = configBalance->getValue();
-                        //                            qDebug() << mode;
-                        //                            MsgCmd.msg_type = CTRL_AO_ADDR;
-                        //                            uint16_t value[2] = {5409, mode};
-                        //                            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 *
-                        //                            sizeof(uint16_t)); if (MsgCmd.data.size() > 0) pmq->sendMsg(0,
-                        //                            MsgCmd); MsgCmd.data.clear(); QByteArray b =
-                        //                            configBalance->getValue(); if (b.size() > 0) {
-                        //                                MsgCmd.msg_type = CTRL_AO_ADDR;
-                        //                                MsgCmd.data.append(b);
-                        //                                if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
-                        //                            }
-                        //                        });
                     }
                     configBalance->setValue(mode);
                     if (configBalance->exec() == QDialog::Accepted) {
@@ -755,8 +740,8 @@ void cmu4u::flushData() {
     ui->TmaxID->setText(QString(tr("最高单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
     id = mycmu->tab_data.at(mycmu->name_map["TminID"].index).sysData.val.f64;
     ui->TminID->setText(QString(tr("最低单体温度(%1)")).arg(myHelper::IDToString(id, config.T_num)));
-//    id = mycmu->tab_data.at(mycmu->name_map["UmMaxID"].index).sysData.val.f64;
-//    ui->UmMaxID->setText(QString(tr("最大模组电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
+    //    id = mycmu->tab_data.at(mycmu->name_map["UmMaxID"].index).sysData.val.f64;
+    //    ui->UmMaxID->setText(QString(tr("最大模组电压(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
     //    id = mycmu->tab_data.at(mycmu->name_map["UdMaxID"].index).sysData.val.f64;
     //    ui->UdMaxID->setText(QString(tr("最大单体压差(%1)")).arg(myHelper::IDToString(id, config.vol_num)));
     id = mycmu->tab_data.at(mycmu->name_map["TpMaxID"].index).sysData.val.f64;

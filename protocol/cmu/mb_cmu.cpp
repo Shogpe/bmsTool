@@ -348,7 +348,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 if (rc > 0) {
                     status += rc;
                 } else {
-                    qDebug() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
+                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -362,7 +362,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 if (rc > 0) {
                     status += rc;
                 } else {
-                    qDebug() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
+                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -681,7 +681,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
     }
     Msg.data.clear();
     if (ret < 0) {
-        qDebug() << tr("操作失败");
+        qWarning() << tr("操作失败");
         emit signal_message(QString(tr("操作失败")));
     } else {
         qDebug() << tr("操作成功");
@@ -699,7 +699,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
     if (isWrLocked) modbus_write_register(cmu, ADDR_WR_LOCK, MB_UNLOCK);
     ret = modbus_write_registers(cmu, addr, len, pv);
     if (ret < 0)
-        qDebug() << "wr aos failed" << addr << ":" << ret;
+        qWarning() << "wr aos failed" << addr << ":" << ret;
     else
         qDebug() << "wr aos " << addr << ":" << len;
     return ret;
@@ -709,7 +709,7 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t v) {
     if (isWrLocked) modbus_write_register(cmu, ADDR_WR_LOCK, MB_UNLOCK);
     ret = modbus_write_register(cmu, addr, v);
     if (ret < 0)
-        qDebug() << "wr ao failed" << addr << ":" << ret;
+        qWarning() << "wr ao failed" << addr << ":" << ret;
     else
         qDebug() << "wr ao " << addr << ":" << v;
     return ret;

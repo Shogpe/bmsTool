@@ -18,7 +18,13 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     }
 
     mb_tcp* m_mbtcp = new mb_tcp(ip_list.at(0), port);
-
+    if (m_mbtcp->Connect() == -1) {
+        m_mbtcp->close();
+        m_mbtcp->deleteLater();
+        m_mbtcp = nullptr;
+        emit workFinished(0, "Connect Err");
+        return;
+    }
     vector<MB_NODE> tab_config;
     tab_config.clear();
     MB_NODE* node_table = cmu_v4_config;
@@ -31,7 +37,7 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         tab_config.push_back(node_table[i]);
     }
     m_mbtcp->init_config(tab_config);
-    m_mbtcp->Connect();
+
     vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
     int ok_count = 0;
     for (int i = 0; i < data.size(); i++) {
@@ -44,7 +50,7 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
                 QString("%1").arg(setMap.value(tab_config.at(i).name))) {
                 ok_count++;
             } else {
-                qDebug() << QString("%1").arg(data.at(i).sysData.val.f64)
+                qWarning() << QString("%1").arg(data.at(i).sysData.val.f64)
                          << QString("%1").arg(setMap.value(tab_config.at(i).name));
             }
         }
@@ -53,6 +59,60 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         emit workFinished(1, "OK");
     } else {
         emit workFinished(0, "FAIL");
+    }
+    m_mbtcp->close();
+    m_mbtcp->deleteLater();
+    m_mbtcp = nullptr;
+}
+void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
+    QStringList ip_list = ip.split(":");
+    int port = 502;
+    if (ip_list.size() > 1) {
+        port = ip_list.at(1).toInt();
+    }
+
+    mb_tcp* m_mbtcp = new mb_tcp(ip_list.at(0), port);
+    if (m_mbtcp->Connect() == -1) {
+        m_mbtcp->close();
+        m_mbtcp->deleteLater();
+        m_mbtcp = nullptr;
+        emit workFinished(0, "Connect Err");
+        return;
+    }
+    vector<MB_NODE> tab_config;
+    tab_config.clear();
+    MB_NODE* node_table = cmu_v4_config;
+    int node_table_size = cmu_v4_config_len;
+
+    for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type != 129) continue;
+        if (!setMap.contains(node_table[i].name)) continue;
+        node_table[i].index = tab_config.size();
+        tab_config.push_back(node_table[i]);
+    }
+    //    m_mbtcp->init_config(tab_config);
+
+    //    vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
+    int ok_count = 0;
+    for (int i = 0; i < tab_config.size(); i++) {
+        if (setMap.contains(tab_config.at(i).name)) {
+            uint16_t addr = tab_config.at(i).reg_addr;
+            double_t dval = setMap.value(tab_config.at(i).name);
+            uint16_t val = tab_config.at(i).factor == 0
+                               ? uint16_t(dval)
+                               : static_cast<uint16_t>(std::round(dval / tab_config.at(i).factor));
+
+            if (m_mbtcp->write_ao(addr, val) > 0) {
+                ok_count++;
+            } else {
+                qWarning() << QString("%1(%2) set %3 failed.").arg(tab_config.at(i).name).arg(addr).arg(dval);
+            }
+        }
+    };
+    if (ok_count == setMap.size()) {
+        emit workFinished(1, "Set OK");
+    } else {
+        emit workFinished(0, "Set FAIL");
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();
@@ -81,7 +141,10 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     m_mbtcp = nullptr;
     //
     connect(ui->btnTest, &QPushButton::released, this, [=]() {
-        if (target_ips.size()) ui->btnTest->setDisabled(true);
+        if (target_ips.size()) {
+            ui->btnWrite->setDisabled(true);
+            ui->btnTest->setDisabled(true);
+        }
         ip_analyze();
         for (int i = 0; i < target_ips.size(); i++) {
             QThread* thread = new QThread();
@@ -99,6 +162,7 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
                 m_mutex.unlock();
                 if (target_count == target_ips.size()) {
                     ui->btnTest->setDisabled(false);
+                    ui->btnWrite->setDisabled(false);
                     Toast::showTip("测试完毕");
                 }
                 qDebug() << i << state << msg;
@@ -188,7 +252,11 @@ void scan_settings::ip_analyze() {
         p.type = TP_STR;
         plist << p;
     }
+    ui->testResult->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->testResult->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     m_result_model->updateData(plist);
+    ui->testResult->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->testResult->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     m_mutex.unlock();
 }
 
@@ -197,6 +265,7 @@ void scan_settings::uiInit() {
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+    this->setWindowTitle("BMS参数检查");
     m_para_model = new ParaModel(this);
     m_result_model = new ParaModel(this);
     QTableView* tableView = ui->stdSetting;
@@ -282,5 +351,45 @@ void scan_settings::loadXml() {
         node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
+    ui->stdSetting->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->stdSetting->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     m_para_model->updateData(plist);
+    ui->stdSetting->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->stdSetting->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+void scan_settings::on_btnWrite_released() {
+    if (myHelper::ShowMessageBoxQuesion("是否批量下发参数？") != QDialog::Accepted) {
+        return;
+    }
+    if (target_ips.size()) {
+        ui->btnWrite->setDisabled(true);
+        ui->btnTest->setDisabled(true);
+    }
+    ip_analyze();
+    for (int i = 0; i < target_ips.size(); i++) {
+        QThread* thread = new QThread();
+        testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 1);
+        task->moveToThread(thread);
+
+        connect(thread, &QThread::started, task, &testWorker::doWork);
+        connect(task, &testWorker::workFinished, thread, &QThread::quit);
+        // automatically delete thread and task object when work is done:
+        connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
+            m_mutex.lock();
+            target_count++;
+            m_mutex.unlock();
+            if (target_count == target_ips.size()) {
+                ui->btnTest->setDisabled(false);
+                ui->btnWrite->setDisabled(false);
+                Toast::showTip("写入完毕");
+            }
+            qDebug() << i << state << msg;
+            m_result_model->updateData(i, msg);
+        });
+
+        thread->start();
+    }
 }

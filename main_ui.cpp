@@ -4,7 +4,7 @@
 #include "Toast.h"
 #include "cmu4u.h"
 #include "iconhelper.h"
-#include "models/frmcustomplot/frmsimple.h"
+//#include "models/frmcustomplot/frmsimple.h"
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
@@ -244,9 +244,9 @@ void MainUI::menuClick()  //切换语言
         FindFile(path);
         Toast::showTip("记录文件转换完毕。", nullptr);
     } else if (b->text() == "录波转换") {
-        frmSimple* view = new frmSimple(nullptr);
+        //        frmSimple* view = new frmSimple(nullptr);
         //        view->setWindowFlags(Qt::WindowCloseButtonHint);
-        view->show();
+        //        view->show();
         Toast::showTip("记录文件转换完毕。", nullptr);
     } else if (b->text() == "参数检查") {
         scan_settings* w = new scan_settings(nullptr);

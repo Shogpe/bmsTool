@@ -21,7 +21,7 @@ DESTDIR     = $$PWD/output/
 #UI_DIR      = $$DESTDIR/temp/ui
 #OBJECTS_DIR = $$DESTDIR/temp/obj
 
-include(ThirdParty/ThirdParty.pri)
+#include(ThirdParty/ThirdParty.pri)
 # include(ThirdParty/log4qt/log4qt.pri)
 include(models/models.pri)
 include(3rdParty.pri)
@@ -77,3 +77,4 @@ RC_FILE += main.rc
 OTHER_FILES += main.rc touch.bat
 
 DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出
+

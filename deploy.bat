@@ -1,10 +1,17 @@
+:: 使用前需设置环境变量
+:: PATH+=D:\Program\7zip;%{ActiveProject:QT_INSTALL_BINS}
+:: TARGET_NAME=%{ActiveProject:Name}
+:: VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\
+:: 工作目录 %{ActiveProject:RunConfig:Executable:Path}
+:: 执行档 %{ActiveProject:Path}\deploy.bat
 @echo off
 setlocal
 set MY_PATH=D:\Qt\5.12.11\msvc2017_64\bin;C:\Qt\Tools\QtCreator\bin;D:\Program\7zip;
 @echo Setting up environment for Qt usage...
 if "%~1" == "" (@echo "%PATH%") else (
 set PATH="%~1;%PATH%")
-echo %TARGET_NAME%
+echo The Target is %TARGET_NAME%
+@DIR
 set PACK_EXE=7z.exe
 ::指定打包存储文件夹
 set RC_PATH=..\发布软件
@@ -24,7 +31,7 @@ set BIN_OUT_PAK=%RC_PATH%\%BIN_NAME%_%version%.7z
 ::@windeployqt %%A --dir %OUTPUT% --release --no-angle --no-opengl-sw --no-translations 
 ::@copy %%A %OUTPUT% /Y
 ::)
-@windeployqt %BIN_EXE% --dir %OUTPUT% --release --no-angle --no-opengl-sw --no-translations 
+@windeployqt %BIN_EXE% --compiler-runtime --dir %OUTPUT% --release --no-angle --no-opengl-sw --no-translations 
 @copy %BIN_EXE% %OUTPUT% /Y
 @del %OUTPUT%\styles %OUTPUT%\iconengines %OUTPUT%\imageformats %OUTPUT%\bearer %OUTPUT%\Qt5Svg.dll /S /Q
 @rmdir %OUTPUT%\styles %OUTPUT%\iconengines %OUTPUT%\imageformats %OUTPUT%\bearer /S /Q 

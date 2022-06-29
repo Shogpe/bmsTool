@@ -45,10 +45,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     }
     connect(
         this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
-        [this](const QString& msg) {
-            Toast::showTip(msg, nullptr);
-        },
-        Qt::UniqueConnection);
+        [this](const QString& msg) { Toast::showTip(msg, nullptr); }, Qt::UniqueConnection);
     mycmu->start();
 
     connect(ui->connectIP, &QLineEdit::editingFinished, this, &Widget::IpChange, Qt::UniqueConnection);
@@ -438,13 +435,20 @@ void Widget::timerUpDate() {
             }
             ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
             // qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
-            for (int i = 0; i < 500; i++) {
-                // qDebug() << "apped " << i << "soe:" << mycmu->cmu_soe.list_soe[i].soe_time;
-                QModelIndex index = m_model.index(i, 0, QModelIndex());
-                // m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1, 2, 3, 4, 5});
-                if (!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
-                    m_model.append(mycmu->cmu_soe.list_soe[i]);
-                }
+            //            for (int i = 0; i < 500; i++) {
+            //                // qDebug() << "apped " << i << "soe:" << mycmu->cmu_soe.list_soe[i].soe_time;
+            //                QModelIndex index = m_model.index(i, 0, QModelIndex());
+            //                // m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1, 2, 3, 4,
+            //                5}); if (!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
+            //                    m_model.append(mycmu->cmu_soe.list_soe[i]);
+            //                }
+            //            }
+            qDebug() << QString::number(mycmu->cmu_ver, 16);
+            if (((ui->cbProtocol->currentText() == "CMU4.0") && (mycmu->cmu_ver >= 0x02000402)) ||
+                ((ui->cbProtocol->currentText() != "CMU4.0") && (mycmu->cmu_ver >= 0x00000407))) {
+                m_model.setData(mycmu->cmu_soe.list_soe, 500, 2);
+            } else {
+                m_model.setData(mycmu->cmu_soe.list_soe, 500, 1);
             }
             ui->labelSOE->setText(
                 QString("新SOE:%1,总计:%2").arg(mycmu->cmu_soe.new_soe_count).arg(mycmu->cmu_soe.soe_count));

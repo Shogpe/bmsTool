@@ -14,9 +14,17 @@ Q_IMPORT_PLUGIN(SqliteCipherDriverPlugin)
 class db_manager {
    public:
     static db_manager* Instance();
-
+    typedef struct {
+        int evt_code;
+        QString evt_txt;
+        QString evt_id;
+        QString evt_dt;
+        QString evt_threshold;
+        QString code;
+    } ST_DB_SOE;
     bool start();
     bool getNode();
+    bool getSOE(QMap<int, ST_DB_SOE> &soe_map, int tag);
     bool getUser(QString name, QString password, int&);
     void closed();
 

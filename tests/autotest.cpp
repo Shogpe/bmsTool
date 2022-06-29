@@ -163,7 +163,7 @@ QString getData(QString key, uint64_t raw, QString jsonStr) {
             }
         }
     }
-    return "";
+    return QString::number(raw);
 }
 QString getData(uint64_t raw, QString rule, QString key = "", QString code = "") {
     ST_FORMAT format = getFormat(rule);
@@ -196,7 +196,7 @@ void AutoTest::test_str_parse() {
     };
     QString key = "evt_id";
     QString codeStr = R"EOF(
-            {"evt_id":{"0":"KM+","1":"KM-","2":"KMR","2271576865":"QF"},"evt_threshold":{"AA55":"合闸","56AA":"分闸"}}
+            {"evt_id":{"0":"KM+","1":"KM-","2":"KMR","3":"QF"},"evt_threshold":{"AA55":"合闸","56AA":"分闸"}}
         )EOF";
     for (int i = 0; i < rules.size(); i++) {
         qDebug() << getData(raw, rules.at(i), key, codeStr);

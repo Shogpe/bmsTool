@@ -43,17 +43,40 @@ bool db_manager::getNode() {
 bool db_manager::getUser(QString name, QString password, int &level) {
     bool flag = false;
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
-//    qDebug() << db.isOpen() << db.isValid();
+    //    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
-    QString str =
-        QString("SELECT user,level FROM user WHERE user='%1' AND password='%2'").arg(name, password);
+    QString str = QString("SELECT user,level FROM user WHERE user='%1' AND password='%2'").arg(name, password);
     flag = query.exec(str);
-//    qDebug() << str << flag;
+    //    qDebug() << str << flag;
     if (!flag) qDebug() << "exec failed: " << query.lastError().text();
     while (query.next()) {
         qDebug() << query.value(0).toString() << ": " << query.value(1).toInt();
         level = query.value(1).toInt();
         return true;
+    }
+    return false;
+}
+
+bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, int tag) {
+    bool flag = false;
+    soe_map.clear();
+    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+    //    qDebug() << db.isOpen() << db.isValid();
+    QSqlQuery query(db);
+    QString str = QString("SELECT evt_code,evt_txt,evt_id,evt_dt,evt_threshold,code FROM soe_codec WHERE tag=%1").arg(tag);
+    flag = query.exec(str);
+    //    qDebug() << str << flag;
+    if (!flag) qDebug() << "exec failed: " << query.lastError().text();
+    while (query.next()) {
+        ST_DB_SOE one;
+        one.evt_code = query.value(0).toInt();
+        one.evt_txt = query.value(1).toString();
+        one.evt_id = query.value(2).toString();
+        one.evt_dt = query.value(3).toString();
+        one.evt_threshold = query.value(4).toString();
+        one.code = query.value(5).toString();
+        qDebug() << one.evt_id;
+        soe_map[one.evt_code] = one;
     }
     return false;
 }

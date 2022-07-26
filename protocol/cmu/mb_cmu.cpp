@@ -13,7 +13,7 @@ mb_cmu::mb_cmu() {
     cmu = nullptr;
     csvfile = nullptr;
     stopDump = true;
-    cmu_status = 0;
+    drv_status = 0;
     stop = false;
     mb_ip = "192.168.1.120";
     mb_port = 502;
@@ -26,7 +26,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     cmu = nullptr;
     csvfile = nullptr;
     stopDump = true;
-    cmu_status = 0;
+    drv_status = 0;
     stop = false;
     mb_ip = "192.168.1.120";
     mb_port = 502;
@@ -373,11 +373,11 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
             break;
     }
     if (status <= 0) {
-        cmu_status &= ~(0x01U << CMU_ONLINE);
+        drv_status &= ~(0x01U << CMU_ONLINE);
         err_counter++;
     } else {
         err_counter = 0;
-        cmu_status |= (0x01 << CMU_ONLINE);
+        drv_status |= (0x01 << CMU_ONLINE);
     }
 
     return status;
@@ -464,7 +464,7 @@ void mb_cmu::run() {
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
         qDebug() << "timeout exit..";
         this->stop = true;
-        cmu_status |= (0x01 << CMU_OUTOFDATE);
+        drv_status |= (0x01 << CMU_OUTOFDATE);
     }
     int rc = -1;
     TMsgData MsgCmd;
@@ -498,7 +498,7 @@ void mb_cmu::run() {
                 }
                 break;
             case SM_CONNECT: {
-                cmu_status &= ~(0x01U << CMU_ONLINE);
+                drv_status &= ~(0x01U << CMU_ONLINE);
                 if (cmu != nullptr) this->Close();
                 cmu = modbus_new_tcp(this->mb_ip.c_str(), this->mb_port);
                 modbus_set_slave(cmu, 1);
@@ -573,7 +573,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             qDebug() << "recv stop flag.";
             break;
         case CONFIG_INIT:
-            cmu_status = 0;
+            drv_status = 0;
             state = SM_CONNECT;
             ret = 0;
             break;

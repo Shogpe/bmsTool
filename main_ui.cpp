@@ -10,6 +10,7 @@
 #include "version.h"
 #include "widget.h"
 #include "views/scan_settings.h"
+#include "views/cmu_ip/cmu_ip.h"
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -127,6 +128,10 @@ void MainUI::initForm() {
     if (myHelper::level < 16) ui->btnMenu->hide();
     if (myHelper::level > 0 && myHelper::level != 31) {
         int index = ui->stackedWidget->addWidget(new cmu4u(this));
+        ui->stackedWidget->setCurrentIndex(index);
+        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
+    } else if (myHelper::level == 1) {
+        int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {

@@ -411,10 +411,10 @@ void cmu4u::timerUpDate() {
     t.restart();  //将此时间设置为当前时间
     //
     if (mycmu == nullptr) return;
-    if (this->mycmu->cmu_status) {
+    if (this->mycmu->drv_status) {
         ui->labelStatus->setStyleSheet("color:green");
         ui->labelStatus->setText(tr("已连接"));
-        if (this->mycmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
+        if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
         ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");

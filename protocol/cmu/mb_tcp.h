@@ -27,7 +27,7 @@ class mb_tcp : public QObject {
     int Connect();                                   //释放资源
    public:
     vector<ST_NODE_DATA> tab_data;
-    uint32_t cmu_status;
+    uint32_t drv_status;
     int max_offset;
     map<string, NodeReg> name_map;
 

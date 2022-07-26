@@ -6,7 +6,7 @@
 
 mb_tcp::mb_tcp(QString ip, uint16_t port, uint8_t addr) {
     cmu = nullptr;
-    cmu_status = 0;
+    drv_status = 0;
     mb_ip = ip.toStdString();
     mb_port = port;
     mb_addr = addr;
@@ -104,11 +104,11 @@ int mb_tcp::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
             break;
     }
     if (status <= 0) {
-        cmu_status &= ~(0x01U << _ST_ONLINE);
+        drv_status &= ~(0x01U << _ST_ONLINE);
         err_counter++;
     } else {
         err_counter = 0;
-        cmu_status |= (0x01 << _ST_ONLINE);
+        drv_status |= (0x01 << _ST_ONLINE);
     }
 
     return status;

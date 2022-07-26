@@ -409,10 +409,10 @@ void Widget::timerUpDate() {
     t.restart();  //将此时间设置为当前时间
     //
     if (mycmu == nullptr) return;
-    if (this->mycmu->cmu_status) {
+    if (this->mycmu->drv_status) {
         ui->labelStatus->setStyleSheet("color:green");
         ui->labelStatus->setText(tr("已连接"));
-        if (this->mycmu->cmu_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
+        if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
         ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");
@@ -443,9 +443,10 @@ void Widget::timerUpDate() {
             //                    m_model.append(mycmu->cmu_soe.list_soe[i]);
             //                }
             //            }
-            qDebug() << QString::number(mycmu->cmu_ver, 16);
-            if (((ui->cbProtocol->currentText() == "CMU4.0") && (mycmu->cmu_ver >= 0x02000402)) ||
-                ((ui->cbProtocol->currentText() != "CMU4.0") && (mycmu->cmu_ver >= 0x00000407))) {
+            uint32_t version = mycmu->cmu_ver & 0x00FFFFFF;
+            qDebug() << QString::number(version, 16);
+            if (((ui->cbProtocol->currentText() == "CMU4.0") && (version >= 0x00000402)) ||
+                ((ui->cbProtocol->currentText() != "CMU4.0") && (version >= 0x00000407))) {
                 m_model.setData(mycmu->cmu_soe.list_soe, 500, 2);
             } else {
                 m_model.setData(mycmu->cmu_soe.list_soe, 500, 1);
@@ -908,10 +909,10 @@ void Widget::btn_released() {
                 MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
                 if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
                 MsgCmd.data.clear();
-                QByteArray b = inputBalance->getValue();
-                if (b.size() > 0) {
+                QByteArray ba = inputBalance->getValue();
+                if (ba.size() > 0) {
                     MsgCmd.msg_type = CTRL_AO_ADDR;
-                    MsgCmd.data.append(b);
+                    MsgCmd.data.append(ba);
                     if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
                 }
             });
@@ -920,20 +921,50 @@ void Widget::btn_released() {
         inputBalance->open();
         inputBalance->activateWindow();
     } else if (name == "btnImportSOC") {
-        QByteArray b = SOCImport();
+        QByteArray ba = SOCImport();
         //        if ((sizeof(uint16_t) * 101) != b.size()) {
         //            myHelper::ShowMessageBoxInfo("数据长度不合法！");
         //            return;
         //        }
-        if (0 == b.size()) {
+        if (0 == ba.size()) {
             return;
         }
         TMsgData MsgCmd;
         MsgCmd.msg_type = CTRL_AO_ADDR;
         uint16_t value = 4096;
         MsgCmd.data.append(reinterpret_cast<char*>(&value), sizeof(uint16_t));
-        MsgCmd.data.append(b);
+        MsgCmd.data.append(ba);
         if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnRCtrl") {
+        bool ok = false;
+        QStringList items;
+        items << tr("全程投入")
+              << tr("远程投入")
+              << tr("远程断开");
+        QString text =
+            QInputDialog::getItem(this, tr("绝缘检测控制"), tr("请输入绝缘检测控制方式："), items, 0, false, &ok);
+        qDebug() << ok<<text;
+        if (ok) {
+            uint16_t mode = 0x0;
+            if (text == tr("远程投入")) {
+                mode = 0xAA55;
+            } else if (text == tr("远程断开")) {
+                mode = 0x55AA;
+            }
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {65287, mode};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        }
+    } else if (name == "btnRClrErr") {
+        if (myHelper::ShowMessageBoxQuesion(tr("是否清除绝缘检测故障？")) == QDialog::Accepted) {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {65288, 0xAA55};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        }
     } else
         qDebug() << name;
 }

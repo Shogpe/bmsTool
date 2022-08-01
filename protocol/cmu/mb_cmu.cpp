@@ -331,7 +331,7 @@ int mb_cmu::Init() {
     return 0;
 }
 
-#define MAX_LEN 125
+#define MAX_LEN 120
 /*
  * 读取数据
  **/
@@ -339,6 +339,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
     int status = 0;
     int read_len = 0;
     int rc = 0;
+    memset(dest,0,reg_num*sizeof(uint16_t));
     if (!reg_num) return status;
     switch (type) {
         case MODBUS_FC_READ_HOLDING_REGISTERS: {

@@ -192,6 +192,7 @@ typedef enum {
     CMUV3,    //
     CMUV4,    //主动均衡
     CMUV4_1,  //主动均衡-对外
+    CMUV4_8,  //主动均衡-绝缘
 } BMS_PROTOCOL;
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;

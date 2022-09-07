@@ -77,5 +77,5 @@ LIBS += -licudata
 RC_FILE += main.rc
 OTHER_FILES += main.rc touch.bat
 
-DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出
+#DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出
 

@@ -51,7 +51,7 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
                 ok_count++;
             } else {
                 qWarning() << QString("%1").arg(data.at(i).sysData.val.f64)
-                         << QString("%1").arg(setMap.value(tab_config.at(i).name));
+                           << QString("%1").arg(setMap.value(tab_config.at(i).name));
             }
         }
     };
@@ -94,7 +94,7 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
 
     //    vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
     int ok_count = 0;
-    for (int i = 0; i < tab_config.size(); i++) {
+    for (uint i = 0; i < tab_config.size(); i++) {
         if (setMap.contains(tab_config.at(i).name)) {
             uint16_t addr = tab_config.at(i).reg_addr;
             double_t dval = setMap.value(tab_config.at(i).name);
@@ -113,6 +113,70 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         emit workFinished(1, "Set OK");
     } else {
         emit workFinished(0, "Set FAIL");
+    }
+    m_mbtcp->close();
+    m_mbtcp->deleteLater();
+    m_mbtcp = nullptr;
+}
+void testWorker::doUpgrade(QString ip, uint command) {
+    QStringList ip_list = ip.split(":");
+    int port = 502;
+    if (ip_list.size() > 1) {
+        port = ip_list.at(1).toInt();
+    }
+
+    mb_tcp* m_mbtcp = new mb_tcp(ip_list.at(0), port);
+    if (m_mbtcp->Connect() == -1) {
+        m_mbtcp->close();
+        m_mbtcp->deleteLater();
+        m_mbtcp = nullptr;
+        emit workFinished(0, "Connect Err");
+        return;
+    }
+    uint16_t val = 0;
+    QString res = "";
+    qDebug() << command;
+    switch (command) {
+        case 3:
+            val = 0x5A78;  // 升级CMU
+            if (m_mbtcp->write_ao(0xFFD0, val) > 0) {
+                emit workFinished(1, "发送升级CMU OK");
+            } else {
+                emit workFinished(0, "发送升级CMU FAIL");
+            }
+            break;
+        case 4:
+            val = 0x5A33;  // 升级BMU
+            if (m_mbtcp->write_ao(0xFFD0, val) > 0) {
+                emit workFinished(1, "Set OK");
+            } else {
+                emit workFinished(0, "Set FAIL");
+            }
+            break;
+        case 5:
+            val = 0xA5B6;  // 升级绝缘板
+            if (m_mbtcp->write_ao(0xFFD0, val) > 0) {
+                emit workFinished(1, "Set OK");
+            } else {
+                emit workFinished(0, "Set FAIL");
+            }
+            break;
+        case 6: {
+            uint32_t v = 0;
+            if (m_mbtcp->read_value(0x03, 1280, 2, (uint16_t*)&v) > 0) {
+                emit workFinished(1, QString("read BMS Version OK: %1").arg(myHelper::IntegerToHexString(v)));
+            } else {
+                emit workFinished(0, "read BMS Version FAIL");
+            }
+        } break;
+        case 7: {
+            uint32_t v = 0;
+            if (m_mbtcp->read_value(0x03, 1274, 2, (uint16_t*)&v) > 0) {
+                emit workFinished(1, QString("read Ins Version OK: %1").arg(myHelper::IntegerToHexString(v)));
+            } else {
+                emit workFinished(0, "read BMS Version FAIL");
+            }
+        } break;
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();
@@ -141,11 +205,10 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     m_mbtcp = nullptr;
     //
     connect(ui->btnTest, &QPushButton::released, this, [=]() {
-        if (target_ips.size()) {
-            ui->btnWrite->setDisabled(true);
-            ui->btnTest->setDisabled(true);
-        }
         ip_analyze();
+        if (target_ips.size()) {
+            setBusy(true);
+        }
         for (int i = 0; i < target_ips.size(); i++) {
             QThread* thread = new QThread();
             testWorker* task = new testWorker(target_ips.at(i), this->m_setMap);
@@ -161,8 +224,7 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
                 target_count++;
                 m_mutex.unlock();
                 if (target_count == target_ips.size()) {
-                    ui->btnTest->setDisabled(false);
-                    ui->btnWrite->setDisabled(false);
+                    setBusy(false);
                     Toast::showTip("测试完毕");
                 }
                 qDebug() << i << state << msg;
@@ -178,6 +240,19 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
 scan_settings::~scan_settings() {
     qDebug() << "delete";
     delete ui;
+}
+void scan_settings::setBusy(bool is_busy) {
+    if (is_busy) {
+        ui->btnWrite->setDisabled(true);
+        ui->btnTest->setDisabled(true);
+        ui->btnCtrl->setDisabled(true);
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    } else {
+        ui->btnTest->setDisabled(false);
+        ui->btnWrite->setDisabled(false);
+        ui->btnCtrl->setDisabled(false);
+        QApplication::restoreOverrideCursor();
+    }
 }
 void scan_settings::ip_analyze() {
     QStringList host_list = ui->connectIP->text().split(",");
@@ -316,6 +391,14 @@ void scan_settings::uiInit() {
     tableView->setItemDelegateForColumn(2, readOnlyDelegate);
 
     tableView->setModel(m_result_model);
+
+    QMenu* update_menu = new QMenu;
+    update_menu->addAction("下载升级BMS", this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction("下载升级BMU", this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction("下载升级绝缘板", this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction("读取BMS版本号", this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction("读取绝缘版本号", this, &scan_settings::btnCtrlMenu);
+    ui->btnCtrl->setMenu(update_menu);
 }
 void scan_settings::loadXml() {
     // 从xml加载配置
@@ -362,11 +445,10 @@ void scan_settings::on_btnWrite_released() {
     if (myHelper::ShowMessageBoxQuesion("是否批量下发参数？") != QDialog::Accepted) {
         return;
     }
-    if (target_ips.size()) {
-        ui->btnWrite->setDisabled(true);
-        ui->btnTest->setDisabled(true);
-    }
     ip_analyze();
+    if (target_ips.size()) {
+        setBusy(true);
+    }
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 1);
@@ -382,8 +464,54 @@ void scan_settings::on_btnWrite_released() {
             target_count++;
             m_mutex.unlock();
             if (target_count == target_ips.size()) {
-                ui->btnTest->setDisabled(false);
-                ui->btnWrite->setDisabled(false);
+                setBusy(false);
+                Toast::showTip("写入完毕");
+            }
+            qDebug() << i << state << msg;
+            m_result_model->updateData(i, msg);
+        });
+
+        thread->start();
+    }
+}
+
+void scan_settings::btnCtrlMenu() {
+    QAction* b = (QAction*)sender();
+    uint16_t val = 0;
+    if (b->text() == "下载升级BMS") {
+        val = 3;
+    } else if (b->text() == "下载升级BMU") {
+        val = 4;
+    } else if (b->text() == "下载升级绝缘板") {
+        val = 5;
+    } else if (b->text() == "读取BMS版本号") {
+        val = 6;
+    } else if (b->text() == "读取绝缘版本号") {
+        val = 7;
+    } else {
+        Toast::showTip("未知命令");
+        return;
+    }
+    ip_analyze();
+    if (target_ips.size()) {
+        setBusy(true);
+    }
+    for (int i = 0; i < target_ips.size(); i++) {
+        QThread* thread = new QThread();
+        testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, val);
+        task->moveToThread(thread);
+
+        connect(thread, &QThread::started, task, &testWorker::doWork);
+        connect(task, &testWorker::workFinished, thread, &QThread::quit);
+        // automatically delete thread and task object when work is done:
+        connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
+            m_mutex.lock();
+            target_count++;
+            m_mutex.unlock();
+            if (target_count == target_ips.size()) {
+                setBusy(false);
                 Toast::showTip("写入完毕");
             }
             qDebug() << i << state << msg;

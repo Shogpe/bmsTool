@@ -24,20 +24,46 @@ bool db_manager::start() {
     }
     return true;
 }
-bool db_manager::getNode() {
-    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
+    list.clear();
+    if (!QSqlDatabase::contains("aaa")) {
+        QString file = "data.db3";
+        QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", "aaa");
+        dbconn.setDatabaseName(file);
+        dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");
+        dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
+        if (!dbconn.open()) {
+            qDebug() << "Can not open connection: " << dbconn.lastError().driverText();
+            return false;
+        }
+    }
+    QSqlDatabase db = QSqlDatabase::database("aaa", false);
     QSqlQuery query(db);
+    QString str =
+        QString(
+            "SELECT node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,[offset],unit FROM protocols "
+            "WHERE proto_id=%1")
+            .arg(proto_id);
     qDebug() << "-----TEST protocol query-----";
-    QString str = QString(
-                      "select node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,offset from protocols "
-                      "where proto_id=%1")
-                      .arg(0);
+    qDebug() << str;
     if (!query.exec(str)) {
         qDebug() << "exec failed: " << query.lastError().text();
+        return false;
     }
+    ST_DB_NODE node;
     while (query.next()) {
-        qDebug() << query.value(0).toInt() << ": " << query.value(1).toString().trimmed();
+        node.node_id = query.value(0).toInt();
+        node.node_name = query.value(1).toString().trimmed();
+        node.reg_type = query.value(2).toUInt();
+        node.reg_addr = query.value(3).toUInt();
+        node.data_type = query.value(4).toUInt();
+        node.val_type = query.value(5).toUInt();
+        node.factor = query.value(6).toDouble();
+        node.offset = query.value(7).toDouble();
+        node.unit = query.value(8).toString().trimmed();
+        list.append(node);
     }
+    qDebug() << list.size();
     return true;
 }
 bool db_manager::getUser(QString name, QString password, int &level) {
@@ -63,7 +89,8 @@ bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, int tag) {
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
     //    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
-    QString str = QString("SELECT evt_code,evt_txt,evt_id,evt_dt,evt_threshold,code FROM soe_codec WHERE tag=%1").arg(tag);
+    QString str =
+        QString("SELECT evt_code,evt_txt,evt_id,evt_dt,evt_threshold,code FROM soe_codec WHERE tag=%1").arg(tag);
     flag = query.exec(str);
     //    qDebug() << str << flag;
     if (!flag) qDebug() << "exec failed: " << query.lastError().text();
@@ -81,6 +108,7 @@ bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, int tag) {
     return false;
 }
 void db_manager::closed() {
-    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
-    db.close();
+    //    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+    //    db.close();
+    QSqlDatabase::removeDatabase("wxdb3");
 }

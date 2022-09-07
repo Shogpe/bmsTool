@@ -6,6 +6,7 @@
 #include "logindialog.h"
 #include "main_ui.h"
 //#include "logmanager.h"
+#include "db_manager.h"
 #include "views/scan_settings.h"
 void reboot() {
     QString program = QApplication::applicationFilePath();
@@ -38,8 +39,8 @@ int main(int argc, char *argv[]) {
     QTextCodec::setCodecForLocale(codec);
 #endif
     //加载样式表
-    a.setFont(QFont("Microsoft Yahei",9));
-//    LogManager::instance()->debug_log_console_on();
+    a.setFont(QFont("Microsoft Yahei", 9));
+    //    LogManager::instance()->debug_log_console_on();
     AppInit::Instance()->start();
     logindialog *dlg = new logindialog();
     if (dlg->exec() != QDialog::Accepted) {
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]) {
     }
     dlg->deleteLater();
     MainUI w;
-//    scan_settings w;
+    //    scan_settings w;
     w.show();
     int ret = a.exec();
     if (ret == EXIT_CODE_REBOOT) {

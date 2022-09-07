@@ -182,14 +182,26 @@ class testWorker : public QObject {
     void workFinished(int state, QString msg);
    public slots:
     void doWork() {
-        if (m_mode != 1)
-            this->doTest(m_ip, m_setMap);
-        else {
-            this->doSetData(m_ip, m_setMap);
+        switch (m_mode) {
+            case 1:
+                this->doSetData(m_ip, m_setMap);
+                break;
+            case 2:
+                this->doTest(m_ip, m_setMap);
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                doUpgrade(m_ip, m_mode);
+                break;
+            default:
+                doUpgrade(m_ip, m_mode);
+                break;
         }
     }
     void doTest(QString ip, const QMap<QString, double> setMap);
     void doSetData(QString ip, const QMap<QString, double> setMap);
+    void doUpgrade(QString ip, uint command);
 };
 class scan_settings : public QWidget {
     Q_OBJECT
@@ -213,8 +225,10 @@ class scan_settings : public QWidget {
     QStringList target_ips;
     QList<ST_PARA> target_result;
     void ip_analyze();
+    void setBusy(bool is_busy);
    private slots:
     void on_btnWrite_released();
+    void btnCtrlMenu();
 };
 
 #endif  //_SCAN_SETTING_H

@@ -118,7 +118,20 @@ vector<ST_NODE_DATA> mb_tcp::ReadALL() {
     this->ReadAI();
     return tab_data;
 }
-
+int mb_tcp::read_value(uint16_t type, uint16_t addr, uint16_t len, uint16_t* v) {
+    int ret = -1;
+    if (type == 0x03) {
+        ret = modbus_read_registers(cmu, addr, len, v);
+    } else if (type == 0x04) {
+        ret = modbus_read_input_registers(cmu, addr, len, v);
+    } else {
+    }
+    if (ret < 0)
+        qDebug() << "read failed" << type << ":" << addr << ":" << ret;
+    else
+        qDebug() << "read ok " << type << ":" << addr << ":" << len;
+    return ret;
+}
 int mb_tcp::write_ao(uint16_t addr, uint16_t len, uint16_t* pv) {
     int ret = -1;
     if (!pv) return ret;
@@ -217,7 +230,7 @@ int mb_tcp::ReadAI() {
                     } else if (data_iter->data_type == 513) {
                         tab_data.at(data_iter->index).sysData.val.f64 =
                             (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
-                    } else if (data_iter->data_type == 17410) {
+                    } else if (data_iter->data_type == 0x4402) {  // 17410
                         tab_data.at(data_iter->index).sysData.val.f64 =
                             MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
                     }

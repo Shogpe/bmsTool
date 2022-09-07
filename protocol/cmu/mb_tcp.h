@@ -20,11 +20,12 @@ class mb_tcp : public QObject {
     mb_tcp(QString ip, uint16_t port, uint8_t addr = 1);
     ~mb_tcp();
     int init_config(vector<MB_NODE> &tab_config);  //初始化
-    vector<ST_NODE_DATA> ReadALL();                                 //
+    vector<ST_NODE_DATA> ReadALL();                //
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);
-    void close();                                   //释放资源
-    int Connect();                                   //释放资源
+    int read_value(uint16_t type, uint16_t addr, uint16_t len, uint16_t *v);
+    void close();   //释放资源
+    int Connect();  //释放资源
    public:
     vector<ST_NODE_DATA> tab_data;
     uint32_t drv_status;

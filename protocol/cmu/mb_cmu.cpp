@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QTimerEvent>
+#include "db_manager.h"
 #include "myhelper.h"
 #include "node_conf.h"
 #include "utils.h"
@@ -290,31 +291,34 @@ int mb_cmu::Init() {
     tab_data.reserve(1000);
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
-    if (protocal_ver == CMUV2) {
-        this->node_table = cmu_v2_config;
-        this->node_table_size = cmu_v2_config_len;
-    } else if (protocal_ver == CMUV3) {
-        this->node_table = cmu_v3_config;
-        this->node_table_size = cmu_v3_config_len;
-    } else if (protocal_ver == CMUV4) {
-        this->node_table = cmu_v4_config;
-        this->node_table_size = cmu_v4_config_len;
-    } else if (protocal_ver == CMUV4_1) {
-        this->node_table = cmu_v4_1_config;
-        this->node_table_size = cmu_v4_1_config_len;
-    } else {
-        this->node_table = cmu_v1_config;
-        this->node_table_size = cmu_v1_config_len;
-    }
+    QList<db_manager::ST_DB_NODE> nodes_table;
+    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+    //    if (protocal_ver == CMUV2) {
+    //        this->node_table = cmu_v2_config;
+    //        this->node_table_size = cmu_v2_config_len;
+    //    } else if (protocal_ver == CMUV3) {
+    //        this->node_table = cmu_v3_config;
+    //        this->node_table_size = cmu_v3_config_len;
+    //    } else if (protocal_ver == CMUV4) {
+    //        this->node_table = cmu_v4_config;
+    //        this->node_table_size = cmu_v4_config_len;
+    //    } else if (protocal_ver == CMUV4_1) {
+    //        this->node_table = cmu_v4_1_config;
+    //        this->node_table_size = cmu_v4_1_config_len;
+    //    } else {
+    //        this->node_table = cmu_v1_config;
+    //        this->node_table_size = cmu_v1_config_len;
+    //    }
     name_map.clear();
-    for (int i = 0; i < node_table_size; i++) {
+    qDebug() << nodes_table.size();
+    for (int i = 0; i < nodes_table.size(); i++) {
         node_reg_tmp.default_val = 0;
-        if (node_table[i].reg_type > NONE_REG) {
-            node_reg_tmp.reg_type = node_table[i].reg_type;
-            node_reg_tmp.reg_addr = node_table[i].reg_addr;
-            node_reg_tmp.data_type = node_table[i].data_type;
-            node_reg_tmp.index = node_table[i].index;
-            node_reg_tmp.factor = node_table[i].factor;
+        if (nodes_table.at(i).reg_type > NONE_REG) {
+            node_reg_tmp.reg_type = nodes_table.at(i).reg_type;
+            node_reg_tmp.reg_addr = nodes_table.at(i).reg_addr;
+            node_reg_tmp.data_type = nodes_table.at(i).data_type;
+            node_reg_tmp.index = nodes_table.at(i).node_id;
+            node_reg_tmp.factor = nodes_table.at(i).factor;
             if ((index = JudgeReg(node_reg_tmp)) != -1) {
                 InsertReg(node_reg_tmp, index);
             } else {
@@ -322,7 +326,7 @@ int mb_cmu::Init() {
             }
         }
         tab_data.push_back(tmp_data);
-        name_map[node_table[i].name] = node_reg_tmp;
+        name_map[nodes_table.at(i).node_name.toStdString().c_str()] = node_reg_tmp;
     }
     TMsgData MsgCmd;
     MsgCmd.msg_type = 0;
@@ -339,7 +343,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
     int status = 0;
     int read_len = 0;
     int rc = 0;
-    memset(dest,0,reg_num*sizeof(uint16_t));
+    memset(dest, 0, reg_num * sizeof(uint16_t));
     if (!reg_num) return status;
     switch (type) {
         case MODBUS_FC_READ_HOLDING_REGISTERS: {
@@ -492,7 +496,7 @@ void mb_cmu::run() {
                             ReadCapData();
                         }
                         counter++;
-//                        qDebug() << "counter" << counter;
+                        //                        qDebug() << "counter" << counter;
                     }
                     state = SM_INIT;
                     Dump2Csv();

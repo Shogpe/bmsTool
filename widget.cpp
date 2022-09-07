@@ -21,28 +21,24 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     load_config();
     config = {0, 0, 0, 0, 0};
     //
-    QString protocol = settings->value("global/protocol", "CMU1.0").toString();
-    if (protocol == "CMU2.0") {
-        this->mycmu = new mb_cmu(CMUV2);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV2);
-        ui->cbProtocol->blockSignals(false);
-    } else if (protocol == "CMU3.0") {
-        this->mycmu = new mb_cmu(CMUV3);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV3);
-        ui->cbProtocol->blockSignals(false);
-    } else if (protocol == "CMU4.0") {
-        this->mycmu = new mb_cmu(CMUV4);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV4);
-        ui->cbProtocol->blockSignals(false);
-    } else {
-        this->mycmu = new mb_cmu(CMUV1);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV1);
-        ui->cbProtocol->blockSignals(false);
+    ui->cbProtocol->blockSignals(true);
+    ui->cbProtocol->clear();
+    ui->cbProtocol->addItem("CMU1.0", 0);
+    ui->cbProtocol->addItem("CMU2.0", 1);
+    ui->cbProtocol->addItem("CMU3.0", 2);
+    ui->cbProtocol->addItem("CMU4.0", 3);
+    ui->cbProtocol->addItem("CMU4.1", 4);
+    ui->cbProtocol->addItem("CMU4.8", 5);
+    ui->cbProtocol->blockSignals(false);
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    for (int i = 0; i < ui->cbProtocol->count(); i++) {
+        if (protocol == ui->cbProtocol->itemText(i)) {
+            ui->cbProtocol->blockSignals(true);
+            ui->cbProtocol->setCurrentIndex(i);
+            ui->cbProtocol->blockSignals(false);
+        }
     }
+    this->mycmu = new mb_cmu((BMS_PROTOCOL)ui->cbProtocol->currentData().toUInt());
     connect(
         this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
         [this](const QString& msg) { Toast::showTip(msg, nullptr); }, Qt::UniqueConnection);
@@ -303,7 +299,7 @@ void Widget::uiInit() {
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
 
-    } else if (this->mycmu->GetProtocalVer() == CMUV4) {
+    } else if (this->mycmu->GetProtocalVer() >= CMUV4) {
         for (int i = 0; i < config.vol_num; i++) {
             hdr_list.append(("Vol" + QString::number(i + 1)));
         }
@@ -468,6 +464,11 @@ void Widget::flushData() {
     // memcpy(&config, &mycmu->config, sizeof(config));
     if (config.bmu_num > ui->tableBMU->rowCount()) return;
     int cloumn_offset = 0;
+    uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
+    uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
+    uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
+    ui->CommStatus->setText(QString(tr("通信状态: %1")).arg(comm_status));
+
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
         cloumn_offset = 0;
@@ -540,9 +541,7 @@ void Widget::flushData() {
             ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
         //版本号
-        uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
-        uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
-        uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
+
         item = new QTableWidgetItem();
         item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
         if (comm_status >> i & 0x01)
@@ -580,7 +579,6 @@ void Widget::flushData() {
         iter1 = mycmu->name_map.find(dspbox->objectName().toStdString());
         if (iter1 != mycmu->name_map.end()) {
             dspbox->show();
-
             try {
                 uint index = iter1->second.index;
                 dspbox->setValue(mycmu->tab_data.at(index).sysData.val.f64);
@@ -608,6 +606,45 @@ void Widget::flushData() {
                 qWarning() << e.what();
             }
         }
+    }
+    iter1 = mycmu->name_map.find("BootVer");
+    if (iter1 != mycmu->name_map.end()) {
+        ui->BootVer->show();
+        uint32_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->BootVer->setText(QString(tr("Boot版本: %1")).arg(myHelper::IntegerToHexString(value)));
+    } else {
+        ui->BootVer->hide();
+    }
+    iter1 = mycmu->name_map.find("InsVer");
+    if (iter1 != mycmu->name_map.end()) {
+        ui->InsVer->show();
+        uint32_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->InsVer->setText(QString(tr("绝缘版本: %1")).arg(myHelper::IntegerToHexString(value)));
+    } else {
+        ui->InsVer->hide();
+    }
+
+    iter1 = mycmu->name_map.find("sysStatus2");
+    if (iter1 != mycmu->name_map.end()) {
+        uint16_t value = mycmu->tab_data.at(iter1->second.index).sysData.val.f64;
+        ui->G_SysStatus_2->setTitle(QString("%1(%2)").arg(tr("系统状态2")).arg(value));
+        QList<QLabel*> SysStatus;
+        SysStatus << ui->bSysErr_2 << ui->bSysAlm_2 << ui->bSysFull_2 << ui->bSysEmpty_2 << ui->bSysInit_2
+                  << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
+                  << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
+        foreach (QLabel* Label, SysStatus) {
+            try {
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
+                Label->setStyleSheet(QString("color:%1").arg(color));
+                //                if (SysStatus.indexOf(Label) > 2) {
+                //                    Label->setHidden(true);
+                //                }
+            } catch (exception& e) {
+                qWarning() << e.what();
+            }
+        }
+    } else {
+        ui->G_SysStatus_2->setHidden(true);
     }
     iter1 = mycmu->name_map.find("sysErrStatus");
     if (iter1 != mycmu->name_map.end()) {
@@ -938,12 +975,10 @@ void Widget::btn_released() {
     } else if (name == "btnRCtrl") {
         bool ok = false;
         QStringList items;
-        items << tr("全程投入")
-              << tr("远程投入")
-              << tr("远程断开");
+        items << tr("全程投入") << tr("远程投入") << tr("远程断开");
         QString text =
             QInputDialog::getItem(this, tr("绝缘检测控制"), tr("请输入绝缘检测控制方式："), items, 0, false, &ok);
-        qDebug() << ok<<text;
+        qDebug() << ok << text;
         if (ok) {
             uint16_t mode = 0x0;
             if (text == tr("远程投入")) {
@@ -1177,7 +1212,7 @@ void Widget::initUpdateMenu() {
     update_menu->addAction("下载升级BMS Boot", this, &Widget::onUpdateBtnMenu);
     update_menu->addAction("下载升级BMU Boot", this, &Widget::onUpdateBtnMenu);
     update_menu->addAction("下载升级绝缘板", this, &Widget::onUpdateBtnMenu);
-    update_menu->addAction("升级BMU", this, &Widget::onUpdateBtnMenu);
+    //    update_menu->addAction("升级BMU", this, &Widget::onUpdateBtnMenu);
     ui->btnVer->setMenu(update_menu);
 }
 

@@ -24,6 +24,7 @@ class mb_tcp : public QObject {
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);
     int read_value(uint16_t type, uint16_t addr, uint16_t len, uint16_t *v);
+    QString get_error_msg();
     void close();   //释放资源
     int Connect();  //释放资源
    public:

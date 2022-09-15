@@ -135,12 +135,10 @@ void MainUI::initForm() {
         //        ui->stackedWidget->setCurrentIndex(index);
         //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {
-        int index = ui->stackedWidget->addWidget(new Widget(this));
+        int index = ui->stackedWidget->addWidget(new Widget(ui->stackedWidget));
         ui->stackedWidget->setCurrentIndex(index);
-        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
-
     //关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
     connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);

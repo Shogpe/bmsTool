@@ -28,12 +28,12 @@ AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
 void AppInit::start() {
     myHelper::SetStyle("lightblue");
-//    DownLoadManager *m_download = new DownLoadManager();
-//    if (!m_download->syncDownloadFile(url1, "bms_tool.json")) {
-        //        return;
-//    }
-//    m_download->deleteLater();
-//    updateCheck(url1);
+    //    DownLoadManager *m_download = new DownLoadManager();
+    //    if (!m_download->syncDownloadFile(url1, "bms_tool.json")) {
+    //        return;
+    //    }
+    //    m_download->deleteLater();
+    updateCheck(url1);
 }
 
 static int CompareVersion(QString strVer1, QString strVer2) {
@@ -112,22 +112,22 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
                         QDesktopServices::openUrl(QUrl(url));
                     }
                 }
-                if (obj.contains("db_version")) {
-                    QString db_version = obj["db_version"].toString();
-                    QString db_file_ver = "0.0.0.0";
-                    QString dbfileName = "data.db3";
-                    QFileInfo info(dbfileName);
-                    if (info.exists()) {
-                        db_file_ver = info.lastModified().toString("yyyy.MM.dd.hh");
-                    }
-                    if (CompareVersion(db_file_ver, db_version) < 0) {
-                        DownLoadManager *m_download = new DownLoadManager();
-                        if (!m_download->syncDownloadFile(url1_db, dbfileName)) {
-//                            return;
-                        }
-                        m_download->deleteLater();
-                    }
-                }
+                //                if (obj.contains("db_version")) {
+                //                    QString db_version = obj["db_version"].toString();
+                //                    QString db_file_ver = "0.0.0.0";
+                //                    QString dbfileName = "data.db3";
+                //                    QFileInfo info(dbfileName);
+                //                    if (info.exists()) {
+                //                        db_file_ver = info.lastModified().toString("yyyy.MM.dd.hh");
+                //                    }
+                //                    if (CompareVersion(db_file_ver, db_version) < 0) {
+                //                        DownLoadManager *m_download = new DownLoadManager();
+                //                        if (!m_download->syncDownloadFile(url1_db, dbfileName)) {
+                //                            //                            return;
+                //                        }
+                //                        m_download->deleteLater();
+                //                    }
+                //                }
             }
 
         } else {
@@ -153,5 +153,4 @@ void AppInit::updateCheck(QString url) {
     accessManager->get(requestInfo);
     connect(accessManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(replyFinished(QNetworkReply *)));
     //错误处理
-
 }

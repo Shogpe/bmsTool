@@ -156,7 +156,7 @@ int mb_tcp::write_ao(uint16_t addr, uint16_t v) {
         qDebug() << "wr ao " << addr << ":" << v;
     return ret;
 }
-
+QString mb_tcp::get_error_msg() { return modbus_strerror(errno); }
 /**< 判别寄存器插入条件，返回可用报文序号，否则返回-1 */
 int mb_tcp::JudgeReg(NodeReg& node_reg) {
     int index = reg_list_.size();

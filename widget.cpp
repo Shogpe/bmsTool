@@ -541,7 +541,6 @@ void Widget::flushData() {
             ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
         //版本号
-
         item = new QTableWidgetItem();
         item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
         if (comm_status >> i & 0x01)
@@ -997,6 +996,29 @@ void Widget::btn_released() {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {65288, 0xAA55};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        }
+    } else if (name == "btnSetSOC") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        val[0] = 0xFFF6;
+        bool lbok;
+        QString value = myHelper::showInputBox("SOC标定值:", lbok);
+        if (lbok) {
+            val[1] = (uint16_t)(value.toDouble(&lbok) * 10) | 0x5000;
+            if (lbok && (value.toDouble() <= 100) && (value.toDouble() >= 0)) {
+                qDebug() << "Adj:" << val[1];
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnAdjSOC") {
+        if (myHelper::ShowMessageBoxQuesion(tr("是否校准SOC？")) == QDialog::Accepted) {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {0xFFF5, 0x1EA5};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
             if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
         }

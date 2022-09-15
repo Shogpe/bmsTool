@@ -37,6 +37,18 @@ Q_DECLARE_METATYPE(ST_PARA)
 #define TP_IPA 2   // IP 地址
 #define TP_BIT 3   // BIT位数据
 #define TP_STR 99  // 显示name_cn
+
+enum CMD_TYPE {
+    CMD_CHECK_SET = 1,
+    CMD_SEND_SET,
+    CMD_UP_CMU,
+    CMD_UP_BMU,
+    CMD_UP_INS,
+    CMD_RD_VER_BMS,
+    CMD_RD_VER_INS,
+    CMD_LOCK_BMU,
+    CMD_UNLOCK_BMU,
+};
 //只读单元格
 class ReadOnlyDelegate : public QItemDelegate {
     Q_OBJECT
@@ -192,16 +204,16 @@ class testWorker : public QObject {
             case 4:
             case 5:
             case 6:
-                doUpgrade(m_ip, m_mode);
+                doCommand(m_ip, m_mode);
                 break;
             default:
-                doUpgrade(m_ip, m_mode);
+                doCommand(m_ip, m_mode);
                 break;
         }
     }
     void doTest(QString ip, const QMap<QString, double> setMap);
     void doSetData(QString ip, const QMap<QString, double> setMap);
-    void doUpgrade(QString ip, uint command);
+    void doCommand(QString ip, uint command);
 };
 class scan_settings : public QWidget {
     Q_OBJECT

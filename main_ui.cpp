@@ -8,9 +8,9 @@
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
+#include "views/cmu_ip/cmu_ip.h"
 #include "views/scan_settings.h"
 #include "widget.h"
-//#include "views/cmu_ip/cmu_ip.h"
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -91,11 +91,20 @@ void MainUI::initForm() {
     //    setEnglish = new QAction(tr("English"), this);
     //    setEnglish->setCheckable(true);
     //    setEnglish->setChecked(true);
+    QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
+
     langue_menu->addAction("Chinese", this, &MainUI::menuClick);
     langue_menu->addAction("English", this, &MainUI::menuClick);
-    //    langueGroup = new QActionGroup(this);
-    //    langueGroup->addAction(setEnglish);
-    //    langueGroup->addAction(setChinese);
+    langueGroup = new QActionGroup(this);
+    foreach (QAction* act , langue_menu->actions()) {
+        langueGroup->addAction(act);
+        act->setCheckable(true);
+    }
+    if(locale == "zh_CN") {
+        langue_menu->actions().at(0)->setChecked(true);
+    } else {
+        langue_menu->actions().at(1)->setChecked(true);
+    }
 
     //创建主题切换菜单
     theme_menu = new QMenu(tr("Theme"));
@@ -131,9 +140,9 @@ void MainUI::initForm() {
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 1) {
-        //        int index = ui->stackedWidget->addWidget(new CmuIpView(this));
-        //        ui->stackedWidget->setCurrentIndex(index);
-        //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
+        int index = ui->stackedWidget->addWidget(new CmuIpView(this));
+        ui->stackedWidget->setCurrentIndex(index);
+        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {
         int index = ui->stackedWidget->addWidget(new Widget(ui->stackedWidget));
         ui->stackedWidget->setCurrentIndex(index);
@@ -254,6 +263,15 @@ void MainUI::menuClick()  //切换语言
     } else if (b->text() == "参数检查") {
         scan_settings* w = new scan_settings(nullptr);
         w->show();
+
+    } else if (b->text() == "English") {
+        qDebug() << "set eng";
+        myHelper::SetAppValue("Locale", "en_US");
+        myHelper::SetTranslation("en_US");
+    } else if (b->text() == "Chinese" || b->text() == "中文") {
+        qDebug() << "set zh";
+        myHelper::SetAppValue("Locale", "zh_CN");
+        myHelper::SetTranslation("zh_CN");
     }
     //  if(setChinese->isChecked()){//判断选中了哪个语言
     //    translator->load(":/langue/zh_cn.qm");//加载翻译文件

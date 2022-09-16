@@ -7,6 +7,8 @@
 #include <QtWidgets>
 #endif
 #include <QDesktopWidget>
+#include <QFileDialog>
+#include <QSettings>
 #include "frminputbox.h"
 #include "frmmessagebox.h"
 #include "version.h"
@@ -44,6 +46,7 @@ static inline uint16_t bswap_16(uint16_t x) { return (x >> 8) | (x << 8); }
 #warning "Fallback on C functions for bswap_32"
 static inline uint32_t bswap_32(uint32_t x) { return (bswap_16(x & 0xffff) << 16) | (bswap_16(x >> 16)); }
 #endif
+
 class myHelper : public QObject {
    public:
     static QString user;
@@ -85,10 +88,27 @@ class myHelper : public QObject {
     }
 
     //加载中文字符
-    static void SetChinese() {
-        QTranslator *translator = new QTranslator(qApp);
-        translator->load(":/lang/zh_CN.qm");
-        qApp->installTranslator(translator);
+    static void SetTranslation(QString local) {
+        static QTranslator *translator = new QTranslator();
+        Q_CHECK_PTR(translator);  // checks creation
+        qApp->removeTranslator(translator);
+        if (translator->load(QString("%1").arg(local), ":/lang/")) {
+            if (!qApp->installTranslator(translator)) {
+                qDebug("ERROR INSTALLING TRANSLATOR !!!");
+            }
+        } else {
+            qWarning() << "ERROR LOAD TRANSLATOR !!!" << local;
+        }
+        QTranslator *qt_translator = new QTranslator();
+        qApp->removeTranslator(qt_translator);
+        if (qt_translator->load(QString("qt_%1.qm").arg(local), ":/lang/") && (!qt_translator->isEmpty())) {
+            qDebug() << qt_translator->isEmpty();
+            if (!qApp->installTranslator(qt_translator)) {
+                qWarning("ERROR INSTALLING TRANSLATOR !!!");
+            }
+        } else {
+            qWarning() << "ERROR LOAD QT TRANSLATOR !!!" << QString("qt_") + local;
+        }
     }
 
     //判断是否是IP地址
@@ -173,7 +193,7 @@ class myHelper : public QObject {
             .arg((ip >> 24) & 0xFF, 0, 16)
             .arg((ip >> 16) & 0xFF, 0, 16)
             .arg((ip >> 8) & 0xFF, 0, 16)
-            .arg(ip & 0xFF, 0, 16);
+            .arg(ip & 0xFF, 0, 16).toUpper();
     }
     static void SetAppValue(const QString &key, const QVariant &value) {
         QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)

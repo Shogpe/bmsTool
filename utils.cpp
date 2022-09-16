@@ -141,33 +141,33 @@ typedef struct {
     uint16_t SysSta[5];
     uint16_t ErrStatus[5];
     uint16_t WarnStatus[5];
-//    uint16_t CalData[18];
+    //    uint16_t CalData[18];
     uint16_t u16MaxCellVolt;    //单体电池电压最大值x10000
     uint16_t u16MaxCellVoltId;  //单体电池电压最大值ID
 
     uint16_t u16MinCellVolt;    //单体电池电压最小值
     uint16_t u16MinCellVoltId;  //单体电池电压最小值ID
 
-    int16_t  i16MaxPackTemp;    //电池模组温度最大值 	x10
+    int16_t i16MaxPackTemp;     //电池模组温度最大值 	x10
     uint16_t u16MaxPackTempId;  //电池模组温度最大值ID
 
-    int16_t  i16MinPackTemp;    //电池模组温度最小值
+    int16_t i16MinPackTemp;     //电池模组温度最小值
     uint16_t u16MinPackTempId;  //电池模组温度最小值ID
 
-    int16_t  i16MaxPoleTemp;    // PACK极柱温度最大值
+    int16_t i16MaxPoleTemp;     // PACK极柱温度最大值
     uint16_t u16MaxPoleTempId;  // PACK极柱温度最大值ID
 
-    uint16_t u16MaxCellVoltDiff;//最大单体电压差值
-    int16_t  i16MaxPackTempDiff;//最大电池模组温差值
+    uint16_t u16MaxCellVoltDiff;  //最大单体电压差值
+    int16_t i16MaxPackTempDiff;   //最大电池模组温差值
 
-    uint16_t u16MaxTRiseRate;   //电池模组最大温度上升速率
-    uint16_t u16MaxTRiseRateId; //电池模组最大温度上升速率ID
+    uint16_t u16MaxTRiseRate;    //电池模组最大温度上升速率
+    uint16_t u16MaxTRiseRateId;  //电池模组最大温度上升速率ID
 
     uint16_t u16MaxPackVolt;    //最大模组电压
     uint16_t u16MaxPackVoltId;  //最大模组电压ID
     uint16_t u16AvgCellVolt;    //平均单体电压
 
-    uint16_t u16CPoTWireSta;    //簇极柱温度断线状态
+    uint16_t u16CPoTWireSta;  //簇极柱温度断线状态
 } _log_st;
 #define DATA_LEN sizeof(_log_st)
 typedef struct {
@@ -202,7 +202,6 @@ QString getStatusString(uint16_t status) {
     return statusList.join("|");
 }
 int log2csv() {
-
     QByteArray data;
     // 烧写
     QString fileName = QFileDialog::getOpenFileName(nullptr, QObject::tr("Read "), "", "");
@@ -218,6 +217,8 @@ int log2csv() {
     file.close();
     int len = data.size() / sizeof(CMU_LOG);
     CMU_LOG *log = (CMU_LOG *)data.data();
+    if ((data.size() % sizeof(CMU_LOG) == 0) || (data.size() / log->len == 0)) {
+    }
     std::vector<double_t> Idc;
     std::vector<double_t> Udc;
     std::vector<double_t> Ile;
@@ -229,14 +230,15 @@ int log2csv() {
 
     uint16_t CalData[18];
     while (len--) {
-//        qDebug() << log->time << "." << log->time_ms << log->len<<getStatusString(log->data.st.SysSta);
-        for(int i=0;i<20;i++){
-            Idc.push_back(log->data.st.Idc[i]*0.1);
-            if(i%5) {
-                qDebug() << ((uint64_t)log->time)*1000+log->time_ms+i*50 <<getStatusString(log->data.st.SysSta[i%5]);
+        //        qDebug() << log->time << "." << log->time_ms << log->len<<getStatusString(log->data.st.SysSta);
+        for (int i = 0; i < 20; i++) {
+            Idc.push_back(log->data.st.Idc[i] * 0.1);
+            if (i % 5) {
+                qDebug() << ((uint64_t)log->time) * 1000 + log->time_ms + i * 50
+                         << getStatusString(log->data.st.SysSta[i % 5]);
             }
         }
-        log ++;
+        log++;
     }
     return 0;
 }

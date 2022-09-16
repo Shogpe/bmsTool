@@ -413,7 +413,7 @@ void Widget::timerUpDate() {
         ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText("重连");
     } else {
-        ui->labelStatus->setStyleSheet("color:red");
+        ui->labelStatus->setStyleSheet("color:red;text-decoration:underline;font:bold;");
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText("连接");
     }
@@ -543,10 +543,19 @@ void Widget::flushData() {
         //版本号
         item = new QTableWidgetItem();
         item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
-        if (comm_status >> i & 0x01)
+        if (comm_status >> i & 0x01) {
             item->setTextColor(QColor(Qt::darkGreen));
-        else
+            QFont font = item->font();
+            font.setUnderline(false);
+            font.setBold(false);
+            item->setFont(font);
+        } else {
             item->setTextColor(QColor(Qt::red));
+            QFont font = item->font();
+            font.setUnderline(true);
+            font.setBold(true);
+            item->setFont(font);
+        }
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(i, cloumn_offset++, item);
     }
@@ -599,8 +608,8 @@ void Widget::flushData() {
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
         foreach (QLabel* Label, SysStatus) {
             try {
-                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -633,8 +642,8 @@ void Widget::flushData() {
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         foreach (QLabel* Label, SysStatus) {
             try {
-                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
                 //                if (SysStatus.indexOf(Label) > 2) {
                 //                    Label->setHidden(true);
                 //                }
@@ -655,8 +664,8 @@ void Widget::flushData() {
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -672,8 +681,8 @@ void Widget::flushData() {
                    << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -689,8 +698,8 @@ void Widget::flushData() {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -706,8 +715,8 @@ void Widget::flushData() {
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "gold" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -723,8 +732,8 @@ void Widget::flushData() {
                    << ui->bDI15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "red" : "green";
-                Label->setStyleSheet(QString("color:%1").arg(color));
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -740,8 +749,8 @@ void Widget::flushData() {
         foreach (QCheckBox* rb, RadioList) {
             try {
                 bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
-                QString color = bit ? "red" : "green";
-                rb->setStyleSheet(QString("color:%1").arg(color));
+                QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                rb->setStyleSheet(QString("%1").arg(color));
                 rb->blockSignals(true);
                 rb->setChecked(bit);
                 rb->blockSignals(false);

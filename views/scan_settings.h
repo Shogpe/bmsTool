@@ -241,6 +241,7 @@ class scan_settings : public QWidget {
    private slots:
     void on_btnWrite_released();
     void btnCtrlMenu();
+    void on_connectIP_editingFinished();
 };
 
 #endif  //_SCAN_SETTING_H

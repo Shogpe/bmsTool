@@ -27,7 +27,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->cbProtocol->addItem("CMU2.0", 1);
     ui->cbProtocol->addItem("CMU3.0", 2);
     ui->cbProtocol->addItem("CMU4.0", 3);
-    ui->cbProtocol->addItem("CMU4.1", 4);
+    //    ui->cbProtocol->addItem("CMU4.1", 4);
     ui->cbProtocol->addItem("CMU4.8", 5);
     ui->cbProtocol->blockSignals(false);
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
@@ -608,7 +608,9 @@ void Widget::flushData() {
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
         foreach (QLabel* Label, SysStatus) {
             try {
-                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
+                                    ? "color:red;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -642,7 +644,9 @@ void Widget::flushData() {
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         foreach (QLabel* Label, SysStatus) {
             try {
-                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
+                                    ? "color:red;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
                 //                if (SysStatus.indexOf(Label) > 2) {
                 //                    Label->setHidden(true);
@@ -664,7 +668,9 @@ void Widget::flushData() {
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
+                                    ? "color:red;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -681,7 +687,9 @@ void Widget::flushData() {
                    << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
+                                    ? "color:red;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -698,7 +706,9 @@ void Widget::flushData() {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
+                                    ? "color:gold;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -715,7 +725,9 @@ void Widget::flushData() {
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
+                                    ? "color:gold;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -732,7 +744,9 @@ void Widget::flushData() {
                    << ui->bDI15;
         foreach (QLabel* Label, StatusList) {
             try {
-                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0 ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
+                                    ? "color:red;text-decoration:underline;font:bold;"
+                                    : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
             } catch (exception& e) {
                 qWarning() << e.what();
@@ -827,8 +841,8 @@ struct mb_cmd {
     uint16_t addr;
     uint16_t value;
 };
-static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
-                                      {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+                                      {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
                                       {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
                                       {"btnUploadTrig", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_UPLOAD_Trig}},
                                       {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
@@ -1015,6 +1029,21 @@ void Widget::btn_released() {
         QString value = myHelper::showInputBox("SOC标定值:", lbok);
         if (lbok) {
             val[1] = (uint16_t)(value.toDouble(&lbok) * 10) | 0x5000;
+            if (lbok && (value.toDouble() <= 100) && (value.toDouble() >= 0)) {
+                qDebug() << "Adj:" << val[1];
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+    } else if (name == "btnSetSOH") {
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        val[0] = 0xFFF6;
+        bool lbok;
+        QString value = myHelper::showInputBox("SOH标定值:", lbok);
+        if (lbok) {
+            val[1] = (uint16_t)(value.toDouble(&lbok) * 10) | 0xA000;
             if (lbok && (value.toDouble() <= 100) && (value.toDouble() >= 0)) {
                 qDebug() << "Adj:" << val[1];
                 MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
@@ -1334,6 +1363,14 @@ void Widget::IpChange() {
 bool Widget::load_config() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
+    int target_port = settings->value("global/target_port", 502).toUInt();
     ui->connectIP->setText(target_ip);
+    ui->spinBoxPort->setValue(target_port);
     return true;
 }
+
+void Widget::on_spinBoxPort_valueChanged(int port)
+{
+    settings->setValue("global/target_port", port);
+}
+

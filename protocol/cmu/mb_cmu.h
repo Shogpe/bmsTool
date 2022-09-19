@@ -98,8 +98,8 @@ typedef enum {
 
 #define ADDR_RESET_FACTORY 0xFFF1
 #define MB_FACTORY         0x1D32
-#define MB_BMU_LOCK        0x55aa
-#define MB_BMU_UNLOCK      0xaa55
+#define MB_BMU_LOCK        0xaa55
+#define MB_BMU_UNLOCK      0x55aa
 
 #define ADDR_CLEAR_ENG 0xFFF2
 #define MB_CLEAR_ENG   0x1EC6

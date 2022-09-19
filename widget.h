@@ -60,6 +60,7 @@ class Widget : public QWidget {
     void onUpdateBtnMenu();
     void initUpdateMenu();
     void IpChange();
+    void on_spinBoxPort_valueChanged(int arg1);
 };
 
 #endif

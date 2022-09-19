@@ -231,13 +231,17 @@ class SOEModel : public QAbstractTableModel {
         double offset;   // 偏移量
         QString suffix;  // 单位
     } ST_FORMAT;
+    enum SOE_DATA_TYPE {
+        SOE_U16 = 0x202,
+        SOE_I16 = 0x201,
+        SOE_BIT = 0x206,
+        SOE_MAP = 0x207,
+        SOE_BIN = 0x208,
+    };
+
     uint16_t getDataType(QString type) const {
         QMap<QString, uint16_t> type_map = {
-            {"U16", 0x202},
-            {"I16", 0x201},
-            {"BIT", 0x206},
-            {"MAP", 0x207},
-            {"BIN", 0x208},
+            {"U16", SOE_U16}, {"I16", SOE_I16}, {"BIT", SOE_BIT}, {"MAP", SOE_MAP}, {"BIN", SOE_BIN},
         };
         return type_map.value(type, 0x202);
     }
@@ -280,30 +284,44 @@ class SOEModel : public QAbstractTableModel {
         }
         return QString("%1").arg(raw);
     }
+    QString getListData(QString key, uint16_t raw, QString jsonStr) const {
+        QJsonParseError error;
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
+        if (error.error == QJsonParseError::NoError) {
+            if (jsonDocument.isObject()) {
+                QVariantMap result = jsonDocument.toVariant().toMap();
+                if (result.contains(key)) {
+                    QStringList statusList;
+                    auto value = result.value(key).toList();
+                    for (int i = 0; i < value.size(); i++) {
+                        if (GET_BIT(raw, i)) {
+                            statusList << value.at(i).toString();
+                        }
+                    }
+                    return statusList.join("|");
+                }
+            }
+        }
+        return getStatusList(raw);
+    }
     QString getFormatData(uint64_t raw, QString rule, QString key = "", QString code = "") const {
         ST_FORMAT format = getFormat(rule);
         qDebug() << rule << format.type << format.prefix << format.factor;
         switch (format.type) {
-            case 0x201:
+            case SOE_I16:
                 return QString("%1:%2%3, ")
                     .arg(format.prefix)
                     .arg(int16_t(raw) * format.factor + format.offset)
                     .arg(format.suffix);
-            case 0x202:
+            case SOE_U16:
                 return QString("%1:%2%3, ")
                     .arg(format.prefix)
                     .arg(uint16_t(raw) * format.factor + format.offset)
                     .arg(format.suffix);
-            case 0x207:
-                return QString("%1:%2%3, ")
-                    .arg(format.prefix)
-                    .arg(getJsonData(key, raw, code))
-                    .arg(format.suffix);
-            case 0x208:
-                return QString("%1:[%2]%3, ")
-                    .arg(format.prefix)
-                    .arg(getStatusList(raw))
-                    .arg(format.suffix);
+            case SOE_MAP:
+                return QString("%1:%2%3, ").arg(format.prefix).arg(getJsonData(key, raw, code)).arg(format.suffix);
+            case SOE_BIN:
+                return QString("%1:[%2]%3, ").arg(format.prefix).arg(getStatusList(raw)).arg(format.suffix);
             default:
                 break;
         }

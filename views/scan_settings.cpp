@@ -10,6 +10,7 @@
 #include "myhelper.h"
 #include "socImporter.h"
 #include "ui_scan_settings.h"
+#include "mb_cmu.h"
 void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     QStringList ip_list = ip.split(":");
     int port = 502;
@@ -184,7 +185,7 @@ void testWorker::doCommand(QString ip, uint command) {
         } break;
         case CMD_LOCK_BMU: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
-                if (m_mbtcp->write_ao(0xFFF1, 0x55AA) > 0) {
+                if (m_mbtcp->write_ao(0xFFF1, MB_BMU_LOCK) > 0) {
                     emit workFinished(1, "BMU拨码锁定成功.");
                 } else {
                     emit workFinished(0, QString("BMU拨码锁定失败:%1").arg(m_mbtcp->get_error_msg()));
@@ -195,7 +196,7 @@ void testWorker::doCommand(QString ip, uint command) {
         } break;
         case CMD_UNLOCK_BMU: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
-                if (m_mbtcp->write_ao(0xFFF1, 0xAA55) > 0) {
+                if (m_mbtcp->write_ao(0xFFF1, MB_BMU_UNLOCK) > 0) {
                     emit workFinished(1, "BMU拨码解锁成功.");
                 } else {
                     emit workFinished(0, QString("BMU拨码解锁失败:%1").arg(m_mbtcp->get_error_msg()));
@@ -431,6 +432,10 @@ void scan_settings::uiInit() {
     update_menu->addAction("BMU拨码锁定⚿", this, &scan_settings::btnCtrlMenu);
     update_menu->addAction("BMU拨码解锁", this, &scan_settings::btnCtrlMenu);
     ui->btnCtrl->setMenu(update_menu);
+
+    QString ipRange = QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange","192.168.1.121-192.168.1.128").toString();
+    ui->connectIP->setText(ipRange);
+
 }
 void scan_settings::loadXml() {
     // 从xml加载配置
@@ -554,3 +559,9 @@ void scan_settings::btnCtrlMenu() {
         thread->start();
     }
 }
+
+void scan_settings::on_connectIP_editingFinished()
+{
+    QSettings("config.ini", QSettings::IniFormat).setValue("SCAN/iprange",ui->connectIP->text());
+}
+

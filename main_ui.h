@@ -6,7 +6,7 @@
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
 #include "widget.h"
-
+#include "tftpserver.h"
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
 
@@ -43,6 +43,7 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     QAction *setBlack;
     QAction *setWhite;
 
+    TFTPServer* tftpd;
     //    bool eventFilter(QObject *obj, QEvent *event);
     //
     QSettings *settings;

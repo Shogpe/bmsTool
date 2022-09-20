@@ -441,7 +441,7 @@ void Widget::timerUpDate() {
             //            }
             uint32_t version = mycmu->cmu_ver & 0x00FFFFFF;
             qDebug() << QString::number(version, 16);
-            if (((ui->cbProtocol->currentText() == "CMU4.0") && (version >= 0x00000402)) ||
+            if (((ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000402)) ||
                 ((ui->cbProtocol->currentText() != "CMU4.0") && (version >= 0x00000407))) {
                 m_model.setData(mycmu->cmu_soe.list_soe, 500, 2);
             } else {
@@ -1260,7 +1260,7 @@ void Widget::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     settings->setValue("global/protocol", arg1);
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(ui->cbProtocol->currentIndex());
+    MsgCmd.data.setNum(ui->cbProtocol->currentData().toUInt());
     pmq->sendMsg(0, MsgCmd);
     MsgCmd.data.clear();
 }

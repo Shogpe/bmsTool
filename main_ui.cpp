@@ -16,6 +16,14 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     this->initForm();
     this->initLeftMain();
     this->initLeftConfig();
+    this->tftpd = new TFTPServer();
+
+    connect(tftpd, &TFTPServer::statusUpdate, this,
+            [this](QString status) { ui->lTftpStatus->setText(QString("升级服务:%1").arg(status)); });
+
+    connect(tftpd, &TFTPServer::fileTransferFinished, this,
+            [this](int ret, QString msg) { Toast::showTip(QString("%1:%2").arg(msg).arg(ret == 0 ? "成功" : "失败")); });
+    tftpd->init("192.168.1.230", 69, "firmware");
 }
 
 MainUI::~MainUI() {
@@ -96,11 +104,11 @@ void MainUI::initForm() {
     langue_menu->addAction("Chinese", this, &MainUI::menuClick);
     langue_menu->addAction("English", this, &MainUI::menuClick);
     langueGroup = new QActionGroup(this);
-    foreach (QAction* act , langue_menu->actions()) {
+    foreach (QAction* act, langue_menu->actions()) {
         langueGroup->addAction(act);
         act->setCheckable(true);
     }
-    if(locale == "zh_CN") {
+    if (locale == "zh_CN") {
         langue_menu->actions().at(0)->setChecked(true);
     } else {
         langue_menu->actions().at(1)->setChecked(true);

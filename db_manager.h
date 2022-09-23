@@ -22,6 +22,12 @@ class db_manager {
         QString evt_threshold;
         QString code;
     } ST_DB_SOE;
+    enum SOE_TAG {
+        SOE_BMS1 = 1,
+        SOE_BMS2 = 2,
+        SOE_RTU1 = 3,
+    };
+
     typedef struct {
         int node_id;
         QString node_name;
@@ -35,7 +41,7 @@ class db_manager {
     } ST_DB_NODE;
     bool start();
     bool getNode(QList<ST_DB_NODE>& list, int proto_id);
-    bool getSOE(QMap<int, ST_DB_SOE>& soe_map, int tag);
+    bool getSOE(QMap<int, ST_DB_SOE>& soe_map, SOE_TAG tag);
     bool getUser(QString name, QString password, int&);
     void closed();
 

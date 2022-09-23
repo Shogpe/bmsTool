@@ -1,4 +1,5 @@
 #include "db_manager.h"
+#include "myhelper.h"
 QMutex mutex;
 db_manager *db_manager::self = nullptr;
 db_manager *db_manager::Instance() {
@@ -20,6 +21,7 @@ bool db_manager::start() {
     dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
     if (!dbconn.open()) {
         qDebug() << "Can not open connection: " << dbconn.lastError().driverText();
+        myHelper::ShowMessageBoxError("数据无法读取:" + dbconn.lastError().driverText());
         return false;
     }
     return true;
@@ -83,7 +85,7 @@ bool db_manager::getUser(QString name, QString password, int &level) {
     return false;
 }
 
-bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, int tag) {
+bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, SOE_TAG tag) {
     bool flag = false;
     soe_map.clear();
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);

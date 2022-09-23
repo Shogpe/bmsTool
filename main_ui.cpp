@@ -8,9 +8,10 @@
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-#include "views/cmu_ip/cmu_ip.h"
-#include "views/scan_settings.h"
+#include "cmu_ip.h"
+#include "scan_settings.h"
 #include "widget.h"
+//#include "rtu_tool.h"
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -147,7 +148,7 @@ void MainUI::initForm() {
         int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (myHelper::level == 31) {  // Widget
+    } else if (myHelper::level == 31) {  // Widget,RTUView
         int index = ui->stackedWidget->addWidget(new Widget(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());

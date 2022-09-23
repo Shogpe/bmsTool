@@ -442,10 +442,10 @@ void Widget::timerUpDate() {
             uint32_t version = mycmu->cmu_ver & 0x00FFFFFF;
             qDebug() << QString::number(version, 16);
             if (((ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000402)) ||
-                ((ui->cbProtocol->currentText() != "CMU4.0") && (version >= 0x00000407))) {
-                m_model.setData(mycmu->cmu_soe.list_soe, 500, 2);
+                ((!ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000407))) {
+                m_model.setData(mycmu->cmu_soe.list_soe, 500, db_manager::SOE_BMS2);
             } else {
-                m_model.setData(mycmu->cmu_soe.list_soe, 500, 1);
+                m_model.setData(mycmu->cmu_soe.list_soe, 500, db_manager::SOE_BMS1);
             }
             ui->labelSOE->setText(
                 QString("新SOE:%1,总计:%2").arg(mycmu->cmu_soe.new_soe_count).arg(mycmu->cmu_soe.soe_count));

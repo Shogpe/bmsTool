@@ -1366,6 +1366,7 @@ bool Widget::load_config() {
     int target_port = settings->value("global/target_port", 502).toUInt();
     ui->connectIP->setText(target_ip);
     ui->spinBoxPort->setValue(target_port);
+    ui->DataWidget->setCurrentIndex(0);
     return true;
 }
 

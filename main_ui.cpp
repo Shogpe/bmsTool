@@ -21,8 +21,9 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     connect(tftpd, &TFTPServer::statusUpdate, this,
             [this](QString status) { ui->lTftpStatus->setText(QString("升级服务:%1").arg(status)); });
 
-    connect(tftpd, &TFTPServer::fileTransferFinished, this,
-            [this](int ret, QString msg) { Toast::showTip(QString("%1:%2").arg(msg).arg(ret == 0 ? "成功" : "失败")); });
+    connect(tftpd, &TFTPServer::fileTransferFinished, this, [this](int ret, QString msg) {
+        Toast::showTip(QString("%1:%2").arg(msg).arg(ret == 0 ? "成功" : "失败"));
+    });
     tftpd->init("192.168.1.230", 69, "firmware");
 }
 
@@ -94,11 +95,6 @@ void MainUI::initForm() {
     ui->btnMain->click();
     //创建语言切换菜单
     langue_menu = new QMenu(tr("Langue"));
-    //    setChinese = new QAction(tr("Chinese"), this);
-    //    setChinese->setCheckable(true);
-    //    setEnglish = new QAction(tr("English"), this);
-    //    setEnglish->setCheckable(true);
-    //    setEnglish->setChecked(true);
     QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
 
     langue_menu->addAction("Chinese", this, &MainUI::menuClick);
@@ -115,25 +111,25 @@ void MainUI::initForm() {
     }
 
     //创建主题切换菜单
-    theme_menu = new QMenu(tr("Theme"));
-    setBlue = new QAction(tr("lightblue"), this);
-    setBlue->setCheckable(true);
-    setBlue->setChecked(true);
-    setBlack = new QAction(tr("psblack"), this);
-    setBlack->setCheckable(true);
-    setWhite = new QAction(tr("flatwhite"), this);
-    setWhite->setCheckable(true);
-    theme_menu->addAction(setBlue);
-    theme_menu->addAction(setBlack);
-    theme_menu->addAction(setWhite);
-    themeGroup = new QActionGroup(this);
-    themeGroup->addAction(setBlue);
-    themeGroup->addAction(setBlack);
-    themeGroup->addAction(setWhite);
+    //    theme_menu = new QMenu(tr("Theme"));
+    //    setBlue = new QAction(tr("lightblue"), this);
+    //    setBlue->setCheckable(true);
+    //    setBlue->setChecked(true);
+    //    setBlack = new QAction(tr("psblack"), this);
+    //    setBlack->setCheckable(true);
+    //    setWhite = new QAction(tr("flatwhite"), this);
+    //    setWhite->setCheckable(true);
+    //    theme_menu->addAction(setBlue);
+    //    theme_menu->addAction(setBlack);
+    //    theme_menu->addAction(setWhite);
+    //    themeGroup = new QActionGroup(this);
+    //    themeGroup->addAction(setBlue);
+    //    themeGroup->addAction(setBlack);
+    //    themeGroup->addAction(setWhite);
     //创建主菜单,将主题和语言菜单当二级菜单加入主菜单
     title_menu = new QMenu;
     title_menu->addMenu(langue_menu);
-    title_menu->addMenu(theme_menu);
+    //    title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
     title_menu->addAction("参数检查", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
@@ -151,14 +147,15 @@ void MainUI::initForm() {
         int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (myHelper::level == 31) {
-        int index = ui->stackedWidget->addWidget(new Widget(ui->stackedWidget));
+    } else if (myHelper::level == 31) {  // Widget
+        int index = ui->stackedWidget->addWidget(new Widget(this));
         ui->stackedWidget->setCurrentIndex(index);
+        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
     //关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
-    connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
+    //    connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
     this->timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this,
@@ -281,15 +278,6 @@ void MainUI::menuClick()  //切换语言
         myHelper::SetAppValue("Locale", "zh_CN");
         myHelper::SetTranslation("zh_CN");
     }
-    //  if(setChinese->isChecked()){//判断选中了哪个语言
-    //    translator->load(":/langue/zh_cn.qm");//加载翻译文件
-    //    qApp->installTranslator(translator);//安装翻译文件
-    //    //刷新界面,因为没有Ui文件，所以要手动实现刷新,使用Ui文件只需要调用ui->retranslateUi(this)即可
-    //    retranslateUI();
-    //  }else if(setEnglish->isChecked()){
-    //    qApp->removeTranslator(translator);
-    //    retranslateUI();
-    //  }
 }
 
 void MainUI::changeTheme()  //切换主题

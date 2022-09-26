@@ -606,12 +606,17 @@ void Widget::flushData() {
         SysStatus << ui->bSysErr << ui->bSysAlm << ui->bSysFull << ui->bSysEmpty << ui->bSysInit << ui->bSysCommErr
                   << ui->bSysBalance << ui->bSysCharge << ui->bSysDischarge << ui->bSysStop << ui->bSys10 << ui->bSys11
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
+        QStringList textList;
+        textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("通信故障")
+                 << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
+                 << tr("BMU拨码") << tr("BMU故障") << tr("并网");
         foreach (QLabel* Label, SysStatus) {
             try {
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
+                Label->setText(textList.at(SysStatus.indexOf(Label)));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -642,12 +647,16 @@ void Widget::flushData() {
         SysStatus << ui->bSysErr_2 << ui->bSysAlm_2 << ui->bSysFull_2 << ui->bSysEmpty_2 << ui->bSysInit_2
                   << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
+        QStringList textList;
+        textList << tr("IO解锁") << tr("绝缘使能") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("")
+                 << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         foreach (QLabel* Label, SysStatus) {
             try {
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
+                Label->setText(textList.at(SysStatus.indexOf(Label)));
                 //                if (SysStatus.indexOf(Label) > 2) {
                 //                    Label->setHidden(true);
                 //                }
@@ -742,12 +751,17 @@ void Widget::flushData() {
         StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5 << ui->bDI6 << ui->bDI7
                    << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11 << ui->bDI12 << ui->bDI13 << ui->bDI14
                    << ui->bDI15;
+        QStringList textList;
+        textList << tr("QF状态") << tr("KM+状态") << tr("KM-状态") << tr("KMR状态") << tr("故障输入") << tr("主从状态")
+                 << tr("备用7") << tr("备用8") << tr("备用9") << tr("备用10") << tr("备用11") << tr("备用12")
+                 << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
             try {
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
+                Label->setText(textList.at(StatusList.indexOf(Label)));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -760,6 +774,10 @@ void Widget::flushData() {
         QList<QCheckBox*> RadioList;
         RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
                   << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+        QStringList textList;
+        textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
+                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇开启")
+                 << tr("备用12") << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
         foreach (QCheckBox* rb, RadioList) {
             try {
                 bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
@@ -768,6 +786,8 @@ void Widget::flushData() {
                 rb->blockSignals(true);
                 rb->setChecked(bit);
                 rb->blockSignals(false);
+                rb->setText(textList.at(RadioList.indexOf(rb)));
+
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -1370,8 +1390,4 @@ bool Widget::load_config() {
     return true;
 }
 
-void Widget::on_spinBoxPort_valueChanged(int port)
-{
-    settings->setValue("global/target_port", port);
-}
-
+void Widget::on_spinBoxPort_valueChanged(int port) { settings->setValue("global/target_port", port); }

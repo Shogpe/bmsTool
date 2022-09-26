@@ -7,10 +7,10 @@
 #include <QtGlobal>
 #include <QtXml>
 #include "Toast.h"
+#include "mb_cmu.h"
 #include "myhelper.h"
 #include "socImporter.h"
 #include "ui_scan_settings.h"
-#include "mb_cmu.h"
 void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     QStringList ip_list = ip.split(":");
     int port = 502;
@@ -242,7 +242,7 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
         }
         for (int i = 0; i < target_ips.size(); i++) {
             QThread* thread = new QThread();
-            testWorker* task = new testWorker(target_ips.at(i), this->m_setMap);
+            testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 2);
             task->moveToThread(thread);
 
             connect(thread, &QThread::started, task, &testWorker::doWork);
@@ -433,9 +433,9 @@ void scan_settings::uiInit() {
     update_menu->addAction("BMU拨码解锁", this, &scan_settings::btnCtrlMenu);
     ui->btnCtrl->setMenu(update_menu);
 
-    QString ipRange = QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange","192.168.1.121-192.168.1.128").toString();
+    QString ipRange =
+        QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange", "192.168.1.121-192.168.1.128").toString();
     ui->connectIP->setText(ipRange);
-
 }
 void scan_settings::loadXml() {
     // 从xml加载配置
@@ -560,8 +560,6 @@ void scan_settings::btnCtrlMenu() {
     }
 }
 
-void scan_settings::on_connectIP_editingFinished()
-{
-    QSettings("config.ini", QSettings::IniFormat).setValue("SCAN/iprange",ui->connectIP->text());
+void scan_settings::on_connectIP_editingFinished() {
+    QSettings("config.ini", QSettings::IniFormat).setValue("SCAN/iprange", ui->connectIP->text());
 }
-

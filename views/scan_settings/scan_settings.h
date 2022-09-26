@@ -194,17 +194,13 @@ class testWorker : public QObject {
     void workFinished(int state, QString msg);
    public slots:
     void doWork() {
+        qDebug() << m_mode;
         switch (m_mode) {
             case 1:
                 this->doSetData(m_ip, m_setMap);
                 break;
             case 2:
                 this->doTest(m_ip, m_setMap);
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                doCommand(m_ip, m_mode);
                 break;
             default:
                 doCommand(m_ip, m_mode);

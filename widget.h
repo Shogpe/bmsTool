@@ -44,7 +44,7 @@ class Widget : public QWidget {
    private slots:
     void timerUpDate();
     void valueChange();
-    void btn_released();
+    void sendCommand();
     void btn_contrl();
     void stateChanged();
     void checkChanged();

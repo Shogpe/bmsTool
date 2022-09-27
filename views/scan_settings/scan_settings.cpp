@@ -555,8 +555,8 @@ void scan_settings::btnCtrlMenu() {
             qDebug() << i << state << msg;
             m_result_model->updateData(i, msg);
         });
-
         thread->start();
+        myHelper::Sleep(500);
     }
 }
 

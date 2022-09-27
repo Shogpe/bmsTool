@@ -33,12 +33,13 @@ void AppInit::start() {
     //        return;
 //    }
 //    m_download->deleteLater();
-    QLocale locale;
-    QString default_locale = (locale.language() != QLocale::Chinese) ? "en_US" : "zh_CN";
-    QString setLocale = myHelper::GetAppValue("locale", default_locale).toString();
 
-    qDebug() << setLocale;
-    myHelper::SetTranslation(setLocale);
+//    QLocale locale;
+//    QString default_locale = (locale.language() != QLocale::Chinese) ? "en_US" : "zh_CN";
+//    QString setLocale = myHelper::GetAppValue("locale", default_locale).toString();
+
+//    qDebug() << setLocale;
+//    myHelper::SetTranslation(setLocale);
     updateCheck(url1);
 }
 

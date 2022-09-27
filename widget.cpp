@@ -112,7 +112,7 @@ Widget::Widget(QWidget* parent) : QWidget(parent), ui(new Ui::Widget) {
             });
     QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
     foreach (QPushButton* btn, btns) {
-        connect(btn, &QPushButton::released, this, &Widget::btn_released, Qt::UniqueConnection);
+        connect(btn, &QPushButton::released, this, &Widget::sendCommand, Qt::UniqueConnection);
     }
     QList<QCheckBox*> chkboxs = ui->G_FuncMask->findChildren<QCheckBox*>();
     foreach (QCheckBox* chkbox, chkboxs) {
@@ -366,6 +366,15 @@ void Widget::uiInit() {
     } else {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), false);
     }
+
+    // 按钮
+    QMenu* rebootMenu = new QMenu(this);
+    rebootMenu->addAction(tr("重启CMU"), this, &Widget::sendCommand);
+    rebootMenu->actions().constLast()->setObjectName("btnRebootCMU");
+    rebootMenu->addAction(tr("重启BMU"), this, &Widget::sendCommand);
+    rebootMenu->actions().constLast()->setObjectName("btnRebootBMU");
+    ui->btnReboot->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->btnReboot->setMenu(rebootMenu);
 }
 int Widget::setValue(string name, double dval) {
     map<string, NodeReg>::iterator iter1;
@@ -456,6 +465,7 @@ void Widget::timerUpDate() {
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
+
 void Widget::flushData() {
     //一定要固定宽度，否则刷新很慢
     if (mycmu == nullptr) return;
@@ -467,7 +477,12 @@ void Widget::flushData() {
     uint32_t comm_status1 = mycmu->tab_data.at(mycmu->name_map["sysComm1"].index).sysData.val.f64;
     uint32_t comm_status2 = mycmu->tab_data.at(mycmu->name_map["sysComm2"].index).sysData.val.f64;
     uint64_t comm_status = ((uint64_t)comm_status2 << 32) | comm_status1;
-    ui->CommStatus->setText(QString(tr("通信状态: %1")).arg(comm_status));
+    QString str2 = QString(tr("通信状态2: %1,%2,%3,%4"))
+                       .arg(comm_status2 >> 24 & 0xFF, 8, 2, QChar('0'))
+                       .arg(comm_status2 >> 16 & 0xFF, 8, 2, QChar('0'))
+                       .arg(comm_status2 >> 8 & 0xFF, 8, 2, QChar('0'))
+                       .arg(comm_status2 & 0xFF, 8, 2, QChar('0'));
+    ui->CommStatus->setText(str2);
 
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
@@ -607,7 +622,7 @@ void Widget::flushData() {
                   << ui->bSysBalance << ui->bSysCharge << ui->bSysDischarge << ui->bSysStop << ui->bSys10 << ui->bSys11
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
         QStringList textList;
-        textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("通信故障")
+        textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
                  << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
                  << tr("BMU拨码") << tr("BMU故障") << tr("并网");
         foreach (QLabel* Label, SysStatus) {
@@ -877,7 +892,8 @@ static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_F
                                       {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
                                       {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
                                       {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
-                                      {"btnReboot", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnRebootCMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
+                                      {"btnRebootBMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT_BMU}},
                                       {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
                                       {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
                                       {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
@@ -899,10 +915,10 @@ static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_F
                                       {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
                                       {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}}};
 
-void Widget::btn_released() {
+void Widget::sendCommand() {
     TMsgData MsgCmd;
     uint16_t val[3];
-    QPushButton* b = reinterpret_cast<QPushButton*>(sender());
+    QWidget* b = reinterpret_cast<QWidget*>(sender());
     QString name = b->objectName();
     map<QString, mb_cmd>::iterator iter1;
     iter1 = btnMap.find(name);
@@ -1039,6 +1055,14 @@ void Widget::btn_released() {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {65288, 0xAA55};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        }
+    } else if (name == "btnBalClrErr") {
+        if (myHelper::ShowMessageBoxQuesion(tr("是否清除均衡故障？")) == QDialog::Accepted) {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {65289, 0xAA55};  // 0xFF09
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
             if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
         }

@@ -484,7 +484,7 @@ void mb_cmu::run() {
         }
         //状态机
         if (err_counter++ >= 10) {
-            qDebug() << "reconnect..." << time(NULL);
+            qDebug() << "reconnect ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;;
             err_counter = 0;
             state = SM_CONNECT;
         }
@@ -496,7 +496,6 @@ void mb_cmu::run() {
                             ReadCapData();
                         }
                         counter++;
-                        //                        qDebug() << "counter" << counter;
                     }
                     state = SM_INIT;
                     Dump2Csv();
@@ -511,7 +510,7 @@ void mb_cmu::run() {
                 if (cmu) rc = modbus_connect(this->cmu);
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
-                qDebug() << "ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
+
                 counter = 0;
                 break;
             }

@@ -1,16 +1,19 @@
 #include "scan_settings.h"
 #include <QDateTime>
+#include <QHostAddress>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QNetworkInterface>
 #include <QTimer>
 #include <QtDebug>
+#include <QtEndian>
 #include <QtGlobal>
 #include <QtXml>
 #include "Toast.h"
 #include "mb_cmu.h"
 #include "myhelper.h"
-#include "socImporter.h"
 #include "ui_scan_settings.h"
+#include "Qtftp.h"
 void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     QStringList ip_list = ip.split(":");
     int port = 502;
@@ -65,6 +68,37 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     m_mbtcp->deleteLater();
     m_mbtcp = nullptr;
 }
+void testWorker::doSetIp(QString ip, QString serverIp) {
+    QStringList ip_list = ip.split(":");
+    int port = 502;
+    if (ip_list.size() > 1) {
+        port = ip_list.at(1).toInt();
+    }
+    quint32 ip_addr = QHostAddress(serverIp).toIPv4Address();
+    mb_tcp* m_mbtcp = new mb_tcp(ip_list.at(0), port);
+    if (m_mbtcp->Connect() == -1) {
+        m_mbtcp->close();
+        m_mbtcp->deleteLater();
+        m_mbtcp = nullptr;
+        emit workFinished(0, "Connect Err");
+        return;
+    }
+    int ok_count = 0;
+    ip_addr = qFromBigEndian(ip_addr);  // 转换为小端模式
+    if (m_mbtcp->write_ao(5420, 2, (uint16_t*)&ip_addr) > 0) {
+        ok_count++;
+    } else {
+        qWarning() << QString("set serverIp %1 failed.").arg(serverIp);
+    }
+    if (ok_count == 1) {
+        emit workFinished(1, "Set OK");
+    } else {
+        emit workFinished(0, "Set FAIL");
+    }
+    m_mbtcp->close();
+    m_mbtcp->deleteLater();
+    m_mbtcp = nullptr;
+}
 void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
     QStringList ip_list = ip.split(":");
     int port = 502;
@@ -91,9 +125,6 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         node_table[i].index = tab_config.size();
         tab_config.push_back(node_table[i]);
     }
-    //    m_mbtcp->init_config(tab_config);
-
-    //    vector<ST_NODE_DATA> data = m_mbtcp->ReadALL();
     int ok_count = 0;
     for (uint i = 0; i < tab_config.size(); i++) {
         if (setMap.contains(tab_config.at(i).name)) {
@@ -277,11 +308,14 @@ void scan_settings::setBusy(bool is_busy) {
         ui->btnWrite->setDisabled(true);
         ui->btnTest->setDisabled(true);
         ui->btnCtrl->setDisabled(true);
+        ui->btnSetIp->setDisabled(true);
+
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     } else {
         ui->btnTest->setDisabled(false);
         ui->btnWrite->setDisabled(false);
         ui->btnCtrl->setDisabled(false);
+        ui->btnSetIp->setDisabled(false);
         QApplication::restoreOverrideCursor();
     }
 }
@@ -371,7 +405,7 @@ void scan_settings::uiInit() {
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
-    this->setWindowTitle("BMS参数检查");
+    this->setWindowTitle("BMS维护工具");
     m_para_model = new ParaModel(this);
     m_result_model = new ParaModel(this);
     QTableView* tableView = ui->stdSetting;
@@ -433,10 +467,18 @@ void scan_settings::uiInit() {
     update_menu->addAction("BMU拨码解锁", this, &scan_settings::btnCtrlMenu);
     ui->btnCtrl->setMenu(update_menu);
 
+    QMenu* btn_menu = new QMenu;
+    btn_menu->addAction("设置本机IP", this, &scan_settings::btnCtrlMenu);
+    btn_menu->actions().constLast()->setObjectName("setServerIp");
+    btn_menu->addAction("恢复默认IP", this, &scan_settings::btnCtrlMenu);
+    btn_menu->actions().constLast()->setObjectName("resetServerIp");
+    ui->btnSetIp->setMenu(btn_menu);
+    //    ui->btnSetIp->setHidden(true);
     QString ipRange =
         QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange", "192.168.1.121-192.168.1.128").toString();
     ui->connectIP->setText(ipRange);
 }
+
 void scan_settings::loadXml() {
     // 从xml加载配置
     QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
@@ -515,6 +557,26 @@ void scan_settings::on_btnWrite_released() {
 void scan_settings::btnCtrlMenu() {
     QAction* b = (QAction*)sender();
     uint16_t val = 0;
+    QString ip_addr;
+    if (b->objectName() == "setServerIp") {
+        QList<QHostAddress> list = QNetworkInterface::allAddresses();
+        foreach (QHostAddress address, list) {
+            // qDebug()<<address.toString();
+            if (address.protocol() == QAbstractSocket::IPv4Protocol) {
+                if (address.toString().startsWith("192.168.1.")) {
+                    qDebug() << address.toString();
+                    val = CMD_SetIp;
+                    ip_addr = address.toString();
+                    break;
+                }
+            }
+        }
+        if (!val) return;
+    } else if (b->objectName() == "resetServerIp") {
+        val = CMD_SetIp;
+        ip_addr = "192.168.1.230";
+        if (!val) return;
+    }
     auto actList = ui->btnCtrl->menu()->actions();
     for (int i = 0; i < actList.size(); i++) {
         QAction* action = actList.at(i);
@@ -537,6 +599,7 @@ void scan_settings::btnCtrlMenu() {
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, val);
+        task->setServerIp(ip_addr);
         task->moveToThread(thread);
 
         connect(thread, &QThread::started, task, &testWorker::doWork);
@@ -563,3 +626,10 @@ void scan_settings::btnCtrlMenu() {
 void scan_settings::on_connectIP_editingFinished() {
     QSettings("config.ini", QSettings::IniFormat).setValue("SCAN/iprange", ui->connectIP->text());
 }
+
+void scan_settings::on_btnUpload_released()
+{
+    QTftp qtftp;
+    qtftp.put(path, serverip->text());
+}
+

@@ -293,22 +293,6 @@ int mb_cmu::Init() {
     memset(&sys_para, 0, sizeof(sys_para));
     QList<db_manager::ST_DB_NODE> nodes_table;
     db_manager::Instance()->getNode(nodes_table, protocal_ver);
-    //    if (protocal_ver == CMUV2) {
-    //        this->node_table = cmu_v2_config;
-    //        this->node_table_size = cmu_v2_config_len;
-    //    } else if (protocal_ver == CMUV3) {
-    //        this->node_table = cmu_v3_config;
-    //        this->node_table_size = cmu_v3_config_len;
-    //    } else if (protocal_ver == CMUV4) {
-    //        this->node_table = cmu_v4_config;
-    //        this->node_table_size = cmu_v4_config_len;
-    //    } else if (protocal_ver == CMUV4_1) {
-    //        this->node_table = cmu_v4_1_config;
-    //        this->node_table_size = cmu_v4_1_config_len;
-    //    } else {
-    //        this->node_table = cmu_v1_config;
-    //        this->node_table_size = cmu_v1_config_len;
-    //    }
     name_map.clear();
     qDebug() << nodes_table.size();
     for (int i = 0; i < nodes_table.size(); i++) {

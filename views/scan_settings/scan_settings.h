@@ -39,8 +39,8 @@ Q_DECLARE_METATYPE(ST_PARA)
 #define TP_STR 99  // 显示name_cn
 
 enum CMD_TYPE {
-    CMD_CHECK_SET = 1,
-    CMD_SEND_SET,
+    CMD_SEND_SET = 1,
+    CMD_CHECK_SET,
     CMD_UP_CMU,
     CMD_UP_BMU,
     CMD_UP_INS,
@@ -48,6 +48,7 @@ enum CMD_TYPE {
     CMD_RD_VER_INS,
     CMD_LOCK_BMU,
     CMD_UNLOCK_BMU,
+    CMD_SetIp,
 };
 //只读单元格
 class ReadOnlyDelegate : public QItemDelegate {
@@ -185,9 +186,12 @@ class testWorker : public QObject {
     ~testWorker() {}
 
    public:
+    void setServerIp(QString ServerIp) { m_ServerIp = ServerIp; }
+
    private:
     QMutex m_mutex;
     QString m_ip;
+    QString m_ServerIp;
     int m_mode;
     QMap<QString, double> m_setMap;
    signals:
@@ -196,11 +200,14 @@ class testWorker : public QObject {
     void doWork() {
         qDebug() << m_mode;
         switch (m_mode) {
-            case 1:
+            case CMD_SEND_SET:
                 this->doSetData(m_ip, m_setMap);
                 break;
-            case 2:
+            case CMD_CHECK_SET:
                 this->doTest(m_ip, m_setMap);
+                break;
+            case CMD_SetIp:
+                this->doSetIp(m_ip, m_ServerIp);
                 break;
             default:
                 doCommand(m_ip, m_mode);
@@ -210,6 +217,7 @@ class testWorker : public QObject {
     void doTest(QString ip, const QMap<QString, double> setMap);
     void doSetData(QString ip, const QMap<QString, double> setMap);
     void doCommand(QString ip, uint command);
+    void doSetIp(QString ip, QString serverIp);
 };
 class scan_settings : public QWidget {
     Q_OBJECT
@@ -238,6 +246,7 @@ class scan_settings : public QWidget {
     void on_btnWrite_released();
     void btnCtrlMenu();
     void on_connectIP_editingFinished();
+    void on_btnUpload_released();
 };
 
 #endif  //_SCAN_SETTING_H

@@ -4,6 +4,7 @@
 #include <QTextCodec>
 #include "appinit.h"
 #include "db_manager.h"
+#include "firmwareDialog.h"
 #include "logindialog.h"
 #include "logmanager.h"
 #include "main_ui.h"
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]) {
     }
     dlg->deleteLater();
     MainUI w;
-    //    scan_settings w;
+    //    firmwareDialog w;
     w.show();
     int ret = a.exec();
     if (ret == EXIT_CODE_REBOOT) {

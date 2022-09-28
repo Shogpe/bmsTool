@@ -5,13 +5,15 @@
 #include "cmu4u.h"
 #include "iconhelper.h"
 //#include "models/frmcustomplot/frmsimple.h"
+#include "cmu_ip.h"
+#include "scan_settings.h"
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-#include "cmu_ip.h"
-#include "scan_settings.h"
 #include "widget.h"
 //#include "rtu_tool.h"
+#include "firmwareDialog.h"
+
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -132,7 +134,8 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
-    title_menu->addAction("参数检查", this, &MainUI::menuClick);
+    title_menu->addAction("维护工具", this, &MainUI::menuClick);
+    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
@@ -266,10 +269,12 @@ void MainUI::menuClick()  //切换语言
         //        view->setWindowFlags(Qt::WindowCloseButtonHint);
         //        view->show();
         Toast::showTip("记录文件转换完毕。", nullptr);
-    } else if (b->text() == "参数检查") {
+    } else if (b->text() == "维护工具") {
         scan_settings* w = new scan_settings(nullptr);
         w->show();
-
+    } else if (b->text() == "固件查看") {
+        firmwareDialog* w = new firmwareDialog(nullptr);
+        w->show();
     } else if (b->text() == "English") {
         qDebug() << "set eng";
         myHelper::SetAppValue("Locale", "en_US");

@@ -306,7 +306,7 @@ class SOEModel : public QAbstractTableModel {
     }
     QString getFormatData(uint64_t raw, QString rule, QString key = "", QString code = "") const {
         ST_FORMAT format = getFormat(rule);
-        qDebug() << rule << format.type << format.prefix << format.factor;
+//        qDebug() << rule << format.type << format.prefix << format.factor;
         switch (format.type) {
             case SOE_I16:
                 return QString("%1:%2%3, ")

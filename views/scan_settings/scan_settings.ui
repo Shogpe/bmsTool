@@ -35,17 +35,20 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>2</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_3" native="true">
@@ -94,8 +97,11 @@
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="toolTip">
+         <string>检查定值是否和加载定值一致。请先加载定值</string>
+        </property>
         <property name="text">
-         <string>测试</string>
+         <string>检查定值</string>
         </property>
        </widget>
       </item>
@@ -104,15 +110,18 @@
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="toolTip">
+         <string>下发定值至下位机。请先加载定值</string>
+        </property>
         <property name="text">
-         <string>下发</string>
+         <string>下发定值</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnLoadXml">
         <property name="text">
-         <string>加载配置</string>
+         <string>加载定值</string>
         </property>
        </widget>
       </item>
@@ -134,6 +143,10 @@
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="toolTip">
+         <string>上传固件文件至升级服务器
+如上传失败，请使用本地升级服务器</string>
+        </property>
         <property name="text">
          <string>上传固件</string>
         </property>
@@ -145,7 +158,17 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>设置本机IP</string>
+         <string>设置服务IP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnFwCheck">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>固件校验</string>
         </property>
        </widget>
       </item>
@@ -168,13 +191,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
-      <number>9</number>
+      <number>6</number>
      </property>
      <property name="topMargin">
       <number>0</number>
      </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
      <property name="bottomMargin">
-      <number>9</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QTableView" name="stdSetting">
@@ -197,6 +223,31 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="srvStatus">
+        <property name="text">
+         <string>服务器在线</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

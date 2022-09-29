@@ -8,8 +8,10 @@
 #include <QSettings>
 #include <QStandardItemModel>
 #include <QTableWidget>
+#include <QTimer>
 #include <QWidget>
 #include <iostream>
+#include "Qtftp.h"
 #include "mb_tcp.h"
 using namespace std;
 
@@ -228,18 +230,21 @@ class scan_settings : public QWidget {
     void loadXml();
     void uiInit();
     mb_tcp *m_mbtcp;
-
+    QTimer *m_timer;
+    QThread m_thread;
    private:
     Ui::scan_settings *ui;
     ParaModel *m_para_model;
     ParaModel *m_result_model;
     QMap<QString, double> m_setMap;
-    QThread m_thread;
     testWorker m_worker;
     QMutex m_mutex;
     int target_count;
     QStringList target_ips;
     QList<ST_PARA> target_result;
+
+    Qtftp qtftp;
+
     void ip_analyze();
     void setBusy(bool is_busy);
    private slots:
@@ -247,6 +252,10 @@ class scan_settings : public QWidget {
     void btnCtrlMenu();
     void on_connectIP_editingFinished();
     void on_btnUpload_released();
+    void on_btnTest_released();
+    void on_btnFwCheck_released();
+    //定时检查
+    void checkServer();
 };
 
 #endif  //_SCAN_SETTING_H

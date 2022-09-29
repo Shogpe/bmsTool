@@ -1,4 +1,5 @@
 #include "scan_settings.h"
+#include <QtNetwork/QNetworkInterface.h>
 #include <QDateTime>
 #include <QHostAddress>
 #include <QLineEdit>
@@ -10,10 +11,10 @@
 #include <QtGlobal>
 #include <QtXml>
 #include "Toast.h"
+#include "firmwareDialog.h"
 #include "mb_cmu.h"
 #include "myhelper.h"
 #include "ui_scan_settings.h"
-#include "Qtftp.h"
 void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     QStringList ip_list = ip.split(":");
     int port = 502;
@@ -265,43 +266,74 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     this->setAttribute(Qt::WA_DeleteOnClose);
     uiInit();
     m_mbtcp = nullptr;
+    m_timer = new QTimer();
     //
-    connect(ui->btnTest, &QPushButton::released, this, [=]() {
-        ip_analyze();
-        if (target_ips.size()) {
-            setBusy(true);
-        }
-        for (int i = 0; i < target_ips.size(); i++) {
-            QThread* thread = new QThread();
-            testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 2);
-            task->moveToThread(thread);
-
-            connect(thread, &QThread::started, task, &testWorker::doWork);
-            connect(task, &testWorker::workFinished, thread, &QThread::quit);
-            // automatically delete thread and task object when work is done:
-            connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
-            connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-            connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
-                m_mutex.lock();
-                target_count++;
-                m_mutex.unlock();
-                if (target_count == target_ips.size()) {
-                    setBusy(false);
-                    Toast::showTip("测试完毕");
-                }
-                qDebug() << i << state << msg;
-                m_result_model->updateData(i, msg);
-            });
-
-            thread->start();
+    connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
+    connect(&qtftp, &Qtftp::fileSent, this, [this](int ret, QString file) {
+        qDebug() << "文件:" << file << ((ret == 0) ? " 传输成功" : " 传输失败");
+        auto list = m_result_model->GetData();
+        for (int i = 0; i < list.size(); i++) {
+            if (file == QString::fromStdString(list.at(i).name))
+                m_result_model->updateData(i, (ret == 0) ? "传输成功" : "传输失败");
         }
     });
-    connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
+    ui->srvStatus->setText("");
+
+    m_timer->setInterval(1000);
+    connect(&m_thread, &QThread::started, this->m_timer, static_cast<void (QTimer::*)()>(&QTimer::start),
+            Qt::DirectConnection);
+    //    connect(&m_thread, &QThread::started, this, &scan_settings::checkServer, Qt::DirectConnection);
+    connect(m_timer, &QTimer::timeout, this, &scan_settings::checkServer, Qt::DirectConnection);
+    m_timer->moveToThread(&m_thread);
+    m_thread.start();
 }
 
 scan_settings::~scan_settings() {
     qDebug() << "delete";
+    if (m_timer) m_timer->deleteLater();
+    m_thread.quit();
+    m_thread.wait();
+    m_thread.deleteLater();
     delete ui;
+}
+void scan_settings::checkServer() {
+    m_timer->stop();
+    QString ipAddr;
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+    foreach (QHostAddress address, list) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol) {
+            ipAddr = address.toString();
+            if (ipAddr != "192.168.1.230") continue;
+            break;
+        }
+    }
+    if (ipAddr != "192.168.1.230") {
+        QString network_cmd = "ping 192.168.1.230 -w 500 -n 1";
+        QString result;
+        QProcess network_process;            //不要加this
+        network_process.start(network_cmd);  //调用ping 指令
+        network_process.waitForFinished();   //等待指令执行完毕
+        result = network_process.readAll();  //获取指令执行结果
+        // qDebug() << result;
+        if (result.contains(QString("TTL=")) || result.contains(QString("ttl=")))  //若包含TTL=字符串则认为网络在线
+        {
+            ui->srvStatus->setText("远程服务在线");
+            ui->srvStatus->setStyleSheet("color:green;");
+            ui->srvStatus->setToolTip("可以上传固件至远程服务器");
+            ui->btnUpload->setDisabled(false);
+        } else {
+            ui->srvStatus->setText("远程服务离线");
+            ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
+            ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
+            ui->btnUpload->setDisabled(true);
+        }
+    } else {
+        ui->srvStatus->setText("本机服务在线");
+        ui->srvStatus->setStyleSheet("color:green;");
+        ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
+        ui->btnUpload->setDisabled(true);
+    }
+    m_timer->start(5000);
 }
 void scan_settings::setBusy(bool is_busy) {
     if (is_busy) {
@@ -468,12 +500,12 @@ void scan_settings::uiInit() {
     ui->btnCtrl->setMenu(update_menu);
 
     QMenu* btn_menu = new QMenu;
-    btn_menu->addAction("设置本机IP", this, &scan_settings::btnCtrlMenu);
+    btn_menu->addAction("设置服务IP为本地", this, &scan_settings::btnCtrlMenu);
     btn_menu->actions().constLast()->setObjectName("setServerIp");
-    btn_menu->addAction("恢复默认IP", this, &scan_settings::btnCtrlMenu);
+    btn_menu->addAction("恢复默认服务IP", this, &scan_settings::btnCtrlMenu);
     btn_menu->actions().constLast()->setObjectName("resetServerIp");
     ui->btnSetIp->setMenu(btn_menu);
-    //    ui->btnSetIp->setHidden(true);
+    ui->btnSetIp->setHidden(true);
     QString ipRange =
         QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange", "192.168.1.121-192.168.1.128").toString();
     ui->connectIP->setText(ipRange);
@@ -627,9 +659,75 @@ void scan_settings::on_connectIP_editingFinished() {
     QSettings("config.ini", QSettings::IniFormat).setValue("SCAN/iprange", ui->connectIP->text());
 }
 
-void scan_settings::on_btnUpload_released()
-{
-    QTftp qtftp;
-    qtftp.put(path, serverip->text());
+void scan_settings::on_btnUpload_released() {
+    qDebug() << qtftp.isRunning();
+    QStringList firmware_files;
+    const QString ipAddr = "192.168.1.230";
+    firmware_files << "CMU"
+                   << "CMUV2"
+                   << "bms"
+                   << "bmu"
+                   << "BMU"
+                   << "INR"
+                   << "BTB"
+                   << "BTC";
+    QList<ST_PARA> plist;
+    for (int i = 0; i < firmware_files.size(); i++) {
+        QString path = "firmware/" + firmware_files.at(i);
+        if (QFileInfo(path).isFile()) {
+            // 区分大小写
+            QDir parent_dir = QFileInfo(path).dir();
+            if (!parent_dir.entryList().contains(firmware_files.at(i), Qt::CaseSensitive)) continue;
+            qtftp.put(path, ipAddr);
+            ST_PARA p;
+            p.index = i;
+            p.name = firmware_files.at(i).toStdString();
+            p.name_cn = "传输中...";
+            p.type = TP_STR;
+            plist << p;
+        }
+    }
+    ui->testResult->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->testResult->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    m_result_model->updateData(plist);
+    ui->testResult->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->testResult->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+/**
+ * @brief 检查定值
+ */
+void scan_settings::on_btnTest_released() {
+    ip_analyze();
+    if (target_ips.size()) {
+        setBusy(true);
+    }
+    for (int i = 0; i < target_ips.size(); i++) {
+        QThread* thread = new QThread();
+        testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 2);
+        task->moveToThread(thread);
+
+        connect(thread, &QThread::started, task, &testWorker::doWork);
+        connect(task, &testWorker::workFinished, thread, &QThread::quit);
+        // automatically delete thread and task object when work is done:
+        connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
+            m_mutex.lock();
+            target_count++;
+            m_mutex.unlock();
+            if (target_count == target_ips.size()) {
+                setBusy(false);
+                Toast::showTip("测试完毕");
+            }
+            qDebug() << i << state << msg;
+            m_result_model->updateData(i, msg);
+        });
+
+        thread->start();
+    }
 }
 
+void scan_settings::on_btnFwCheck_released() {
+    firmwareDialog* w = new firmwareDialog(nullptr);
+    w->exec();
+}

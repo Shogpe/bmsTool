@@ -44,7 +44,8 @@ void MainUI::initForm() {
     this->setProperty("form", true);
     //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
     //                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+    this->setWindowFlags(Qt::Window |Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+//    this->setWindowFlags(Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
@@ -135,7 +136,7 @@ void MainUI::initForm() {
     //    title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
     title_menu->addAction("维护工具", this, &MainUI::menuClick);
-    title_menu->addAction("固件查看", this, &MainUI::menuClick);
+//    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);

@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD/
 greaterThan(QT_MAJOR_VERSION, 4): include($$PWD/../3rdParty/FramelessHelper/FramelessHelper.pri)
+#include($$PWD/../3rdParty/framelesshelper-2.2.1/qmake/widgets.pri)
 include($$PWD/../3rdParty/CuteLogger/CuteLogger.pri)
 include($$PWD/../3rdParty/lua/lua.pri)
 include($$PWD/../3rdParty/libmodbus/libmodbus.pri)

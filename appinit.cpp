@@ -31,15 +31,15 @@ void AppInit::start() {
     //    DownLoadManager *m_download = new DownLoadManager();
     //    if (!m_download->syncDownloadFile(url1, "bms_tool.json")) {
     //        return;
-//    }
-//    m_download->deleteLater();
+    //    }
+    //    m_download->deleteLater();
 
-//    QLocale locale;
-//    QString default_locale = (locale.language() != QLocale::Chinese) ? "en_US" : "zh_CN";
-//    QString setLocale = myHelper::GetAppValue("locale", default_locale).toString();
+    //    QLocale locale;
+    //    QString default_locale = (locale.language() != QLocale::Chinese) ? "en_US" : "zh_CN";
+    //    QString setLocale = myHelper::GetAppValue("locale", default_locale).toString();
 
-//    qDebug() << setLocale;
-//    myHelper::SetTranslation(setLocale);
+    //    qDebug() << setLocale;
+    //    myHelper::SetTranslation(setLocale);
     updateCheck(url1);
 }
 
@@ -83,7 +83,7 @@ static int CompareVersion(QString strVer1, QString strVer2) {
 void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
 {
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "request Error";
+        qWarning() << "upgrade Error";
         // 请求错误时二次检查
         if (reply->request().url().toString() == url2) return;
         updateCheck(url2);
@@ -108,7 +108,7 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
                 if (type == 1) {
                     url = QString(QByteArray::fromBase64((url + "=").toUtf8()));
                 }
-                qDebug() << VER_FILEVERSION_STR << "===>" << version << CompareVersion(VER_FILEVERSION_STR, version);
+                qWarning() << VER_FILEVERSION_STR << "===>" << version << CompareVersion(VER_FILEVERSION_STR, version);
                 if (CompareVersion(VER_FILEVERSION_STR, version) < 0) {
                     QMessageBox box;
                     QString warningStr =
@@ -146,8 +146,8 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
 }
 
 void AppInit::updateCheck(QString url) {
-    //    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
-    //             << QSslSocket::sslLibraryVersionString();
+    qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
+             << QSslSocket::sslLibraryVersionString();
     QSslConfiguration config;
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
     config.setProtocol(QSsl::TlsV1SslV3);

@@ -289,8 +289,12 @@ void Widget::uiInit() {
         hdr_list.append(tr("温度断线"));
         hdr_list.append(tr("运行状态"));
         hdr_list.append(tr("故障状态"));
+        if (this->mycmu->GetProtocalVer() >= CMUV3) {
+            hdr_list.append(tr("CAN错误数"));
+        }
         hdr_list.append(tr("版本号"));
         ui->BalnceStart->blockSignals(true);
+        ui->BalnceStart->setObjectName("BalnceStart");
         ui->BalnceStart->setPrefix("均衡启动阈值(V) ");
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(6);
@@ -322,6 +326,7 @@ void Widget::uiInit() {
         hdr_list.append(tr("版本号"));
         // 特殊处理
         ui->BalnceStart->blockSignals(true);
+        ui->BalnceStart->setObjectName("BalanceConfig");
         ui->BalnceStart->setPrefix("均衡配置 ");
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
@@ -549,6 +554,7 @@ void Widget::flushData() {
             item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
+        } else if (mycmu->GetProtocalVer() >= CMUV3) {
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
@@ -663,7 +669,7 @@ void Widget::flushData() {
                   << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         QStringList textList;
-        textList << tr("IO解锁") << tr("绝缘使能") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("")
+        textList << tr("IO解锁") << tr("绝缘检测") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("")
                  << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         foreach (QLabel* Label, SysStatus) {
             try {

@@ -15,6 +15,11 @@ db_manager *db_manager::Instance() {
 
 bool db_manager::start() {
     QString file = "data.db3";
+    if (QFile(file).size() <= 4) {
+        myHelper::ShowMessageBoxError("数据库文件不存在!请联系软件提供商协助处理。");
+        abort();
+        return false;
+    }
     QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", "wxdb3");
     dbconn.setDatabaseName(file);
     dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");

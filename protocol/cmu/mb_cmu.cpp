@@ -125,13 +125,15 @@ void mb_cmu::Dump2CsvTitle() {
         data_buf << (QString("BMU%1_温度断线,").arg(i + 1));
         data_buf << (QString("BMU%1_运行状态,").arg(i + 1));
         data_buf << (QString("BMU%1_故障状态,").arg(i + 1));
+        if (protocal_ver > CMUV2) {
+            data_buf << (QString("BMU%1_CAN错误,").arg(i + 1));
+        }
         if (protocal_ver > CMUV3) {
             data_buf << (QString("BMU%1_母线电压,").arg(i + 1));
             data_buf << (QString("BMU%1_均衡电流,").arg(i + 1));
             data_buf << (QString("BMU%1_均衡故障,").arg(i + 1));
             data_buf << (QString("BMU%1_通道状态,").arg(i + 1));
             data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
-            data_buf << (QString("BMU%1_CAN错误,").arg(i + 1));
             for (int j = 0; j < config.vol_num; ++j) {
                 data_buf << (QString("BMU%1_%2充电Ah,").arg(i + 1).arg(j + 1));
                 data_buf << (QString("BMU%1_%2放电Ah,").arg(i + 1).arg(j + 1));
@@ -181,7 +183,9 @@ void mb_cmu::Dump2Csv() {
             data_buf << (QString("%1,").arg(val));
             val = this->bmu_data[i].ErrStat;
             data_buf << (QString("%1,").arg(val));
-
+            if (protocal_ver > CMUV2) {
+                data_buf << (this->bmu_data[i].CanErr) << ",";
+            }
             if (protocal_ver > CMUV3) {
                 val = this->bmu_data[i].BalU24 / 1000.0;
                 data_buf << (QString("%1,").arg(val));
@@ -190,7 +194,6 @@ void mb_cmu::Dump2Csv() {
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalErr) << ",";
                 data_buf << GetBalanceStatus(this->bmu_data[i].BalStat) << ",";
                 data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
-                data_buf << (this->bmu_data[i].CanErr) << ",";
                 for (int j = 0; j < config.vol_num; j++) {
                     data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
                     data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
@@ -432,10 +435,17 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
                 bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
             }
+            //通信计数
             reg_num = config.bmu_num * 1;
             status += ReadData(0x03, 0xA00, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
                 bmu_data[i].CanErr = *(p + i);
+            }
+        } else if (protocal_ver > CMUV2) {
+            reg_num = config.bmu_num * 2;
+            status += ReadData(0x03, 0x900, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].CanErr = *(p + i * 2 + 1);
             }
         }
     }
@@ -468,7 +478,8 @@ void mb_cmu::run() {
         }
         //状态机
         if (err_counter++ >= 10) {
-            qDebug() << "reconnect ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;;
+            qDebug() << "reconnect ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
+            ;
             err_counter = 0;
             state = SM_CONNECT;
         }

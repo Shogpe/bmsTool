@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QMessageBox>
+#include "QBreakpadHandler.h"
 #include "downloadmanager.h"
 #include "myhelper.h"
 #include "version.h"
@@ -27,6 +28,7 @@ AppInit *AppInit::Instance() {
 AppInit::AppInit(QObject *parent) : QObject(parent) {}
 
 void AppInit::start() {
+    QBreakpadInstance.setDumpPath(".");
     myHelper::SetStyle("lightblue");
     //    DownLoadManager *m_download = new DownLoadManager();
     //    if (!m_download->syncDownloadFile(url1, "bms_tool.json")) {

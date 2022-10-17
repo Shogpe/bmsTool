@@ -2,7 +2,9 @@
 #define UTILS_H
 #include <time.h>
 #define MODBUS_GET_INT32_FROM_INT16_SWAP(tab_int16, index) ((tab_int16[(index) + 1] << 16) + tab_int16[(index)])
-#define TIME_OUTOFDATE 24 * 31 * 24 * 60 * 60
+
+#define MONTH_TIME     31 * 24 * 60 * 60
+#define TIME_OUTOFDATE 10 * 12 * MONTH_TIME
 #include <QByteArray>
 time_t cvt_TIME(char const *Date);
 QByteArray gzipCompress(const QByteArray &in);

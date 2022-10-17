@@ -44,8 +44,8 @@ void MainUI::initForm() {
     this->setProperty("form", true);
     //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
     //                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
-    this->setWindowFlags(Qt::Window |Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-//    this->setWindowFlags(Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+    //    this->setWindowFlags(Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
 
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
@@ -68,7 +68,12 @@ void MainUI::initForm() {
     helper->addExcludeItem(ui->btnMenu);
     connect(ui->btnMenu_Min, &QPushButton::clicked, helper, &FramelessHelper::triggerMinimizeButtonAction);
     connect(ui->btnMenu_Max, &QPushButton::clicked, helper, &FramelessHelper::triggerMaximizeButtonAction);
-    connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
+    //    connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
+    connect(ui->btnMenu_Close, &QPushButton::clicked, this, [helper]() {
+        if (myHelper::ShowMessageBoxQuesion(tr("确定要关闭本程序吗？")) == QDialog::Accepted) {
+            helper->triggerCloseButtonAction();
+        }
+    });
 #else
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTitle->installEventFilter(this);
@@ -79,7 +84,17 @@ void MainUI::initForm() {
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
     ui->labVersion->setText(QString("battery management system v") + VER_PRODUCTVERSION_STR);
-
+    // 测试版本提示
+    const int time_tip = 31 * 24 * 60 * 60;
+    //    const int time_tip = 0;
+    if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + time_tip) &&
+        (QString(VER_PRODUCTVERSION_STR).contains(QRegExp("[a-zA-Z]")))) {
+        qDebug() << "timeout exit..";
+        myHelper::ShowMessageBoxError("本软件为测试使用，请勿长时间使用!");
+        if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + (2 * 31 * 24 * 60 * 60))) {
+            exit(0);
+        }
+    }
     QSize icoSize(32, 32);
     int icoWidth = 85;
 
@@ -135,8 +150,16 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
     title_menu->addAction("Rec转换", this, &MainUI::menuClick);
+    title_menu->actions().constLast()->setObjectName("Rec Convert");
     title_menu->addAction("维护工具", this, &MainUI::menuClick);
-//    title_menu->addAction("固件查看", this, &MainUI::menuClick);
+    title_menu->actions().constLast()->setObjectName("Maintenance Tool");
+
+    if (QFileInfo("User Manual.pdf").isFile()) {
+        title_menu->addAction("用户手册", this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("User Manual");
+    }
+
+    //    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
@@ -284,6 +307,10 @@ void MainUI::menuClick()  //切换语言
         qDebug() << "set zh";
         myHelper::SetAppValue("Locale", "zh_CN");
         myHelper::SetTranslation("zh_CN");
+    } else if (b->objectName() == "User Manual") {
+        if (!QDesktopServices::openUrl(QUrl::fromLocalFile("User Manual.pdf"))) {
+            myHelper::ShowMessageBoxError("open User Manual docment failed!Please install pdf reader.");
+        }
     }
 }
 

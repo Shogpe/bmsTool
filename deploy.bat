@@ -6,7 +6,7 @@
 :: 执行档 %{ActiveProject:Path}\deploy.bat
 @echo off
 setlocal
-set MY_PATH=D:\Qt\5.12.11\msvc2017_64\bin;C:\Qt\Tools\QtCreator\bin;D:\Program\7zip;
+set MY_PATH=D:\Qt\Qt5.15.6-Windows-x86_64-VS2017-15.9.50\bin;C:\Qt\Tools\QtCreator\bin;D:\Program\7zip;
 @echo Setting up environment for Qt usage...
 if "%~1" == "" (@echo "%PATH%") else (
 set PATH="%~1;%PATH%")
@@ -16,9 +16,10 @@ set PACK_EXE=7z.exe
 ::指定打包存储文件夹
 set RC_PATH=..\发布软件
 ::指定打包的程序
-set BIN_PATH=.\
+set BIN_PATH=.
 set BIN_NAME=%TARGET_NAME%
 set BIN_EXE=%BIN_PATH%\%BIN_NAME%.exe
+set BIN_PDB=%BIN_PATH%\%BIN_NAME%.pdb
 ::获取应用程序版本号
 for /f "delims=" %%i in ('powershell "(Get-Item -path '%BIN_EXE%').VersionInfo.ProductVersion"') do set version=%%i
 @echo %version%
@@ -26,7 +27,6 @@ for /f "delims=" %%i in ('powershell "(Get-Item -path '%BIN_EXE%').VersionInfo.P
 set OUTPUT=.\tmp
 set BIN_OUT_PAK=%RC_PATH%\%BIN_NAME%_%version%.7z
 @md %OUTPUT%
-
 ::for /f "delims=" %%A in ('dir /b *.exe') do (
 ::@windeployqt %%A --dir %OUTPUT% --release --no-angle --no-opengl-sw --no-translations 
 ::@copy %%A %OUTPUT% /Y
@@ -45,4 +45,5 @@ set BIN_OUT_PAK=%RC_PATH%\%BIN_NAME%_%version%.7z
 @del %OUTPUT% /S /Q
 @rmdir %OUTPUT% /S /Q
 %PACK_EXE% x %BIN_OUT_PAK% -o%RC_PATH%\%BIN_NAME%\ -y
+@copy %BIN_PDB% %RC_PATH%\%BIN_NAME%_%version%.pdb /Y
 @pause

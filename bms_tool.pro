@@ -79,4 +79,4 @@ OTHER_FILES += main.rc touch.bat
 RESOURCES   += lang/lang.qrc
 TRANSLATIONS += lang/zh_CN.ts \
                lang/en_US.ts
-DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出
+#DEFINES += QT_NO_DEBUG_OUTPUT #禁止qDebug()输出

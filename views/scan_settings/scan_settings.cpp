@@ -386,7 +386,7 @@ void scan_settings::ip_analyze() {
                 QString port_str2 = ports.at(1);
                 int port1 = port_str1.toInt(&ok1);
                 int port2 = port_str2.toInt(&ok2);
-                if (ok1 && ok2) {
+                if (ok1 && ok2 && (port1 > 0 && port1 < 65535) && (port2 > 0 && port2 < 65535)) {
                     for (; port1 <= port2; port1++) {
                         if (!port1) continue;
                         tmp_ports << port1;
@@ -396,7 +396,7 @@ void scan_settings::ip_analyze() {
                 bool ok = false;
                 QString port_str = ports.at(0);
                 int port = port_str.toInt(&ok);
-                if (ok) {
+                if (ok && (port > 0 && port < 65535)) {
                     tmp_ports << port;
                 }
             }
@@ -458,16 +458,6 @@ void scan_settings::uiInit() {
     tableView->setItemDelegateForColumn(1, readOnlyDelegate);
     tableView->setItemDelegateForColumn(2, valDelegate);
 
-    //    m_model->updateData(plist);
-
-    QObject::connect(m_para_model, &ParaModel::dataChanged, [=](const QModelIndex& index) {
-        QString name = QString::fromStdString(m_para_model->vals.at(index.row()).name);
-        double dval = index.data().toDouble();
-        if (this->m_setMap.contains(name)) {
-            this->m_setMap[name] = dval;
-            qDebug() << name << dval;
-        }
-    });
     tableView->setModel(m_para_model);
 
     // 结果显示
@@ -526,25 +516,34 @@ void scan_settings::loadXml() {
     file.close();
     QDomElement root = doc.documentElement();  //返回根节点
     QDomNode node = root.firstChild();         //获得第一个子节点
-    m_setMap.clear();
     QList<ST_PARA> plist;
+    QMap<QString, ST_PARA> data_map;
     while (!node.isNull())  //如果节点不空
     {
         if (node.isElement())  //如果节点是元素
         {
             QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
             if ((e.attribute("name") != nullptr) && (e.attribute("name_cn") != nullptr)) {
-                m_setMap[e.attribute("name")] = e.attribute("value").toDouble();
                 ST_PARA p;
                 p.name = e.attribute("name_cn").toStdString();
                 p.val = e.attribute("value").toDouble();
-                //                p.name_cn = e.attribute("name_cn").toStdString();
-                plist.append(p);
+                p.name_cn = e.attribute("name").toStdString();
+                data_map[e.attribute("name")] = p;
             }
         }
         node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
+    // 排序数据点
+    vector<MB_NODE> tab_config;
+    tab_config.clear();
+    MB_NODE* node_table = cmu_v4_config;
+    int node_table_size = cmu_v4_config_len;
+    for (int i = 0; i < node_table_size; i++) {
+        if (node_table[i].val_type != 129) continue;
+        if (!data_map.contains(node_table[i].name)) continue;
+        plist.append(data_map.value(node_table[i].name));
+    }
     ui->stdSetting->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->stdSetting->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     m_para_model->updateData(plist);
@@ -560,6 +559,8 @@ void scan_settings::on_btnWrite_released() {
     if (target_ips.size()) {
         setBusy(true);
     }
+    m_setMap.clear();
+    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 1);
@@ -628,6 +629,7 @@ void scan_settings::btnCtrlMenu() {
     if (target_ips.size()) {
         setBusy(true);
     }
+    m_setMap.clear();
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, val);
@@ -701,6 +703,8 @@ void scan_settings::on_btnTest_released() {
     if (target_ips.size()) {
         setBusy(true);
     }
+    m_setMap.clear();
+    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 2);

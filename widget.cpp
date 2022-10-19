@@ -533,7 +533,7 @@ void Widget::flushData() {
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-        if (mycmu->GetProtocalVer() > CMUV3) {
+        if (mycmu->GetProtocalVer() >= CMUV4) {
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
@@ -554,7 +554,12 @@ void Widget::flushData() {
             item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
-        } else if (mycmu->GetProtocalVer() >= CMUV3) {
+            // CAN通信错误计数
+            item = new QTableWidgetItem();
+            item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+        } else if (mycmu->GetProtocalVer() == CMUV3) {
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));

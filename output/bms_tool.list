@@ -1,6 +1,2 @@
-libcrypto-1_1-x64.dll
-libssl-1_1-x64.dll
-vcruntime140.dll
-msvcp140_1.dll
-msvcp140.dll
 data.db3
+ReadMe.txt

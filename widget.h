@@ -40,6 +40,8 @@ class Widget : public QWidget {
     bool eventFilter(QObject* obj, QEvent* event);
     int setValue(string name, double dval);
     bool load_config();
+    bool saveParameters(const QString& filename);
+    bool loadParameters(const QString& filename);
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
    private slots:
     void timerUpDate();
@@ -61,6 +63,8 @@ class Widget : public QWidget {
     void initUpdateMenu();
     void IpChange();
     void on_spinBoxPort_valueChanged(int arg1);
+    void on_btnSaveDefault_released();
+    void on_btnLoadDefault_released();
 };
 
 #endif

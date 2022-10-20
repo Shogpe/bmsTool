@@ -1239,13 +1239,11 @@ void Widget::on_lineEditServIP_editingFinished() {
     MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
     pmq->sendMsg(0, MsgCmd);
 }
-
-void Widget::on_btnOutput_released() {
-    QString filename = QFileDialog::getSaveFileName(this, "Save", "", "*.xml");
-
+bool Widget::saveParameters(const QString& filename) {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        return;
+        myHelper::ShowMessageBoxError(tr("file not opened."));
+        return false;
     }
     QDomDocument document;
     QString strHeader("version=\"1.0\" encoding=\"UTF-8\"");
@@ -1266,18 +1264,19 @@ void Widget::on_btnOutput_released() {
     QTextStream out(&file);
     document.save(out, 4);
     file.close();
+    return true;
 }
-
-void Widget::on_btnInput_released() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
+bool Widget::loadParameters(const QString& filename) {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
+        myHelper::ShowMessageBoxError(tr("file not found."));
+        return false;
     }
     QDomDocument doc;
     if (!doc.setContent(&file)) {
         file.close();
-        return;
+        myHelper::ShowMessageBoxError(tr("not invalid file."));
+        return false;
     }
     file.close();
     QDomElement root = doc.documentElement();  //返回根节点
@@ -1299,6 +1298,28 @@ void Widget::on_btnInput_released() {
     }
     doc.clear();
     qDebug() << "load ok!";
+    return true;
+}
+void Widget::on_btnOutput_released() {
+    QString filename = QFileDialog::getSaveFileName(this, "Save", "", "*.xml");
+    if (!filename.isEmpty()) {
+        if (saveParameters(filename)) {
+            Toast::showTip("save parameters ok!");
+        } else {
+            Toast::showTip("save parameters failed!!!!!");
+        }
+    }
+}
+
+void Widget::on_btnInput_released() {
+    QString filename = QFileDialog::getOpenFileName(this, "Open", "", "*.xml");
+    if (!filename.isEmpty()) {
+        if (loadParameters(filename)) {
+            Toast::showTip("load parameters ok!");
+        } else {
+            Toast::showTip("load parameters failed!!!!!");
+        }
+    }
 }
 //屏蔽本控件传递事件到父控件
 bool Widget::eventFilter(QObject* obj, QEvent* event) {
@@ -1426,3 +1447,19 @@ bool Widget::load_config() {
 }
 
 void Widget::on_spinBoxPort_valueChanged(int port) { settings->setValue("global/target_port", port); }
+
+void Widget::on_btnSaveDefault_released() {
+    if (saveParameters("default.xml")) {
+        Toast::showTip("save parameters ok!");
+    } else {
+        Toast::showTip("save parameters failed!!!!!");
+    }
+}
+
+void Widget::on_btnLoadDefault_released() {
+    if (loadParameters("default.xml")) {
+        Toast::showTip("load parameters ok!");
+    } else {
+        Toast::showTip("load parameters failed!!!!!");
+    }
+}

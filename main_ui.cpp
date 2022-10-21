@@ -50,7 +50,7 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));
-    IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf067));
+    IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d0));
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 #if 1  // use FramelessHelper on windows
     auto helper = new FramelessHelper(this);
@@ -73,6 +73,14 @@ void MainUI::initForm() {
         if (myHelper::ShowMessageBoxQuesion(tr("确定要关闭本程序吗？")) == QDialog::Accepted) {
             helper->triggerCloseButtonAction();
         }
+    });
+    connect(helper, &FramelessHelper::maximizedChanged, this, [this](bool max) {
+        if (max) {
+            IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d2));
+        } else {
+            IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d0));
+        }
+        ui->btnMenu_Max->setAttribute(Qt::WA_UnderMouse, false);
     });
 #else
     ui->widgetTitle->setProperty("form", "title");

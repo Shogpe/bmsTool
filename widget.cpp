@@ -327,11 +327,11 @@ void Widget::uiInit() {
         // 特殊处理
         ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setObjectName("BalanceConfig");
-        ui->BalnceStart->setPrefix("均衡配置 ");
+        ui->BalnceStart->setPrefix(tr("均衡配置 "));
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
         ui->BalnceStart->setDecimals(0);
-        ui->BalnceStart->setToolTip("均衡配置");
+        ui->BalnceStart->setToolTip(tr("均衡配置"));
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::CustomContextMenu);
     }
@@ -380,6 +380,7 @@ void Widget::uiInit() {
     rebootMenu->actions().constLast()->setObjectName("btnRebootBMU");
     ui->btnReboot->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->btnReboot->setMenu(rebootMenu);
+    //
 }
 int Widget::setValue(string name, double dval) {
     map<string, NodeReg>::iterator iter1;
@@ -424,12 +425,12 @@ void Widget::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
-        ui->btnVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
-        ui->tbtnConnect->setText("重连");
+        ui->btnVer->setText(QString(tr("版本号:%1")).arg(myHelper::IntegerToHexString(val)));
+        ui->tbtnConnect->setText(tr("重连"));
     } else {
         ui->labelStatus->setStyleSheet("color:red;text-decoration:underline;font:bold;");
         ui->labelStatus->setText(tr("未连接"));
-        ui->tbtnConnect->setText("连接");
+        ui->tbtnConnect->setText(tr("连接"));
     }
     TMsgData Msg;
     while (pmq->readMsg(99, Msg) != 0) {
@@ -444,15 +445,6 @@ void Widget::timerUpDate() {
                 break;
             }
             ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-            // qDebug() << "soe:" << mycmu->cmu_soe.new_soe_count << "," << mycmu->cmu_soe.soe_count;
-            //            for (int i = 0; i < 500; i++) {
-            //                // qDebug() << "apped " << i << "soe:" << mycmu->cmu_soe.list_soe[i].soe_time;
-            //                QModelIndex index = m_model.index(i, 0, QModelIndex());
-            //                // m_model.append({(uint64_t)QDateTime::currentDateTime().toMSecsSinceEpoch(), 1, 2, 3, 4,
-            //                5}); if (!m_model.setData(index, mycmu->cmu_soe.list_soe[i])) {
-            //                    m_model.append(mycmu->cmu_soe.list_soe[i]);
-            //                }
-            //            }
             uint32_t version = mycmu->cmu_ver & 0x00FFFFFF;
             qDebug() << QString::number(version, 16);
             if (((ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000402)) ||
@@ -813,7 +805,6 @@ void Widget::flushData() {
                 rb->setChecked(bit);
                 rb->blockSignals(false);
                 rb->setText(textList.at(RadioList.indexOf(rb)));
-
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -827,11 +818,18 @@ void Widget::flushData() {
         CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
                      << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12
                      << ui->bFunc13 << ui->bFunc14 << ui->bFunc15;
+        QStringList textList;
+        textList << tr("使能双CAN") << tr("使能电流传感器") << tr("使能电压传感器") << tr("使能漏电流传感器")
+                 << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
+                 << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                 << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
+        if (this->mycmu->GetProtocalVer() >= CMUV4) textList.replace(1, tr("使能绝缘板采样电压"));
         foreach (QCheckBox* cb, CheckBoxList) {
             try {
                 cb->blockSignals(true);
                 cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
                 cb->blockSignals(false);
+                cb->setText(textList.at(CheckBoxList.indexOf(cb)));
             } catch (exception& e) {
                 qWarning() << e.what();
             }
@@ -934,11 +932,13 @@ void Widget::sendCommand() {
     map<QString, mb_cmd>::iterator iter1;
     iter1 = btnMap.find(name);
     if (iter1 != btnMap.end()) {
-        mb_cmd cmd = iter1->second;
-        MsgCmd.msg_type = cmd.type;
-        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
-        MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (myHelper::ShowMessageBoxQuesion(tr("是否执行 %1 ？").arg(((QPushButton*)b)->text())) == QDialog::Accepted) {
+            mb_cmd cmd = iter1->second;
+            MsgCmd.msg_type = cmd.type;
+            MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+            MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        }
     } else if (name == "btnRUAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = ADDR_RINS_ADJ;
@@ -1344,10 +1344,15 @@ void Widget::on_cbProtocol_currentIndexChanged(const QString& arg1) {
 void Widget::initUpdateMenu() {
     update_menu = new QMenu;
     update_menu->addAction("下载升级BMS", this, &Widget::onUpdateBtnMenu);
+    update_menu->actions().constLast()->setObjectName("upgradeBMS");
     update_menu->addAction("下载升级BMU", this, &Widget::onUpdateBtnMenu);
+    update_menu->actions().constLast()->setObjectName("upgradeBMU");
     update_menu->addAction("下载升级BMS Boot", this, &Widget::onUpdateBtnMenu);
+    update_menu->actions().constLast()->setObjectName("upgradeBMSBoot");
     update_menu->addAction("下载升级BMU Boot", this, &Widget::onUpdateBtnMenu);
+    update_menu->actions().constLast()->setObjectName("upgradeBMUBoot");
     update_menu->addAction("下载升级绝缘板", this, &Widget::onUpdateBtnMenu);
+    update_menu->actions().constLast()->setObjectName("upgradeINS");
     //    update_menu->addAction("升级BMU", this, &Widget::onUpdateBtnMenu);
     ui->btnVer->setMenu(update_menu);
 }
@@ -1449,6 +1454,9 @@ bool Widget::load_config() {
 void Widget::on_spinBoxPort_valueChanged(int port) { settings->setValue("global/target_port", port); }
 
 void Widget::on_btnSaveDefault_released() {
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要保存当前参数为默认值吗？"))) != QDialog::Accepted) {
+        return;
+    }
     if (saveParameters("default.xml")) {
         Toast::showTip("save parameters ok!");
     } else {
@@ -1457,6 +1465,9 @@ void Widget::on_btnSaveDefault_released() {
 }
 
 void Widget::on_btnLoadDefault_released() {
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要加载上次保存的默认参数吗？"))) != QDialog::Accepted) {
+        return;
+    }
     if (loadParameters("default.xml")) {
         Toast::showTip("load parameters ok!");
     } else {

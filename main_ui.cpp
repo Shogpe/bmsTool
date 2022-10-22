@@ -17,8 +17,6 @@
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
-    this->initLeftMain();
-    this->initLeftConfig();
     this->tftpd = new TFTPServer();
 
     connect(tftpd, &TFTPServer::statusUpdate, this,
@@ -77,8 +75,10 @@ void MainUI::initForm() {
     connect(helper, &FramelessHelper::maximizedChanged, this, [this](bool max) {
         if (max) {
             IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d2));
+            ui->btnMenu_Max->setToolTip(tr("Restore"));
         } else {
             IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d0));
+            ui->btnMenu_Max->setToolTip(tr("Maximize"));
         }
         ui->btnMenu_Max->setAttribute(Qt::WA_UnderMouse, false);
     });
@@ -117,8 +117,6 @@ void MainUI::initForm() {
     }
     ui->widgetTop->hide();
     //
-    ui->gridLayout_3->addWidget(new StateGroupBox());
-
     ui->btnMain->click();
     //创建语言切换菜单
     langue_menu = new QMenu(tr("Langue"));
@@ -225,69 +223,6 @@ void MainUI::buttonClick() {
     }
 }
 
-void MainUI::initLeftMain() {
-    pixCharMain << 0xf030 << 0xf03e << 0xf247;
-    int count = btnsMain.count();
-    for (int i = 0; i < count; i++) {
-        btnsMain.at(i)->setCheckable(true);
-        btnsMain.at(i)->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        connect(btnsMain.at(i), SIGNAL(clicked(bool)), this, SLOT(leftMainClick()));
-    }
-}
-
-void MainUI::initLeftConfig() {
-    pixCharConfig << 0xf031 << 0xf036 << 0xf249 << 0xf055 << 0xf05a << 0xf249;
-    btnsConfig << ui->tbtnConfig1 << ui->tbtnConfig2 << ui->tbtnConfig3 << ui->tbtnConfig4 << ui->tbtnConfig5
-               << ui->tbtnConfig6;
-
-    int count = btnsConfig.count();
-    for (int i = 0; i < count; i++) {
-        btnsConfig.at(i)->setCheckable(true);
-        btnsConfig.at(i)->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        connect(btnsConfig.at(i), SIGNAL(clicked(bool)), this, SLOT(leftConfigClick()));
-    }
-
-    IconHelper::Instance()->setStyle(ui->widgetLeftConfig, btnsConfig, pixCharConfig, 10, 20, 15, "left", 5);
-
-    ui->tbtnConfig1->click();
-}
-
-void MainUI::leftMainClick() {
-    QToolButton* b = (QToolButton*)sender();
-    QString name = b->text();
-
-    int count = btnsMain.count();
-    for (int i = 0; i < count; i++) {
-        if (btnsMain.at(i) == b) {
-            btnsMain.at(i)->setChecked(true);
-            btnsMain.at(i)->setIcon(QIcon(IconHelper::Instance()->getPixmap(btnsMain.at(i), false)));
-        } else {
-            btnsMain.at(i)->setChecked(false);
-            btnsMain.at(i)->setIcon(QIcon(IconHelper::Instance()->getPixmap(btnsMain.at(i), true)));
-        }
-    }
-
-    // ui->lab1->setText(name);
-}
-
-void MainUI::leftConfigClick() {
-    QToolButton* b = (QToolButton*)sender();
-    QString name = b->text();
-
-    int count = btnsConfig.count();
-    for (int i = 0; i < count; i++) {
-        if (btnsConfig.at(i) == b) {
-            btnsConfig.at(i)->setChecked(true);
-            btnsConfig.at(i)->setIcon(QIcon(IconHelper::Instance()->getPixmap(btnsConfig.at(i), false)));
-        } else {
-            btnsConfig.at(i)->setChecked(false);
-            btnsConfig.at(i)->setIcon(QIcon(IconHelper::Instance()->getPixmap(btnsConfig.at(i), true)));
-        }
-    }
-    qDebug() << name;
-    if (name == "其他设置") {
-    }
-}
 void MainUI::menuClick()  //切换语言
 {
     QAction* b = (QAction*)sender();

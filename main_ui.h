@@ -5,8 +5,8 @@
 #include "mb_cmu.h"
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
-#include "widget.h"
 #include "tftpserver.h"
+#include "widget.h"
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
 
@@ -43,17 +43,13 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     QAction *setBlack;
     QAction *setWhite;
 
-    TFTPServer* tftpd;
+    TFTPServer *tftpd;
     //    bool eventFilter(QObject *obj, QEvent *event);
     //
     QSettings *settings;
    private slots:
     void initForm();
     void buttonClick();
-    void initLeftMain();
-    void initLeftConfig();
-    void leftMainClick();
-    void leftConfigClick();
 
     //    void on_btnMenu_Min_clicked();
     //    void on_btnMenu_Max_clicked();

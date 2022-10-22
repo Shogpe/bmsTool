@@ -40,11 +40,7 @@ MainUI::~MainUI() {
 #include "stategroupbox.h"
 void MainUI::initForm() {
     this->setProperty("form", true);
-    //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-    //                         Qt::WindowMinMaxButtonsHint|Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-    //    this->setWindowFlags(Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-
+    this->setWindowFlags(Qt::FramelessWindowHint);
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));

@@ -21,6 +21,9 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     explicit MainUI(QWidget *parent = nullptr);
     ~MainUI();
 
+   protected:
+    void closeEvent(QCloseEvent *event);
+
    private:
     Ui::MainUI *ui;
     Widget *data_view;

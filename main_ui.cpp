@@ -13,7 +13,16 @@
 #include "widget.h"
 //#include "rtu_tool.h"
 #include "firmwareDialog.h"
-
+void MainUI::closeEvent(QCloseEvent* event) {
+    //判断账号输入框是否为空（只是作为一个条件）
+    if (myHelper::ShowMessageBoxQuesion(tr("确定要关闭本程序吗？")) == QDialog::Accepted) {
+        //接收这个事件,当前窗口会关闭
+        event->accept();
+    } else {
+        //忽略这个事件，当前窗口不会关闭
+        event->ignore();
+    }
+}
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
@@ -39,7 +48,6 @@ MainUI::~MainUI() {
 }
 #include "stategroupbox.h"
 void MainUI::initForm() {
-    this->setProperty("form", true);
     this->setWindowFlags(Qt::FramelessWindowHint);
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
@@ -53,8 +61,8 @@ void MainUI::initForm() {
         this->setWindowFlags(Qt::FramelessWindowHint);
     }
     helper->setDraggableMargins(3, 3, 3, 3);
-    helper->setMaximizedMargins(0, 0, 0, 0);
-    helper->setTitleBarHeight(32);
+    helper->setMaximizedMargins(3, 3, 3, 3);
+    helper->setTitleBarHeight(ui->titleBar->sizeHint().height());
 
     helper->addExcludeItem(ui->btnMenu_Max);
     helper->addExcludeItem(ui->btnMenu_Min);
@@ -62,12 +70,7 @@ void MainUI::initForm() {
     helper->addExcludeItem(ui->btnMenu);
     connect(ui->btnMenu_Min, &QPushButton::clicked, helper, &FramelessHelper::triggerMinimizeButtonAction);
     connect(ui->btnMenu_Max, &QPushButton::clicked, helper, &FramelessHelper::triggerMaximizeButtonAction);
-    //    connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
-    connect(ui->btnMenu_Close, &QPushButton::clicked, this, [helper]() {
-        if (myHelper::ShowMessageBoxQuesion(tr("确定要关闭本程序吗？")) == QDialog::Accepted) {
-            helper->triggerCloseButtonAction();
-        }
-    });
+    connect(ui->btnMenu_Close, &QPushButton::clicked, helper, &FramelessHelper::triggerCloseButtonAction);
     connect(helper, &FramelessHelper::maximizedChanged, this, [this](bool max) {
         if (max) {
             IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d2));

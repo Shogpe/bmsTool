@@ -44,42 +44,12 @@ void AppInit::start() {
     //    myHelper::SetTranslation(setLocale);
     updateCheck(url1);
 }
-
-static int CompareVersion(QString strVer1, QString strVer2) {
-    if (!strVer1.compare(strVer2)) {
+static int CompareVersion(QString curVer, QString chkVer) {
+    if (!curVer.compare(chkVer)) {
         return 0;
     }
-
-    QStringList list1 = strVer1.split(".");
-    QStringList list2 = strVer2.split(".");
-
-    int iTotal1 = list1.count();
-    int iTotal2 = list2.count();
-    int iTotal = iTotal1 > iTotal2 ? iTotal2 : iTotal1;
-
-    int iValue1 = 0, iValue2 = 0;
-    bool ibOK1 = false, ibOK2 = false;
-    for (int iNum = 0; iNum < iTotal; ++iNum) {
-        iValue1 = list1[iNum].toInt(&ibOK1);
-        if (!ibOK1) {
-            iValue1 = 0;
-        }
-
-        iValue2 = list2[iNum].toInt(&ibOK2);
-        if (!ibOK2) {
-            iValue2 = 0;
-        }
-
-        if (iValue1 == iValue2) {
-            continue;
-        } else if (iValue1 < iValue2) {
-            return -1;
-        } else {
-            return 1;
-        }
-    }
-
-    return iTotal1 < iTotal2 ? -1 : 1;
+    int rc = QVersionNumber::compare(QVersionNumber::fromString(curVer), QVersionNumber::fromString(chkVer));
+    return rc;
 }
 
 void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后

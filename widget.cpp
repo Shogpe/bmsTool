@@ -1454,9 +1454,9 @@ bool Widget::load_config() {
 void Widget::on_spinBoxPort_valueChanged(int port) { settings->setValue("global/target_port", port); }
 
 void Widget::on_btnSaveDefault_released() {
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要保存当前参数为默认值吗？"))) != QDialog::Accepted) {
-        return;
-    }
+//    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要保存当前参数为默认值吗？"))) != QDialog::Accepted) {
+//        return;
+//    }
     if (saveParameters("default.xml")) {
         Toast::showTip("save parameters ok!");
     } else {
@@ -1465,9 +1465,9 @@ void Widget::on_btnSaveDefault_released() {
 }
 
 void Widget::on_btnLoadDefault_released() {
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要加载上次保存的默认参数吗？"))) != QDialog::Accepted) {
-        return;
-    }
+//    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要加载上次保存的默认参数吗？"))) != QDialog::Accepted) {
+//        return;
+//    }
     if (loadParameters("default.xml")) {
         Toast::showTip("load parameters ok!");
     } else {

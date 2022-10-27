@@ -2,7 +2,7 @@
 #include <QTimer>
 #include "FramelessHelper.h"
 #include "Toast.h"
-#include "cmu4u.h"
+//#include "cmu4u.h"
 #include "iconhelper.h"
 //#include "models/frmcustomplot/frmsimple.h"
 #include "cmu_ip.h"
@@ -10,7 +10,7 @@
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-#include "widget.h"
+#include "bmsview.h"
 //#include "rtu_tool.h"
 #include "firmwareDialog.h"
 void MainUI::closeEvent(QCloseEvent* event) {
@@ -46,7 +46,6 @@ MainUI::~MainUI() {
     delete settings;
     delete ui;
 }
-#include "stategroupbox.h"
 void MainUI::initForm() {
     this->setWindowFlags(Qt::FramelessWindowHint);
     IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
@@ -173,7 +172,7 @@ void MainUI::initForm() {
     QString user = myHelper::user;  // settings->value("global/user", "").toString();
     if (myHelper::level < 16) ui->btnMenu->hide();
     if (myHelper::level > 0 && myHelper::level != 31) {
-        int index = ui->stackedWidget->addWidget(new cmu4u(this));
+        int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 1) {
@@ -181,7 +180,7 @@ void MainUI::initForm() {
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (myHelper::level == 31) {  // Widget,RTUView
-        int index = ui->stackedWidget->addWidget(new Widget(this));
+        int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }

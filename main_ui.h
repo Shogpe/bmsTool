@@ -6,7 +6,7 @@
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
 #include "tftpserver.h"
-#include "widget.h"
+#include "bmsview.h"
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
 
@@ -26,7 +26,7 @@ class MainUI : public QWidget {  // public QFramelessWidget {
 
    private:
     Ui::MainUI *ui;
-    Widget *data_view;
+    BMSView *data_view;
     QList<int> pixCharMain;
     QList<QToolButton *> btnsMain;
     QList<int> pixCharConfig;

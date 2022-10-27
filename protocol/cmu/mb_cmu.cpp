@@ -37,7 +37,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
 }
-QString mb_cmu::GetBalanceStatus(uint16_t status) {
+QString mb_cmu::GetBitStatus(uint16_t status) {
     QStringList statusList;
     if ((((status >> 0) & 0x01) > 0)) statusList << "1";
     if ((((status >> 1) & 0x01) > 0)) statusList << "2";
@@ -159,8 +159,7 @@ void mb_cmu::Dump2Csv() {
         data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
         for (int i = 0; i < node_table_size; i++) {
             if (node_table[i].val_type == 128) {
-                // QString("%1,").arg();
-                data_buf << QString::number(this->tab_data.at(i).sysData.val.f64, 'g', 15) << ",";
+                data_buf << QString::number(mapData.value(node_table[i].name, 0), 'g', 15) << ",";
             }
         }
         for (int i = 0; i < config.bmu_num; i++) {
@@ -191,8 +190,8 @@ void mb_cmu::Dump2Csv() {
                 data_buf << (QString("%1,").arg(val));
                 val = this->bmu_data[i].BalIdc / 1000.0;
                 data_buf << (QString("%1,").arg(val));
-                data_buf << GetBalanceStatus(this->bmu_data[i].BalErr) << ",";
-                data_buf << GetBalanceStatus(this->bmu_data[i].BalStat) << ",";
+                data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
+                data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
                 data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
                 for (int j = 0; j < config.vol_num; j++) {
                     data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
@@ -209,7 +208,7 @@ void mb_cmu::Dump2Csv() {
         QJsonObject object;
         for (int i = 0; i < node_table_size; i++) {
             if (node_table[i].val_type == 128) {
-                object.insert(QString(node_table[i].name), this->tab_data.at(i).sysData.val.f64);
+                object.insert(QString(node_table[i].name), mapData.value(node_table[i].name, 0));
             }
         }
         double val = 0;
@@ -281,30 +280,32 @@ int mb_cmu::Close() {
     this->cmu = nullptr;
     return 0;
 }
-
+NodeReg mb_cmu::GetNodeAddr(QString name) {
+    QMutexLocker locker(&mutex);
+    return mapConfig.value(name, NodeReg{});
+}
 int mb_cmu::Init() {
+    QMutexLocker locker(&mutex);
     qDebug() << "init config";
     NodeReg node_reg_tmp;
     reg_list_.clear();
     wr_list_.clear();
     int index = -1;
-    ST_NODE_DATA tmp_data;
-    tmp_data.sysData.val.f64 = 0;
-    tab_data.clear();
-    tab_data.reserve(1000);
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
     QList<db_manager::ST_DB_NODE> nodes_table;
     db_manager::Instance()->getNode(nodes_table, protocal_ver);
-    name_map.clear();
     qDebug() << nodes_table.size();
+    mapIndex.clear();
+    mapData.clear();
+    mapConfig.clear();
     for (int i = 0; i < nodes_table.size(); i++) {
         node_reg_tmp.default_val = 0;
         if (nodes_table.at(i).reg_type > NONE_REG) {
             node_reg_tmp.reg_type = nodes_table.at(i).reg_type;
             node_reg_tmp.reg_addr = nodes_table.at(i).reg_addr;
             node_reg_tmp.data_type = nodes_table.at(i).data_type;
-            node_reg_tmp.index = nodes_table.at(i).node_id;
+            node_reg_tmp.index = i;
             node_reg_tmp.factor = nodes_table.at(i).factor;
             if ((index = JudgeReg(node_reg_tmp)) != -1) {
                 InsertReg(node_reg_tmp, index);
@@ -312,8 +313,9 @@ int mb_cmu::Init() {
                 NewReg(node_reg_tmp);
             }
         }
-        tab_data.push_back(tmp_data);
-        name_map[nodes_table.at(i).node_name.toStdString().c_str()] = node_reg_tmp;
+        mapData.insert(nodes_table.at(i).node_name, 0);
+        mapIndex.insert(i, nodes_table.at(i).node_name);
+        mapConfig.insert(nodes_table.at(i).node_name, node_reg_tmp);
     }
     TMsgData MsgCmd;
     MsgCmd.msg_type = 0;
@@ -401,6 +403,7 @@ int mb_cmu::ReadALL() {
     uint16_t* p = this->tab_reg;
     int status = 0;
     status += ReadAI();
+    if (status > 0) emit bmsDataReady(0, mapData);
     //
     if (config.bmu_num > 0) {
         reg_num = config.bmu_num * config.vol_num;
@@ -456,6 +459,7 @@ int mb_cmu::ReadALL() {
     for (int i = 0; i < config.bmu_num; i++) {
         bmu_data[i].Version = *(uint32_t*)(p + 2 + i * 2);
     }
+    emit bmuDataReady();
     return status;
 }
 void mb_cmu::run() {
@@ -513,23 +517,26 @@ void mb_cmu::run() {
                 rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
                 if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;
-                    sys_para.Name.u32LocalIP = bswap_32(sys_para.Name.u32LocalIP);
-                    sys_para.Name.u32TftpServIP = bswap_32(sys_para.Name.u32TftpServIP);
+                    mapData["LocalIP"] = bswap_32(sys_para.Name.u32LocalIP);
+                    mapData["ServIP"] = bswap_32(sys_para.Name.u32TftpServIP);
                     isWrLocked = (sys_para.Name.uFunCtrReg & (0x01 << WR_LOCK_BIT)) > 0 ? true : false;
                     if (config.bmu_num != sys_para.Name.u16ClusterBmuNum ||
                         config.vol_num != sys_para.Name.u16BmuCellNum || config.T_num != sys_para.Name.u16BmuPackTNum ||
                         config.Tp_num != sys_para.Name.u16BmuPoleTNum) {
-                        config.bmu_num = sys_para.Name.u16ClusterBmuNum;
-                        config.vol_num = sys_para.Name.u16BmuCellNum;
-                        config.T_num = sys_para.Name.u16BmuPackTNum;
-                        config.Tp_num = sys_para.Name.u16BmuPoleTNum;
+                        config.bmu_num =
+                            sys_para.Name.u16ClusterBmuNum > MAX_BMU ? MAX_BMU : sys_para.Name.u16ClusterBmuNum;
+                        config.vol_num = sys_para.Name.u16BmuCellNum > MAX_U ? MAX_U : sys_para.Name.u16BmuCellNum;
+                        config.T_num = sys_para.Name.u16BmuPackTNum > MAX_T ? MAX_T : sys_para.Name.u16BmuPackTNum;
+                        config.Tp_num = sys_para.Name.u16BmuPoleTNum > MAX_T ? MAX_T : sys_para.Name.u16BmuPoleTNum;
                         config.status_num = 4;
                         Dump2CsvTitle();
                         qDebug() << "table changed!";
-                        TMsgData MsgCmd;
-                        MsgCmd.msg_type = 0;
-                        MsgCmd.data.append((char*)&config, sizeof(config));
-                        pMq->sendMsg(99, MsgCmd);
+                        mapData["bmu_num"] = config.bmu_num;
+                        mapData["vol_num"] = config.vol_num;
+                        mapData["T_num"] = config.T_num;
+                        mapData["Tp_num"] = config.Tp_num;
+                        mapData["status_num"] = config.status_num;
+                        emit bmsDataReady(1, mapData);
                     }
 
                 } else
@@ -791,22 +798,23 @@ int mb_cmu::ReadAI() {
         if (res == iter->reg_num) {
             for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
                  data_iter++) {
-                if (tab_data.size() > data_iter->index) {
-                    tab_data.at(data_iter->index).isUpdate = true;
-                    tab_data.at(data_iter->index).UpdateCnt++;
+                if (mapIndex.contains(data_iter->index)) {
+                    qreal value = 0;
                     if (data_iter->data_type == 514) {
-                        tab_data.at(data_iter->index).sysData.val.f64 = tab_buf[data_iter->offset] * data_iter->factor;
+                        value = tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 513) {
-                        tab_data.at(data_iter->index).sysData.val.f64 =
-                            (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
+                        value = (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 17410) {
-                        tab_data.at(data_iter->index).sysData.val.f64 =
-                            MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
+                        value = MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
+                    } else {
+                        value = tab_buf[data_iter->offset] * data_iter->factor;
                     }
+                    mapData[mapIndex.value(data_iter->index)] = value;
                 }
             }
         }
     }
+
     return res;
 }
 #define MAX_SOE_COUNT 500

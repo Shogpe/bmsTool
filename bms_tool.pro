@@ -32,9 +32,7 @@ include(views/views.pri)
 SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
-    stategroupbox.cpp \
-    utils.cpp \
-    widget.cpp
+    utils.cpp
 SOURCES     += iconhelper.cpp
 SOURCES     += appinit.cpp
 
@@ -47,17 +45,12 @@ HEADERS     += iconhelper.h \
     models/qlineeditext.h \
     tableModel.h \
     models/QFramelessWidget/qframelesswidget.h \
-    stategroupbox.h \
     utils.h \
-    version.h \
-    widget.h
-HEADERS     += appinit.h cmu4u.h
+    version.h
+HEADERS     += appinit.h
 HEADERS     += socImporter.h db_manager.h downloadmanager.h
-SOURCES     += socImporter.cpp db_manager.cpp cmu4u.cpp  downloadmanager.cpp
-FORMS       += cmu4u.ui \
-    main_ui.ui \
-    stategroupbox.ui \
-    widget.ui
+SOURCES     += socImporter.cpp db_manager.cpp downloadmanager.cpp
+FORMS       += main_ui.ui
 
 RESOURCES   += other/main.qrc
 RESOURCES   += other/qss.qrc

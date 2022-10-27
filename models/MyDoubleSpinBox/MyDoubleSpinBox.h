@@ -9,7 +9,7 @@ class MyDoubleSpinBox : public QDoubleSpinBox {
 
    public:
     MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {
-        setAlignment(Qt::AlignJustify);
+//        setAlignment(Qt::AlignJustify);
     }
 
     virtual QString textFromValue(double value) const {

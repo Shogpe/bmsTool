@@ -138,8 +138,9 @@ typedef struct {
     uint16_t soe_stat;   // 系统状态
 } CMU_SOE;
 // BMU 数据
-#define MAX_U 32
-#define MAX_T 8
+#define MAX_BMU 64
+#define MAX_U   32
+#define MAX_T   12
 typedef struct {
     uint16_t Ucell[MAX_U];        // 单体电压
     int16_t Tcell[MAX_T];         // 温度
@@ -212,28 +213,30 @@ class mb_cmu : public QThread {
     int ReadCapData();   //读容量数据
     int Close();         //释放资源
    public:
+    QHash<QString, qreal> mapData;
+    QHash<QString, NodeReg> mapConfig;
+    QHash<int, QString> mapIndex;
     uint16_t tab_reg[1000];
-    BMU_DATA_T bmu_data[60];
+    BMU_DATA_T bmu_data[MAX_BMU];
     ST_SysPara sys_para;
     ST_SOE cmu_soe;
     CMU_CONF config;
     uint32_t drv_status;
-    vector<ST_NODE_DATA> tab_data;
     uint32_t cmu_ver = 0;
     bool isWrLocked = 0;
     int max_offset;
     MessageQueue *pMq;
-    map<string, NodeReg> name_map;
     QFile *csvfile;
     QDateTime fileTime;
     void Dump2CsvTitle();
     void Dump2Csv();
-    QString GetBalanceStatus(uint16_t status);
+    QString GetBitStatus(uint16_t status);
     QString GetBalanceValue(uint16_t status);
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
-
+    NodeReg GetNodeAddr(QString name);
    protected:
     modbus_t *cmu;
+    QMutex mutex;
     int err_counter = 0;
     enum FILE_FORMAT {
         NONE = 0,
@@ -265,6 +268,8 @@ class mb_cmu : public QThread {
     int ParseData();
    signals:
     void signal_message(const QString &msg);
+    void bmuDataReady();
+    void bmsDataReady(int type, QHash<QString, qreal> mapData);
 };
 
 #endif  // MB_CMU_H

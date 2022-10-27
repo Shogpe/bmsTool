@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Widget</class>
- <widget class="QWidget" name="Widget">
+ <class>BMSView</class>
+ <widget class="QWidget" name="BMSView">
   <property name="windowModality">
    <enum>Qt::NonModal</enum>
   </property>
@@ -177,6 +177,7 @@
         </property>
         <property name="font">
          <font>
+          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -7676,6 +7677,9 @@
          <property name="frame">
           <bool>true</bool>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
          </property>
@@ -7739,7 +7743,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="7">
+       <item row="7" column="7">
         <widget class="MyDoubleSpinBox" name="BalnceMask">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -7785,8 +7789,18 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="7">
-        <widget class="QLineEdit" name="balanceConfig"/>
+       <item row="6" column="7">
+        <widget class="QLineEdit" name="balanceStr">
+         <property name="toolTip">
+          <string>本项只读，修改下方参数以修改均衡参数</string>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -9094,34 +9108,68 @@
   <customwidget>
    <class>MyDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>widget.h</header>
+   <header>bmsview.h</header>
   </customwidget>
   <customwidget>
    <class>MyTimeSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>widget.h</header>
+   <header>bmsview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>btnIZeroAdj</tabstop>
-  <tabstop>btnIBaseAdj</tabstop>
-  <tabstop>btnIFullAdj</tabstop>
-  <tabstop>btnUZeroAdj</tabstop>
-  <tabstop>btnUBaseAdj</tabstop>
-  <tabstop>btnUFullAdj</tabstop>
-  <tabstop>btnIleakZeroAdj</tabstop>
-  <tabstop>PackTHH</tabstop>
-  <tabstop>btnIleakBaseAdj</tabstop>
-  <tabstop>btnIleakFullAdj</tabstop>
-  <tabstop>btnRZeroAdj</tabstop>
-  <tabstop>btnRBaseAdj</tabstop>
-  <tabstop>btnRFullAdj</tabstop>
-  <tabstop>ClusterVolRange</tabstop>
+  <tabstop>connectIP</tabstop>
+  <tabstop>spinBoxPort</tabstop>
+  <tabstop>cbProtocol</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>tbtnConnect</tabstop>
+  <tabstop>btnVer</tabstop>
   <tabstop>ClusterBmuNum</tabstop>
-  <tabstop>tableBMU</tabstop>
-  <tabstop>ViewSOE</tabstop>
-  <tabstop>btnReadSOE</tabstop>
-  <tabstop>DataWidget</tabstop>
+  <tabstop>BmuCellNum</tabstop>
+  <tabstop>BmuPackTNum</tabstop>
+  <tabstop>BmuPoleTNum</tabstop>
+  <tabstop>CellVolH</tabstop>
+  <tabstop>CellVolHH</tabstop>
+  <tabstop>CellVolL</tabstop>
+  <tabstop>CellVolLL</tabstop>
+  <tabstop>ClusterVolH</tabstop>
+  <tabstop>ClusterVolHH</tabstop>
+  <tabstop>ClusterVolL</tabstop>
+  <tabstop>ClusterVolLL</tabstop>
+  <tabstop>CellUdH</tabstop>
+  <tabstop>CellUdHH</tabstop>
+  <tabstop>PackTH</tabstop>
+  <tabstop>PackTHH</tabstop>
+  <tabstop>PackTL</tabstop>
+  <tabstop>PackTLL</tabstop>
+  <tabstop>PackTdH</tabstop>
+  <tabstop>PackTdHH</tabstop>
+  <tabstop>PackTrH</tabstop>
+  <tabstop>PackTrHH</tabstop>
+  <tabstop>PoleTH</tabstop>
+  <tabstop>PoleTHH</tabstop>
+  <tabstop>ClusterTAlm</tabstop>
+  <tabstop>ClusterTErr</tabstop>
+  <tabstop>ClusterAlmMask</tabstop>
+  <tabstop>ClusterErrMask</tabstop>
+  <tabstop>FuncMask</tabstop>
+  <tabstop>balanceStr</tabstop>
+  <tabstop>BalnceMask</tabstop>
+  <tabstop>BalnceStart</tabstop>
+  <tabstop>BalnceStartDiff</tabstop>
+  <tabstop>ClusterCurLeak</tabstop>
+  <tabstop>ClusterRIns</tabstop>
+  <tabstop>ClusterRInsH</tabstop>
+  <tabstop>ClusterCurLeakH</tabstop>
+  <tabstop>ClusterIe</tabstop>
+  <tabstop>ClusterCurShort</tabstop>
+  <tabstop>ClusterCurH</tabstop>
+  <tabstop>ClusterCurHH</tabstop>
+  <tabstop>ClusterE</tabstop>
+  <tabstop>ClusterEAdj</tabstop>
+  <tabstop>ClusterEremain</tabstop>
+  <tabstop>ClusterCurRange</tabstop>
+  <tabstop>ClusterILeakRg</tabstop>
+  <tabstop>ClusterVolRange</tabstop>
   <tabstop>PreChgT</tabstop>
   <tabstop>PreChgI</tabstop>
   <tabstop>PreSensorRg</tabstop>
@@ -9133,67 +9181,33 @@
   <tabstop>TEvmH</tabstop>
   <tabstop>TEvmL</tabstop>
   <tabstop>SocL</tabstop>
-  <tabstop>ClusterRIns</tabstop>
   <tabstop>SocLL</tabstop>
-  <tabstop>CellUdH</tabstop>
-  <tabstop>ClusterRInsH</tabstop>
   <tabstop>CPoleTH</tabstop>
-  <tabstop>CellUdHH</tabstop>
-  <tabstop>ClusterCurLeakH</tabstop>
   <tabstop>CPoleTHH</tabstop>
+  <tabstop>DataBlock1</tabstop>
+  <tabstop>DataBlock2</tabstop>
+  <tabstop>DataBlock3</tabstop>
+  <tabstop>DataBlock4</tabstop>
+  <tabstop>ErrBlock1</tabstop>
+  <tabstop>ErrBlock2</tabstop>
+  <tabstop>WarnBlock1</tabstop>
+  <tabstop>WarnBlock2</tabstop>
+  <tabstop>FuncMask2</tabstop>
+  <tabstop>CVFulDF</tabstop>
+  <tabstop>UBlock</tabstop>
+  <tabstop>TBlock</tabstop>
   <tabstop>lineEditIP</tabstop>
   <tabstop>lineEditServIP</tabstop>
+  <tabstop>btnLoadDefault</tabstop>
+  <tabstop>btnSaveDefault</tabstop>
+  <tabstop>btnInput</tabstop>
+  <tabstop>btnOutput</tabstop>
+  <tabstop>btnRZeroAdj</tabstop>
+  <tabstop>DataWidget</tabstop>
   <tabstop>bDO0</tabstop>
-  <tabstop>bDO1</tabstop>
-  <tabstop>bDO2</tabstop>
-  <tabstop>bDO3</tabstop>
-  <tabstop>bDO4</tabstop>
-  <tabstop>bDO5</tabstop>
-  <tabstop>bDO6</tabstop>
-  <tabstop>bDO7</tabstop>
-  <tabstop>bDO8</tabstop>
-  <tabstop>bDO9</tabstop>
-  <tabstop>bDO10</tabstop>
-  <tabstop>bDO11</tabstop>
-  <tabstop>bDO12</tabstop>
-  <tabstop>bDO13</tabstop>
-  <tabstop>bDO14</tabstop>
+  <tabstop>btnRBaseAdj</tabstop>
   <tabstop>bDO15</tabstop>
-  <tabstop>PackTdHH</tabstop>
-  <tabstop>BmuPackTNum</tabstop>
-  <tabstop>BmuCellNum</tabstop>
-  <tabstop>BmuPoleTNum</tabstop>
-  <tabstop>CellVolH</tabstop>
-  <tabstop>PackTdH</tabstop>
-  <tabstop>CellVolLL</tabstop>
-  <tabstop>CellVolHH</tabstop>
-  <tabstop>PackTrH</tabstop>
-  <tabstop>ClusterVolH</tabstop>
-  <tabstop>ClusterVolLL</tabstop>
-  <tabstop>CellVolL</tabstop>
-  <tabstop>ClusterVolL</tabstop>
-  <tabstop>ClusterVolHH</tabstop>
-  <tabstop>FuncMask</tabstop>
-  <tabstop>ClusterCurLeak</tabstop>
-  <tabstop>ClusterIe</tabstop>
-  <tabstop>PackTH</tabstop>
-  <tabstop>PackTLL</tabstop>
-  <tabstop>PackTL</tabstop>
-  <tabstop>ClusterErrMask</tabstop>
-  <tabstop>ClusterCurShort</tabstop>
-  <tabstop>ClusterCurH</tabstop>
-  <tabstop>ClusterCurHH</tabstop>
-  <tabstop>ClusterE</tabstop>
-  <tabstop>ClusterEAdj</tabstop>
-  <tabstop>ClusterCurRange</tabstop>
-  <tabstop>ClusterEremain</tabstop>
-  <tabstop>ClusterILeakRg</tabstop>
-  <tabstop>ClusterTErr</tabstop>
-  <tabstop>ClusterAlmMask</tabstop>
-  <tabstop>ClusterTAlm</tabstop>
-  <tabstop>PoleTHH</tabstop>
-  <tabstop>PackTrHH</tabstop>
-  <tabstop>PoleTH</tabstop>
+  <tabstop>bDO12</tabstop>
   <tabstop>bFunc0</tabstop>
   <tabstop>bFunc13</tabstop>
   <tabstop>bFunc8</tabstop>
@@ -9210,6 +9224,71 @@
   <tabstop>bFunc6</tabstop>
   <tabstop>bFunc7</tabstop>
   <tabstop>bFunc15</tabstop>
+  <tabstop>btnIZeroAdj</tabstop>
+  <tabstop>btnIBaseAdj</tabstop>
+  <tabstop>btnIFullAdj</tabstop>
+  <tabstop>btnUZeroAdj</tabstop>
+  <tabstop>btnUBaseAdj</tabstop>
+  <tabstop>btnUFullAdj</tabstop>
+  <tabstop>BootVer</tabstop>
+  <tabstop>InsVer</tabstop>
+  <tabstop>CommStatus</tabstop>
+  <tabstop>bDO7</tabstop>
+  <tabstop>btnIleakFullAdj</tabstop>
+  <tabstop>bDO5</tabstop>
+  <tabstop>ViewSOE</tabstop>
+  <tabstop>bDO14</tabstop>
+  <tabstop>bDO10</tabstop>
+  <tabstop>bDO3</tabstop>
+  <tabstop>bDO4</tabstop>
+  <tabstop>bDO1</tabstop>
+  <tabstop>btnIleakZeroAdj</tabstop>
+  <tabstop>btnRFullAdj</tabstop>
+  <tabstop>btnIleakBaseAdj</tabstop>
+  <tabstop>tableBMU</tabstop>
+  <tabstop>bDO8</tabstop>
+  <tabstop>bDO11</tabstop>
+  <tabstop>bDO9</tabstop>
+  <tabstop>bDO6</tabstop>
+  <tabstop>btnReadSOE</tabstop>
+  <tabstop>bDO2</tabstop>
+  <tabstop>bDO13</tabstop>
+  <tabstop>btnRUAdj</tabstop>
+  <tabstop>btnBalance</tabstop>
+  <tabstop>btnClearEng</tabstop>
+  <tabstop>btnBMULock</tabstop>
+  <tabstop>btnRnAdj</tabstop>
+  <tabstop>btnIOlock</tabstop>
+  <tabstop>btnRpAdj</tabstop>
+  <tabstop>btnBMUUnlock</tabstop>
+  <tabstop>btnIOunlock</tabstop>
+  <tabstop>btnReboot</tabstop>
+  <tabstop>btnRClrErr</tabstop>
+  <tabstop>btnResetDef</tabstop>
+  <tabstop>btnRCtrl</tabstop>
+  <tabstop>btnAutoKMON</tabstop>
+  <tabstop>btnAutoKMOFF</tabstop>
+  <tabstop>btnKMPON</tabstop>
+  <tabstop>btnKMPOFF</tabstop>
+  <tabstop>btnKMNON</tabstop>
+  <tabstop>btnKMNOFF</tabstop>
+  <tabstop>btnKMRON</tabstop>
+  <tabstop>btnKMROFF</tabstop>
+  <tabstop>btnFanON</tabstop>
+  <tabstop>btnFanOFF</tabstop>
+  <tabstop>btnAcON</tabstop>
+  <tabstop>btnAcOFF</tabstop>
+  <tabstop>btnResON</tabstop>
+  <tabstop>btnResOFF</tabstop>
+  <tabstop>btnQFOFF</tabstop>
+  <tabstop>btnBalClrErr</tabstop>
+  <tabstop>btnUploadTrig</tabstop>
+  <tabstop>btnImportSOC</tabstop>
+  <tabstop>btnSetSOH</tabstop>
+  <tabstop>btnAdjSOC</tabstop>
+  <tabstop>btnSetSOC</tabstop>
+  <tabstop>btnTimeAdj</tabstop>
+  <tabstop>tableExtView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

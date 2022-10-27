@@ -1,5 +1,5 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef BMSVIEW_H
+#define BMSVIEW_H
 
 #include <QSettings>
 #include <QTableWidget>
@@ -13,24 +13,24 @@
 using namespace std;
 
 namespace Ui {
-class Widget;
+class BMSView;
 }
 
-class Widget : public QWidget {
+class BMSView : public QWidget {
     Q_OBJECT
 
    public:
-    explicit Widget(QWidget* parent = nullptr);
-    ~Widget();
-    void flushData();
-    void uiInit();
+    explicit BMSView(QWidget* parent = nullptr);
+    ~BMSView();
+    void uiChange(QHash<QString, qreal> mapData);
     mb_cmu* mycmu;
 
    private:
-    Ui::Widget* ui;
+    Ui::BMSView* ui;
     MessageQueue* pmq;
     QTimer* timer;
     CMU_CONF config;
+    uint64_t bmu_comm;
     SOEModel m_model;
     QSettings* settings;
     QMenu* update_menu;
@@ -38,7 +38,7 @@ class Widget : public QWidget {
     frmBalanceBox* inputBalance = nullptr;
     frmbalanceConfig* configBalance = nullptr;
     bool eventFilter(QObject* obj, QEvent* event);
-    int setValue(string name, double dval);
+    int setValue(QString name, double dval);
     bool load_config();
     bool saveParameters(const QString& filename);
     bool loadParameters(const QString& filename);
@@ -60,11 +60,17 @@ class Widget : public QWidget {
     void on_btnOutput_released();
     void on_btnInput_released();
     void onUpdateBtnMenu();
-    void initUpdateMenu();
+    void uiInit();
     void IpChange();
     void on_spinBoxPort_valueChanged(int arg1);
     void on_btnSaveDefault_released();
     void on_btnLoadDefault_released();
+    //
+    void flushData(int type, QHash<QString, qreal> mapData);
+    void flushBmu();
+
+   private:
+    QString GetBitStatus(uint16_t value, QString tips = "");
 };
 
 #endif

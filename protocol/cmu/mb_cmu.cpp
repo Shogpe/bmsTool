@@ -771,23 +771,19 @@ void mb_cmu::NewReg(NodeReg& node_reg) {
     reg_list_.push_back(data_reg);
 }
 void mb_cmu::InsertReg(NodeReg& node_reg, int index) {
-    try {
-        DataReg* pdata_reg;
-        pdata_reg = &reg_list_.at(index);
-        DatabaseIO data_io_tmp;
-        pdata_reg->data_num++;
-        data_io_tmp.index = node_reg.index;
-        data_io_tmp.factor = node_reg.factor;
-        data_io_tmp.data_type = node_reg.data_type;
-        data_io_tmp.offset = node_reg.reg_addr - pdata_reg->reg_start;
-        int reg_len = GET_RAWDATALEN(node_reg.data_type) >> 1;
-        reg_len = (reg_len) > 1 ? reg_len : 1;
-        int len = data_io_tmp.offset + reg_len;
-        if (pdata_reg->reg_num < len) pdata_reg->reg_num = len;
-        pdata_reg->data_io.push_back(data_io_tmp);
-    } catch (exception& e) {
-        cout << e.what() << endl;
-    }
+    DataReg* pdata_reg;
+    pdata_reg = &reg_list_.at(index);
+    DatabaseIO data_io_tmp;
+    pdata_reg->data_num++;
+    data_io_tmp.index = node_reg.index;
+    data_io_tmp.factor = node_reg.factor;
+    data_io_tmp.data_type = node_reg.data_type;
+    data_io_tmp.offset = node_reg.reg_addr - pdata_reg->reg_start;
+    int reg_len = GET_RAWDATALEN(node_reg.data_type) >> 1;
+    reg_len = (reg_len) > 1 ? reg_len : 1;
+    int len = data_io_tmp.offset + reg_len;
+    if (pdata_reg->reg_num < len) pdata_reg->reg_num = len;
+    pdata_reg->data_io.push_back(data_io_tmp);
 }
 
 int mb_cmu::ReadAI() {

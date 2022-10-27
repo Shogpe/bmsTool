@@ -281,16 +281,11 @@ QString BMSView::GetBitStatus(uint16_t value, QString tips) {
     if (tips.contains(',')) {
         tipList = tips.split(",");
     } else {
-        //        for (int i = 0; i < 16; i++) {
-        //            tipList << QString::number(i + 1);
-        //        }
         tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
     }
     for (int i = 0; i < tipList.size(); i++) {
         if ((((value >> i) & 0x01) > 0)) statusList << tipList.at(i);
     }
-    //    if (value != 0) qDebug() << tipList << "==" << statusList;
-    //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
 }
 void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
@@ -347,15 +342,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
                  << tr("BMU拨码") << tr("BMU故障") << tr("并网");
         foreach (QLabel* Label, SysStatus) {
-            try {
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(SysStatus.indexOf(Label)));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("BootVer")) {
@@ -383,7 +375,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         textList << tr("IO解锁") << tr("绝缘检测") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("")
                  << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         foreach (QLabel* Label, SysStatus) {
-            try {
+
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
@@ -392,9 +384,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 //                if (SysStatus.indexOf(Label) > 2) {
                 //                    Label->setHidden(true);
                 //                }
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     } else {
         ui->G_SysStatus_2->setHidden(true);
@@ -407,14 +397,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11 << ui->bErr12 << ui->bErr13
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
-            try {
+
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("sysErrStatus2")) {
@@ -425,14 +413,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bErr6_2 << ui->bErr7_2 << ui->bErr8_2 << ui->bErr9_2 << ui->bErr10_2 << ui->bErr11_2
                    << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
         foreach (QLabel* Label, StatusList) {
-            try {
+
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("sysAlmStatus")) {
@@ -443,14 +429,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11 << ui->bAlm12 << ui->bAlm13
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
-            try {
+
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:gold;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("sysAlmStatus2")) {
@@ -461,14 +445,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bAlm6_2 << ui->bAlm7_2 << ui->bAlm8_2 << ui->bAlm9_2 << ui->bAlm10_2 << ui->bAlm11_2
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         foreach (QLabel* Label, StatusList) {
-            try {
+
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:gold;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("sysDIStatus")) {
@@ -483,15 +465,13 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("备用7") << tr("备用8") << tr("备用9") << tr("备用10") << tr("备用11") << tr("备用12")
                  << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
-            try {
+
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
                                     : "color:green";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(StatusList.indexOf(Label)));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("sysDOStatus")) {
@@ -505,7 +485,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇开启")
                  << tr("备用12") << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
         foreach (QCheckBox* rb, RadioList) {
-            try {
+
                 bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
                 QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green";
                 rb->setStyleSheet(QString("%1").arg(color));
@@ -513,9 +493,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 rb->setChecked(bit);
                 rb->blockSignals(false);
                 rb->setText(textList.at(RadioList.indexOf(rb)));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("FuncMask")) {
@@ -532,14 +510,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
         if (this->mycmu->GetProtocalVer() >= CMUV4) textList.replace(1, tr("使能绝缘板采样电压"));
         foreach (QCheckBox* cb, CheckBoxList) {
-            try {
+
                 cb->blockSignals(true);
                 cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
                 cb->blockSignals(false);
                 cb->setText(textList.at(CheckBoxList.indexOf(cb)));
-            } catch (exception& e) {
-                qWarning() << e.what();
-            }
+
         }
     }
     if (mapData.contains("FuncMask") && mapData.contains("BalanceConfig")) {

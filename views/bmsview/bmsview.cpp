@@ -344,7 +344,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         foreach (QLabel* Label, SysStatus) {
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(SysStatus.indexOf(Label)));
 
@@ -378,7 +378,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(SysStatus.indexOf(Label)));
                 //                if (SysStatus.indexOf(Label) > 2) {
@@ -400,7 +400,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
 
         }
@@ -416,7 +416,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
 
         }
@@ -432,7 +432,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:gold;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
 
         }
@@ -448,7 +448,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:gold;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
 
         }
@@ -468,7 +468,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
                 QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                     ? "color:red;text-decoration:underline;font:bold;"
-                                    : "color:green";
+                                    : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(StatusList.indexOf(Label)));
 
@@ -487,7 +487,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         foreach (QCheckBox* rb, RadioList) {
 
                 bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
-                QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green";
+                QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green;";
                 rb->setStyleSheet(QString("%1").arg(color));
                 rb->blockSignals(true);
                 rb->setChecked(bit);

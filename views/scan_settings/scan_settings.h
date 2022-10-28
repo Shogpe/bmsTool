@@ -232,6 +232,7 @@ class scan_settings : public QWidget {
     mb_tcp *m_mbtcp;
     QTimer *m_timer;
     QThread m_thread;
+
    private:
     Ui::scan_settings *ui;
     ParaModel *m_para_model;
@@ -256,6 +257,8 @@ class scan_settings : public QWidget {
     void on_btnFwCheck_released();
     //定时检查
     void checkServer();
+   signals:
+    void checkRespond(int result);
 };
 
 #endif  //_SCAN_SETTING_H

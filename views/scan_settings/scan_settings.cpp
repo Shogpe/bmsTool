@@ -277,24 +277,40 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
                 m_result_model->updateData(i, (ret == 0) ? "传输成功" : "传输失败");
         }
     });
-    ui->srvStatus->setText("");
-
+    ui->srvStatus->setText(tr("服务检测中..."));
     m_timer->setInterval(1000);
-    connect(&m_thread, &QThread::started, this->m_timer, static_cast<void (QTimer::*)()>(&QTimer::start),
-            Qt::DirectConnection);
-    //    connect(&m_thread, &QThread::started, this, &scan_settings::checkServer, Qt::DirectConnection);
+    connect(&m_thread, &QThread::started, this->m_timer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(m_timer, &QTimer::timeout, this, &scan_settings::checkServer, Qt::DirectConnection);
+    connect(&m_thread, &QThread::finished, m_timer, &QTimer::stop);
+    connect(&m_thread, &QThread::finished, m_timer, &QTimer::deleteLater);
+    connect(this, &scan_settings::checkRespond, this, [this](int result) {
+        switch (result) {
+            case 1:
+                ui->srvStatus->setText("远程服务在线");
+                ui->srvStatus->setStyleSheet("color:green;");
+                ui->srvStatus->setToolTip("可以上传固件至远程服务器");
+                ui->btnUpload->setDisabled(false);
+            case 2:
+                ui->srvStatus->setText("本机服务在线");
+                ui->srvStatus->setStyleSheet("color:green;");
+                ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
+                ui->btnUpload->setDisabled(true);
+            default:
+                ui->srvStatus->setText("远程服务离线");
+                ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
+                ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
+                ui->btnUpload->setDisabled(true);
+                break;
+        }
+    });
     m_timer->moveToThread(&m_thread);
     m_thread.start();
 }
 
 scan_settings::~scan_settings() {
-    qDebug() << "delete";
-    if (m_timer) m_timer->deleteLater();
     m_thread.quit();
     m_thread.wait();
-    m_thread.deleteLater();
-    delete ui;
+    qDebug() << "delete";
 }
 void scan_settings::checkServer() {
     m_timer->stop();
@@ -317,21 +333,12 @@ void scan_settings::checkServer() {
         // qDebug() << result;
         if (result.contains(QString("TTL=")) || result.contains(QString("ttl=")))  //若包含TTL=字符串则认为网络在线
         {
-            ui->srvStatus->setText("远程服务在线");
-            ui->srvStatus->setStyleSheet("color:green;");
-            ui->srvStatus->setToolTip("可以上传固件至远程服务器");
-            ui->btnUpload->setDisabled(false);
+            emit checkRespond(1);
         } else {
-            ui->srvStatus->setText("远程服务离线");
-            ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
-            ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
-            ui->btnUpload->setDisabled(true);
+            emit checkRespond(0);
         }
     } else {
-        ui->srvStatus->setText("本机服务在线");
-        ui->srvStatus->setStyleSheet("color:green;");
-        ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
-        ui->btnUpload->setDisabled(true);
+        emit checkRespond(2);
     }
     m_timer->start(5000);
 }
@@ -341,14 +348,13 @@ void scan_settings::setBusy(bool is_busy) {
         ui->btnTest->setDisabled(true);
         ui->btnCtrl->setDisabled(true);
         ui->btnSetIp->setDisabled(true);
-
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        this->setCursor(QCursor(Qt::WaitCursor));
     } else {
         ui->btnTest->setDisabled(false);
         ui->btnWrite->setDisabled(false);
         ui->btnCtrl->setDisabled(false);
         ui->btnSetIp->setDisabled(false);
-        QApplication::restoreOverrideCursor();
+        this->setCursor(QCursor(Qt::ArrowCursor));
     }
 }
 void scan_settings::ip_analyze() {

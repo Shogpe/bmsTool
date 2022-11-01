@@ -13,6 +13,7 @@ set PATH="%~1;%PATH%")
 echo The Target is %TARGET_NAME%
 @DIR
 set PACK_EXE=7z.exe
+set DUMP_EXE=dump_syms.exe
 ::指定打包存储文件夹
 set RC_PATH=..\发布软件
 ::指定打包的程序
@@ -45,5 +46,5 @@ set BIN_OUT_PAK=%RC_PATH%\%BIN_NAME%_%version%.7z
 @del %OUTPUT% /S /Q
 @rmdir %OUTPUT% /S /Q
 %PACK_EXE% x %BIN_OUT_PAK% -o%RC_PATH%\%BIN_NAME%\ -y
-@copy %BIN_PDB% %RC_PATH%\%BIN_NAME%_%version%.pdb /Y
+%DUMP_EXE% -s %RC_PATH%\symbols %BIN_PDB%
 @pause

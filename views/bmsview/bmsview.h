@@ -70,6 +70,7 @@ class BMSView : public QWidget {
     void flushBmu();
 
    private:
+    void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
 };
 

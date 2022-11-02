@@ -1479,3 +1479,19 @@ void BMSView::on_btnLoadDefault_released() {
         Toast::showTip("load parameters failed!!!!!");
     }
 }
+void BMSView::changeEvent(QEvent* event) {
+    if (0 != event) {
+        switch (event->type()) {
+            // this event is send if a translator is loaded
+            case QEvent::LanguageChange: {
+                ui->retranslateUi(this);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    QWidget::changeEvent(event);
+}

@@ -1,24 +1,25 @@
 #ifndef MY_SPIN_BOX_H
 #define MY_SPIN_BOX_H
 #include <QDateTime>
+#include <QDebug>
 #include <QLineEdit>
 #include <QSpinBox>
-#include <QDebug>
 class MyDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT
 
    public:
     MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {
-//        setAlignment(Qt::AlignJustify);
+        //        setAlignment(Qt::AlignJustify);
     }
-
+//    virtual double valueFromText(const QString& text) const { return text.trimmed().toDouble(); }
     virtual QString textFromValue(double value) const {
         /* 4 - number of digits, 10 - base of number, '0' - pad character*/
-        return QString("%1").arg(value);
+        return QString("\t%1 ").arg(value);
     }
-    virtual void mousePressEvent(QMouseEvent* event) { }
-    //virtual void focusInEvent(QFocusEvent* event) { qDebug() << "f_in:"<<this->objectName(); }
-    //virtual void focusOutEvent(QFocusEvent* event) { qDebug() << "f_out:"<<this->objectName();this->lineEdit()->deselect(); }
+    virtual void mousePressEvent(QMouseEvent* event) {}
+    // virtual void focusInEvent(QFocusEvent* event) { qDebug() << "f_in:"<<this->objectName(); }
+    // virtual void focusOutEvent(QFocusEvent* event) { qDebug() <<
+    // "f_out:"<<this->objectName();this->lineEdit()->deselect(); }
 
    private:
     void wheelEvent(QWheelEvent* event) { return; }

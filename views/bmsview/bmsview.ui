@@ -177,7 +177,6 @@
         </property>
         <property name="font">
          <font>
-          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -624,7 +623,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string> 绝缘使能</string>
+                 <string>绝缘使能</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1055,7 +1054,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string> 绝缘过低保护</string>
+                 <string>绝缘过低保护</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1094,7 +1093,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string> SOC过低</string>
+                 <string>SOC过低</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1511,7 +1510,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string> BMU异常告警</string>
+                 <string>BMU异常告警</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -1589,7 +1588,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string> SOC过低</string>
+                 <string>SOC过低</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -2121,10 +2120,10 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>当前充电量 </string>
+             <string>当前充电量</string>
             </property>
             <property name="suffix">
-             <string> kWh</string>
+             <string>kWh</string>
             </property>
             <property name="decimals">
              <number>1</number>
@@ -2881,10 +2880,10 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>当前放电量 </string>
+             <string>当前放电量</string>
             </property>
             <property name="suffix">
-             <string> kWh</string>
+             <string>kWh</string>
             </property>
             <property name="decimals">
              <number>1</number>
@@ -6170,10 +6169,10 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>预充结束时间 </string>
+          <string>预充结束时间</string>
          </property>
          <property name="suffix">
-          <string>  s</string>
+          <string>s</string>
          </property>
          <property name="decimals">
           <number>0</number>

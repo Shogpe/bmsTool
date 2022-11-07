@@ -763,12 +763,26 @@ static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_F
 void BMSView::sendCommand() {
     TMsgData MsgCmd;
     uint16_t val[3];
-    QWidget* b = reinterpret_cast<QWidget*>(sender());
-    QString name = b->objectName();
+    QString text = "";
+    QString name = "";
+    QPushButton* btn = qobject_cast<QPushButton*>(QObject::sender());
+    if (btn) {
+        text = btn->text();
+        name = btn->objectName();
+    } else {
+        QAction* act = qobject_cast<QAction*>(QObject::sender());
+        if (act) {
+            text = act->text();
+            name = act->objectName();
+        } else {
+            myHelper::ShowMessageBoxError("no such command!");
+            return;
+        }
+    }
     map<QString, mb_cmd>::iterator iter1;
     iter1 = btnMap.find(name);
     if (iter1 != btnMap.end()) {
-        if (myHelper::ShowMessageBoxQuesion(tr("是否执行 %1 ？").arg(((QPushButton*)b)->text())) == QDialog::Accepted) {
+        if (myHelper::ShowMessageBoxQuesion(QString("%1 %2 ？").arg(tr("是否执行"), text)) == QDialog::Accepted) {
             mb_cmd cmd = iter1->second;
             MsgCmd.msg_type = cmd.type;
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));

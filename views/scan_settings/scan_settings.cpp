@@ -290,11 +290,13 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
                 ui->srvStatus->setStyleSheet("color:green;");
                 ui->srvStatus->setToolTip("可以上传固件至远程服务器");
                 ui->btnUpload->setDisabled(false);
+                break;
             case 2:
                 ui->srvStatus->setText("本机服务在线");
                 ui->srvStatus->setStyleSheet("color:green;");
                 ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
                 ui->btnUpload->setDisabled(true);
+                break;
             default:
                 ui->srvStatus->setText("远程服务离线");
                 ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
@@ -324,13 +326,13 @@ void scan_settings::checkServer() {
         }
     }
     if (ipAddr != "192.168.1.230") {
-        QString network_cmd = "ping 192.168.1.230 -w 500 -n 1";
+        QString network_cmd = "ping 192.168.1.230 -n 1";
         QString result;
         QProcess network_process;            //不要加this
         network_process.start(network_cmd);  //调用ping 指令
         network_process.waitForFinished();   //等待指令执行完毕
         result = network_process.readAll();  //获取指令执行结果
-        // qDebug() << result;
+//        qDebug() << result;
         if (result.contains(QString("TTL=")) || result.contains(QString("ttl=")))  //若包含TTL=字符串则认为网络在线
         {
             emit checkRespond(1);

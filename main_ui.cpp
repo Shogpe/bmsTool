@@ -5,12 +5,12 @@
 //#include "cmu4u.h"
 #include "iconhelper.h"
 //#include "models/frmcustomplot/frmsimple.h"
+#include "bmsview.h"
 #include "cmu_ip.h"
 #include "scan_settings.h"
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-#include "bmsview.h"
 //#include "rtu_tool.h"
 #include "firmwareDialog.h"
 void MainUI::closeEvent(QCloseEvent* event) {
@@ -29,10 +29,10 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     this->tftpd = new TFTPServer();
 
     connect(tftpd, &TFTPServer::statusUpdate, this,
-            [this](QString status) { ui->lTftpStatus->setText(QString("升级服务:%1").arg(status)); });
+            [this](QString status) { ui->lTftpStatus->setText(QString("%1:%2").arg(tr("升级服务"), status)); });
 
     connect(tftpd, &TFTPServer::fileTransferFinished, this, [this](int ret, QString msg) {
-        Toast::showTip(QString("%1:%2").arg(msg).arg(ret == 0 ? "成功" : "失败"));
+        Toast::showTip(QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
     });
     tftpd->init("192.168.1.230", 69, "firmware");
 }
@@ -55,7 +55,7 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 #if 1  // use FramelessHelper on windows
     auto helper = new FramelessHelper(this);
-    if (myHelper::level > 0 && myHelper::level != 31) {
+    if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
         helper->setDisableMaximized(true);
         this->setWindowFlags(Qt::FramelessWindowHint);
     }
@@ -86,7 +86,7 @@ void MainUI::initForm() {
     this->setWidget(this);
     ui->widgetTop->setProperty("nav", "top");
 #endif
-    ui->labTitle->setText("库博BMS监控软件");
+    ui->labTitle->setText(tr("库博BMS监控软件"));
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
     ui->labVersion->setText(QString("battery management system v") + VER_PRODUCTVERSION_STR);
@@ -96,7 +96,7 @@ void MainUI::initForm() {
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + time_tip) &&
         (QString(VER_PRODUCTVERSION_STR).contains(QRegExp("[a-zA-Z]")))) {
         qDebug() << "timeout exit..";
-        myHelper::ShowMessageBoxError("本软件为测试使用，请勿长时间使用!");
+        myHelper::ShowMessageBoxError(tr("本软件为测试使用，请勿长时间使用!"));
         if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + (2 * 31 * 24 * 60 * 60))) {
             exit(0);
         }
@@ -153,13 +153,13 @@ void MainUI::initForm() {
     title_menu = new QMenu;
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
-    title_menu->addAction("Rec转换", this, &MainUI::menuClick);
+    title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
     title_menu->actions().constLast()->setObjectName("Rec Convert");
-    title_menu->addAction("维护工具", this, &MainUI::menuClick);
+    title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
     title_menu->actions().constLast()->setObjectName("Maintenance Tool");
 
     if (QFileInfo("User Manual.pdf").isFile()) {
-        title_menu->addAction("用户手册", this, &MainUI::menuClick);
+        title_menu->addAction(tr("用户手册"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("User Manual");
     }
 
@@ -169,17 +169,17 @@ void MainUI::initForm() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QByteArray ba = myHelper::GetAppValue("global/layout").toByteArray();
     this->restoreGeometry(ba);
-    QString user = myHelper::user;  // settings->value("global/user", "").toString();
-    if (myHelper::level < 16) ui->btnMenu->hide();
-    if (myHelper::level > 0 && myHelper::level != 31) {
+    QString user = db_manager::Instance()->userName();  // settings->value("global/user", "").toString();
+    if (db_manager::Instance()->userLevel() < 16) ui->btnMenu->hide();
+    if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (myHelper::level == 1) {
+    } else if (db_manager::Instance()->userLevel() == 1) {
         int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (myHelper::level == 31) {  // Widget,RTUView
+    } else if (db_manager::Instance()->userLevel() == 31) {  // Widget,RTUView
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
@@ -208,38 +208,38 @@ void MainUI::buttonClick() {
         }
     }
 
-    if (name == "主界面") {
-        ui->stackedWidget->setCurrentIndex(0);
-    } else if (name == "系统设置") {
-        ui->stackedWidget->setCurrentIndex(1);
-    } else if (name == "事件查询") {
-        // ui->stackedWidget->setCurrentIndex(2);
-    } else if (name == "使用帮助") {
-        // ui->stackedWidget->setCurrentIndex(3);
-    } else if (name == "重启") {
-        qApp->exit(EXIT_CODE_REBOOT);
-    }
+    //    if (name == "主界面") {
+    //        ui->stackedWidget->setCurrentIndex(0);
+    //    } else if (name == "系统设置") {
+    //        ui->stackedWidget->setCurrentIndex(1);
+    //    } else if (name == "事件查询") {
+    //        // ui->stackedWidget->setCurrentIndex(2);
+    //    } else if (name == "使用帮助") {
+    //        // ui->stackedWidget->setCurrentIndex(3);
+    //    } else if (name == "重启") {
+    //        qApp->exit(EXIT_CODE_REBOOT);
+    //    }
 }
 
 void MainUI::menuClick()  //切换语言
 {
     QAction* b = (QAction*)sender();
     qDebug() << b->objectName() << b->text();
-    if (b->text() == "Rec转换") {
+    if (b->objectName() == "Rec Convert") {
         QString path = QFileDialog::getExistingDirectory();
         FindFile(path);
         Toast::showTip("记录文件转换完毕。", nullptr);
-    } else if (b->text() == "录波转换") {
+        //    } else if (b->objectName() == "录波转换") {
         //        frmSimple* view = new frmSimple(nullptr);
         //        view->setWindowFlags(Qt::WindowCloseButtonHint);
         //        view->show();
-        Toast::showTip("记录文件转换完毕。", nullptr);
-    } else if (b->text() == "维护工具") {
+        //        Toast::showTip("记录文件转换完毕。", nullptr);
+    } else if (b->objectName() == "Maintenance Tool") {
         scan_settings* w = new scan_settings(nullptr);
         w->show();
-    } else if (b->text() == "固件查看") {
-        firmwareDialog* w = new firmwareDialog(nullptr);
-        w->show();
+        //    } else if (b->text() == "固件查看") {
+        //        firmwareDialog* w = new firmwareDialog(nullptr);
+        //        w->show();
     } else if (b->text() == "English") {
         qDebug() << "set eng";
         myHelper::SetAppValue("Locale", "en_US");

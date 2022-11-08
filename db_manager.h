@@ -44,8 +44,16 @@ class db_manager {
     bool getSOE(QMap<int, ST_DB_SOE>& soe_map, SOE_TAG tag);
     bool getUser(QString name, QString password, int&);
     void closed();
+    // 全局变量
+    void setUserName(QString name) { usrName = name; }
+    QString userName() { return usrName; }
+    void setUserLevel(int level) { usrLevel = level; }
+    int userLevel() { return usrLevel; }
 
    protected:
+    QString usrName;
+    int usrLevel;
+
    private:
     static db_manager* self;
 };

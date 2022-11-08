@@ -1,5 +1,5 @@
-#ifndef _SCAN_SETTING_H
-#define _SCAN_SETTING_H
+#ifndef _BMS_TEST_H
+#define _BMS_TEST_H
 
 #include <QDebug>
 #include <QItemDelegate>
@@ -16,7 +16,7 @@
 using namespace std;
 
 namespace Ui {
-class scan_settings;
+class bms_test;
 }
 typedef struct {
     int index;  //
@@ -175,54 +175,7 @@ class ParaModel : public QStandardItemModel {
         return vals.count();
     }
 };
-/**
- * @brief The testWorker class
- */
-class testWorker : public QObject {
-    Q_OBJECT
-   public:
-    explicit testWorker(QObject *parent = nullptr) {}
-    testWorker(QString ip, const QMap<QString, double> setMap, int mode = 0) {
-        m_ip = ip;
-        m_setMap = setMap;
-        m_mode = mode;
-    }
-    ~testWorker() {}
 
-   public:
-    void setServerIp(QString ServerIp) { m_ServerIp = ServerIp; }
-
-   private:
-    QMutex m_mutex;
-    QString m_ip;
-    QString m_ServerIp;
-    int m_mode;
-    QMap<QString, double> m_setMap;
-   signals:
-    void workFinished(int state, QString msg);
-   public slots:
-    void doWork() {
-        qDebug() << m_mode;
-        switch (m_mode) {
-            case CMD_SEND_SET:
-                this->doSetData(m_ip, m_setMap);
-                break;
-            case CMD_CHECK_SET:
-                this->doTest(m_ip, m_setMap);
-                break;
-            case CMD_SetIp:
-                this->doSetIp(m_ip, m_ServerIp);
-                break;
-            default:
-                doCommand(m_ip, m_mode);
-                break;
-        }
-    }
-    void doTest(QString ip, const QMap<QString, double> setMap);
-    void doSetData(QString ip, const QMap<QString, double> setMap);
-    void doCommand(QString ip, uint command);
-    void doSetIp(QString ip, QString serverIp);
-};
 class scan_settings : public QWidget {
     Q_OBJECT
 
@@ -263,4 +216,4 @@ class scan_settings : public QWidget {
     void checkRespond(int result);
 };
 
-#endif  //_SCAN_SETTING_H
+#endif  //_BMS_TEST_H

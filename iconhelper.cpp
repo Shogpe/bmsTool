@@ -17,6 +17,7 @@ IconHelper::IconHelper(QObject *) : QObject(qApp) {
     int fontId = QFontDatabase::addApplicationFont(":/image/fontawesome-webfont.ttf");
     QStringList fontName = QFontDatabase::applicationFontFamilies(fontId);
     if (fontName.count() > 0) {
+        qDebug() << fontName;
         iconFont = QFont(fontName.at(0), 11);
     } else {
         qDebug() << "load fontawesome-webfont.ttf error";

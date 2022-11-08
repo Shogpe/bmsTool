@@ -49,12 +49,6 @@ static inline uint32_t bswap_32(uint32_t x) { return (bswap_16(x & 0xffff) << 16
 
 class myHelper : public QObject {
    public:
-    static QString user;
-    static int level;
-    static void SetUser(QString u, int lvl) {
-        user = u;
-        level = lvl;
-    }
     //设置为开机启动
     static void AutoRunWithSystem(bool IsAutoRun, QString AppName, QString AppPath) {
         QSettings *reg = new QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",

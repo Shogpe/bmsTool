@@ -33,10 +33,9 @@ SOURCES     += main.cpp \
     MessageQueue.cpp \
     main_ui.cpp \
     utils.cpp
-SOURCES     += iconhelper.cpp
 SOURCES     += appinit.cpp
 
-HEADERS     += iconhelper.h \
+HEADERS     += \
     MessageQueue.h \
     main_ui.h \
     myhelper.h \

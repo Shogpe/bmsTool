@@ -3,8 +3,7 @@
 #include "db_manager.h"
 #include "myhelper.h"
 #include "ui_logindialog.h"
-QString myHelper::user = "";
-int myHelper::level = 0;
+
 // 加解密都用此方法
 QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
     for (int i = 0; i < src.count(); i++) {
@@ -15,7 +14,7 @@ QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
 logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindialog) {
     ui->setupUi(this);
     setWindowTitle(QString("%1系统登录").arg("BMS 上位机"));
-    setWindowFlags(Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::WindowCloseButtonHint|Qt::WindowStaysOnTopHint);
     //在构造函数里将密码框的显示设置为黑点，不可见
     ui->lineEdit_pwd->setEchoMode(QLineEdit::Password);
     QString qstrname = myHelper::GetAppValue("user/name", "").toString();
@@ -45,9 +44,8 @@ void logindialog::on_pushButton_login_clicked() {
     //    qDebug() << pwd;
     int level = 0;
     if (db_manager::Instance()->getUser(ui->lineEdit_uname->text(), pwd, level)) {
-        myHelper::user = ui->lineEdit_uname->text();
-        myHelper::level = level;
-        qDebug() << level;
+        db_manager::Instance()->setUserName(ui->lineEdit_uname->text());
+        db_manager::Instance()->setUserLevel(level);
         accept();
         if (ui->isRemember->isChecked()) {
             // 保存密码

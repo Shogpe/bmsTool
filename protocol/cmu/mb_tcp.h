@@ -32,6 +32,7 @@ class mb_tcp : public QObject {
     uint32_t drv_status;
     int max_offset;
     map<string, NodeReg> name_map;
+    int ReadData(uint8_t type, int start, int len, uint16_t *dest);
 
    protected:
     modbus_t *cmu;
@@ -46,8 +47,6 @@ class mb_tcp : public QObject {
     int JudgeReg(NodeReg &node_reg);
     void NewReg(NodeReg &node_reg);
     void InsertReg(NodeReg &node_reg, int index);
-    int ReadData(uint8_t type, int start, int len, uint16_t *dest);
-
     int ParseData();
    signals:
     void signal_message(const QString &msg);

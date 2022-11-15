@@ -110,21 +110,19 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     QStringList hdr_list;
-
+    hdr_list.append(tr("版本号"));
+    for (int i = 0; i < config.vol_num; i++) {
+        hdr_list.append(("Vol" + QString::number(i + 1)));
+    }
+    for (int i = 0; i < config.T_num; i++) {
+        hdr_list.append(("Tpack" + QString::number(i + 1)));
+    }
+    for (int i = 0; i < config.Tp_num; i++) {
+        hdr_list.append(("Tp" + QString::number(i + 1)));
+    }
+    hdr_list.append(tr("运行状态"));
+    hdr_list.append(tr("故障状态"));
     if (this->mycmu->GetProtocalVer() < CMUV4) {
-        for (int i = 0; i < config.vol_num; i++) {
-            hdr_list.append(("Vol" + QString::number(i + 1)));
-        }
-        for (int i = 0; i < config.T_num; i++) {
-            hdr_list.append(("Tpack" + QString::number(i + 1)));
-        }
-        for (int i = 0; i < config.Tp_num; i++) {
-            hdr_list.append(("Tp" + QString::number(i + 1)));
-        }
-        hdr_list.append(tr("电压断线"));
-        hdr_list.append(tr("温度断线"));
-        hdr_list.append(tr("运行状态"));
-        hdr_list.append(tr("故障状态"));
         if (this->mycmu->GetProtocalVer() >= CMUV3) {
             hdr_list.append(tr("CAN错误数"));
         }
@@ -140,26 +138,13 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
 
     } else if (this->mycmu->GetProtocalVer() >= CMUV4) {
-        for (int i = 0; i < config.vol_num; i++) {
-            hdr_list.append(("Vol" + QString::number(i + 1)));
-        }
-        for (int i = 0; i < config.T_num; i++) {
-            hdr_list.append(("Tpack" + QString::number(i + 1)));
-        }
-        for (int i = 0; i < config.Tp_num; i++) {
-            hdr_list.append(("Tp" + QString::number(i + 1)));
-        }
-        hdr_list.append(tr("电压断线"));
-        hdr_list.append(tr("温度断线"));
-        hdr_list.append(tr("运行状态"));
-        hdr_list.append(tr("故障状态"));
+        hdr_list.append(tr("风机"));
         hdr_list.append(tr("母线电压(V)"));
         hdr_list.append(tr("均衡电流(A)"));
         hdr_list.append(tr("均衡故障"));
         hdr_list.append(tr("通道状态"));
         hdr_list.append(tr("均衡模式"));
         hdr_list.append(tr("CAN错误数"));
-        hdr_list.append(tr("版本号"));
         // 特殊处理
         ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setObjectName("BalanceConfig");
@@ -520,7 +505,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 str = tr("手动均衡") + QString(":%1").arg(str);
                 break;
             default:
-                str = tr("禁止均衡") + QString(":%1").arg(str);
+                str = tr("未定义") + QString(":%1").arg(str);
                 break;
         }
 
@@ -544,7 +529,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 str = tr("手动均衡");
                 break;
             default:
-                str = tr("禁止均衡");
+                str = tr("未定义");
                 break;
         }
 
@@ -578,6 +563,27 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     id = mapData.value("TrMaxID");
     ui->TrMaxID->setText(QString("%1(%2)").arg(tr("最大单体温升"), myHelper::IDToString(id, config.T_num)));
 }
+QString getBmuInfo2(uint16_t status) {
+    QStringList statusList;
+    if (GET_BIT(status, 0)) statusList << "拨码异常";
+    if (GET_BIT(status, 1)) statusList << "拨码锁定";
+    statusList << (GET_BIT(status, 2) ? "干结点开路" : "干结点闭合");
+    statusList << (GET_BIT(status, 3) ? "风机开" : "风机关");
+    if (!GET_BIT(status, 4)) statusList << "辅源异常";
+    if (GET_BIT(status, 5)) statusList << "5";
+    if (GET_BIT(status, 6)) statusList << "6";
+    if (GET_BIT(status, 7)) statusList << "7";
+    if (GET_BIT(status, 8)) statusList << "1.25V错误";
+    if (GET_BIT(status, 9)) statusList << "均衡母线错误";
+    if (GET_BIT(status, 10)) statusList << "均衡电流异常";
+    if (GET_BIT(status, 11)) statusList << "24V母线异常";
+    if (GET_BIT(status, 12)) statusList << "单体电压异常";
+    if (GET_BIT(status, 13)) statusList << "均衡参数错误";
+    if (GET_BIT(status, 14)) statusList << "Mos异常";
+    if (GET_BIT(status, 15)) statusList << "副边电压异常";
+    // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+    return statusList.join("|");
+}
 void BMSView::flushBmu() {
     if (!mycmu) return;
     if (config.bmu_num > ui->tableBMU->rowCount()) return;
@@ -589,11 +595,38 @@ void BMSView::flushBmu() {
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
         cloumn_offset = 0;
+        //版本号
+        item = new QTableWidgetItem();
+        item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
+        QFont font = item->font();
+        if (this->bmu_comm >> i & 0x01) {
+            item->setTextColor(QColor(Qt::darkGreen));
+            font.setStrikeOut(false);
+            font.setBold(false);
+        } else {
+            item->setTextColor(QColor(Qt::red));
+            font.setStrikeOut(true);
+            font.setBold(true);
+        }
+        item->setFont(font);
+        item->setToolTip(tr("Strikethrough indicates disconnection"));
+        //        item->setToolTip("删除线表示断线");
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableBMU->setItem(i, cloumn_offset++, item);
+        //单体电压
         for (int j = 0; j < config.vol_num; j++) {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            QFont font = item->font();
+            if (GET_BIT(mycmu->bmu_data[i].Ubreak, j)) {
+                font.setStrikeOut(true);
+            } else {
+                font.setStrikeOut(false);
+            }
+            item->setFont(font);
+            item->setToolTip(tr("Strikethrough indicates disconnection"));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
         }
 
@@ -604,29 +637,37 @@ void BMSView::flushBmu() {
             double val = this->mycmu->bmu_data[i].Tcell[j] / 10.0;
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            QFont font = item->font();
+            if (GET_BIT(mycmu->bmu_data[i].Tbreak, j)) {
+                font.setStrikeOut(true);
+            } else {
+                font.setStrikeOut(false);
+            }
+            item->setFont(font);
+            item->setToolTip(tr("Strikethrough indicates disconnection"));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
         }
 
         cloumn_offset += (config.T_num + config.Tp_num);
 
         // 电压断线，温度断线，运行状态，故障状态
-        item = new QTableWidgetItem();
-        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Ubreak, 4, 16, QLatin1Char('0')));
-        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Ubreak));
-        //        if (0 == i) qDebug() << GetBitStatus(mycmu->bmu_data[i].Ubreak);
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
+        //        item = new QTableWidgetItem();
+        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Ubreak, 4, 16, QLatin1Char('0')));
+        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Ubreak));
+        //        //        if (0 == i) qDebug() << GetBitStatus(mycmu->bmu_data[i].Ubreak);
+        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-        item = new QTableWidgetItem();
-        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Tbreak, 4, 16, QLatin1Char('0')));
-        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Tbreak));
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
+        //        item = new QTableWidgetItem();
+        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Tbreak, 4, 16, QLatin1Char('0')));
+        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Tbreak));
+        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
 
         item = new QTableWidgetItem();
         item->setText(QString("0x%1").arg(mycmu->bmu_data[i].RunStat, 4, 16, QLatin1Char('0')));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].RunStat));
+        item->setToolTip(getBmuInfo2(mycmu->bmu_data[i].RunStat));
         ui->tableBMU->setItem(i, cloumn_offset++, item);
 
         item = new QTableWidgetItem();
@@ -636,6 +677,12 @@ void BMSView::flushBmu() {
         ui->tableBMU->setItem(i, cloumn_offset++, item);
 
         if (mycmu->GetProtocalVer() >= CMUV4) {
+            item = new QTableWidgetItem();
+            QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
+            item->setText(fanStatus);
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
@@ -668,24 +715,6 @@ void BMSView::flushBmu() {
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
-        //版本号
-        item = new QTableWidgetItem();
-        item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
-        if (this->bmu_comm >> i & 0x01) {
-            item->setTextColor(QColor(Qt::darkGreen));
-            QFont font = item->font();
-            font.setUnderline(false);
-            font.setBold(false);
-            item->setFont(font);
-        } else {
-            item->setTextColor(QColor(Qt::red));
-            QFont font = item->font();
-            font.setUnderline(true);
-            font.setBold(true);
-            item->setFont(font);
-        }
-        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
     }
     //数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -721,44 +750,45 @@ struct mb_cmd {
     uint16_t addr;
     uint16_t value;
 };
-static map<QString, mb_cmd> btnMap = {{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
-                                      {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
-                                      {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
-                                      {"btnUploadTrig", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_UPLOAD_Trig}},
-                                      {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
-                                      {"btnIBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IBase}},
-                                      {"btnIZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IZero}},
-                                      {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
-                                      {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
-                                      {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
-                                      {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  //预留
-                                      {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TBase}},
-                                      {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
-                                      {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
-                                      {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
-                                      {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
-                                      {"btnRebootCMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
-                                      {"btnRebootBMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT_BMU}},
-                                      {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
-                                      {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
-                                      {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
-                                      {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
-                                      {"btnKMRON", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_ON}},
-                                      {"btnKMROFF", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_OFF}},
-                                      {"btnQFON", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_ON}},
-                                      {"btnQFOFF", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_OFF}},
-                                      {"btnKMPON", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_ON}},
-                                      {"btnKMPOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_OFF}},
-                                      {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
-                                      {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
-                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
-                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
-                                      {"btnAcON", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_ON}},
-                                      {"btnAcOFF", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_OFF}},
-                                      {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
-                                      {"btnResOFF", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_OFF}},
-                                      {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
-                                      {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}}};
+static map<QString, mb_cmd> btnMap = {
+    {"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+    {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
+    {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
+    {"btnUploadTrig", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_UPLOAD_Trig}},
+    {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
+    {"btnIBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IBase}},
+    {"btnIZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IZero}},
+    {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
+    {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
+    {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
+    {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  //预留
+    {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TBase}},
+    {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
+    {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
+    {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
+    {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
+    {"btnRebootCMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT}},
+    {"btnRebootBMU", {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT_BMU}},
+    {"btnIOunlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_UNLOCK}},
+    {"btnIOlock", {CTRL_AO_ADDR, ADDR_IO_EN, MB_IO_LOCK}},
+    {"btnAutoKMON", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_ON}},
+    {"btnAutoKMOFF", {CTRL_AO_ADDR, ADDR_CTRL_AUTO, MB_CTRL_OFF}},
+    {"btnKMRON", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_ON}},
+    {"btnKMROFF", {CTRL_AO_ADDR, ADDR_CTRL_KMR, MB_CTRL_OFF}},
+    {"btnQFON", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_ON}},
+    {"btnQFOFF", {CTRL_AO_ADDR, ADDR_CTRL_QF, MB_CTRL_OFF}},
+    {"btnKMPON", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_ON}},
+    {"btnKMPOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_OFF}},
+    {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
+    {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
+    //                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
+    //                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+    {"btnAcON", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_ON}},
+    {"btnAcOFF", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_OFF}},
+    {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
+    {"btnResOFF", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_OFF}},
+    {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
+    {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}}};
 
 void BMSView::sendCommand() {
     TMsgData MsgCmd;
@@ -1326,25 +1356,7 @@ void BMSView::uiInit() {
         ui->tableBMU->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->tableBMU,
                 static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
-                [=](const QPoint& pos) {  // Handle global position
-                    QPoint globalPos = ui->tableBMU->mapToGlobal(pos);
-
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("导出当前数据"), this, [=]() {
-                        QTableWidget* table = ui->tableBMU;
-                        QString fileName = QFileDialog::getSaveFileName(
-                            this, tr("Save File"),
-                            tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
-                            tr("csv File(*.csv)"));
-                        if (fileName.isNull()) {
-                            return;
-                        }
-                        exportExecl(table, fileName);
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
+                &BMSView::pop_bmuTable_menu);
         ui->tableExtView->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->tableExtView,
                 static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
@@ -1491,6 +1503,58 @@ void BMSView::on_btnLoadDefault_released() {
         Toast::showTip("load parameters ok!");
     } else {
         Toast::showTip("load parameters failed!!!!!");
+    }
+}
+void BMSView::pop_bmuTable_menu(const QPoint& pos) {
+    {  // Handle global position
+        QTableWidget* table = ui->tableBMU;
+        //        QPoint globalPos = table->mapToGlobal(pos);
+        QModelIndex index = table->indexAt(pos);
+        qDebug() << index.row();
+        // Create menu and insert some actions
+        QMenu* myMenu = new QMenu(table);
+        myMenu->addAction(tr("导出当前数据"), this, [=]() {
+            QString fileName = QFileDialog::getSaveFileName(
+                this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                tr("csv File(*.csv)"));
+            if (fileName.isNull()) {
+                return;
+            }
+            exportExecl(table, fileName);
+        });
+        myMenu->addAction(QString("%1:BMU%2").arg(tr("开启风扇")).arg(index.row() + 1), this, [this, index]() {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t val[2] = {0xFF0B, index.row() | 0xA500};
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        });
+        myMenu->addAction(QString("%1:BMU%2").arg(tr("关闭风扇")).arg(index.row() + 1), this, [this, index]() {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t val[2] = {0xFF0B, index.row() | 0x5A00};
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        });
+        myMenu->addAction(tr("开启全部风扇"), this, [this]() {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t val[2] = {0xFF0B, 0xA5FE};
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        });
+        myMenu->addAction(tr("关闭全部风扇"), this, [this, index]() {
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t val[2] = {0xFF0B, 0xA5FF};
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        });
+        myMenu->move(cursor().pos());
+        myMenu->show();
+        myMenu->setAttribute(Qt::WA_DeleteOnClose);
+        // Show context menu at handling position
+        //        myMenu.exec(globalPos);
     }
 }
 void BMSView::changeEvent(QEvent* event) {

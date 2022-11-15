@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "version.h"
 //#include "rtu_tool.h"
+#include "bms_datalog.h"
 #include "firmwareDialog.h"
 void MainUI::closeEvent(QCloseEvent* event) {
     //判断账号输入框是否为空（只是作为一个条件）
@@ -120,17 +121,17 @@ void MainUI::initForm() {
     langue_menu = new QMenu(tr("Langue"));
     QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
 
-    langue_menu->addAction("Chinese", this, &MainUI::menuClick);
+    langue_menu->addAction("简体中文", this, &MainUI::menuClick);
+    langue_menu->actions().constLast()->setObjectName("zh_CN");
     langue_menu->addAction("English", this, &MainUI::menuClick);
+    langue_menu->actions().constLast()->setObjectName("en_US");
+    langue_menu->addAction("繁體中文", this, &MainUI::menuClick);
+    langue_menu->actions().constLast()->setObjectName("zh_TW");
     langueGroup = new QActionGroup(this);
     foreach (QAction* act, langue_menu->actions()) {
         langueGroup->addAction(act);
         act->setCheckable(true);
-    }
-    if (locale == "zh_CN") {
-        langue_menu->actions().at(0)->setChecked(true);
-    } else {
-        langue_menu->actions().at(1)->setChecked(true);
+        if (locale == act->objectName()) act->setChecked(true);
     }
 
     //创建主题切换菜单
@@ -162,7 +163,10 @@ void MainUI::initForm() {
         title_menu->addAction(tr("用户手册"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("User Manual");
     }
-
+    if (db_manager::Instance()->userName() == "Ganing") {
+        title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("DataLog");
+    }
     //    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
     ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
@@ -228,26 +232,20 @@ void MainUI::menuClick()  //切换语言
     if (b->objectName() == "Rec Convert") {
         QString path = QFileDialog::getExistingDirectory();
         FindFile(path);
-        Toast::showTip("记录文件转换完毕。", nullptr);
-        //    } else if (b->objectName() == "录波转换") {
-        //        frmSimple* view = new frmSimple(nullptr);
-        //        view->setWindowFlags(Qt::WindowCloseButtonHint);
-        //        view->show();
-        //        Toast::showTip("记录文件转换完毕。", nullptr);
+    } else if (b->objectName() == "DataLog") {
+        BmsDataLog* view = new BmsDataLog(nullptr);
+        view->log2csv();
+        view->deleteLater();
     } else if (b->objectName() == "Maintenance Tool") {
-        scan_settings* w = new scan_settings(nullptr);
+        scan_settings* w = new scan_settings(this);
         w->show();
         //    } else if (b->text() == "固件查看") {
         //        firmwareDialog* w = new firmwareDialog(nullptr);
         //        w->show();
-    } else if (b->text() == "English") {
+    } else if (b->objectName() == "en_US" || b->objectName() == "zh_CN" || b->objectName() == "zh_TW") {
         qDebug() << "set eng";
-        myHelper::SetAppValue("Locale", "en_US");
-        myHelper::SetTranslation("en_US");
-    } else if (b->text() == "Chinese" || b->text() == "中文") {
-        qDebug() << "set zh";
-        myHelper::SetAppValue("Locale", "zh_CN");
-        myHelper::SetTranslation("zh_CN");
+        myHelper::SetAppValue("Locale", b->objectName());
+        myHelper::SetTranslation(b->objectName());
     } else if (b->objectName() == "User Manual") {
         if (!QDesktopServices::openUrl(QUrl::fromLocalFile("User Manual.pdf"))) {
             myHelper::ShowMessageBoxError("open User Manual docment failed!Please install pdf reader.");

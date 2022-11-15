@@ -2,11 +2,11 @@
 #define UIDEMO08_H
 
 #include <QWidget>
+#include "bmsview.h"
 #include "mb_cmu.h"
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
 #include "tftpserver.h"
-#include "bmsview.h"
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
 
@@ -40,8 +40,6 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     QList<QAction *> updateActs;
     QActionGroup *langueGroup;
     QActionGroup *themeGroup;
-    QAction *setChinese;
-    QAction *setEnglish;
     QAction *setBlue;
     QAction *setBlack;
     QAction *setWhite;

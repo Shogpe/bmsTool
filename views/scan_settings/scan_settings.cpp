@@ -286,6 +286,7 @@ quint32 ipv4str_to_int(const QString& ipstr) {
 scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan_settings) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     uiInit();
     m_mbtcp = nullptr;
     m_timer = new QTimer();
@@ -299,36 +300,38 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
                 m_result_model->updateData(i, (ret == 0) ? "传输成功" : "传输失败");
         }
     });
-    ui->srvStatus->setText(tr("服务检测中..."));
-    m_timer->setInterval(1000);
-    connect(&m_thread, &QThread::started, this->m_timer, static_cast<void (QTimer::*)()>(&QTimer::start));
-    connect(m_timer, &QTimer::timeout, this, &scan_settings::checkServer, Qt::DirectConnection);
-    connect(&m_thread, &QThread::finished, m_timer, &QTimer::stop);
-    connect(&m_thread, &QThread::finished, m_timer, &QTimer::deleteLater);
-    connect(this, &scan_settings::checkRespond, this, [this](int result) {
-        switch (result) {
-            case 1:
-                ui->srvStatus->setText("远程服务在线");
-                ui->srvStatus->setStyleSheet("color:green;");
-                ui->srvStatus->setToolTip("可以上传固件至远程服务器");
-                ui->btnUpload->setDisabled(false);
-                break;
-            case 2:
-                ui->srvStatus->setText("本机服务在线");
-                ui->srvStatus->setStyleSheet("color:green;");
-                ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
-                ui->btnUpload->setDisabled(true);
-                break;
-            default:
-                ui->srvStatus->setText("远程服务离线");
-                ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
-                ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
-                ui->btnUpload->setDisabled(true);
-                break;
-        }
-    });
-    m_timer->moveToThread(&m_thread);
-    m_thread.start();
+    {
+        ui->srvStatus->setText(tr("服务检测中..."));
+        m_timer->setInterval(1000);
+        connect(&m_thread, &QThread::started, this->m_timer, static_cast<void (QTimer::*)()>(&QTimer::start));
+        connect(m_timer, &QTimer::timeout, this, &scan_settings::checkServer, Qt::DirectConnection);
+        connect(&m_thread, &QThread::finished, m_timer, &QTimer::stop);
+        connect(&m_thread, &QThread::finished, m_timer, &QTimer::deleteLater);
+        connect(this, &scan_settings::checkRespond, this, [this](int result) {
+            switch (result) {
+                case 1:
+                    ui->srvStatus->setText("远程服务在线");
+                    ui->srvStatus->setStyleSheet("color:green;");
+                    ui->srvStatus->setToolTip("可以上传固件至远程服务器");
+                    ui->btnUpload->setDisabled(false);
+                    break;
+                case 2:
+                    ui->srvStatus->setText("本机服务在线");
+                    ui->srvStatus->setStyleSheet("color:green;");
+                    ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
+                    ui->btnUpload->setDisabled(true);
+                    break;
+                default:
+                    ui->srvStatus->setText("远程服务离线");
+                    ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
+                    ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
+                    ui->btnUpload->setDisabled(true);
+                    break;
+            }
+        });
+        m_timer->moveToThread(&m_thread);
+        m_thread.start();
+    }
 }
 
 scan_settings::~scan_settings() {
@@ -348,7 +351,7 @@ void scan_settings::checkServer() {
         }
     }
     if (ipAddr != "192.168.1.230") {
-        QString network_cmd = "ping 192.168.1.230 -n 1";
+        QString network_cmd = "ping 192.168.1.230 -n 1 -w 1000";
         QString result;
         QProcess network_process;                                                  //不要加this
         network_process.start(network_cmd);                                        //调用ping 指令
@@ -531,6 +534,7 @@ void scan_settings::uiInit() {
     QString ipRange =
         QSettings("config.ini", QSettings::IniFormat).value("SCAN/iprange", "192.168.1.121-192.168.1.128").toString();
     ui->connectIP->setText(ipRange);
+    ui->btnUpload->setDisabled(true);
 }
 
 void scan_settings::loadXml() {

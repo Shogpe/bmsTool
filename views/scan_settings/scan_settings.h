@@ -247,6 +247,7 @@ class scan_settings : public QWidget {
     QList<ST_PARA> target_result;
 
     Qtftp qtftp;
+    void tftpInit();
 
     void ip_analyze();
     void setBusy(bool is_busy);

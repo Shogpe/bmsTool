@@ -9,6 +9,8 @@
 #include "modbus-tcp.h"
 #include "modbus-version.h"
 #include "node_conf.h"
+#include "db_manager.h"
+
 using namespace std;
 
 typedef struct {
@@ -215,7 +217,7 @@ class mb_cmu : public QThread {
    public:
     QHash<QString, qreal> mapData;
     QHash<QString, NodeReg> mapConfig;
-    QHash<int, QString> mapIndex;
+    QList<db_manager::ST_DB_NODE> nodes_table;
     uint16_t tab_reg[1000];
     BMU_DATA_T bmu_data[MAX_BMU];
     ST_SysPara sys_para;
@@ -249,8 +251,6 @@ class mb_cmu : public QThread {
     string mb_ip;
     int mb_port;
     // 配置表
-    MB_NODE *node_table;
-    int node_table_size;
     BMS_PROTOCOL protocal_ver;
     bool stop;
     bool stopDump;              //停止保存数据

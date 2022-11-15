@@ -5,243 +5,143 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
+#include "Toast.h"
 #include "iconhelper.h"
 #include "myhelper.h"
 #include "ui_bms_datalog.h"
-#include "Toast.h"
-BmsTest::BmsTest(QWidget* parent) : QTabWidget(parent), ui(new Ui::BmsDataLog) {
-    ui->setupUi(this);
-    this->timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &BmsTest::timerUpDate);
-    timer->start(500);
-    {
-      QSettings* settings = new QSettings("config.ini", QSettings::IniFormat);
-      settings = new QSettings("config.ini", QSettings::IniFormat);
-      QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
-      ui->lineStaIP->setText(target_ip);
-      QString protocol = settings->value("global/protocol", "CMU").toString();
-      ui->cbProtocol->setCurrentText(protocol);
-      if (protocol == "CMU") {
-        this->mycmu = new mb_cmu(CMUV1);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV1);
-        ui->cbProtocol->blockSignals(false);
-      } else {
-        this->mycmu = new mb_cmu(CMUV2);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV2);
-        ui->cbProtocol->blockSignals(false);
-      }
-      delete settings;
+BmsDataLog::BmsDataLog(QWidget *parent) : QTabWidget(parent), ui(new Ui::BmsDataLog) { ui->setupUi(this); }
+
+BmsDataLog::~BmsDataLog() { delete ui; }
+QString BmsDataLog::getStatusString(uint16_t status) {
+    QStringList statusList;
+    if (GET_BIT(status, 0)) statusList << "总故障";
+    if (GET_BIT(status, 1)) statusList << "总告警";
+    if (GET_BIT(status, 2)) statusList << "充满";
+    if (GET_BIT(status, 3)) statusList << "放空";
+    if (GET_BIT(status, 4)) statusList << "未初始化";
+    if (GET_BIT(status, 5)) statusList << "通信故障";
+    if (GET_BIT(status, 6)) statusList << "均衡";
+    if (GET_BIT(status, 7)) statusList << "充电";
+    if (GET_BIT(status, 8)) statusList << "放电";
+    if (GET_BIT(status, 9)) statusList << "停机";
+    if (GET_BIT(status, 10)) statusList << "升级";
+    if (GET_BIT(status, 11)) statusList << "绝缘通信故障";
+    if (GET_BIT(status, 12)) statusList << "自检故障";
+    if (GET_BIT(status, 13)) statusList << "拨码故障";
+    if (GET_BIT(status, 14)) statusList << "BMU故障";
+    if (GET_BIT(status, 15)) statusList << "并网";
+    //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+    return statusList.join("|");
+}
+QString BmsDataLog::getStatus(uint16_t status, QStringList tips) {
+    QStringList statusList;
+    for (int i = 0; i < tips.size(); i++) {
+        if (GET_BIT(status, i)) {
+            statusList << tips.at(i);
+        }
     }
-    pmq = MessageQueue::getInstance();
-    pmq->registMsgQueue(99);
-    config = {0, 0, 0, 0, 0};
-    this->mycmu->start();
-    connect(ui->lineStaIP, &QLineEdit::editingFinished, this, &BmsTest::IpChange, Qt::UniqueConnection);
-    connect(this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
-            static_cast<void (BmsTest::*)(const QString&)>(&BmsTest::slot_message_call), Qt::UniqueConnection);
-    initUpdateMenu();
-
+    return statusList.join("|");
 }
-
-BmsTest::~BmsTest() {
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = THREAD_EXIT;
-    pmq->sendMsg(0, MsgCmd);
-    this->mycmu->wait();
-    timer->stop();
-    delete timer;
-    delete ui;
-}
-void BmsTest::slot_message_call(const QString& msg) {
-  Toast::showTip(msg, nullptr);
-}
-void BmsTest::uiInit() {
-
-}
-void BmsTest::timerUpDate() {
-    if ( mycmu == nullptr) return;
-    if (this->mycmu->drv_status) {
-      ui->labelStatus->setStyleSheet("color:green");
-      ui->labelStatus->setText(tr("已连接"));
-      if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
-      uint32_t val = this->mycmu->cmu_ver;
-      ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
-      ui->tbtnConnect->setText("重连");
-    } else {
-      ui->labelStatus->setStyleSheet("color:red");
-      ui->labelStatus->setText(tr("未连接"));
-      ui->tbtnConnect->setText("连接");
+int BmsDataLog::log2csv() {
+    QByteArray data;
+    // 烧写
+    QString fileName = QFileDialog::getOpenFileName(nullptr, QObject::tr("Read dump file"), "", ";;All Files (*)");
+    if (fileName.isEmpty()) {
+        return -1;
     }
-    flushData();
-}
-
-void BmsTest::flushData() {
-    if (!ui->lineTftpIP->hasFocus())
-        ui->lineTftpIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u32TftpServIP));
-    if (!ui->lineBmsIP->hasFocus())
-        ui->lineBmsIP->setText(myHelper::IPV4IntegerToString(mycmu->sys_para.Name.u32LocalIP));
-}
-
-void BmsTest::on_lineBmsIP_editingFinished() {
-    QLineEdit* pEdit = ui->lineBmsIP;
-    QString ip_str = pEdit->text();
-    if (!pEdit->isModified()) return;
-    pEdit->setModified(false);
-    if (!myHelper::IsIP(ip_str)) {
-        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
-        pEdit->undo();
-        return;
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly)) {
+        qDebug() << "Error: Cannot read file: " << qPrintable(file.errorString());
+        return -1;
     }
-    this->setFocus();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改设备IP为%1吗").arg(ip_str))) != QDialog::Accepted) {
-        pEdit->undo();
-        return;
+    data = file.readAll();
+    file.close();
+    int len = data.size() / sizeof(CMU_LOG);
+    CMU_LOG *log = (CMU_LOG *)data.data();
+    if ((data.size() % sizeof(CMU_LOG) == 0) || (data.size() / log->len == 0)) {
     }
-    uint32_t ip = myHelper::IPV4StringToInteger(ip_str);
-    if((ip>>16 & 0xFFFF) != 0xC0A8){
-      myHelper::ShowMessageBoxError(QString("网段必须为192.168.x.x"));
-      pEdit->undo();
-      return;
+    fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Excel(*.csv)"));
+    if (fileName.isEmpty()) return -2;
+    file.setFileName(fileName);
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&file);
+        stream << QChar(0xfeff);
+        QStringList header = {"时间戳", "电流", "电压", "漏电流", "绝缘电阻", "系统状态", "故障状态", "告警状态"};
+        header << "单体电压最大值"
+               << "单体电压最大值ID"
+               << "单体电压最小值"
+               << "单体电压最小值ID";
+        header << "电池模组温度最大值"
+               << "电池模组温度最大值ID"
+               << "电池模组温度最小值"
+               << "电池模组温度最小值ID";
+        header << "PACK极柱温度最大值"
+               << "PACK极柱温度最大值ID"
+               << "最大单体电压差值"
+               << "最大电池模组温差值";
+        header << "电池模组最大温度上升速率"
+               << "电池模组最大温度上升速率ID"
+               << "最大模组电压"
+               << "最大模组电压ID"
+               << "平均单体电压"
+               << "簇极柱温度断线状态";
+
+        stream << header.join(",") << endl;
+        while (len--) {
+            if (log->len == 260 || log->len == sizeof(CMU_LOG)) {
+                //        qDebug() << log->time << "." << log->time_ms <<
+                //        log->len<<getStatusString(log->data.st.SysSta);
+                uint64_t time = ((uint64_t)log->time) * 1000 + log->time_ms;
+                for (int i = 0; i < 20; i++) {
+                    QStringList data;
+                    data << QDateTime::fromMSecsSinceEpoch(time + (i - 19) * 50).toString("yyyy-MM-dd hh:mm:ss.zzz");
+                    data << QString::number(log->data.st.Idc[i] * 0.1);
+                    data << QString::number(log->data.st.Udc[i] * 0.1);
+                    data << QString::number(log->data.st.Ile[i] * 0.1);
+                    data << QString::number(log->data.st.Rins[i] * 0.1);
+                    if (i % 4 == 0) {
+                        data << getStatusString(log->data.st.SysSta[i / 4]);
+                        data << getStatus(log->data.st.ErrStatus[i / 4], {"0", "1", "2", "3", "4", "5", "6", "7", "8",
+                                                                          "9", "10", "11", "12", "13", "14", "15"});
+                        data << getStatus(log->data.st.WarnStatus[i / 4], {"0", "1", "2", "3", "4", "5", "6", "7", "8",
+                                                                           "9", "10", "11", "12", "13", "14", "15"});
+                    }
+                    if (i == 19) {
+                        // 3个状态量占位
+                        data << "";
+                        data << "";
+                        data << "";
+                        data << QString::number(log->data.st.u16MaxCellVolt * 0.0001);
+                        data << QString::number(log->data.st.u16MaxCellVoltId);
+                        data << QString::number(log->data.st.u16MinCellVolt * 0.0001);
+                        data << QString::number(log->data.st.u16MinCellVoltId);
+
+                        data << QString::number(log->data.st.i16MaxPackTemp * 0.1);
+                        data << QString::number(log->data.st.u16MaxPackTempId);
+                        data << QString::number(log->data.st.i16MinPackTemp * 0.1);
+                        data << QString::number(log->data.st.u16MinPackTempId);
+                        data << QString::number(log->data.st.i16MaxPoleTemp * 0.1);
+                        data << QString::number(log->data.st.u16MaxPoleTempId);
+
+                        data << QString::number(log->data.st.u16MaxCellVoltDiff * 0.0001);
+                        data << QString::number(log->data.st.i16MaxPackTempDiff * 0.1);
+                        data << QString::number(log->data.st.u16MaxTRiseRate * 0.1);
+                        data << QString::number(log->data.st.u16MaxTRiseRateId);
+
+                        data << QString::number(log->data.st.u16MaxPackVolt * 0.001);
+                        data << QString::number(log->data.st.u16MaxPackVoltId);
+                        data << QString::number(log->data.st.u16AvgCellVolt * 0.001);
+
+                        data << QString::number(log->data.st.u16CPoTWireSta);
+                    }
+                    stream << data.join(",") << endl;
+                }
+            }
+            log++;
+        }
+        file.close();
     }
-    uint16_t val[3];
-    val[0] = 5418;
-    ip = bswap_32(ip);
-    val[1] = ip & 0xFFFF;
-    val[2] = ip >> 16 & 0xFFFF;
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO_ADDR;
-    MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
-}
 
-void BmsTest::on_lineTftpIP_editingFinished() {
-    QLineEdit* pEdit = ui->lineTftpIP;
-    if (!pEdit->isModified()) return;
-    QString ip_str = pEdit->text();
-    pEdit->setModified(false);
-    if (!myHelper::IsIP(ip_str)) {
-        myHelper::ShowMessageBoxError(tr("invalid ip address!"));
-        pEdit->undo();
-        return;
-    }
-    this->setFocus();
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("确定要修改服务器IP为%1吗").arg(ip_str))) != QDialog::Accepted) {
-        pEdit->undo();
-        return;
-    }
-    uint32_t ip = myHelper::IPV4StringToInteger(ip_str);
-    uint16_t val[3];
-    val[0] = 5420;
-    ip = bswap_32(ip);
-    val[1] = ip & 0xFFFF;
-    val[2] = ip >> 16 & 0xFFFF;
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO_ADDR;
-    MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
+    return 0;
 }
-
-void BmsTest::on_tbtnConnect_released()
-{
-  QToolButton* b = (QToolButton*)sender();
-  QString name = b->text();
-  if (name == "连接" || name == "重连") {
-    uint16_t port = ui->spinBoxPort->value();
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CONFIG_IP;
-    MsgCmd.data.append(ui->lineStaIP->text());
-    pmq->sendMsg(0, MsgCmd);
-    MsgCmd.msg_type = CONFIG_PORT;
-    MsgCmd.data.clear();
-    MsgCmd.data.append((char*)&port, sizeof(port));
-    pmq->sendMsg(0, MsgCmd);
-    MsgCmd.msg_type = CONFIG_INIT;
-    MsgCmd.data.clear();
-    pmq->sendMsg(0, MsgCmd);
-  }
-}
-
-void BmsTest::on_cbProtocol_currentIndexChanged(const QString &arg1)
-{
-  QSettings* settings = new QSettings("config.ini", QSettings::IniFormat);
-  settings->setValue("global/protocol", arg1);
-  TMsgData MsgCmd;
-  if (arg1 == "CMU") {
-    MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(CMUV1);
-  } else {
-    MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(CMUV1);
-  }
-  pmq->sendMsg(0, MsgCmd);
-  MsgCmd.data.clear();
-  delete settings;
-}
-void BmsTest::initUpdateMenu() {
-  update_menu = new QMenu;
-  update_menu->addAction("下载升级BMS", this, &BmsTest::onUpdateBtnMenu);
-//  update_menu->addAction("下载升级BMU", this, &Widget::onUpdateBtnMenu);
-//  update_menu->addAction("下载升级BMS Boot", this, &Widget::onUpdateBtnMenu);
-//  update_menu->addAction("下载升级BMU Boot", this, &Widget::onUpdateBtnMenu);
-//  update_menu->addAction("下载升级绝缘板", this, &Widget::onUpdateBtnMenu);
-//  update_menu->addAction("升级BMU", this, &Widget::onUpdateBtnMenu);
-  ui->tbtnUpdate->setMenu(update_menu);
-}
-
-void BmsTest::onUpdateBtnMenu() {
-  QAction* b = (QAction*)sender();
-  TMsgData MsgCmd;
-  if (b->text() == "下载升级BMS") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateCMU};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  }/* else if (b->text() == "下载升级BMU") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBMU};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  } else if (b->text() == "下载升级BMS Boot") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTC};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  } else if (b->text() == "下载升级BMU Boot") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdateBTB};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  } else if (b->text() == "升级BMU") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdBmuNDL};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  } else if (b->text() == "下载升级绝缘板") {
-    MsgCmd.msg_type = CTRL_SEC_AO;
-    uint16_t val[2] = {ADDR_UPGRADE, MB_UpdRins};
-    MsgCmd.data.append((char*)(&val), 2 * sizeof(uint16_t));
-  }*/ else {
-    return;
-  }
-  pmq->sendMsg(0, MsgCmd);
-  MsgCmd.data.clear();
-  return;
-}
-
-void BmsTest::IpChange() {
-  QLineEdit* pEdit = (QLineEdit*)sender();
-  qDebug()<<"ip edit fin.";
-  if (!pEdit->isModified()) return;
-  pEdit->setModified(false);
-  QString ip = pEdit->text();
-  QRegExp RegExp("(192.168.(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.)(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
-  if (!RegExp.exactMatch(ip)) {
-    myHelper::ShowMessageBoxError(tr("非法地址!网段必须为192.168.x.x"));
-    pEdit->undo();
-    return;
-  }
-  TMsgData MsgCmd;
-  MsgCmd.msg_type = CONFIG_IP;
-  MsgCmd.data.append(ip);
-  pmq->sendMsg(0, MsgCmd);
-  QSettings* settings = new QSettings("config.ini", QSettings::IniFormat);
-  settings->setValue("global/target_ip", ip);
-  delete settings;
-}
+void BmsDataLog::on_btnConvert_released() { log2csv(); }

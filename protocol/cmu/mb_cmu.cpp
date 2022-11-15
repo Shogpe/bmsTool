@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QTimerEvent>
-#include "db_manager.h"
 #include "myhelper.h"
 #include "node_conf.h"
 #include "utils.h"
@@ -106,9 +105,9 @@ void mb_cmu::Dump2CsvTitle() {
     // 写入UTF-BOM头部
     data_buf << QChar(0xfeff);
     data_buf << "Time,";
-    for (int i = 0; i < node_table_size; i++) {
-        if (node_table[i].val_type == 128) {
-            data_buf << (QString(node_table[i].name)) << ",";
+    for (int i = 0; i < this->nodes_table.size(); i++) {
+        if (this->nodes_table.at(i).val_type == 128) {
+            data_buf << (this->nodes_table.at(i).node_name) << ",";
         }
     }
     for (int i = 0; i < config.bmu_num; i++) {
@@ -157,9 +156,9 @@ void mb_cmu::Dump2Csv() {
         }
         QTextStream data_buf(csvfile);
         data_buf << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ",";
-        for (int i = 0; i < node_table_size; i++) {
-            if (node_table[i].val_type == 128) {
-                data_buf << QString::number(mapData.value(node_table[i].name, 0), 'g', 15) << ",";
+        for (int i = 0; i < this->nodes_table.size(); i++) {
+            if (this->nodes_table.at(i).val_type == 128) {
+                data_buf << QString::number(mapData.value(this->nodes_table.at(i).node_name, 0), 'g', 15) << ",";
             }
         }
         for (int i = 0; i < config.bmu_num; i++) {
@@ -206,9 +205,10 @@ void mb_cmu::Dump2Csv() {
     // dump bin文件
     if (rec & 0x02) {
         QJsonObject object;
-        for (int i = 0; i < node_table_size; i++) {
-            if (node_table[i].val_type == 128) {
-                object.insert(QString(node_table[i].name), mapData.value(node_table[i].name, 0));
+        for (int i = 0; i < this->nodes_table.size(); i++) {
+            if (this->nodes_table.at(i).val_type == 128) {
+                object.insert(QString(this->nodes_table.at(i).node_name),
+                              mapData.value(this->nodes_table.at(i).node_name, 0));
             }
         }
         double val = 0;
@@ -293,13 +293,11 @@ int mb_cmu::Init() {
     int index = -1;
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
-    QList<db_manager::ST_DB_NODE> nodes_table;
-    db_manager::Instance()->getNode(nodes_table, protocal_ver);
-    qDebug() << nodes_table.size();
-    mapIndex.clear();
+    db_manager::Instance()->getNode(this->nodes_table, protocal_ver);
+    qDebug() << this->nodes_table.size();
     mapData.clear();
     mapConfig.clear();
-    for (int i = 0; i < nodes_table.size(); i++) {
+    for (int i = 0; i < this->nodes_table.size(); i++) {
         node_reg_tmp.default_val = 0;
         if (nodes_table.at(i).reg_type > NONE_REG) {
             node_reg_tmp.reg_type = nodes_table.at(i).reg_type;
@@ -314,7 +312,6 @@ int mb_cmu::Init() {
             }
         }
         mapData.insert(nodes_table.at(i).node_name, 0);
-        mapIndex.insert(i, nodes_table.at(i).node_name);
         mapConfig.insert(nodes_table.at(i).node_name, node_reg_tmp);
     }
     TMsgData MsgCmd;
@@ -605,13 +602,13 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;
             uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-            if (p[0] > node_table_size) break;
+            if (p[0] > this->nodes_table.size()) break;
             if (nb == 2 * sizeof(uint16_t)) {
-                uint16_t addr = node_table[p[0]].reg_addr;
+                uint16_t addr = this->nodes_table.at(p[0]).reg_addr;
                 uint16_t value = p[1];
                 ret = write_ao(addr, value);
             } else {
-                uint16_t addr = node_table[p[0]].reg_addr;
+                uint16_t addr = this->nodes_table.at(p[0]).reg_addr;
                 uint16_t* pv = (uint16_t*)&p[1];
                 ret = write_ao(addr, (nb - 1) / 2, pv);
             }
@@ -794,7 +791,7 @@ int mb_cmu::ReadAI() {
         if (res == iter->reg_num) {
             for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
                  data_iter++) {
-                if (mapIndex.contains(data_iter->index)) {
+                if (this->nodes_table.size() > data_iter->index) {
                     qreal value = 0;
                     if (data_iter->data_type == 514) {
                         value = tab_buf[data_iter->offset] * data_iter->factor;
@@ -805,7 +802,7 @@ int mb_cmu::ReadAI() {
                     } else {
                         value = tab_buf[data_iter->offset] * data_iter->factor;
                     }
-                    mapData[mapIndex.value(data_iter->index)] = value;
+                    mapData[this->nodes_table.at(data_iter->index).node_name] = value;
                 }
             }
         }

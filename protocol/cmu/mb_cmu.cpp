@@ -405,18 +405,50 @@ int mb_cmu::ReadALL() {
     if (config.bmu_num > 0) {
         reg_num = config.bmu_num * config.vol_num;
         status += ReadData(0x04, 0x01, reg_num, p);
+        int maxId = 0;
+        int minId = 0;
+        int maxClusterId = 0;
+        int minClusterId = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < config.vol_num; j++) {
                 bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
+                if (bmu_data[i].Ucell[j] > bmu_data[i].Ucell[maxId]) maxId = j;
+                if (bmu_data[i].Ucell[j] < bmu_data[i].Ucell[minId]) minId = j;
             }
+            bmu_data[i].MaxUcellId = maxId;
+            bmu_data[i].MinUcellId = minId;
+            if (bmu_data[maxClusterId].Ucell[bmu_data[maxClusterId].MaxUcellId] > bmu_data[i].Ucell[maxId])
+                maxClusterId = i;
+            if (bmu_data[minClusterId].Ucell[bmu_data[minClusterId].MaxUcellId] < bmu_data[i].Ucell[minId])
+                minClusterId = i;
         }
+        bms_data.MaxUcellId = maxClusterId;
+        bms_data.MinUcellId = minClusterId;
+        // 温度
         reg_num = config.bmu_num * (config.T_num + config.Tp_num);
         status += ReadData(0x04, 0x1000, reg_num, p);
+        maxId = 0;
+        minId = 0;
+        maxClusterId = 0;
+        minClusterId = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
+                if (j < (config.T_num)) {
+                    if (bmu_data[i].Tcell[j] > bmu_data[i].Tcell[maxId]) maxId = j;
+                    if (bmu_data[i].Tcell[j] < bmu_data[i].Tcell[minId]) minId = j;
+                }
                 bmu_data[i].Tcell[j] = *(p + i * (config.T_num + config.Tp_num) + j);
             }
+            bmu_data[i].MaxTcellId = maxId;
+            bmu_data[i].MinTcellId = minId;
+            if (bmu_data[maxClusterId].Tcell[bmu_data[maxClusterId].MaxTcellId] > bmu_data[i].Tcell[maxId])
+                maxClusterId = i;
+            if (bmu_data[minClusterId].Tcell[bmu_data[minClusterId].MaxTcellId] < bmu_data[i].Tcell[minId])
+                minClusterId = i;
         }
+        bms_data.MaxTcellId = maxClusterId;
+        bms_data.MinTcellId = minClusterId;
+        // 状态
         reg_num = config.bmu_num * 4;
         status += ReadData(0x03, 0x100, reg_num, p);
         for (int i = 0; i < config.bmu_num; i++) {

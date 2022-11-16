@@ -126,7 +126,6 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         if (this->mycmu->GetProtocalVer() >= CMUV3) {
             hdr_list.append(tr("CAN错误数"));
         }
-        hdr_list.append(tr("版本号"));
         ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setObjectName("BalnceStart");
         ui->BalnceStart->setPrefix(tr("均衡启动阈值") + " ");
@@ -136,7 +135,6 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setToolTip(tr("均衡启动阈值"));
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
-
     } else if (this->mycmu->GetProtocalVer() >= CMUV4) {
         hdr_list.append(tr("风机"));
         hdr_list.append(tr("母线电压(V)"));
@@ -625,6 +623,21 @@ void BMSView::flushBmu() {
             } else {
                 font.setStrikeOut(false);
             }
+            // pack最大标红
+            if (mycmu->bmu_data[i].MaxUcellId == j) {
+                item->setTextColor(QColor(Qt::red));
+                // 簇最大标粗
+                if (mycmu->bms_data.MaxUcellId == i) {
+                    font.setBold(true);
+                }
+            }
+            if (mycmu->bmu_data[i].MinUcellId == j) {
+                item->setTextColor(QColor(Qt::darkGreen));
+                if (mycmu->bms_data.MinUcellId == i) {
+                    font.setItalic(true);
+                }
+            }
+            //
             item->setFont(font);
             item->setToolTip(tr("Strikethrough indicates disconnection"));
             ui->tableBMU->setItem(i, j + cloumn_offset, item);
@@ -642,6 +655,22 @@ void BMSView::flushBmu() {
                 font.setStrikeOut(true);
             } else {
                 font.setStrikeOut(false);
+            }
+
+            // pack最大标红
+            if (mycmu->bmu_data[i].MaxTcellId == j) {
+                item->setTextColor(QColor(Qt::red));
+                // 簇最大标粗
+                if (mycmu->bms_data.MaxTcellId == i) {
+                    font.setBold(true);
+                }
+            }
+            if (mycmu->bmu_data[i].MinTcellId == j) {
+                item->setTextColor(QColor(Qt::darkGreen));
+                // 簇最小标斜体
+                if (mycmu->bms_data.MinTcellId == i) {
+                    font.setItalic(true);
+                }
             }
             item->setFont(font);
             item->setToolTip(tr("Strikethrough indicates disconnection"));

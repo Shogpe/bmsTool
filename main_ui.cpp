@@ -186,7 +186,7 @@ void MainUI::initForm() {
     } else if (db_manager::Instance()->userLevel() == 31) {  // Widget,RTUView
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
-        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
+//        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
     //关联换肤和切换语言功能

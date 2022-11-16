@@ -6,10 +6,10 @@
 #include <QThread>
 #include <iostream>
 #include "MessageQueue.h"
+#include "db_manager.h"
 #include "modbus-tcp.h"
 #include "modbus-version.h"
 #include "node_conf.h"
-#include "db_manager.h"
 
 using namespace std;
 
@@ -145,7 +145,11 @@ typedef struct {
 #define MAX_T   12
 typedef struct {
     uint16_t Ucell[MAX_U];        // 单体电压
+    uint16_t MaxUcellId;          // 最大单体电压ID
+    uint16_t MinUcellId;          // 最小单体电压ID
     int16_t Tcell[MAX_T];         // 温度
+    uint16_t MaxTcellId;          // 最大单体温度ID
+    uint16_t MinTcellId;          // 最大单体温度ID
     uint16_t Ubreak;              // 电压断线
     uint16_t Tbreak;              // 温度断线
     uint16_t RunStat;             // 运行状态
@@ -160,6 +164,13 @@ typedef struct {
     uint16_t BalChgAh[MAX_U];     // 充电均衡Ah
     uint16_t BalDischgAh[MAX_U];  // 放电均衡Ah
 } BMU_DATA_T;
+typedef struct {
+    uint16_t MaxUcellId;  // 最大单体电压BMU ID
+    uint16_t MinUcellId;  // 最小单体电压BMU ID
+    uint16_t MaxTcellId;  // 最大单体温度BMU ID
+    uint16_t MinTcellId;  // 最小单体温度BMU ID
+
+} BMS_DATA_T;
 typedef struct {
     uint16_t soe_count;
     uint16_t new_soe_count;
@@ -220,6 +231,7 @@ class mb_cmu : public QThread {
     QList<db_manager::ST_DB_NODE> nodes_table;
     uint16_t tab_reg[1000];
     BMU_DATA_T bmu_data[MAX_BMU];
+    BMS_DATA_T bms_data;
     ST_SysPara sys_para;
     ST_SOE cmu_soe;
     CMU_CONF config;
@@ -236,6 +248,7 @@ class mb_cmu : public QThread {
     QString GetBalanceValue(uint16_t status);
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
     NodeReg GetNodeAddr(QString name);
+
    protected:
     modbus_t *cmu;
     QMutex mutex;

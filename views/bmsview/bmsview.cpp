@@ -48,6 +48,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     mycmu->start();
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
+    qDebug() << ui->DataWidget->sizeHint();
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -104,6 +105,7 @@ BMSView::~BMSView() {
 }
 
 void BMSView::uiChange(QHash<QString, qreal> mapData) {
+    qDebug() << "uiChange" << mapData.size();
     ui->tableBMU->setRowCount(config.bmu_num);
     /* 设置 tableWidget */
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头

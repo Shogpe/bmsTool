@@ -314,10 +314,7 @@ int mb_cmu::Init() {
         mapData.insert(nodes_table.at(i).node_name, 0);
         mapConfig.insert(nodes_table.at(i).node_name, node_reg_tmp);
     }
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = 0;
-    MsgCmd.data.append((char*)&config, sizeof(config));
-    pMq->sendMsg(99, MsgCmd);
+    emit bmsDataReady(1, mapData);
     return 0;
 }
 

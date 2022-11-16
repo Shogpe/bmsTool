@@ -8,13 +8,11 @@ class MyDoubleSpinBox : public QDoubleSpinBox {
     Q_OBJECT
 
    public:
-    MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) {
-        //        setAlignment(Qt::AlignJustify);
-    }
-//    virtual double valueFromText(const QString& text) const { return text.trimmed().toDouble(); }
+    MyDoubleSpinBox(QWidget* parent = 0) : QDoubleSpinBox(parent) { setAlignment(Qt::AlignJustify); }
+    //    virtual double valueFromText(const QString& text) const { return text.trimmed().toDouble(); }
     virtual QString textFromValue(double value) const {
         /* 4 - number of digits, 10 - base of number, '0' - pad character*/
-        return QString("\t%1 ").arg(value);
+        return QString("%1 ").arg(value);
     }
     virtual void mousePressEvent(QMouseEvent* event) {}
     // virtual void focusInEvent(QFocusEvent* event) { qDebug() << "f_in:"<<this->objectName(); }

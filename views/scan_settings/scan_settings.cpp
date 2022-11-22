@@ -588,6 +588,12 @@ void scan_settings::loadXml() {
 }
 
 void scan_settings::on_btnWrite_released() {
+    m_setMap.clear();
+    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
+    if(m_setMap.size() == 0) {
+        myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
+        return;
+    }
     if (myHelper::ShowMessageBoxQuesion("是否批量下发参数？") != QDialog::Accepted) {
         return;
     }
@@ -595,8 +601,8 @@ void scan_settings::on_btnWrite_released() {
     if (target_ips.size()) {
         setBusy(true);
     }
-    m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
+
+
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 1);
@@ -735,12 +741,16 @@ void scan_settings::on_btnUpload_released() {
  * @brief 检查定值
  */
 void scan_settings::on_btnTest_released() {
+    m_setMap.clear();
+    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
+    if(m_setMap.size() == 0) {
+        myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
+        return;
+    }
     ip_analyze();
     if (target_ips.size()) {
         setBusy(true);
     }
-    m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
         testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, 2);

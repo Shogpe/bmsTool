@@ -288,7 +288,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     uint32_t comm_status2 = mapData.value("sysComm2", 0);
     bmu_comm = ((uint64_t)comm_status2 << 32) | comm_status1;
     QString str2 = QString("%1:%2,%3,%4,%5")
-                       .arg(tr("通信状态2"))
+                       .arg(tr("BMU拨码异常ID"))
                        .arg(comm_status2 >> 24 & 0xFF, 8, 2, QChar('0'))
                        .arg(comm_status2 >> 16 & 0xFF, 8, 2, QChar('0'))
                        .arg(comm_status2 >> 8 & 0xFF, 8, 2, QChar('0'))
@@ -420,11 +420,22 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         StatusList << ui->bAlm0_2 << ui->bAlm1_2 << ui->bAlm2_2 << ui->bAlm3_2 << ui->bAlm4_2 << ui->bAlm5_2
                    << ui->bAlm6_2 << ui->bAlm7_2 << ui->bAlm8_2 << ui->bAlm9_2 << ui->bAlm10_2 << ui->bAlm11_2
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
+        QStringList textList = {tr("BMU拨码异常"),    tr("电压线束断线"),   tr("温度线束断线"),
+                                tr("簇极柱温度断线"), tr("电压传感器断线"), tr("电流传感器断线"),
+                                tr("断路器拒动"),     tr("接触器拒动"),     tr("备用8")};
+        textList << tr("备用9") << tr("备用10") << tr("备用11") << tr("备用12") << tr("备用13") << tr("备用14")
+                 << tr("备用15") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
-            QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
-                                ? "color:gold;text-decoration:underline;font:bold;"
-                                : "color:green;";
-            Label->setStyleSheet(QString("%1").arg(color));
+            int index = StatusList.indexOf(Label);
+            if (index < textList.size()) {
+                QString color =
+                    ((value >> index) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green;";
+                Label->setStyleSheet(QString("%1").arg(color));
+                Label->setText(textList.at(index));
+                Label->setHidden(false);
+            } else {
+                Label->setHidden(true);
+            }
         }
     }
     if (mapData.contains("sysDIStatus")) {
@@ -436,8 +447,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bDI15;
         QStringList textList;
         textList << tr("QF状态") << tr("KM+状态") << tr("KM-状态") << tr("KMR状态") << tr("故障输入") << tr("主从状态")
-                 << tr("备用7") << tr("备用8") << tr("备用9") << tr("备用10") << tr("备用11") << tr("备用12")
-                 << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
+                 << tr("预留DIN1(水浸)") << tr("交流有压") << tr("急停保护") << tr("QF继电器状态") << tr("故障输出继电器状态") << tr("BMU风扇继电器状态")
+                 << tr("高压箱风扇继电器状态") << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                 ? "color:red;text-decoration:underline;font:bold;"
@@ -454,8 +465,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                   << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
         QStringList textList;
         textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
-                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇开启")
-                 << tr("备用12") << tr("备用13") << tr("备用14") << tr("备用15") << tr("备用16");
+                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
+                 << tr("备用12") << tr("充满输出") << tr("放空输出") << tr("备用15") << tr("备用16");
         foreach (QCheckBox* rb, RadioList) {
             bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
             QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green;";
@@ -570,9 +581,9 @@ QString getBmuInfo2(uint16_t status) {
     statusList << (GET_BIT(status, 2) ? "干结点开路" : "干结点闭合");
     statusList << (GET_BIT(status, 3) ? "风机开" : "风机关");
     if (!GET_BIT(status, 4)) statusList << "辅源异常";
-    if (GET_BIT(status, 5)) statusList << "5";
-    if (GET_BIT(status, 6)) statusList << "6";
-    if (GET_BIT(status, 7)) statusList << "7";
+    if (GET_BIT(status, 5)) statusList << "备用5";
+    if (GET_BIT(status, 6)) statusList << "备用6";
+    if (GET_BIT(status, 7)) statusList << "备用7";
     if (GET_BIT(status, 8)) statusList << "1.25V错误";
     if (GET_BIT(status, 9)) statusList << "均衡母线错误";
     if (GET_BIT(status, 10)) statusList << "均衡电流异常";

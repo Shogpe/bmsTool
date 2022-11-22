@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>926</width>
+    <width>984</width>
     <height>552</height>
    </rect>
   </property>
@@ -2243,7 +2243,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>簇外接温度3 </string>
+             <string>PCS+簇极柱温度 </string>
             </property>
             <property name="suffix">
              <string> ℃</string>
@@ -2541,7 +2541,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>簇外接温度5 </string>
+             <string>高压箱环境温度 </string>
             </property>
             <property name="suffix">
              <string> ℃</string>
@@ -3493,7 +3493,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>簇外接温度4 </string>
+             <string>PCS-簇极柱温度 </string>
             </property>
             <property name="suffix">
              <string> ℃</string>
@@ -3545,7 +3545,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>簇外接温度2 </string>
+             <string>B-簇极柱温度 </string>
             </property>
             <property name="suffix">
              <string> ℃</string>
@@ -4065,7 +4065,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string>簇外接温度1 </string>
+             <string>B+簇极柱温度 </string>
             </property>
             <property name="suffix">
              <string> ℃</string>
@@ -5257,7 +5257,7 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>告警屏蔽</string>
+          <string>电池包温度断线屏蔽</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -5269,7 +5269,7 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>告警屏蔽 </string>
+          <string>电池包温度断线屏蔽 </string>
          </property>
          <property name="suffix">
           <string/>
@@ -5340,7 +5340,7 @@
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="toolTip">
-          <string>充满回差</string>
+          <string>簇电压放空充满回差</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -5687,7 +5687,7 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>电压屏蔽位 </string>
+          <string>单体电压数据屏蔽位</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -5699,7 +5699,7 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>电压屏蔽位 </string>
+          <string>单体电压数据屏蔽位 </string>
          </property>
          <property name="suffix">
           <string/>
@@ -6089,7 +6089,7 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>充满放空簇电压回差</string>
+          <string>簇电压充满放空回差</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -6101,7 +6101,7 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>簇电压回差 </string>
+          <string>簇电压放空充满回差 </string>
          </property>
          <property name="suffix">
           <string> V</string>
@@ -6445,13 +6445,13 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>单体压差上上限 </string>
+          <string>单体欠压自杀阈值 </string>
          </property>
          <property name="suffix">
           <string> V</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>3</number>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
@@ -6576,7 +6576,7 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>告警延时(s)</string>
+          <string>告警和保护延时</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -6588,10 +6588,10 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>告警延时(s) </string>
+          <string>告警和保护延时 </string>
          </property>
          <property name="suffix">
-          <string/>
+          <string> s</string>
          </property>
          <property name="decimals">
           <number>0</number>
@@ -6798,19 +6798,19 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>单体压差上限 </string>
+          <string>单体欠压自杀延时 </string>
          </property>
          <property name="suffix">
-          <string> V</string>
+          <string> s</string>
          </property>
          <property name="decimals">
-          <number>4</number>
+          <number>1</number>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>6.000000000000000</double>
+          <double>6554.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.000000000000000</double>
@@ -7814,7 +7814,7 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>保护延时(s)</string>
+          <string>保护动作延时</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -7826,10 +7826,10 @@
           <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>保护延时(s) </string>
+          <string>保护动作延时 </string>
          </property>
          <property name="suffix">
-          <string/>
+          <string> s</string>
          </property>
          <property name="decimals">
           <number>0</number>
@@ -7973,19 +7973,6 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="6">
-           <widget class="QPushButton" name="btnResON">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>电操合闸</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="4">
            <widget class="QPushButton" name="btnTimeAdj">
             <property name="sizePolicy">
@@ -8113,19 +8100,6 @@
             </property>
             <property name="text">
              <string>KMR控制合闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="7">
-           <widget class="QPushButton" name="btnResOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>电操分闸</string>
             </property>
            </widget>
           </item>
@@ -8295,19 +8269,6 @@
             </property>
             <property name="text">
              <string>上送触发</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="6">
-           <widget class="QPushButton" name="btnAcON">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>开启空调</string>
             </property>
            </widget>
           </item>
@@ -8522,19 +8483,6 @@
             </property>
             <property name="text">
              <string>导入SOC表</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="7">
-           <widget class="QPushButton" name="btnAcOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>关闭空调</string>
             </property>
            </widget>
           </item>
@@ -9406,10 +9354,6 @@
   <tabstop>btnKMROFF</tabstop>
   <tabstop>btnFanON</tabstop>
   <tabstop>btnFanOFF</tabstop>
-  <tabstop>btnAcON</tabstop>
-  <tabstop>btnAcOFF</tabstop>
-  <tabstop>btnResON</tabstop>
-  <tabstop>btnResOFF</tabstop>
   <tabstop>btnQFOFF</tabstop>
   <tabstop>btnBalClrErr</tabstop>
   <tabstop>btnUploadTrig</tabstop>

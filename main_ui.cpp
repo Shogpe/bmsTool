@@ -27,13 +27,28 @@ void MainUI::closeEvent(QCloseEvent* event) {
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
-    this->tftpd = new TFTPServer();
 
+    this->tftpd = new TFTPServer();
+    // 可建立全局实例
+    manager = new NotifyManager(this);
+    // 可选修改默认参数
+    manager->setMaxCount(5);                         // 最大显示消息数，默认5
+    manager->setDisplayTime(5000);                   // 显示时间，默认10000（毫秒）
+    manager->setAnimateTime(500);                    // 动画时间，默认300（毫秒）
+    manager->setSpacing(5);                          // 消息框间距，默认10px
+    manager->setCornerMargins(20, 20);               // 右下角边距，默认10, 10
+    manager->setNotifyWndSize(300, 75);              // 消息框大小，默认300, 60
+//    manager->setDefaultIcon(":/image/message.png");  // 消息图标，默认":/message.png"
+    manager->setShowQueueCount(true);                // 是否显示超出最大数未显示的消息数量，默认true
+    //    manager->setStyleSheet("#notify-background {....", "自定义主题名称"); //
+    //    添加自定义主题样式表，默认样式主题名为default
+    // 基本用法
+    //    manager->notify("消息标题", "消息主体");
     connect(tftpd, &TFTPServer::statusUpdate, this,
             [this](QString status) { ui->lTftpStatus->setText(QString("%1:%2").arg(tr("升级服务"), status)); });
 
     connect(tftpd, &TFTPServer::fileTransferFinished, this, [this](int ret, QString msg) {
-        Toast::showTip(QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
+        manager->notify("TFTP", QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
     });
     tftpd->init("192.168.1.230", 69, "firmware");
 }
@@ -186,7 +201,7 @@ void MainUI::initForm() {
     } else if (db_manager::Instance()->userLevel() == 31) {  // Widget,RTUView
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
-//        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
+        //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
     //关联换肤和切换语言功能

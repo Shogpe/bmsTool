@@ -7,6 +7,7 @@
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
 #include "tftpserver.h"
+#include "notifymanager.h"
 #define EXIT_CODE_REBOOT 123456789
 class QToolButton;
 
@@ -26,9 +27,6 @@ class MainUI : public QWidget {  // public QFramelessWidget {
 
    private:
     Ui::MainUI *ui;
-    BMSView *data_view;
-    QList<int> pixCharMain;
-    QList<QToolButton *> btnsMain;
     QList<int> pixCharConfig;
     QList<QToolButton *> btnsConfig;
     QTimer *timer;
@@ -45,6 +43,7 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     QAction *setWhite;
 
     TFTPServer *tftpd;
+    NotifyManager *manager;
     //    bool eventFilter(QObject *obj, QEvent *event);
     //
     QSettings *settings;

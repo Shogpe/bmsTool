@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>image/message.png</file>
         <file>image/main_about.png</file>
         <file>image/main_company.png</file>
         <file>image/main_config.png</file>

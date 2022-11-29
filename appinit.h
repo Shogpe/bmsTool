@@ -19,7 +19,7 @@ class AppInit : public QObject {
     void updateCheck(QString url);
 
    signals:
-
+    void updateReady(QString msg, QString url);
    private slots:
     void replyFinished(QNetworkReply *reply);
 };

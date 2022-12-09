@@ -68,6 +68,7 @@ class BMSView : public QWidget {
     //
     void flushData(int type, QHash<QString, qreal> mapData);
     void flushBmu();
+    void flushSoe(const ST_SOE &soe);
     void pop_bmuTable_menu(const QPoint& pos);
 
    private:

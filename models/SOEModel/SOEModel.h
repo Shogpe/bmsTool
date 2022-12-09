@@ -44,7 +44,7 @@ class SOEModel : public QAbstractTableModel {
             CMU_SOE index_soe = m_data.at(index.row());
             switch (index.column()) {
                 case 0:
-                    return QString("%1").arg(index.row());
+                    return QString("%1").arg(index.row()+1);
                 case 1:
                     return QDateTime::fromMSecsSinceEpoch(index_soe.soe_time).toString("yyyy-MM-dd hh:mm:ss.zzz");
                 case 2: {
@@ -89,13 +89,11 @@ class SOEModel : public QAbstractTableModel {
         m_data.append(soe);
         endInsertRows();
     }
-    bool setData(const CMU_SOE* soe, int len, db_manager::SOE_TAG tag) {
+    bool setData(const QList<CMU_SOE> &soe, db_manager::SOE_TAG tag) {
         beginResetModel();
         m_data.clear();
         db_manager::Instance()->getSOE(soe_map, tag);
-        for (int i = 0; i < len; i++) {
-            m_data.append(*(soe + i));
-        }
+        m_data = soe;
         endResetModel();
         return true;
     }

@@ -172,9 +172,10 @@ typedef struct {
 
 } BMS_DATA_T;
 typedef struct {
+    int type;  // 1:soe v1,2:soe v2
     uint16_t soe_count;
     uint16_t new_soe_count;
-    CMU_SOE list_soe[500];
+    QList<CMU_SOE> list_soe;
 } ST_SOE;
 /* 系统配置参数数据结构-------------------------------------------------------*/
 #pragma pack(1)  // 此结构体不可对齐
@@ -208,7 +209,11 @@ typedef enum {
     CMUV4,    //主动均衡
     CMUV4_1,  //主动均衡-对外
     CMUV4_8,  //主动均衡-绝缘
+    CMUV3_1,
 } BMS_PROTOCOL;
+#define is_main_line(x) ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
+#define is_gender_balanced(x) ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8))
+
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
 class mb_cmu : public QThread {
@@ -283,6 +288,6 @@ class mb_cmu : public QThread {
     void signal_message(const QString &msg);
     void bmuDataReady();
     void bmsDataReady(int type, QHash<QString, qreal> mapData);
+    void bmsSOEReady(ST_SOE soe);
 };
-
 #endif  // MB_CMU_H

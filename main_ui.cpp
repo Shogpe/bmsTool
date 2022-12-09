@@ -32,14 +32,14 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     // 可建立全局实例
     manager = new NotifyManager(this);
     // 可选修改默认参数
-    manager->setMaxCount(5);                         // 最大显示消息数，默认5
-    manager->setDisplayTime(5000);                   // 显示时间，默认10000（毫秒）
-    manager->setAnimateTime(500);                    // 动画时间，默认300（毫秒）
-    manager->setSpacing(5);                          // 消息框间距，默认10px
-    manager->setCornerMargins(20, 20);               // 右下角边距，默认10, 10
-    manager->setNotifyWndSize(300, 75);              // 消息框大小，默认300, 60
-//    manager->setDefaultIcon(":/image/message.png");  // 消息图标，默认":/message.png"
-    manager->setShowQueueCount(true);                // 是否显示超出最大数未显示的消息数量，默认true
+    manager->setMaxCount(5);             // 最大显示消息数，默认5
+    manager->setDisplayTime(5000);       // 显示时间，默认10000（毫秒）
+    manager->setAnimateTime(500);        // 动画时间，默认300（毫秒）
+    manager->setSpacing(5);              // 消息框间距，默认10px
+    manager->setCornerMargins(20, 20);   // 右下角边距，默认10, 10
+    manager->setNotifyWndSize(300, 75);  // 消息框大小，默认300, 60
+    //    manager->setDefaultIcon(":/image/message.png");  // 消息图标，默认":/message.png"
+    manager->setShowQueueCount(true);  // 是否显示超出最大数未显示的消息数量，默认true
     //    manager->setStyleSheet("#notify-background {....", "自定义主题名称"); //
     //    添加自定义主题样式表，默认样式主题名为default
     // 基本用法
@@ -133,7 +133,7 @@ void MainUI::initForm() {
     //
     ui->btnMain->click();
     //创建语言切换菜单
-    langue_menu = new QMenu(tr("Langue"));
+    QMenu* langue_menu = new QMenu(tr("Langue"), this);
     QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
 
     langue_menu->addAction("简体中文", this, &MainUI::menuClick);
@@ -142,31 +142,15 @@ void MainUI::initForm() {
     langue_menu->actions().constLast()->setObjectName("en_US");
     langue_menu->addAction("繁體中文", this, &MainUI::menuClick);
     langue_menu->actions().constLast()->setObjectName("zh_TW");
-    langueGroup = new QActionGroup(this);
+    QActionGroup* langueGroup = new QActionGroup(this);
     foreach (QAction* act, langue_menu->actions()) {
         langueGroup->addAction(act);
         act->setCheckable(true);
         if (locale == act->objectName()) act->setChecked(true);
     }
 
-    //创建主题切换菜单
-    //    theme_menu = new QMenu(tr("Theme"));
-    //    setBlue = new QAction(tr("lightblue"), this);
-    //    setBlue->setCheckable(true);
-    //    setBlue->setChecked(true);
-    //    setBlack = new QAction(tr("psblack"), this);
-    //    setBlack->setCheckable(true);
-    //    setWhite = new QAction(tr("flatwhite"), this);
-    //    setWhite->setCheckable(true);
-    //    theme_menu->addAction(setBlue);
-    //    theme_menu->addAction(setBlack);
-    //    theme_menu->addAction(setWhite);
-    //    themeGroup = new QActionGroup(this);
-    //    themeGroup->addAction(setBlue);
-    //    themeGroup->addAction(setBlack);
-    //    themeGroup->addAction(setWhite);
     //创建主菜单,将主题和语言菜单当二级菜单加入主菜单
-    title_menu = new QMenu;
+    QMenu* title_menu = new QMenu(this);
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
     title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
@@ -265,16 +249,5 @@ void MainUI::menuClick()  //切换语言
         if (!QDesktopServices::openUrl(QUrl::fromLocalFile("User Manual.pdf"))) {
             myHelper::ShowMessageBoxError("open User Manual docment failed!Please install pdf reader.");
         }
-    }
-}
-
-void MainUI::changeTheme()  //切换主题
-{
-    if (setBlue->isChecked()) {  //判断选中了哪个主题,然后应用相应主题
-        myHelper::SetStyle("lightblue");
-    } else if (setBlack->isChecked()) {
-        myHelper::SetStyle("psblack");
-    } else if (setWhite->isChecked()) {
-        myHelper::SetStyle("flatwhite");
     }
 }

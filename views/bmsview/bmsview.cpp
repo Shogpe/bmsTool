@@ -28,6 +28,8 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->cbProtocol->addItem("CMU1.0", 0);
     ui->cbProtocol->addItem("CMU2.0", 1);
     ui->cbProtocol->addItem("CMU3.0", 2);
+    ui->cbProtocol->addItem("CMU3.1", 6);
+
     ui->cbProtocol->addItem("CMU4.0", 3);
     //    ui->cbProtocol->addItem("CMU4.1", 4);
     ui->cbProtocol->addItem("CMU4.8", 5);
@@ -45,6 +47,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     qRegisterMetaType<QHash<QString, qreal>>("QHash<QString,qreal>");
     connect(this->mycmu, &mb_cmu::bmsDataReady, this, &BMSView::flushData);
     connect(this->mycmu, &mb_cmu::bmuDataReady, this, &BMSView::flushBmu);
+    connect(this->mycmu, &mb_cmu::bmsSOEReady, this, &BMSView::flushSoe);
     mycmu->start();
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
@@ -124,8 +127,8 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     }
     hdr_list.append(tr("运行状态"));
     hdr_list.append(tr("故障状态"));
-    if (this->mycmu->GetProtocalVer() < CMUV4) {
-        if (this->mycmu->GetProtocalVer() >= CMUV3) {
+    if (is_main_line(this->mycmu->GetProtocalVer())) {
+        if (this->mycmu->GetProtocalVer() > CMUV2) {
             hdr_list.append(tr("CAN错误数"));
         }
         ui->BalnceStart->blockSignals(true);
@@ -137,7 +140,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setToolTip(tr("均衡启动阈值"));
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
-    } else if (this->mycmu->GetProtocalVer() >= CMUV4) {
+    } else if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
         hdr_list.append(tr("风机"));
         hdr_list.append(tr("母线电压(V)"));
         hdr_list.append(tr("均衡电流(A)"));
@@ -171,7 +174,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         }
     }
     // 扩展表格
-    if (this->mycmu->GetProtocalVer() > CMUV3) {
+    if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
         QStringList hdr_list2;
         for (int i = 0; i < config.vol_num; i++) {
@@ -230,32 +233,12 @@ void BMSView::timerUpDate() {
         uint32_t val = this->mycmu->cmu_ver;
         ui->btnVer->setText(QString(tr("版本号:%1")).arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText(tr("重连"));
+        ui->tbtnConnect->setObjectName("reconnect");
     } else {
         ui->labelStatus->setStyleSheet("color:red;text-decoration:underline;font:bold;");
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText(tr("连接"));
-    }
-    TMsgData Msg;
-    while (pmq->readMsg(99, Msg) != 0) {
-        if (Msg.msg_type == 1) {
-            if (!mycmu) return;
-            if (Msg.data.toInt() < 0) {
-                ui->labelSOE->setText(tr("读取失败!!!"));
-                break;
-            }
-            ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-            uint32_t version = mycmu->cmu_ver & 0x00FFFFFF;
-            qDebug() << QString::number(version, 16);
-            if (((ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000402)) ||
-                ((!ui->cbProtocol->currentText().contains("CMU4")) && (version >= 0x00000407))) {
-                m_model.setData(mycmu->cmu_soe.list_soe, 500, db_manager::SOE_BMS2);
-            } else {
-                m_model.setData(mycmu->cmu_soe.list_soe, 500, db_manager::SOE_BMS1);
-            }
-            ui->labelSOE->setText(
-                QString("New:%1,Total:%2").arg(mycmu->cmu_soe.new_soe_count).arg(mycmu->cmu_soe.soe_count));
-            ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        }
+        ui->tbtnConnect->setObjectName("connect");
     }
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
@@ -447,8 +430,9 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bDI15;
         QStringList textList;
         textList << tr("QF状态") << tr("KM+状态") << tr("KM-状态") << tr("KMR状态") << tr("故障输入") << tr("主从状态")
-                 << tr("预留DIN1(水浸)") << tr("交流有压") << tr("急停保护") << tr("QF继电器状态") << tr("故障输出继电器状态") << tr("BMU风扇继电器状态")
-                 << tr("高压箱风扇继电器状态") << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
+                 << tr("预留DIN1(水浸)") << tr("交流有压") << tr("急停保护") << tr("QF继电器状态")
+                 << tr("故障输出继电器状态") << tr("BMU风扇继电器状态") << tr("高压箱风扇继电器状态")
+                 << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                                 ? "color:red;text-decoration:underline;font:bold;"
@@ -489,7 +473,10 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
                  << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
                  << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
-        if (this->mycmu->GetProtocalVer() >= CMUV4) textList.replace(1, tr("使能绝缘板采样电压"));
+        if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
+            textList.replace(0, tr("使能预留传感器"));
+            textList.replace(1, tr("使能绝缘板采样电压"));
+        }
         foreach (QCheckBox* cb, CheckBoxList) {
             cb->blockSignals(true);
             cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
@@ -594,6 +581,14 @@ QString getBmuInfo2(uint16_t status) {
     if (GET_BIT(status, 15)) statusList << "副边电压异常";
     // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
+}
+void BMSView::flushSoe(const ST_SOE& soe) {
+    if (soe.list_soe.count()) {
+        ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        m_model.setData(soe.list_soe, db_manager::SOE_BMS2);
+        ui->labelSOE->setText(QString("New:%1,Total:%2").arg(soe.new_soe_count).arg(soe.soe_count));
+        ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    }
 }
 void BMSView::flushBmu() {
     if (!mycmu) return;
@@ -718,7 +713,7 @@ void BMSView::flushBmu() {
         item->setToolTip(GetBitStatus(mycmu->bmu_data[i].ErrStat));
         ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-        if (mycmu->GetProtocalVer() >= CMUV4) {
+        if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             item = new QTableWidgetItem();
             QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
             item->setText(fanStatus);
@@ -750,7 +745,7 @@ void BMSView::flushBmu() {
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
-        } else if (mycmu->GetProtocalVer() == CMUV3) {
+        } else if (mycmu->GetProtocalVer() > CMUV2) {
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
@@ -1097,6 +1092,14 @@ void BMSView::btn_contrl() {
         MsgCmd.data.clear();
         pmq->sendMsg(0, MsgCmd);
         ui->labelSOE->setText(tr("读取中...请稍侯..."));
+    } else if (name == "btnClearSOE") {
+        if (myHelper::ShowMessageBoxQuesion("Sure to clear All SOE ?") == QDialog::Accepted) {
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t val[2] = {0xFFF8, 0xBB66};
+            MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+            pmq->sendMsg(0, MsgCmd);
+            MsgCmd.data.clear();
+        }
     } else
         qDebug() << name;
 }
@@ -1353,6 +1356,7 @@ void BMSView::uiInit() {
             connect(rb, &QCheckBox::stateChanged, this, &BMSView::checkChanged, Qt::UniqueConnection);
         }  //
         connect(ui->btnReadSOE, &QPushButton::released, this, &BMSView::btn_contrl, Qt::UniqueConnection);
+        connect(ui->btnClearSOE, &QPushButton::released, this, &BMSView::btn_contrl, Qt::UniqueConnection);
 
         ui->ViewSOE->verticalHeader()->hide();
         ui->ViewSOE->horizontalHeader()->setStretchLastSection(true);
@@ -1480,8 +1484,8 @@ void BMSView::on_checkBox_stateChanged(int arg1) {
 }
 void BMSView::btnClick() {
     QToolButton* b = (QToolButton*)sender();
-    QString name = b->text();
-    if (name == "连接" || name == "重连") {
+    QString name = b->objectName();
+    if (name == "connect" || name == "reconnect") {
         uint16_t port = ui->spinBoxPort->value();
         TMsgData MsgCmd;
         MsgCmd.msg_type = CONFIG_IP;

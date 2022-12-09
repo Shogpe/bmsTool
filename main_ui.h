@@ -6,16 +6,42 @@
 #include "mb_cmu.h"
 #include "models/ListView/ListView.h"
 #include "myhelper.h"
-#include "tftpserver.h"
 #include "notifymanager.h"
+#include "tftpserver.h"
 #define EXIT_CODE_REBOOT 123456789
+
+#include <AbstractAppender.h>
+#include <Logger.h>
+
+class LogAppender : public AbstractAppender {
+   protected:
+    void append(const QDateTime &timeStamp, Logger::LogLevel logLevel, const char *file, int line, const char *function,
+                const QString &category, const QString &message) override {
+        records.append({timeStamp, logLevel, file, line, function, category, message});
+    }
+
+   public:
+    struct Record {
+        QDateTime timeStamp;
+        Logger::LogLevel logLevel;
+        const char *file;
+        int line;
+        const char *function;
+        QString category;
+        QString message;
+    };
+    QList<Record> records;
+
+    void clear() { records.clear(); }
+};
+
 class QToolButton;
 
 namespace Ui {
 class MainUI;
 }
 
-class MainUI : public QWidget {  // public QFramelessWidget {
+class MainUI : public QWidget {
     Q_OBJECT
 
    public:
@@ -30,33 +56,15 @@ class MainUI : public QWidget {  // public QFramelessWidget {
     QList<int> pixCharConfig;
     QList<QToolButton *> btnsConfig;
     QTimer *timer;
-    // StringListModel list_model;
-    QMenu *title_menu;
-    QMenu *langue_menu;
-    QMenu *theme_menu;
-
-    QList<QAction *> updateActs;
-    QActionGroup *langueGroup;
-    QActionGroup *themeGroup;
-    QAction *setBlue;
-    QAction *setBlack;
-    QAction *setWhite;
 
     TFTPServer *tftpd;
     NotifyManager *manager;
-    //    bool eventFilter(QObject *obj, QEvent *event);
-    //
     QSettings *settings;
+    LogAppender appender;
    private slots:
     void initForm();
     void buttonClick();
-
-    //    void on_btnMenu_Min_clicked();
-    //    void on_btnMenu_Max_clicked();
-    //    void on_btnMenu_Close_clicked();
-
     void menuClick();
-    void changeTheme();
 };
 
 #endif  // UIDEMO08_H

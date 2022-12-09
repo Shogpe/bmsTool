@@ -117,7 +117,7 @@
        <widget class="QComboBox" name="cbProtocol">
         <property name="toolTip">
          <string>请按硬件功能手动选择CMU协议版本；
-1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；
+1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点
 2. CMU4.0 新增适配主动均衡；
 3. CMU4.8 新增绝缘数据点；
 如出现通信断连情况或无所需数据点，请尝试更换协议版本。</string>
@@ -257,7 +257,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -9115,28 +9115,45 @@
       <attribute name="title">
        <string>SOE</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="1" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout_17">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="2,1,1">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labelSOE">
+           <property name="text">
+            <string>新SOE:--,总计:--</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnReadSOE">
+           <property name="text">
+            <string>读取</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClearSOE">
+           <property name="text">
+            <string>清除</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QTableView" name="ViewSOE">
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelSOE">
-         <property name="text">
-          <string>新SOE:--,总计:--</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="btnReadSOE">
-         <property name="text">
-          <string>读取</string>
          </property>
         </widget>
        </item>
@@ -9328,7 +9345,6 @@
   <tabstop>bDO11</tabstop>
   <tabstop>bDO9</tabstop>
   <tabstop>bDO6</tabstop>
-  <tabstop>btnReadSOE</tabstop>
   <tabstop>bDO2</tabstop>
   <tabstop>bDO13</tabstop>
   <tabstop>btnRUAdj</tabstop>

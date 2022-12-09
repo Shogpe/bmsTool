@@ -21,6 +21,7 @@ mb_cmu::mb_cmu() {
     isDirExist(dataPath);
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
+    qRegisterMetaType<ST_SOE>("ST_SOE");
 }
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     cmu = nullptr;
@@ -35,6 +36,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
     isDirExist(dataPath);
     pMq = MessageQueue::getInstance();
     pMq->registMsgQueue(0);
+    qRegisterMetaType<ST_SOE>("ST_SOE");
 }
 QString mb_cmu::GetBitStatus(uint16_t status) {
     QStringList statusList;
@@ -184,7 +186,7 @@ void mb_cmu::Dump2Csv() {
             if (protocal_ver > CMUV2) {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }
-            if (protocal_ver > CMUV3) {
+            if (is_gender_balanced(protocal_ver)) {
                 val = this->bmu_data[i].BalU24 / 1000.0;
                 data_buf << (QString("%1,").arg(val));
                 val = this->bmu_data[i].BalIdc / 1000.0;
@@ -376,7 +378,7 @@ int mb_cmu::ReadCapData() {
     uint16_t* p = this->tab_reg;
     int status = 0;
     if (config.bmu_num > 0) {
-        // BMU通信丢包计数
+        // BMU 均衡电量
         reg_num = config.bmu_num * 2 * config.vol_num;
         status += ReadData(0x03, 0xA00 + config.bmu_num * 1, reg_num, p);
         for (int i = 0; i < config.bmu_num; i++) {
@@ -454,7 +456,7 @@ int mb_cmu::ReadALL() {
             bmu_data[i].RunStat = *(p + i + 2 * config.bmu_num);
             bmu_data[i].ErrStat = *(p + i + 3 * config.bmu_num);
         }
-        if (protocal_ver > CMUV3) {
+        if (is_gender_balanced(protocal_ver)) {
             reg_num = config.bmu_num * 5;  // 均衡状态等
             status += ReadData(0x03, 0x900, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
@@ -464,17 +466,20 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
                 bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
             }
+        }
+
+        if (protocal_ver > CMUV2) {
+            reg_num = config.bmu_num * 2;
+            status += ReadData(0x03, 0x900, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].CanErr = *(p + i * 2 + 1);
+            }
+        } else if (protocal_ver > CMUV3) {
             //通信计数
             reg_num = config.bmu_num * 1;
             status += ReadData(0x03, 0xA00, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
                 bmu_data[i].CanErr = *(p + i);
-            }
-        } else if (protocal_ver > CMUV2) {
-            reg_num = config.bmu_num * 2;
-            status += ReadData(0x03, 0x900, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {
-                bmu_data[i].CanErr = *(p + i * 2 + 1);
             }
         }
     }
@@ -516,7 +521,7 @@ void mb_cmu::run() {
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
-                    if (protocal_ver > CMUV3) {
+                    if (is_gender_balanced(protocal_ver)) {
                         if (counter % (60 * 5) == 0) {
                             ReadCapData();
                         }
@@ -839,7 +844,7 @@ int mb_cmu::ReadAI() {
 
     return res;
 }
-#define MAX_SOE_COUNT 500
+#define MAX_SOE_COUNT 2000
 #define SOE_REG_LEN   8
 
 static uint16_t get_data(const uint16_t* src, int index) {
@@ -851,7 +856,13 @@ int mb_cmu::ReadSOE() {
     uint16_t tab_buf[128] = {0};
     res = ReadData(0x03, 0x2000, 2, tab_buf);
     if (res != 2) return -1;
-    memset(&cmu_soe, 0, sizeof(cmu_soe));
+    cmu_soe.list_soe.clear();
+    if (((is_gender_balanced(protocal_ver)) && (this->cmu_ver >= 0x00000402)) ||
+        ((is_main_line(protocal_ver)) && (this->cmu_ver >= 0x00000407))) {
+        cmu_soe.type = db_manager::SOE_BMS2;
+    } else {
+        cmu_soe.type = db_manager::SOE_BMS1;
+    }
     cmu_soe.new_soe_count = tab_buf[0];
     cmu_soe.soe_count = tab_buf[1];
     int start = 0x2002;
@@ -867,23 +878,26 @@ int mb_cmu::ReadSOE() {
             for (int i = soe_len; --i >= 0;) {
                 uint64_t u64time = static_cast<uint32_t>((get_data(tab_buf, SOE_REG_LEN * i + 1) << 16) |
                                                          get_data(tab_buf, SOE_REG_LEN * i));
-                if (u64time > 0xFFFFFFFF) {
-                    soe_index++;
-                    continue;
-                }
+                //                if (u64time > 0xFFFFFFFF) {
+                //                    soe_index++;
+                //                    continue;
+                //                }
                 u64time = u64time * 1000 + get_data(tab_buf, SOE_REG_LEN * i + 2);
-                cmu_soe.list_soe[soe_index].soe_time = u64time;
-                cmu_soe.list_soe[soe_index].soe_stat = get_data(tab_buf, SOE_REG_LEN * i + 3);
-                cmu_soe.list_soe[soe_index].soe_type = get_data(tab_buf, SOE_REG_LEN * i + 4);
-                cmu_soe.list_soe[soe_index].soe_id = get_data(tab_buf, SOE_REG_LEN * i + 5);
-                cmu_soe.list_soe[soe_index].soe_val = get_data(tab_buf, SOE_REG_LEN * i + 6);
-                cmu_soe.list_soe[soe_index].soe_limit = get_data(tab_buf, SOE_REG_LEN * i + 7);
+                CMU_SOE soe;
+                soe.soe_time = u64time;
+                soe.soe_stat = get_data(tab_buf, SOE_REG_LEN * i + 3);
+                soe.soe_type = get_data(tab_buf, SOE_REG_LEN * i + 4);
+                soe.soe_id = get_data(tab_buf, SOE_REG_LEN * i + 5);
+                soe.soe_val = get_data(tab_buf, SOE_REG_LEN * i + 6);
+                soe.soe_limit = get_data(tab_buf, SOE_REG_LEN * i + 7);
+                cmu_soe.list_soe.append(soe);
                 soe_index++;
             }
         } else {
-            return -1;
+            break;
         }
     } while (len);
     qDebug() << "read soe succeed.";
+    emit bmsSOEReady(cmu_soe);
     return res;
 }

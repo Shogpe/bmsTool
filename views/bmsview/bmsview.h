@@ -45,7 +45,7 @@ class BMSView : public QWidget {
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
    private slots:
     void timerUpDate();
-    void valueChange();
+    void valueChange(double dval);
     void sendCommand();
     void btn_contrl();
     void stateChanged();

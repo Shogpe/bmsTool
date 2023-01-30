@@ -11,7 +11,7 @@
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="77"/>
         <location filename="../views/bmsview/bmsview.ui" line="160"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="236"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="239"/>
         <source>连接</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,15 +28,6 @@
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="90"/>
         <source>127.000.000.001</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="119"/>
-        <source>请按硬件功能手动选择CMU协议版本；
-1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；
-2. CMU4.0 新增适配主动均衡；
-3. CMU4.8 新增绝缘数据点；
-如出现通信断连情况或无所需数据点，请尝试更换协议版本。</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -65,2698 +56,2564 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="183"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="235"/>
+        <location filename="../views/bmsview/bmsview.ui" line="182"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="238"/>
         <source>未连接</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="199"/>
+        <location filename="../views/bmsview/bmsview.ui" line="198"/>
         <source>0.0.0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="262"/>
+        <location filename="../views/bmsview/bmsview.ui" line="267"/>
         <source>CMU数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="303"/>
+        <location filename="../views/bmsview/bmsview.ui" line="308"/>
         <source>系统状态(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="335"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.ui" line="340"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>总故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="348"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.ui" line="353"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>总告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="361"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.ui" line="366"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>充满</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="374"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.ui" line="379"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>放空</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="393"/>
+        <location filename="../views/bmsview/bmsview.ui" line="398"/>
         <source>系统未初始化</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="409"/>
+        <location filename="../views/bmsview/bmsview.ui" line="414"/>
         <source>通信故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="422"/>
+        <location filename="../views/bmsview/bmsview.ui" line="427"/>
         <source>均衡状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="435"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.ui" line="440"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>充电</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="458"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.ui" line="463"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>放电</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="471"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.ui" line="476"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>停机</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="484"/>
-        <source> 升级(10)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="497"/>
+        <location filename="../views/bmsview/bmsview.ui" line="502"/>
         <source>绝缘通信(11)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="510"/>
+        <location filename="../views/bmsview/bmsview.ui" line="515"/>
         <source>自检(12)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="523"/>
+        <location filename="../views/bmsview/bmsview.ui" line="528"/>
         <source>BMU拨码(13)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="536"/>
+        <location filename="../views/bmsview/bmsview.ui" line="541"/>
         <source>BMU故障(14)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="549"/>
-        <source> 并网(15)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="564"/>
+        <location filename="../views/bmsview/bmsview.ui" line="569"/>
         <source>系统状态2(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="602"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="359"/>
+        <location filename="../views/bmsview/bmsview.ui" line="607"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7141"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="342"/>
         <source>IO解锁</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="873"/>
+        <location filename="../views/bmsview/bmsview.ui" line="878"/>
         <source>保护状态1(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="902"/>
+        <location filename="../views/bmsview/bmsview.ui" line="907"/>
         <source>单体过压保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="915"/>
+        <location filename="../views/bmsview/bmsview.ui" line="920"/>
         <source>单体欠压保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="928"/>
+        <location filename="../views/bmsview/bmsview.ui" line="933"/>
         <source>单体过温保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="941"/>
+        <location filename="../views/bmsview/bmsview.ui" line="946"/>
         <source>单体低温保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="954"/>
+        <location filename="../views/bmsview/bmsview.ui" line="959"/>
         <source>单体温升保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="967"/>
+        <location filename="../views/bmsview/bmsview.ui" line="972"/>
         <source>温差过大保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="980"/>
+        <location filename="../views/bmsview/bmsview.ui" line="985"/>
         <source>极柱过温保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="993"/>
+        <location filename="../views/bmsview/bmsview.ui" line="998"/>
         <source>过负荷保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1013"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1018"/>
         <source>短路保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1026"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1031"/>
         <source>簇过压保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1039"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1044"/>
         <source>簇欠压保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1065"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1070"/>
         <source>漏电流保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1078"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1573"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1083"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1578"/>
         <source>簇极柱过温</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1104"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1599"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1109"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1604"/>
         <source>压差过大</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1119"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1124"/>
         <source>保护状态(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1148"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1153"/>
         <source>烟感保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1161"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1166"/>
         <source>水浸保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1174"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1179"/>
         <source>消防保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1187"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1192"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="433"/>
         <source>急停保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1200"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1205"/>
         <source>备用(4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1213"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1218"/>
         <source>备用(5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1226"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1231"/>
         <source>备用(6)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1239"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1244"/>
         <source>备用(7)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1259"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1757"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1264"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1762"/>
         <source>备用(8)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1272"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1770"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8802"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1277"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1775"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7607"/>
         <source>备用(9)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1285"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1783"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8815"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1290"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1788"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7620"/>
         <source>备用(10)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1298"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1796"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8828"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1303"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1801"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7633"/>
         <source>备用(11)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1311"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1809"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8841"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1316"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1814"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7646"/>
         <source>备用(12)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1324"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1822"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8854"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1329"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1827"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7659"/>
         <source>备用(13)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1337"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1835"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8867"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1342"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1840"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7672"/>
         <source>备用(14)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1350"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1848"/>
-        <location filename="../views/bmsview/bmsview.ui" line="8880"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1355"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1853"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7685"/>
         <source>备用(15)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1365"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1614"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1370"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1619"/>
         <source>告警状态(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1394"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1399"/>
         <source>单体过压告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1407"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1412"/>
         <source>单体欠压告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1420"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1425"/>
         <source>单体过温告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1433"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1438"/>
         <source>单体低温告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1446"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1451"/>
         <source>单体温升告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1462"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1467"/>
         <source>温差过大告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1475"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1480"/>
         <source>极柱过温告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1488"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1493"/>
         <source>过负荷告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1521"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1526"/>
         <source>簇过压告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1534"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1539"/>
         <source>簇欠压告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1547"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1552"/>
         <source>绝缘下降告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1560"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1565"/>
         <source>漏电流告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1643"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1648"/>
         <source>BMU告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1659"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1664"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="406"/>
         <source>电压线束断线</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1672"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1677"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="406"/>
         <source>温度线束断线</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1685"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1690"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="407"/>
         <source>簇极柱温度断线</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1698"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1703"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="407"/>
         <source>电压传感器断线</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1711"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1716"/>
         <source>预留传感器断线</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1724"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1729"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="408"/>
         <source>断路器拒动</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1737"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1742"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="408"/>
         <source>接触器拒动</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1865"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1870"/>
         <source>簇数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1910"/>
-        <source>簇外接传感器 </source>
+        <location filename="../views/bmsview/bmsview.ui" line="1915"/>
+        <source>B+簇极柱温度</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1953"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2057"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2109"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2161"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2213"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2265"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2317"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2473"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2525"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2577"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2694"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2765"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2817"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2869"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3118"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3345"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3397"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3501"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3572"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3624"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3676"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3728"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3780"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3832"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3936"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3988"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4092"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4234"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4286"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4357"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4923"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6161"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2019"/>
+        <source>当前剩余容量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2123"/>
+        <source>当前放电容量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2178"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3010"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3166"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3595"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3647"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3803"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4219"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5003"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5171"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5227"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5464"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5520"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5611"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5695"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5928"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5990"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6381"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6437"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6549"/>
+        <source>V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2386"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2854"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3218"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4913"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5255"/>
+        <source>kΩ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2438"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3374"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4829"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5548"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5639"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6171"/>
+        <source>A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3270"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3855"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4941"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5436"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5492"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6018"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6343"/>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="1918"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1970"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2490"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2594"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2698"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3322"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3543"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4011"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4271"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4614"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4698"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4801"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4857"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4885"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5059"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5311"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5367"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5723"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5779"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5835"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6056"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6249"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6277"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6409"/>
+        <source>℃</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2022"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2126"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2282"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2958"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3751"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4726"/>
+        <source>Ah</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2230"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2750"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3062"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3699"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4969"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5863"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5962"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6465"/>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2802"/>
+        <source>kW</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="1958"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2010"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2062"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2114"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2166"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2218"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2270"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2322"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2426"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2634"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2738"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2946"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3050"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3102"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3154"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3258"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3310"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3362"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3414"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3687"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3739"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3791"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3843"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3895"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3947"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3999"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4051"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4103"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4207"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4259"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4311"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4366"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4421"/>
         <source>???</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1962"/>
-        <source>累计充电次数 </source>
+        <location filename="../views/bmsview/bmsview.ui" line="119"/>
+        <source>请按硬件功能手动选择CMU协议版本；
+1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点
+2. CMU4.0 新增适配主动均衡；
+3. CMU4.8 新增绝缘数据点；
+如出现通信断连情况或无所需数据点，请尝试更换协议版本。</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2014"/>
-        <source>簇正极绝缘  </source>
+        <location filename="../views/bmsview/bmsview.ui" line="489"/>
+        <source>升级(10)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2017"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3182"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4052"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5015"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6825"/>
-        <source> kΩ</source>
+        <location filename="../views/bmsview/bmsview.ui" line="554"/>
+        <source>并网(15)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2066"/>
-        <source>放电均衡通道数 </source>
+        <location filename="../views/bmsview/bmsview.ui" line="4167"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5339"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5408"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5667"/>
+        <source>mA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2829"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3357"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4298"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6257"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6417"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6722"/>
-        <source> kWh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2173"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2706"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3078"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3130"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3409"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3896"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4421"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5111"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5504"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5778"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5996"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6377"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6457"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6534"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6574"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7157"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7354"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7401"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7530"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7727"/>
-        <source> V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2222"/>
-        <source>当前放电容量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2225"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2777"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3792"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3844"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4104"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6127"/>
-        <source> Ah</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2274"/>
-        <source>簇电流 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2277"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3948"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4600"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4932"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5212"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5427"/>
-        <source> A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2326"/>
-        <source>累计放电时间 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2329"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2485"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3513"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4369"/>
-        <source> s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2378"/>
-        <source>簇外接温度5 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2381"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2537"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2933"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3234"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3286"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3584"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3688"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4175"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4246"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4560"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4647"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4748"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5151"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5313"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5464"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5838"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5925"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6077"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6297"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6494"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6993"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7080"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7117"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7277"/>
-        <source> ℃</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2430"/>
-        <source>绝缘投切状态    </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2482"/>
-        <source>当前放电时间 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2586"/>
-        <source>累计放电次数 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2651"/>
-        <source>簇漏电流    </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2654"/>
-        <location filename="../views/bmsview/bmsview.ui" line="4708"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6675"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6778"/>
-        <source> mA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2731"/>
-        <source>最大单体ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2774"/>
-        <source>当前剩余容量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2826"/>
-        <source>剩余电量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2930"/>
-        <source>簇外接温度4 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2961"/>
-        <source>最高极柱ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2980"/>
-        <source>最大压差ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3023"/>
-        <source>绝缘充放电状态  </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3075"/>
-        <source>绝缘B+电压      </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3179"/>
-        <source>簇绝缘      </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3231"/>
-        <source>簇外接温度3 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3283"/>
-        <source>簇外接温度1 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3311"/>
-        <source>最大模组ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3354"/>
-        <source>累计充电量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3458"/>
-        <source>簇功率 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3461"/>
-        <source> kW</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3510"/>
-        <source>累计充电时间 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3538"/>
-        <source>最高模组ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3633"/>
-        <source>SOC </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3636"/>
-        <location filename="../views/bmsview/bmsview.ui" line="3740"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5273"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5652"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5729"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5878"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7580"/>
-        <source> %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3737"/>
-        <source>SOH </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3789"/>
-        <source>累计放电容量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3841"/>
-        <source>累计充电容量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3893"/>
-        <source>簇电压 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3945"/>
-        <source>预留簇电流传感器  </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="3997"/>
-        <source>充电均衡通道数 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4049"/>
-        <source>簇负极绝缘  </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4101"/>
-        <source>当前充电容量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4129"/>
-        <source>最小单体ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4172"/>
-        <source>簇外接温度2 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4200"/>
-        <source>最低模组ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4295"/>
-        <source>累计放电量 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4323"/>
-        <source>最大温升ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4366"/>
-        <source>当前充电时间 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4418"/>
-        <source>绝缘B-电压      </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4489"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1518"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4462"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1563"/>
         <source>BMU数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4533"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4506"/>
         <source>定值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4548"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7009"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4555"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4558"/>
+        <source>单体电压数据屏蔽位</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4748"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5517"/>
+        <source>簇电压放空充满回差</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4754"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5143"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5894"/>
+        <source>mV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4963"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4966"/>
+        <source>保护动作延时</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="5000"/>
+        <source>单体欠压自杀阈值</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="5053"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5056"/>
         <source>单体温差上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4585"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5514"/>
+        <source>簇电压充满放空回差</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="5857"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5860"/>
+        <source>告警和保护延时</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="5959"/>
+        <source>单体欠压自杀延时</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="6165"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6168"/>
         <source>充放检测阈值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4597"/>
-        <source>充放检测阈值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4616"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5197"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5542"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5545"/>
         <source>额定电流</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4632"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5829"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5832"/>
         <source>簇极柱温度上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4644"/>
-        <source>簇极柱温度上限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4663"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6362"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6375"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6378"/>
         <source>簇电压下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4670"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7605"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6626"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6629"/>
         <source>簇单元数量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4677"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7386"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5221"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5224"/>
         <source>单体电压上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4693"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5661"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5664"/>
         <source>漏电流保护值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4705"/>
-        <source>漏电流保护值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4733"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5305"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5308"/>
         <source>簇极柱温度上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4745"/>
-        <source>簇极柱温度上上限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4764"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6559"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5689"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5692"/>
         <source>簇电压上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4787"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6193"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6196"/>
         <source>保护屏蔽位1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4799"/>
-        <source>保护屏蔽位1 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4834"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6137"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6140"/>
         <source>功能使能位2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4846"/>
-        <source>功能使能位2 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4874"/>
-        <source>保护延时(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4886"/>
-        <source>保护延时(s) </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4914"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4823"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4826"/>
         <source>预充结束电流</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4929"/>
-        <source>预充结束电流 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4957"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5081"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5084"/>
         <source>预留传感器量程</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4969"/>
-        <source>预留传感器量程 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="4997"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5249"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5252"/>
         <source>绝缘电阻告警值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5012"/>
-        <source>绝缘电阻告警值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5031"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5981"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5165"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5168"/>
         <source>簇电压下下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5047"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4664"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4667"/>
         <source>温度屏蔽位</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5059"/>
-        <source>温度屏蔽位 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5087"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4991"/>
         <source>单体压差上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5108"/>
-        <source>单体压差上上限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5139"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5181"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5361"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5364"/>
         <source>单体温升上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5167"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6603"/>
         <source>BMS IP设定</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5174"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5338"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6221"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6227"/>
         <source>单体电压数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5228"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6242"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5745"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5748"/>
         <source>簇容量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5242"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6707"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6309"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6312"/>
         <source>簇校正容量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5258"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5574"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6012"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6015"/>
         <source>电流上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5298"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4692"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4695"/>
         <source>环控温度上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5310"/>
-        <source>环控温度上限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5372"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5109"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5112"/>
         <source>数据屏蔽位2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5384"/>
-        <source>数据屏蔽位2 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5412"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5965"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5633"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5636"/>
         <source>电流量程</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5452"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6186"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4851"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4854"/>
         <source>单体温差上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5489"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6738"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6431"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6434"/>
         <source>单体电压下下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5520"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6610"/>
         <source>服务器IP设定</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5527"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5826"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6243"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6246"/>
         <source>单体温升上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5543"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6571"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6574"/>
         <source>告警屏蔽位1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5555"/>
-        <source>告警屏蔽位1 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5590"/>
-        <source>告警屏蔽</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5602"/>
-        <source>告警屏蔽 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5621"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5714"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4935"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4938"/>
         <source>短路电流限值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5637"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6337"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6340"/>
         <source>SOC下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5649"/>
-        <source>SOC下限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5677"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4583"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4586"/>
         <source>功能使能位</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5689"/>
-        <source>功能使能位 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5754"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5950"/>
         <source>单体压差上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5775"/>
-        <source>单体压差上限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5810"/>
-        <location filename="../views/bmsview/bmsview.ui" line="5863"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5486"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5489"/>
         <source>电流上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5913"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6012"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4795"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4798"/>
         <source>单体温度下下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5941"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6282"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6050"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6053"/>
         <source>单体温度上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5948"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6031"/>
         <source>保存当前参数作为默认参数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5951"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6034"/>
         <source>保存默认</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="5958"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7302"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4776"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4779"/>
         <source>单体温度数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6028"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4536"/>
         <source>极柱温度数量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6062"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6794"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6403"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6406"/>
         <source>单体温度上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6112"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4720"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4723"/>
         <source>簇额定Ah数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6124"/>
-        <source>簇额定Ah数 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6152"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6167"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6459"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6462"/>
         <source>预充结束时间</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6202"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5193"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5196"/>
         <source>保护屏蔽位2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6214"/>
-        <source>保护屏蔽位2 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6322"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6334"/>
-        <source>电压屏蔽位 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6402"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6637"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5277"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5280"/>
         <source>簇剩余电量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6442"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6691"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5984"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5987"/>
         <source>电压量程</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6482"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7370"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5717"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5720"/>
         <source>极柱温度上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6519"/>
-        <source>充满放空簇电压回差</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6531"/>
-        <source>簇电压回差 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6590"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7105"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5773"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5776"/>
         <source>单体温度下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6606"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6515"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6518"/>
         <source>数据屏蔽位4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6618"/>
-        <source>数据屏蔽位4 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6644"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7142"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6543"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6546"/>
         <source>簇电压上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6660"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6922"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5333"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5336"/>
         <source>漏电流量程</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6754"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5402"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5405"/>
         <source>漏电流告警值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6775"/>
-        <source>漏电流告警值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6810"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4907"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4910"/>
         <source>绝缘电阻保护值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6822"/>
-        <source>绝缘电阻保护值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6850"/>
-        <source>告警延时(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6862"/>
-        <source>告警延时(s) </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6888"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4539"/>
         <source>极柱温度数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6908"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7506"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5916"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5925"/>
         <source>单体电压上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6915"/>
-        <location filename="../views/bmsview/bmsview.ui" line="6978"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4879"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4882"/>
         <source>极柱温度上上限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6938"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5888"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5891"/>
         <source>放空回差</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6950"/>
-        <source>放空回差 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6953"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7040"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7687"/>
-        <source> mV</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7025"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4751"/>
         <source>充满回差</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7037"/>
-        <source>充满回差 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7065"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4608"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4611"/>
         <source>环控温度回差</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7077"/>
-        <source>环控温度回差 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7182"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4636"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4639"/>
         <source>保护屏蔽</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7194"/>
-        <source>保护屏蔽 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7222"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6078"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6081"/>
         <source>数据屏蔽位1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7234"/>
-        <source>数据屏蔽位1 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7262"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6271"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6274"/>
         <source>环控温度下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7274"/>
-        <source>环控温度下限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7339"/>
-        <location filename="../views/bmsview/bmsview.ui" line="7549"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5605"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5608"/>
         <source>单体电压下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7426"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5025"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5028"/>
         <source>告警屏蔽位2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7438"/>
-        <source>告警屏蔽位2 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7466"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5801"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5804"/>
         <source>数据屏蔽位3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7478"/>
-        <source>数据屏蔽位3 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7565"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5430"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5433"/>
         <source>SOC下下限</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7577"/>
-        <source>SOC下下限 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7630"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6356"/>
         <source>加载上次保存的默认参数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7633"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6359"/>
         <source>加载默认</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7640"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6290"/>
         <source>导出本页定值至xml文件</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7643"/>
-        <source> 导出至文件</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7650"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5561"/>
         <source>从xml文件导入定值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7653"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5564"/>
         <source>从文件导入</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7669"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5137"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5140"/>
         <source>均衡启动差值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7684"/>
-        <source>均衡启动差值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7712"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="132"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="136"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5458"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5461"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="137"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="140"/>
         <source>均衡启动阈值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7724"/>
-        <source>均衡启动阈值 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7755"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="146"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6109"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6112"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="149"/>
         <source>均衡模式</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7770"/>
-        <source>均衡模式 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7789"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5577"/>
         <source>本项只读，修改下方参数以修改均衡参数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7803"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6660"/>
         <source>系统控制</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7953"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6797"/>
         <source>漏电流基点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8109"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6940"/>
         <source>绝缘母线电压校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7966"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6810"/>
         <source>均衡控制</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8336"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7154"/>
         <source>清除电量统计</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7875"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6719"/>
         <source>预留传感器低点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8096"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6927"/>
         <source>BMU锁定拨码</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8414"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7219"/>
         <source>电流高点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8057"/>
-        <source> 负绝缘电阻校准</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8297"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7115"/>
         <source>漏电流高点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7914"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6758"/>
         <source>电流低点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8349"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7167"/>
         <source>电流基点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8070"/>
-        <source> IO锁定</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8245"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7063"/>
         <source>正绝缘电阻校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8284"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7102"/>
         <source>电压低点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8310"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7128"/>
         <source>预留传感器基点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8148"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6979"/>
         <source>BMU拨码解锁</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8271"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7089"/>
         <source>预留传感器高点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7888"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6732"/>
         <source>漏电流低点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8232"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7050"/>
         <source>电压高点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8323"/>
-        <source> IO解锁</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8187"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7005"/>
         <source>重启</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8044"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6875"/>
         <source>电压基点校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7901"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6745"/>
         <source>清除绝缘检测故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8018"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6849"/>
         <source>恢复出厂设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7827"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6684"/>
         <source>时钟</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8135"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="919"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6966"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="957"/>
         <source>绝缘检测控制</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7940"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6784"/>
         <source>综合命令合闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8258"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7076"/>
         <source>综合命令分闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8206"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7024"/>
         <source>KM+控制合闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7927"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6771"/>
         <source>KM+控制分闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8122"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6953"/>
         <source>KM-控制合闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8005"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6836"/>
         <source>KM-控制分闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7979"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6293"/>
+        <source>导出至文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="6487"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6490"/>
+        <source>电池包温度断线屏蔽</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="6632"/>
+        <source>个</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="6823"/>
         <source>KMR控制合闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8219"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6888"/>
+        <source>负绝缘电阻校准</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="6901"/>
+        <source>IO锁定</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="7037"/>
         <source>KMR控制分闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8362"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1525"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7180"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1570"/>
         <source>开启风扇</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8427"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1532"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7232"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1577"/>
         <source>关闭风扇</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8174"/>
-        <source>开启空调</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8401"/>
-        <source>关闭空调</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7849"/>
-        <source>电操合闸</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7992"/>
-        <source>电操分闸</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8490"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7295"/>
         <source>QF控制分闸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8375"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7193"/>
         <source>清除均衡故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8161"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6992"/>
         <source>上送触发</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8388"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7206"/>
         <source>导入SOC表</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8083"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6914"/>
         <source>SOH标定</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8031"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6862"/>
         <source>SOC校准</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8440"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7245"/>
         <source>SOC标定</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="7862"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6706"/>
         <source>对时</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="621"/>
+        <location filename="../views/bmsview/bmsview.ui" line="626"/>
         <source>绝缘使能</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1052"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1057"/>
         <source>绝缘过低保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1091"/>
-        <location filename="../views/bmsview/bmsview.ui" line="1586"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1096"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1591"/>
         <source>SOC过低</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="1508"/>
+        <location filename="../views/bmsview/bmsview.ui" line="1513"/>
         <source>BMU异常告警</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2118"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2071"/>
         <source>当前充电量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2121"/>
-        <location filename="../views/bmsview/bmsview.ui" line="2881"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2074"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3114"/>
+        <location filename="../views/bmsview/bmsview.ui" line="3907"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4063"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4115"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5283"/>
+        <location filename="../views/bmsview/bmsview.ui" line="5751"/>
+        <location filename="../views/bmsview/bmsview.ui" line="6315"/>
         <source>kWh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="2878"/>
+        <location filename="../views/bmsview/bmsview.ui" line="2227"/>
+        <source>当前充电时间</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2279"/>
+        <source>累计放电容量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2331"/>
+        <source>累计放电次数</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2383"/>
+        <source>簇负极绝缘</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2435"/>
+        <source>预留簇电流传感器</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2487"/>
+        <source>B-簇极柱温度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2539"/>
+        <source>绝缘投切状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2591"/>
+        <source>PCS+簇极柱温度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2643"/>
+        <source>充电均衡通道数</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2695"/>
+        <source>高压箱环境温度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2747"/>
+        <source>当前放电时间</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2799"/>
+        <source>簇功率</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2851"/>
+        <source>簇正极绝缘</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2903"/>
+        <source>簇外接传感器</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="2955"/>
+        <source>累计充电容量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3007"/>
+        <source>绝缘B-电压</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3059"/>
+        <source>累计放电时间</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3111"/>
+        <source>累计放电量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3215"/>
+        <source>簇绝缘</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3267"/>
+        <source>SOH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3371"/>
+        <source>簇电流</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3423"/>
+        <source>放电均衡通道数</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3488"/>
+        <source>绝缘充放电状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3540"/>
+        <source>PCS-簇极柱温度</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3592"/>
+        <source>簇电压</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3644"/>
+        <source>绝缘B+电压</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3696"/>
+        <source>累计充电时间</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3748"/>
+        <source>当前充电容量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3852"/>
+        <source>SOC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3904"/>
+        <source>累计充电量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="3956"/>
+        <source>累计充电次数</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4060"/>
+        <source>剩余电量</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4112"/>
         <source>当前放电量</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="6170"/>
-        <source>s</source>
+        <location filename="../views/bmsview/bmsview.ui" line="4164"/>
+        <source>簇漏电流</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8513"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4375"/>
+        <source>Boot版本</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="4430"/>
+        <source>绝缘版本</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="7318"/>
         <source>DO选取(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8534"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7339"/>
         <source>DO9(BMU供电)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8541"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7346"/>
         <source>DO1(断路器)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8548"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7353"/>
         <source>DO3(KM-)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8555"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7360"/>
         <source>DO2(KM+)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8562"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7367"/>
         <source>DO11(风扇控制)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8569"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7374"/>
         <source>DO12(备用1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8576"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7381"/>
         <source>DO6(充电指示)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8583"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7388"/>
         <source>DO7(放电指示)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8590"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7395"/>
         <source>DO8(系统运行)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8597"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7402"/>
         <source>DO5(CMU告警)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8604"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7409"/>
         <source>DO15(备用4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8611"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7416"/>
         <source>DO13(备用2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8618"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7423"/>
         <source>DO4(KMR)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8625"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7430"/>
         <source>DO10(告警指示)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8632"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7437"/>
         <source>DO14(备用3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8639"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7444"/>
         <source>DO16(备用5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8649"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7454"/>
         <source>DI状态(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8678"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7483"/>
         <source>QF状态(0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8691"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7496"/>
         <source>KM+状态(1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8704"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7509"/>
         <source>KM-状态(2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8717"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7522"/>
         <source>KMR状态(3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8730"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7535"/>
         <source>CCU告警(4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8743"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7548"/>
         <source>主从状态(5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8756"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7561"/>
         <source>预留1(6)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8769"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7574"/>
         <source>预留2(7)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8789"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7594"/>
         <source>预留3(8)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8895"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7700"/>
         <source>使能位(?)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8916"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="477"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7721"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="472"/>
         <source>使能双CAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8923"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="480"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7728"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="475"/>
         <source>并列/解列</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8930"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7735"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="473"/>
         <source>使能环控</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8937"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="479"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7742"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="474"/>
         <source>禁用远控接触器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8944"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="477"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7749"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="472"/>
         <source>使能电流传感器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8951"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="477"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7756"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="472"/>
         <source>使能电压传感器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8958"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7763"/>
         <source>使能漏电传感器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8965"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7770"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="473"/>
         <source>使能绝缘检测</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8972"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7777"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="473"/>
         <source>使能写保护</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8979"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="479"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7784"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="474"/>
         <source>单簇/多簇</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8986"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="479"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7791"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="474"/>
         <source>调试输出使能</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8993"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="479"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7798"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="474"/>
         <source>网络输出使能</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9000"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="480"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7805"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="475"/>
         <source>禁用预充</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9007"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7812"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="473"/>
         <source>使能故障录波</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9014"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7819"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="473"/>
         <source>禁用定值限制</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9021"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="480"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7826"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="475"/>
         <source>禁用安防</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9032"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7837"/>
         <source>SOE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9048"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7851"/>
         <source>新SOE:--,总计:--</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9055"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7858"/>
         <source>读取</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9066"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7865"/>
+        <source>清除</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="7888"/>
         <source>BMU扩展信息</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="9069"/>
+        <location filename="../views/bmsview/bmsview.ui" line="7891"/>
         <source>仅CMU4.0支持</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="50"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="54"/>
         <source>初始化完成</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="123"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="129"/>
         <source>运行状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="124"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="130"/>
         <source>故障状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="127"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="147"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="133"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="150"/>
         <source>CAN错误数</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="113"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="129"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="119"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="233"/>
         <source>版本号</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="141"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="144"/>
         <source>风机</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="142"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="145"/>
         <source>母线电压(V)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="143"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="146"/>
         <source>均衡电流(A)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="144"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="147"/>
         <source>均衡故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="145"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="148"/>
         <source>通道状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="151"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="155"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="154"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="157"/>
         <source>均衡配置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="178"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="180"/>
         <source>充电Ah</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="179"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="181"/>
         <source>放电Ah</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="212"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="214"/>
         <source>要修改&quot;%1&quot;为 %2 ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="228"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="230"/>
         <source>已连接</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="229"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="231"/>
         <source>软件过期，请更新！</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="231"/>
-        <source>版本号:%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="232"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="234"/>
         <source>重连</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="243"/>
-        <source>读取失败!!!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="291"/>
-        <source>通信状态2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="320"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="353"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="303"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="336"/>
         <source>系统状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>未初始化</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="309"/>
         <source>BMU通信</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>均衡</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>升级</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>绝缘通信</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="327"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="310"/>
         <source>自检</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="328"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="311"/>
         <source>BMU拨码</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="328"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="311"/>
         <source>BMU故障</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="328"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="311"/>
         <source>并网</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="340"/>
-        <source>Boot版本: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="347"/>
-        <source>绝缘版本: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="359"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="342"/>
         <source>绝缘检测</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="376"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="390"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="359"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="373"/>
         <source>保护状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="404"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="418"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="387"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="401"/>
         <source>告警状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="426"/>
         <source>DI状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>QF状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>KM+状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>KM-状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>KMR状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>故障输入</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="438"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="432"/>
         <source>主从状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
-        <source>备用7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="408"/>
         <source>备用8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
         <source>备用9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
         <source>备用10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
         <source>备用11</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="439"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="458"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="453"/>
         <source>备用12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="440"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="458"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
         <source>备用13</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="440"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="458"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="409"/>
         <source>备用14</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="440"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="458"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="410"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="453"/>
         <source>备用15</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="440"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="458"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="410"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="435"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="453"/>
         <source>备用16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="446"/>
         <source>DO状态</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>QF输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>KM+输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>KM-输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>KMR输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>故障输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="456"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="451"/>
         <source>充电指示</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="457"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="452"/>
         <source>放电指示</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="457"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="452"/>
         <source>系统运行</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="457"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="452"/>
         <source>BMU供电</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="457"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="452"/>
         <source>告警输出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="457"/>
-        <source>风扇开启</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="471"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="466"/>
         <source>使能位</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="477"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="472"/>
         <source>使能漏电流传感器</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="481"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="478"/>
         <source>使能绝缘板采样电压</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="493"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="491"/>
         <source>%1对,%2A,%3秒</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="496"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="520"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="494"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="518"/>
         <source>禁止均衡</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="499"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="523"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="497"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="521"/>
         <source>强制均衡</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="502"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="526"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="500"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="524"/>
         <source>自动均衡</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="505"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="529"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="503"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="527"/>
         <source>手动均衡</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="508"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="532"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="506"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="530"/>
         <source>未定义</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="550"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="548"/>
         <source>最大单体电压</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="552"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="551"/>
         <source>最小单体电压</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="554"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="553"/>
         <source>最高单体温度</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="556"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="555"/>
         <source>最低单体温度</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="558"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="557"/>
         <source>最大模组电压</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="560"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="559"/>
         <source>最大单体压差</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="562"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="561"/>
         <source>最大极柱温度</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="564"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="563"/>
         <source>最大单体温升</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1539"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1584"/>
         <source>开启全部风扇</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1546"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1591"/>
         <source>关闭全部风扇</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="827"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="865"/>
         <source>绝缘电压校准值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="834"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="851"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="868"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="961"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="976"/>
+        <location filename="../views/bmsview/bmsview.ui" line="4320"/>
+        <source>BMU拨码异常ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="406"/>
+        <source>BMU拨码异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="407"/>
+        <source>电流传感器断线</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="433"/>
+        <source>预留DIN1(水浸)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="433"/>
+        <source>交流有压</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="433"/>
+        <source>QF继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="434"/>
+        <source>故障输出继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="434"/>
+        <source>BMU风扇继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="434"/>
+        <source>高压箱风扇继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="435"/>
+        <source>充满继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="435"/>
+        <source>放空继电器状态</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="452"/>
+        <source>风扇电源输出</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="453"/>
+        <source>充满输出</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="453"/>
+        <source>放空输出</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="477"/>
+        <source>使能预留传感器</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="872"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="889"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="906"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="999"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1014"/>
         <source>invalid value:%1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="844"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="882"/>
         <source>正绝缘电阻校准值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="861"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="899"/>
         <source>负绝缘电阻校准值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="917"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="955"/>
         <source>全程投入</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="917"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="923"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="955"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="961"/>
         <source>远程投入</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="917"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="925"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="955"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="963"/>
         <source>远程断开</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="919"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="957"/>
         <source>请输入绝缘检测控制方式：</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="935"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="973"/>
         <source>是否清除绝缘检测故障？</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="943"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="981"/>
         <source>是否清除均衡故障？</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="954"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="992"/>
         <source>SOC标定值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="969"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1007"/>
         <source>SOH标定值</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="981"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1019"/>
         <source>是否校准SOC？</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1000"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1022"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1038"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1060"/>
         <source>确定%2&quot;%1&quot;吗</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1000"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1038"/>
         <source>开启</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1000"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1038"/>
         <source>关闭</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1022"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1060"/>
         <source>-控合-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1022"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1060"/>
         <source>-控分-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1027"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1065"/>
         <source>输出控制</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1027"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1065"/>
         <source>当前控制出口为</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1029"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1067"/>
         <source>控 合</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1030"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1068"/>
         <source>控 分</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1031"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1069"/>
         <source>取 消</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1057"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1095"/>
         <source>读取中...请稍侯...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1068"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1095"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1463"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1114"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1141"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1508"/>
         <source>invalid ip address!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1073"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1119"/>
         <source>确定要设备IP为%1吗</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1100"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1146"/>
         <source>确定要修改服务器IP为%1吗</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1118"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1164"/>
         <source>file not opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1145"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1191"/>
         <source>file not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1151"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1197"/>
         <source>not invalid file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1219"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1265"/>
         <source>下载升级BMS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1221"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1267"/>
         <source>下载升级BMU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1223"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1269"/>
         <source>下载升级BMS Boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1225"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1271"/>
         <source>下载升级BMU Boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1227"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1273"/>
         <source>下载升级绝缘板</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1246"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1291"/>
         <source>修改</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1281"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1325"/>
         <source>修改均衡配置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1326"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1371"/>
         <source>导出当前SOE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1328"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1371"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1518"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1373"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1416"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1563"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1329"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1374"/>
         <source>SOE导出</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1330"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1375"/>
         <source>Excel(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1369"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1516"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1414"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1561"/>
         <source>导出当前数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1373"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="1519"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1418"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1564"/>
         <source>csv File(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1372"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1417"/>
         <source>BMU扩展数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="612"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="629"/>
-        <location filename="../views/bmsview/bmsview.cpp" line="647"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="619"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="651"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="685"/>
         <source>Strikethrough indicates disconnection</source>
         <translation>删除线表示断线</translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="681"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="719"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="681"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="719"/>
         <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="815"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="853"/>
         <source>是否执行</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1386"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1431"/>
         <source>重启CMU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="1388"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1433"/>
         <source>重启BMU</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2938,7 +2795,7 @@
     </message>
     <message>
         <location filename="../main_ui.ui" line="431"/>
-        <location filename="../main_ui.cpp" line="80"/>
+        <location filename="../main_ui.cpp" line="95"/>
         <source>Maximize</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2953,58 +2810,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="33"/>
+        <location filename="../main_ui.cpp" line="48"/>
         <source>升级服务</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="36"/>
+        <location filename="../main_ui.cpp" line="51"/>
         <source>成功</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="36"/>
+        <location filename="../main_ui.cpp" line="51"/>
         <source>失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="77"/>
+        <location filename="../main_ui.cpp" line="92"/>
         <source>Restore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="90"/>
+        <location filename="../main_ui.cpp" line="105"/>
         <source>库博BMS监控软件</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="100"/>
+        <location filename="../main_ui.cpp" line="115"/>
         <source>本软件为测试使用，请勿长时间使用!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="121"/>
+        <location filename="../main_ui.cpp" line="136"/>
         <source>Langue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="157"/>
+        <location filename="../main_ui.cpp" line="156"/>
         <source>Rec转换</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="159"/>
+        <location filename="../main_ui.cpp" line="158"/>
         <source>维护工具</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="163"/>
+        <location filename="../main_ui.cpp" line="162"/>
         <source>用户手册</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="167"/>
+        <location filename="../main_ui.cpp" line="166"/>
         <source>故障录波解析</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_ui.cpp" line="168"/>
+        <source>新增BMS页面</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3013,6 +2875,96 @@
     <message>
         <location filename="../views/bms_datalog/bms_datalog.cpp" line="48"/>
         <source>Read dump file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="567"/>
+        <source>拨码异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="568"/>
+        <source>拨码锁定</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="569"/>
+        <source>干结点开路</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="569"/>
+        <source>干结点闭合</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="570"/>
+        <source>风机开</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="570"/>
+        <source>风机关</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="571"/>
+        <source>辅源异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="572"/>
+        <source>备用5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="573"/>
+        <source>备用6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="574"/>
+        <source>备用7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="575"/>
+        <source>1.25V错误</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="576"/>
+        <source>均衡母线错误</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="577"/>
+        <source>均衡电流异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="578"/>
+        <source>24V母线异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="579"/>
+        <source>单体电压异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="580"/>
+        <source>均衡参数错误</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="581"/>
+        <source>Mos异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="582"/>
+        <source>副边电压异常</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3366,12 +3318,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/logindialog/logindialog.cpp" line="37"/>
+        <location filename="../models/logindialog/logindialog.cpp" line="39"/>
         <source>用户名或密码不能为空!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/logindialog/logindialog.cpp" line="59"/>
+        <location filename="../models/logindialog/logindialog.cpp" line="61"/>
         <source>用户名或密码错误!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3379,14 +3331,14 @@
 <context>
     <name>mb_cmu</name>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="687"/>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="688"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="721"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="722"/>
         <source>操作失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="690"/>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="691"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="724"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="725"/>
         <source>操作成功</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3475,8 +3427,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="302"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="304"/>
         <source>服务检测中...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="594"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="747"/>
+        <source>定值为空，放弃操作！</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

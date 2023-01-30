@@ -39,7 +39,6 @@ HEADERS     += \
     MessageQueue.h \
     main_ui.h \
     myhelper.h \
-    models/MyDoubleSpinBox/MyDoubleSpinBox.h \
     models/SOEModel/SOEModel.h \
     models/qlineeditext.h \
     tableModel.h \

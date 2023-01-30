@@ -11,6 +11,7 @@
 #include "ui_bmsview.h"
 BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &BMSView::timerUpDate);
     mycmu = nullptr;
@@ -136,7 +137,6 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setPrefix(tr("均衡启动阈值") + " ");
         ui->BalnceStart->setSuffix(" V");
         ui->BalnceStart->setMaximum(6);
-        ui->BalnceStart->setDecimals(4);
         ui->BalnceStart->setToolTip(tr("均衡启动阈值"));
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
@@ -154,7 +154,6 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setPrefix(tr("均衡配置") + " ");
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
-        ui->BalnceStart->setDecimals(0);
         ui->BalnceStart->setToolTip(tr("均衡配置"));
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -166,8 +165,8 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
 
     //定值显示和隐藏
-    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+    QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
+    foreach (InputBox* dspbox, dspboxs) {
         dspbox->hide();
         if (mapData.contains(dspbox->objectName())) {
             dspbox->show();
@@ -209,9 +208,9 @@ int BMSView::setValue(QString name, double dval) {
     }
     return 0;
 }
-void BMSView::valueChange() {
-    QDoubleSpinBox* b = (QDoubleSpinBox*)sender();
-    double dval = b->value();
+void BMSView::valueChange(double dval) {
+    InputBox* b = qobject_cast<InputBox*>(sender());
+    if (!b) return;
     if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
         QDialog::Accepted) {
         return;
@@ -231,7 +230,7 @@ void BMSView::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
-        ui->btnVer->setText(QString(tr("版本号:%1")).arg(myHelper::IntegerToHexString(val)));
+        ui->btnVer->setText(tr("版本号") + QString(":%1").arg(myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText(tr("重连"));
         ui->tbtnConnect->setObjectName("reconnect");
     } else {
@@ -240,6 +239,7 @@ void BMSView::timerUpDate() {
         ui->tbtnConnect->setText(tr("连接"));
         ui->tbtnConnect->setObjectName("connect");
     }
+    this->setWindowTitle(QString("%1[%2]").arg(ui->connectIP->text(), ui->labelStatus->text()));
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
@@ -270,33 +270,33 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     uint32_t comm_status1 = mapData.value("sysComm1", 0);
     uint32_t comm_status2 = mapData.value("sysComm2", 0);
     bmu_comm = ((uint64_t)comm_status2 << 32) | comm_status1;
-    QString str2 = QString("%1:%2,%3,%4,%5")
-                       .arg(tr("BMU拨码异常ID"))
-                       .arg(comm_status2 >> 24 & 0xFF, 8, 2, QChar('0'))
-                       .arg(comm_status2 >> 16 & 0xFF, 8, 2, QChar('0'))
-                       .arg(comm_status2 >> 8 & 0xFF, 8, 2, QChar('0'))
-                       .arg(comm_status2 & 0xFF, 8, 2, QChar('0'));
-    ui->CommStatus->setText(str2);
+    ui->CommStatus->setValue(comm_status2);
     //刷新定值
-    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+    QList<InputBox*> inputs = ui->tabSet->findChildren<InputBox*>();
+    foreach (InputBox* dspbox, inputs) {
         if (mapData.contains(dspbox->objectName())) {
             if (dspbox->hasFocus()) continue;
             dspbox->blockSignals(true);
-            dspbox->setValue(mapData.value(dspbox->objectName()));
+            dspbox->setValueDirect(mapData.value(dspbox->objectName()));
             dspbox->blockSignals(false);
         } else {
         }
     }
-    dspboxs = ui->tabCMU->findChildren<QDoubleSpinBox*>();
-    dspboxs << ui->sysTime;
-    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+    QList<InputBox*> dspboxs = ui->tabCMU->findChildren<InputBox*>();
+    foreach (InputBox* dspbox, dspboxs) {
         if (mapData.contains(dspbox->objectName())) {
             dspbox->show();
             dspbox->setValue(mapData.value(dspbox->objectName()));
         } else {
             dspbox->hide();
         }
+    }
+    if (mapData.contains("sysComm2")) {
+        ui->CommStatus->show();
+        ui->CommStatus->setValue(comm_status2);
+    }
+    if (mapData.contains("sysTime")) {
+        ui->sysTime->setValue(mapData.value("sysTime"));
     }
     if (mapData.contains("sysStatus1")) {
         uint16_t value = mapData.value("sysStatus1");
@@ -320,14 +320,14 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     if (mapData.contains("BootVer")) {
         ui->BootVer->show();
         uint32_t value = mapData.value("BootVer");
-        ui->BootVer->setText(QString(tr("Boot版本: %1")).arg(myHelper::IntegerToHexString(value)));
+        ui->BootVer->setValue((value));
     } else {
         ui->BootVer->hide();
     }
     if (mapData.contains("InsVer")) {
         ui->InsVer->show();
         uint32_t value = mapData.value("InsVer");
-        ui->InsVer->setText(QString(tr("绝缘版本: %1")).arg(myHelper::IntegerToHexString(value)));
+        ui->InsVer->setValue((value));
     } else {
         ui->InsVer->hide();
     }
@@ -491,19 +491,19 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         QString str = QString(tr("%1对,%2A,%3秒")).arg(value >> 12).arg((value >> 8) & 0xF).arg(value & 0xFF);
         switch (mode) {
             case 0x00:
-                str = tr("禁止均衡") + QString(":%1").arg(str);
+                str = QString("%1:%2").arg(tr("禁止均衡"), str);
                 break;
             case 0x55:
-                str = tr("强制均衡") + QString(":%1").arg(str);
+                str = QString("%1:%2").arg(tr("强制均衡"), str);
                 break;
             case 0xAA:
-                str = tr("自动均衡") + QString(":%1").arg(str);
+                str = QString("%1:%2").arg(tr("自动均衡"), str);
                 break;
             case 0x88:
-                str = tr("手动均衡") + QString(":%1").arg(str);
+                str = QString("%1:%2").arg(tr("手动均衡"), str);
                 break;
             default:
-                str = tr("未定义") + QString(":%1").arg(str);
+                str = QString("%1:%2").arg(tr("未定义"), str);
                 break;
         }
 
@@ -545,40 +545,41 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             ui->lineEditIP->setText(myHelper::IPV4IntegerToString(mapData.value("LocalIP")));
     }
     uint16_t id = mapData.value("UmaxID");
-    ui->UmaxID->setText(QString("%1(%2)").arg(tr("最大单体电压"), myHelper::IDToString(id, config.vol_num)));
+    ui->Umax->setPrefix(QString("%1(%2)").arg(tr("最大单体电压"), myHelper::IDToString(id, config.vol_num)));
+    //    ui->UmaxID->setText(QString("%1(%2)").arg(tr("最大单体电压"), myHelper::IDToString(id, config.vol_num)));
     id = mapData.value("UminID");
-    ui->UminID->setText(QString("%1(%2)").arg(tr("最小单体电压"), myHelper::IDToString(id, config.vol_num)));
+    ui->Umin->setPrefix(QString("%1(%2)").arg(tr("最小单体电压"), myHelper::IDToString(id, config.vol_num)));
     id = mapData.value("TmaxID");
-    ui->TmaxID->setText(QString("%1(%2)").arg(tr("最高单体温度"), myHelper::IDToString(id, config.T_num)));
+    ui->Tmax->setPrefix(QString("%1(%2)").arg(tr("最高单体温度"), myHelper::IDToString(id, config.T_num)));
     id = mapData.value("TminID");
-    ui->TminID->setText(QString("%1(%2)").arg(tr("最低单体温度"), myHelper::IDToString(id, config.T_num)));
+    ui->Tmin->setPrefix(QString("%1(%2)").arg(tr("最低单体温度"), myHelper::IDToString(id, config.T_num)));
     id = mapData.value("UmMaxID");
-    ui->UmMaxID->setText(QString("%1(%2)").arg(tr("最大模组电压"), myHelper::IDToString(id, config.vol_num)));
+    ui->UmMax->setPrefix(QString("%1(%2)").arg(tr("最大模组电压"), myHelper::IDToString(id, config.vol_num)));
     id = mapData.value("UdMaxID");
-    ui->UdMaxID->setText(QString("%1(%2)").arg(tr("最大单体压差"), myHelper::IDToString(id, config.vol_num)));
+    ui->UdMax->setPrefix(QString("%1(%2)").arg(tr("最大单体压差"), myHelper::IDToString(id, config.vol_num)));
     id = mapData.value("TpMaxID");
-    ui->TpMaxID->setText(QString("%1(%2)").arg(tr("最大极柱温度"), myHelper::IDToString(id, config.Tp_num)));
+    ui->TpMax->setPrefix(QString("%1(%2)").arg(tr("最大极柱温度"), myHelper::IDToString(id, config.Tp_num)));
     id = mapData.value("TrMaxID");
-    ui->TrMaxID->setText(QString("%1(%2)").arg(tr("最大单体温升"), myHelper::IDToString(id, config.T_num)));
+    ui->TrMax->setPrefix(QString("%1(%2)").arg(tr("最大单体温升"), myHelper::IDToString(id, config.T_num)));
 }
 QString getBmuInfo2(uint16_t status) {
     QStringList statusList;
-    if (GET_BIT(status, 0)) statusList << "拨码异常";
-    if (GET_BIT(status, 1)) statusList << "拨码锁定";
-    statusList << (GET_BIT(status, 2) ? "干结点开路" : "干结点闭合");
-    statusList << (GET_BIT(status, 3) ? "风机开" : "风机关");
-    if (!GET_BIT(status, 4)) statusList << "辅源异常";
-    if (GET_BIT(status, 5)) statusList << "备用5";
-    if (GET_BIT(status, 6)) statusList << "备用6";
-    if (GET_BIT(status, 7)) statusList << "备用7";
-    if (GET_BIT(status, 8)) statusList << "1.25V错误";
-    if (GET_BIT(status, 9)) statusList << "均衡母线错误";
-    if (GET_BIT(status, 10)) statusList << "均衡电流异常";
-    if (GET_BIT(status, 11)) statusList << "24V母线异常";
-    if (GET_BIT(status, 12)) statusList << "单体电压异常";
-    if (GET_BIT(status, 13)) statusList << "均衡参数错误";
-    if (GET_BIT(status, 14)) statusList << "Mos异常";
-    if (GET_BIT(status, 15)) statusList << "副边电压异常";
+    if (GET_BIT(status, 0)) statusList << QObject::tr("拨码异常");
+    if (GET_BIT(status, 1)) statusList << QObject::tr("拨码锁定");
+    statusList << (GET_BIT(status, 2) ? QObject::tr("干结点开路") : QObject::tr("干结点闭合"));
+    statusList << (GET_BIT(status, 3) ? QObject::tr("风机开") : QObject::tr("风机关"));
+    if (!GET_BIT(status, 4)) statusList << QObject::tr("辅源异常");
+    if (GET_BIT(status, 5)) statusList << QObject::tr("备用5");
+    if (GET_BIT(status, 6)) statusList << QObject::tr("备用6");
+    if (GET_BIT(status, 7)) statusList << QObject::tr("备用7");
+    if (GET_BIT(status, 8)) statusList << QObject::tr("1.25V错误");
+    if (GET_BIT(status, 9)) statusList << QObject::tr("均衡母线错误");
+    if (GET_BIT(status, 10)) statusList << QObject::tr("均衡电流异常");
+    if (GET_BIT(status, 11)) statusList << QObject::tr("24V母线异常");
+    if (GET_BIT(status, 12)) statusList << QObject::tr("单体电压异常");
+    if (GET_BIT(status, 13)) statusList << QObject::tr("均衡参数错误");
+    if (GET_BIT(status, 14)) statusList << QObject::tr("Mos异常");
+    if (GET_BIT(status, 15)) statusList << QObject::tr("副边电压异常");
     // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
 }
@@ -1169,8 +1170,8 @@ bool BMSView::saveParameters(const QString& filename) {
     QDomElement root_elem = document.createElement("configtemplate");
     root_elem.setAttribute("ver", 1);
     document.appendChild(root_elem);
-    QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-    foreach (QDoubleSpinBox* dspbox, dspboxs) {
+    QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
+    foreach (InputBox* dspbox, dspboxs) {
         if (!dspbox->isHidden()) {
             QDomElement item1 = document.createElement("item");
             item1.setAttribute("name", dspbox->objectName());
@@ -1204,7 +1205,7 @@ bool BMSView::loadParameters(const QString& filename) {
         if (node.isElement())  //如果节点是元素
         {
             QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
-            QDoubleSpinBox* dspbox = ui->tabSet->findChild<QDoubleSpinBox*>(e.attribute("name"));
+            InputBox* dspbox = ui->tabSet->findChild<InputBox*>(e.attribute("name"));
             if (dspbox != nullptr) {
                 if (!dspbox->isHidden()) {
                     double value = e.attribute("value").toDouble();
@@ -1276,13 +1277,12 @@ void BMSView::uiInit() {
         connect(ui->connectIP, &QLineEdit::editingFinished, this, &BMSView::IpChange, Qt::UniqueConnection);
         connect(ui->tbtnConnect, SIGNAL(clicked(bool)), this, SLOT(btnClick()));
         //
-        QList<QDoubleSpinBox*> dspboxs = ui->tabSet->findChildren<QDoubleSpinBox*>();
-        foreach (QDoubleSpinBox* dspbox, dspboxs) {
-            connect(dspbox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
+        QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
+        foreach (InputBox* dspbox, dspboxs) {
+            connect(dspbox, static_cast<void (InputBox::*)(double)>(&InputBox::valueChanged), this,
                     &BMSView::valueChange, Qt::UniqueConnection);
         }
-        connect(ui->BalnceMask,
-                static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested),
+        connect(ui->BalnceMask, static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested),
                 this,
                 [=](const QPoint& pos) {  // Handle global position
                     QPoint globalPos = ui->BalnceMask->mapToGlobal(pos);
@@ -1317,8 +1317,7 @@ void BMSView::uiInit() {
                     myMenu.exec(globalPos);
                 });
         connect(ui->BalnceStart,
-                static_cast<void (QDoubleSpinBox::*)(const QPoint& pos)>(&QDoubleSpinBox::customContextMenuRequested),
-                this,
+                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
                 [=](const QPoint& pos) {  // Handle global position
                     QPoint globalPos = ui->BalnceStart->mapToGlobal(pos);
                     // Create menu and insert some actions

@@ -165,6 +165,8 @@ void MainUI::initForm() {
     if (db_manager::Instance()->userName() == "Ganing") {
         title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("DataLog");
+        title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("BmsView");
     }
     //    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
@@ -235,6 +237,9 @@ void MainUI::menuClick()  //切换语言
         BmsDataLog* view = new BmsDataLog(nullptr);
         view->log2csv();
         view->deleteLater();
+    } else if (b->objectName() == "BmsView") {
+        BMSView* view = new BMSView(nullptr);
+        view->show();
     } else if (b->objectName() == "Maintenance Tool") {
         scan_settings* w = new scan_settings(this);
         w->show();

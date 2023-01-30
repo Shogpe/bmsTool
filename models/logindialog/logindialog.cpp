@@ -14,7 +14,9 @@ QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
 logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindialog) {
     ui->setupUi(this);
     setWindowTitle(QString("%1系统登录").arg("BMS 上位机"));
-    setWindowFlags(Qt::WindowCloseButtonHint|Qt::WindowStaysOnTopHint);
+//    setWindowFlags(Qt::WindowCloseButtonHint|Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::WindowCloseButtonHint);
+    this->activateWindow();
     //在构造函数里将密码框的显示设置为黑点，不可见
     ui->lineEdit_pwd->setEchoMode(QLineEdit::Password);
     QString qstrname = myHelper::GetAppValue("user/name", "").toString();

@@ -25,7 +25,7 @@ bool db_manager::start() {
     dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");
     dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
     if (!dbconn.open()) {
-        qDebug() << "Can not open connection: " << dbconn.lastError().driverText();
+        qCritical() << "Can not open connection: " << dbconn.lastError().driverText();
         myHelper::ShowMessageBoxError("数据无法读取:" + dbconn.lastError().driverText());
         return false;
     }
@@ -75,7 +75,10 @@ bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
 }
 bool db_manager::getUser(QString name, QString password, int &level) {
     bool flag = false;
+    qDebug() << name << level;
     QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+    qDebug() << db.isOpen() << db.isValid();
+    if ((!db.isValid()) || (!db.isOpen())) return false;
     //    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
     QString str = QString("SELECT user,level FROM user WHERE user='%1' AND password='%2'").arg(name, password);

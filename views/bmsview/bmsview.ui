@@ -1970,7 +1970,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最大单体温升</string>
             </property>
             <property name="suffix">
              <string>℃</string>
@@ -2178,7 +2178,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最大模组电压</string>
             </property>
             <property name="suffix">
              <string>V</string>
@@ -3166,7 +3166,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最大单体电压</string>
             </property>
             <property name="suffix">
              <string>V</string>
@@ -3322,7 +3322,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最高单体温度</string>
             </property>
             <property name="suffix">
              <string>℃</string>
@@ -3803,7 +3803,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最小单体电压</string>
             </property>
             <property name="suffix">
              <string>V</string>
@@ -4011,7 +4011,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最低单体温度</string>
             </property>
             <property name="suffix">
              <string>℃</string>
@@ -4219,7 +4219,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最大单体压差</string>
             </property>
             <property name="suffix">
              <string>V</string>
@@ -4271,7 +4271,7 @@
              <bool>false</bool>
             </property>
             <property name="prefix">
-             <string/>
+             <string>最大极柱温度</string>
             </property>
             <property name="suffix">
              <string>℃</string>
@@ -4287,61 +4287,6 @@
             </property>
             <property name="singleStep">
              <double>0.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2" colspan="2">
-           <widget class="InputBox" name="CommStatus">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="wrapping">
-             <bool>false</bool>
-            </property>
-            <property name="frame">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::NoButtons</enum>
-            </property>
-            <property name="specialValueText">
-             <string>???</string>
-            </property>
-            <property name="accelerated">
-             <bool>false</bool>
-            </property>
-            <property name="keyboardTracking">
-             <bool>false</bool>
-            </property>
-            <property name="prefix">
-             <string>BMU拨码异常ID</string>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="decimals">
-             <number>0</number>
-            </property>
-            <property name="minimum">
-             <double>-1.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>5000000000.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="type" stdset="0">
-             <number>4</number>
             </property>
            </widget>
           </item>
@@ -4387,13 +4332,16 @@
              <number>0</number>
             </property>
             <property name="minimum">
-             <double>-1.000000000000000</double>
+             <double>-2.000000000000000</double>
             </property>
             <property name="maximum">
              <double>5000000000.000000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>-1.000000000000000</double>
             </property>
             <property name="type" stdset="0">
              <number>3</number>
@@ -4442,7 +4390,7 @@
              <number>0</number>
             </property>
             <property name="minimum">
-             <double>-1.000000000000000</double>
+             <double>-2.000000000000000</double>
             </property>
             <property name="maximum">
              <double>5000000000.000000000000000</double>
@@ -4450,8 +4398,75 @@
             <property name="singleStep">
              <double>0.000000000000000</double>
             </property>
+            <property name="value">
+             <double>-1.000000000000000</double>
+            </property>
             <property name="type" stdset="0">
              <number>3</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2" colspan="2">
+           <widget class="InputBox" name="CommStatus">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="inputMethodHints">
+             <set>Qt::ImhNone</set>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="specialValueText">
+             <string>???</string>
+            </property>
+            <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
+            <property name="prefix">
+             <string>BMU拨码异常ID</string>
+            </property>
+            <property name="suffix">
+             <string/>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="minimum">
+             <double>-2.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>5000000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>-1.000000000000000</double>
+            </property>
+            <property name="type" stdset="0">
+             <number>4</number>
             </property>
            </widget>
           </item>
@@ -6227,7 +6242,7 @@
           <string>单体电压数</string>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="prefix">
           <string>单体电压数</string>

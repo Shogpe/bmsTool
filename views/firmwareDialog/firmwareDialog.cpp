@@ -11,20 +11,20 @@ firmwareDialog::firmwareDialog(QWidget* parent) : QDialog(parent), ui(new Ui::fi
     ui->setupUi(this);
     // remove question mark from the title bar
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowTitle("固件信息查看");
+    setWindowTitle(tr("固件信息查看"));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 firmwareDialog::~firmwareDialog() { delete ui; }
 //
 
 void firmwareDialog::on_transmitBrowse_clicked() {
-    ui->transmitPath->setText(QFileDialog::getOpenFileName(this, u8"打开文件", "", u8"任意文件 (*.*)"));
+    ui->transmitPath->setText(QFileDialog::getOpenFileName(this, tr("打开文件"), "", tr("任意文件 (*.*)")));
     if (ui->transmitPath->text().isEmpty()) return;
     if (ui->transmitPath->text().isEmpty() != true && (loadfile(ui->transmitPath->text()) > 0)) {
         //        ui->transmitButton->setEnabled(true);
     } else {
         //        ui->transmitButton->setDisabled(true);
-        myHelper::ShowMessageBoxError("文件加载失败！");
+        myHelper::ShowMessageBoxError(tr("文件加载失败！"));
     }
 }
 bool checkSignV1(QByteArray data, FIRMWARE_HEAER& hdr_tmp, FIRMWARE_TAIL& tail) {
@@ -199,7 +199,7 @@ int firmwareDialog::loadfile(QString fileName) {
                               .arg(hdr.firmware_size)
                               .arg(QString(hdr.RELEASEDATE), QString(hdr.RELEASETIME)));
     } else {
-        ui->info->setText("文件校验错误,请确保固件正确！");
+        ui->info->setText(tr("文件校验错误,请确保固件正确！"));
     }
     //    ui->info->adjustSize();
     return 1;

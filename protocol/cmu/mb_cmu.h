@@ -211,19 +211,17 @@ typedef enum {
     CMUV4_8,  //主动均衡-绝缘
     CMUV3_1,
 } BMS_PROTOCOL;
-#define is_main_line(x) ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
+#define is_main_line(x)       ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
 #define is_gender_balanced(x) ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8))
 
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
-class mb_cmu : public QThread {
+class mb_cmu : public QObject {
     Q_OBJECT
    protected:
-    virtual void run();
     void DealCMD(TMsgData &Msg);
 
    public:
-    mb_cmu();
     mb_cmu(BMS_PROTOCOL ver);
     ~mb_cmu();
     virtual int Init();  //初始化
@@ -244,7 +242,7 @@ class mb_cmu : public QThread {
     uint32_t cmu_ver = 0;
     bool isWrLocked = 0;
     int max_offset;
-    MessageQueue *pMq;
+    //    MessageQueue *pMq;
     QFile *csvfile;
     QDateTime fileTime;
     void Dump2CsvTitle();
@@ -253,9 +251,13 @@ class mb_cmu : public QThread {
     QString GetBalanceValue(uint16_t status);
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
     NodeReg GetNodeAddr(QString name);
+   public slots:
+    void msg_deal(TMsgData msg);
 
    protected:
     modbus_t *cmu;
+    QThread *m_thread;
+    int m_interval;
     QMutex mutex;
     int err_counter = 0;
     enum FILE_FORMAT {
@@ -284,10 +286,13 @@ class mb_cmu : public QThread {
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);
     int ParseData();
+
+    void timerEvent(QTimerEvent *event);
    signals:
     void signal_message(const QString &msg);
     void bmuDataReady();
     void bmsDataReady(int type, QHash<QString, qreal> mapData);
     void bmsSOEReady(ST_SOE soe);
+    void connectChanged(const QString &conn);
 };
 #endif  // MB_CMU_H

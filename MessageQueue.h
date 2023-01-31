@@ -8,14 +8,13 @@
 #include <QMutexLocker>
 #include <QQueue>
 #include <QSemaphore>
-
+#include <QMetaType>
 // 消息体
 typedef struct tagMsgData {
     int msg_id;
     int msg_type;
     QByteArray data;
 } TMsgData;
-
 // 消息队列
 typedef QQueue<TMsgData> TMsgQueue;
 

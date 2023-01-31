@@ -15,45 +15,42 @@ InputBox::InputBox(QWidget *parent) : QWidget(parent), ui(new Ui::InputBox) {
     uiInit();
 }
 void InputBox::uiInit() {
-    if (!readOnly()) {
-        ui->text->installEventFilter(this);
-        ui->text->setFrame(true);
-        ui->text->setReadOnly(false);
-    } else {
-        ui->text->setFrame(false);
-        ui->text->setReadOnly(true);
-    }
-    switch (this->type()) {
-        case CT_COMBO:
-        case CT_STRING:
-        case CT_BIT_ARR:
-        case CT_HEX_VER: {
-            QFontMetrics fm(ui->text->font());
-            ui->text->setMaximumWidth(fm.width(" ") * 28);
-        } break;
-        case CT_VALUE:
-        default:
-            ui->text->setMaxLength(18);
-            QFontMetrics fm(ui->text->font());
-            ui->text->setMaximumWidth(fm.width("1234567890 kWh"));
-            break;
-    }
+    ui->text->installEventFilter(this);
     connect(this, &InputBox::prefixChanged, this, [=](QString str) { ui->prefix->setText(str); });
     connect(this, &InputBox::suffixChanged, this, [this]() { setText(QString::number(value())); });
     connect(this, &InputBox::valueChanged, this, &InputBox::setValueDirect);
     connect(this, &InputBox::readOnlyChanged, this, [this](bool val) {
         ui->text->setReadOnly(val);
+        ui->text->setFrame(!val);
         if (val) {
             ui->text->removeEventFilter(this);
         } else {
             ui->text->installEventFilter(this);
         }
     });
+    connect(this, &InputBox::typeChanged, this, [this](int t) {
+        switch (t) {
+            case CT_COMBO:
+            case CT_STRING:
+            case CT_BIT_ARR:
+            case CT_HEX_VER: {
+                ui->text->setMaxLength(64);
+                QFontMetrics fm(ui->text->font());
+                ui->text->setMaximumWidth(fm.width(" ") * 64);
+            } break;
+            case CT_VALUE:
+            default:
+                ui->text->setMaxLength(32);
+                QFontMetrics fm(ui->text->font());
+                ui->text->setMaximumWidth(fm.width("1234567890 kWh"));
+                break;
+        }
+    });
     connect(ui->text, &QLineEdit::returnPressed, this, &InputBox::editingFinished);
     connect(this, &QWidget::objectNameChanged, this, [this](QString name) { setObjectName(name); });
     //    this->startTimer(1000);
     //    setText(QString::number(value()));
-    //    this->setValueDirect(value());
+    this->setValueDirect(value());
 }
 
 void InputBox::editingFinished() {

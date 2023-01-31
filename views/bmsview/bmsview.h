@@ -27,7 +27,9 @@ class BMSView : public QWidget {
 
    private:
     Ui::BMSView* ui;
-    MessageQueue* pmq;
+//    MessageQueue* pmq;
+    QString m_conn;
+
     QTimer* timer;
     CMU_CONF config;
     uint64_t bmu_comm;
@@ -74,6 +76,8 @@ class BMSView : public QWidget {
    private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
+signals:
+    void send_msg(TMsgData MsgCmd);
 };
 
 #endif

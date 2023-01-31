@@ -9,7 +9,7 @@ static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0
 const QString recPath = "Rec";
 const QString dataPath = "Data";
 
-mb_cmu::mb_cmu() {
+mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
     csvfile = nullptr;
     stopDump = true;
@@ -17,26 +17,19 @@ mb_cmu::mb_cmu() {
     stop = false;
     mb_ip = "192.168.1.120";
     mb_port = 502;
-    isDirExist(recPath);
-    isDirExist(dataPath);
-    pMq = MessageQueue::getInstance();
-    pMq->registMsgQueue(0);
-    qRegisterMetaType<ST_SOE>("ST_SOE");
-}
-mb_cmu::mb_cmu(BMS_PROTOCOL ver) {
-    cmu = nullptr;
-    csvfile = nullptr;
-    stopDump = true;
-    drv_status = 0;
-    stop = false;
-    mb_ip = "192.168.1.120";
-    mb_port = 502;
+    m_interval = 500;
     protocal_ver = ver;
     isDirExist(recPath);
     isDirExist(dataPath);
-    pMq = MessageQueue::getInstance();
-    pMq->registMsgQueue(0);
+    //    pMq = MessageQueue::getInstance();
+    //    pMq->registMsgQueue(0);
     qRegisterMetaType<ST_SOE>("ST_SOE");
+    qRegisterMetaType<TMsgData>("TMsgData");
+    m_thread = new QThread();
+    moveToThread(m_thread);
+    m_thread->start();
+
+    Init();
 }
 QString mb_cmu::GetBitStatus(uint16_t status) {
     QStringList statusList;
@@ -274,6 +267,9 @@ mb_cmu::~mb_cmu() {
     if (csvfile) csvfile->close();
     csvfile = nullptr;
     stop = true;
+    m_thread->quit();
+    m_thread->wait();
+    m_thread->deleteLater();
 }
 
 int mb_cmu::Close() {
@@ -317,6 +313,7 @@ int mb_cmu::Init() {
         mapConfig.insert(nodes_table.at(i).node_name, node_reg_tmp);
     }
     emit bmsDataReady(1, mapData);
+    emit signal_message("init complete.");
     return 0;
 }
 
@@ -493,31 +490,37 @@ int mb_cmu::ReadALL() {
     emit bmuDataReady();
     return status;
 }
-void mb_cmu::run() {
-    qDebug() << time(nullptr);
+void mb_cmu::msg_deal(TMsgData MsgCmd) {
+    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," << MsgCmd.data.toHex();
+    DealCMD(MsgCmd);
+}
+void mb_cmu::timerEvent(QTimerEvent* event) {
+    killTimer(event->timerId());
+//    qDebug() << time(nullptr);
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
-        qDebug() << "timeout exit..";
+        qWarning() << "software out of date exit..";
         this->stop = true;
         drv_status |= (0x01 << CMU_OUTOFDATE);
+        return;
     }
     int rc = -1;
-    TMsgData MsgCmd;
+    //    TMsgData MsgCmd;
     uint32_t counter = 0;
-    Init();
-    emit signal_message("init complete.");
-    while (1) {
+//    qDebug() << " run thread:" << QThread::currentThreadId() << m_interval << state << err_counter;
+
+    do {
         if (this->stop) break;
-        while (pMq->readMsg(0, MsgCmd)) {
-            qDebug() << "recv:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," << MsgCmd.data.toHex();
-            DealCMD(MsgCmd);
-        }
+        //        while (pMq->readMsg(0, MsgCmd)) {
+        //            qDebug() << "recv:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," <<
+        //            MsgCmd.data.toHex(); DealCMD(MsgCmd);
+        //        }
         //状态机
         if (err_counter++ >= 10) {
             qDebug() << "reconnect ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
-            ;
             err_counter = 0;
             state = SM_CONNECT;
         }
+        m_interval = 500;
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
@@ -538,10 +541,11 @@ void mb_cmu::run() {
                 modbus_set_slave(cmu, 1);
                 modbus_set_response_timeout(cmu, 3, 0);
                 if (cmu) rc = modbus_connect(this->cmu);
+                qWarning() << rc;
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
-
                 counter = 0;
+                emit connectChanged(QString("%1:%2").arg(QString::fromStdString(mb_ip)).arg(mb_port));
                 break;
             }
             case SM_INIT: {
@@ -569,22 +573,22 @@ void mb_cmu::run() {
                         mapData["status_num"] = config.status_num;
                         emit bmsDataReady(1, mapData);
                     }
-
-                } else
-                    sleep(1);
+                } else {
+                    m_interval = 1000;
+                }
                 break;
             }
             case SM_NONE:
             default:
-                sleep(1);
+                m_interval = 1000;
                 break;
         }
-        usleep(500 * 1000);
-    }
-    qDebug() << "cmu exit..";
+    } while (0);
+    startTimer(m_interval);
 }
 
 void mb_cmu::DealCMD(TMsgData& Msg) {
+    qDebug() << " deal thread:" << QThread::currentThreadId();
     int ret = -1;
     switch (Msg.msg_type) {
         case CONFIG_IP: {
@@ -612,6 +616,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CONFIG_INIT:
             drv_status = 0;
             state = SM_CONNECT;
+            this->startTimer(m_interval);
             ret = 0;
             break;
         case CTRL_DO: {
@@ -666,14 +671,14 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
             ret = write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
         } break;
-        case CERT_CMD_READ_SOE: {
+        /*case CERT_CMD_READ_SOE: {
             ret = ReadSOE();
             TMsgData MsgCmd;
             MsgCmd.data.clear();
             MsgCmd.msg_type = 1;
             MsgCmd.data.setNum(ret);
             pMq->sendMsg(99, MsgCmd);
-        } break;
+        } break;*/
         case CTRL_AO_ADDR: {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;

@@ -26,7 +26,7 @@ typedef struct {
     double factor;        //变比
     int64_t offset;       //变比
     std::string unit;     //单位
-    std::string name_cn;  //中文名
+    QString name_cn;  //中文名
     double val;
 } ST_PARA;
 Q_DECLARE_METATYPE(ST_PARA)
@@ -130,7 +130,7 @@ class ParaModel : public QStandardItemModel {
                     } else if (p.type == TP_HEX) {
                         return QString("%1").arg(p.val, 0, 'g', 6);
                     } else if (p.type == TP_STR) {
-                        return QString::fromStdString(p.name_cn);
+                        return p.name_cn;
                     } else {
                         return QString("%1").arg(p.val, 0, 'g', 6);
                     }
@@ -155,7 +155,7 @@ class ParaModel : public QStandardItemModel {
     void updateData(int row, const QString name_cn) {
         if (row < vals.count()) {
             beginResetModel();
-            vals[row].name_cn = name_cn.toStdString();
+            vals[row].name_cn = name_cn;
             endResetModel();
         }
     }

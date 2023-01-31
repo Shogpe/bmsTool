@@ -27,7 +27,7 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         m_mbtcp->close();
         m_mbtcp->deleteLater();
         m_mbtcp = nullptr;
-        emit workFinished(0, "Connect Err");
+        emit workFinished(0, tr("Connect Err"));
         return;
     }
     vector<MB_NODE> tab_config;
@@ -61,9 +61,9 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         }
     };
     if (ok_count == setMap.size()) {
-        emit workFinished(1, "OK");
+        emit workFinished(1, tr("OK"));
     } else {
-        emit workFinished(0, "FAIL");
+        emit workFinished(0, tr("FAIL"));
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();
@@ -81,7 +81,7 @@ void testWorker::doSetIp(QString ip, QString serverIp) {
         m_mbtcp->close();
         m_mbtcp->deleteLater();
         m_mbtcp = nullptr;
-        emit workFinished(0, "Connect Err");
+        emit workFinished(0, tr("Connect Err"));
         return;
     }
     int ok_count = 0;
@@ -92,9 +92,9 @@ void testWorker::doSetIp(QString ip, QString serverIp) {
         qWarning() << QString("set serverIp %1 failed.").arg(serverIp);
     }
     if (ok_count == 1) {
-        emit workFinished(1, "Set OK");
+        emit workFinished(1, tr("Set OK"));
     } else {
-        emit workFinished(0, "Set FAIL");
+        emit workFinished(0, tr("Set FAIL"));
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();
@@ -112,7 +112,7 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         m_mbtcp->close();
         m_mbtcp->deleteLater();
         m_mbtcp = nullptr;
-        emit workFinished(0, "Connect Err");
+        emit workFinished(0, tr("Connect Err"));
         return;
     }
     vector<MB_NODE> tab_config;
@@ -143,9 +143,9 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         }
     };
     if (ok_count == setMap.size()) {
-        emit workFinished(1, "Set OK");
+        emit workFinished(1, tr("Set OK"));
     } else {
-        emit workFinished(0, "Set FAIL");
+        emit workFinished(0, tr("Set FAIL"));
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();
@@ -163,7 +163,7 @@ void testWorker::doCommand(QString ip, uint command) {
         m_mbtcp->close();
         m_mbtcp->deleteLater();
         m_mbtcp = nullptr;
-        emit workFinished(0, "Connect Err");
+        emit workFinished(0, tr("Connect Err"));
         return;
     }
     uint16_t val = 0;
@@ -174,9 +174,9 @@ void testWorker::doCommand(QString ip, uint command) {
             uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
             sec_cmd[8] = val;
             if (m_mbtcp->write_ao(0xFFD0, 9, sec_cmd) > 0) {
-                emit workFinished(1, "发送升级CMU 成功");
+                emit workFinished(1, tr("发送升级CMU 成功"));
             } else {
-                emit workFinished(0, QString("发送升级CMU 失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("发送升级CMU失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_UP_BMU: {
@@ -184,9 +184,9 @@ void testWorker::doCommand(QString ip, uint command) {
             uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
             sec_cmd[8] = val;
             if (m_mbtcp->write_ao(0xFFD0, 9, sec_cmd) > 0) {
-                emit workFinished(1, "发送升级BMU OK");
+                emit workFinished(1, tr("发送升级BMU OK"));
             } else {
-                emit workFinished(0, QString("发送升级BMU 失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("发送升级BMU 失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_UP_INS: {
@@ -194,73 +194,73 @@ void testWorker::doCommand(QString ip, uint command) {
             uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
             sec_cmd[8] = val;
             if (m_mbtcp->write_ao(0xFFD0, 9, sec_cmd) > 0) {
-                emit workFinished(1, "发送升级绝缘板 OK");
+                emit workFinished(1, tr("发送升级绝缘板 成功"));
             } else {
-                emit workFinished(0, QString("发送升级绝缘板 失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("发送升级绝缘板 失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_RD_VER_BMS: {
             uint32_t v = 0;
             if (m_mbtcp->read_value(0x03, 1280, 2, (uint16_t*)&v) > 0) {
-                emit workFinished(1, QString("读取BMS版本 OK: %1").arg(myHelper::IntegerToHexString(v)));
+                emit workFinished(1, QString("%1:%2").arg(tr("读取BMS版本 成功"), myHelper::IntegerToHexString(v)));
             } else {
-                emit workFinished(0, QString("读取BMS版本 失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("读取BMS版本 失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_RD_VER_INS: {
             uint32_t v = 0;
             if (m_mbtcp->read_value(0x03, 1274, 2, (uint16_t*)&v) > 0) {
-                emit workFinished(1, QString("读取绝缘版本 OK: %1").arg(myHelper::IntegerToHexString(v)));
+                emit workFinished(1, QString("%1:%2").arg(tr("读取绝缘版本 成功"), myHelper::IntegerToHexString(v)));
             } else {
-                emit workFinished(0, QString("读取绝缘版本 失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("读取绝缘版本 失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_LOCK_BMU: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
                 if (m_mbtcp->write_ao(0xFFF1, MB_BMU_LOCK) > 0) {
-                    emit workFinished(1, "BMU拨码锁定成功.");
+                    emit workFinished(1, tr("BMU拨码锁定成功."));
                 } else {
-                    emit workFinished(0, QString("BMU拨码锁定失败:%1").arg(m_mbtcp->get_error_msg()));
+                    emit workFinished(0, QString("%1:%2").arg(tr("BMU拨码锁定 失败"), m_mbtcp->get_error_msg()));
                 }
             } else {
-                emit workFinished(0, QString("BMS解锁失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("BMS解锁失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_UNLOCK_BMU: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
                 if (m_mbtcp->write_ao(0xFFF1, MB_BMU_UNLOCK) > 0) {
-                    emit workFinished(1, "BMU拨码解锁成功.");
+                    emit workFinished(1, tr("BMU拨码解锁成功."));
                 } else {
-                    emit workFinished(0, QString("BMU拨码解锁失败:%1").arg(m_mbtcp->get_error_msg()));
+                    emit workFinished(0, QString("%1:%2").arg(tr("BMU拨码解锁失败"), m_mbtcp->get_error_msg()));
                 }
             } else {
-                emit workFinished(0, QString("BMS解锁失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("BMS解锁失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_RESET_ADJ: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
                 if (m_mbtcp->write_ao(0xFF0A, 0xAA55) > 0) {
-                    emit workFinished(1, "恢复默认校准参数成功.");
+                    emit workFinished(1, tr("恢复默认校准参数成功."));
                 } else {
-                    emit workFinished(0, QString("恢复默认校准参数失败:%1").arg(m_mbtcp->get_error_msg()));
+                    emit workFinished(0, QString("%1:%2").arg(tr("恢复默认校准参数失败"), m_mbtcp->get_error_msg()));
                 }
             } else {
-                emit workFinished(0, QString("BMS解锁失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("BMS解锁失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         case CMD_RESET_PAR: {
             if (m_mbtcp->write_ao(0xFFF4, 0xA5B6) > 0) {
                 if (m_mbtcp->write_ao(0xFF0A, 0xBB66) > 0) {
-                    emit workFinished(1, "恢复默认运行参数成功.");
+                    emit workFinished(1, tr("恢复默认运行参数成功."));
                 } else {
-                    emit workFinished(0, QString("恢复默认运行参数失败:%1").arg(m_mbtcp->get_error_msg()));
+                    emit workFinished(0, QString("%1:%2").arg(tr("恢复默认运行参数失败"), m_mbtcp->get_error_msg()));
                 }
             } else {
-                emit workFinished(0, QString("BMS解锁失败:%1").arg(m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("BMS解锁失败"), m_mbtcp->get_error_msg()));
             }
         } break;
         default:
-            emit workFinished(0, QString("未定义命令:%1").arg(command));
+            emit workFinished(0, QString("%1:%2").arg(tr("未定义命令"), command));
             break;
     }
     m_mbtcp->close();
@@ -293,11 +293,11 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     //
     connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
     connect(&qtftp, &Qtftp::fileSent, this, [this](int ret, QString file) {
-        qDebug() << "文件:" << file << ((ret == 0) ? " 传输成功" : " 传输失败");
+        qDebug() << "文件:" << file << ((ret == 0) ? tr("传输成功") : tr("传输失败"));
         auto list = m_result_model->GetData();
         for (int i = 0; i < list.size(); i++) {
             if (file == QString::fromStdString(list.at(i).name))
-                m_result_model->updateData(i, (ret == 0) ? "传输成功" : "传输失败");
+                m_result_model->updateData(i, (ret == 0) ? tr("传输成功") : tr("传输失败"));
         }
     });
     {
@@ -310,21 +310,21 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
         connect(this, &scan_settings::checkRespond, this, [this](int result) {
             switch (result) {
                 case 1:
-                    ui->srvStatus->setText("远程服务在线");
+                    ui->srvStatus->setText(tr("远程服务在线"));
                     ui->srvStatus->setStyleSheet("color:green;");
-                    ui->srvStatus->setToolTip("可以上传固件至远程服务器");
+                    ui->srvStatus->setToolTip(tr("可以上传固件至远程服务器"));
                     ui->btnUpload->setDisabled(false);
                     break;
                 case 2:
-                    ui->srvStatus->setText("本机服务在线");
+                    ui->srvStatus->setText(tr("本机服务在线"));
                     ui->srvStatus->setStyleSheet("color:green;");
-                    ui->srvStatus->setToolTip("请查看下方状态栏，检查服务器是否启动成功");
+                    ui->srvStatus->setToolTip(tr("请查看下方状态栏，检查服务器是否启动成功"));
                     ui->btnUpload->setDisabled(true);
                     break;
                 default:
-                    ui->srvStatus->setText("远程服务离线");
+                    ui->srvStatus->setText(tr("远程服务离线"));
                     ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
-                    ui->srvStatus->setToolTip("可以修改IP以启用本地服务器");
+                    ui->srvStatus->setToolTip(tr("可以修改IP以启用本地服务器"));
                     ui->btnUpload->setDisabled(true);
                     break;
             }
@@ -470,7 +470,7 @@ void scan_settings::uiInit() {
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
     //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
     // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
-    this->setWindowTitle("BMS维护工具");
+    this->setWindowTitle(tr("BMS维护工具"));
     m_para_model = new ParaModel(this);
     m_result_model = new ParaModel(this);
     QTableView* tableView = ui->stdSetting;
@@ -513,21 +513,21 @@ void scan_settings::uiInit() {
     tableView->setModel(m_result_model);
 
     QMenu* update_menu = new QMenu;
-    update_menu->addAction("下载升级BMS", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("下载升级BMU", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("下载升级绝缘板", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("读取BMS版本号", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("读取绝缘版本号", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("BMU拨码锁定⚿", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("BMU拨码解锁", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("恢复校准参数", this, &scan_settings::btnCtrlMenu);
-    update_menu->addAction("恢复运行参数", this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("下载升级BMS"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("下载升级BMU"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("下载升级绝缘板"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("读取BMS版本号"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("读取绝缘版本号"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("BMU拨码锁定⚿"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("BMU拨码解锁"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("恢复校准参数"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("恢复运行参数"), this, &scan_settings::btnCtrlMenu);
     ui->btnCtrl->setMenu(update_menu);
 
     QMenu* btn_menu = new QMenu;
-    btn_menu->addAction("设置服务IP为本地", this, &scan_settings::btnCtrlMenu);
+    btn_menu->addAction(tr("设置服务IP为本地"), this, &scan_settings::btnCtrlMenu);
     btn_menu->actions().constLast()->setObjectName("setServerIp");
-    btn_menu->addAction("恢复默认服务IP", this, &scan_settings::btnCtrlMenu);
+    btn_menu->addAction(tr("恢复默认服务IP"), this, &scan_settings::btnCtrlMenu);
     btn_menu->actions().constLast()->setObjectName("resetServerIp");
     ui->btnSetIp->setMenu(btn_menu);
     ui->btnSetIp->setHidden(true);
@@ -563,7 +563,7 @@ void scan_settings::loadXml() {
                 ST_PARA p;
                 p.name = e.attribute("name_cn").toStdString();
                 p.val = e.attribute("value").toDouble();
-                p.name_cn = e.attribute("name").toStdString();
+                p.name_cn = e.attribute("name");
                 data_map[e.attribute("name")] = p;
             }
         }
@@ -589,19 +589,18 @@ void scan_settings::loadXml() {
 
 void scan_settings::on_btnWrite_released() {
     m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
-    if(m_setMap.size() == 0) {
+    foreach (auto val, m_para_model->GetData()) { m_setMap[val.name_cn] = val.val; }
+    if (m_setMap.size() == 0) {
         myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
         return;
     }
-    if (myHelper::ShowMessageBoxQuesion("是否批量下发参数？") != QDialog::Accepted) {
+    if (myHelper::ShowMessageBoxQuesion(tr("是否批量下发参数？")) != QDialog::Accepted) {
         return;
     }
     ip_analyze();
     if (target_ips.size()) {
         setBusy(true);
     }
-
 
     for (int i = 0; i < target_ips.size(); i++) {
         QThread* thread = new QThread();
@@ -619,7 +618,7 @@ void scan_settings::on_btnWrite_released() {
             m_mutex.unlock();
             if (target_count == target_ips.size()) {
                 setBusy(false);
-                Toast::showTip("写入完毕");
+                Toast::showTip(tr("写入完毕"));
             }
             qDebug() << i << state << msg;
             m_result_model->updateData(i, msg);
@@ -660,10 +659,10 @@ void scan_settings::btnCtrlMenu() {
         }
     }
     if (val == 0) {
-        Toast::showTip("未知命令");
+        Toast::showTip(tr("未知命令"));
         return;
     } else if (val >= CMD_UP_CMU && val <= CMD_UP_INS) {
-        if (myHelper::ShowMessageBoxQuesion(QString("是否执行 %1 ？").arg(b->text())) != QDialog::Accepted) {
+        if (myHelper::ShowMessageBoxQuesion(QString("%1 %2 ？").arg(tr("是否执行"), b->text())) != QDialog::Accepted) {
             return;
         }
     }
@@ -689,7 +688,7 @@ void scan_settings::btnCtrlMenu() {
             m_mutex.unlock();
             if (target_count == target_ips.size()) {
                 setBusy(false);
-                Toast::showTip("操作完毕");
+                Toast::showTip(tr("操作完毕"));
             }
             qDebug() << i << state << msg;
             m_result_model->updateData(i, msg);
@@ -726,7 +725,7 @@ void scan_settings::on_btnUpload_released() {
             ST_PARA p;
             p.index = i;
             p.name = firmware_files.at(i).toStdString();
-            p.name_cn = "传输中...";
+            p.name_cn = tr("传输中...");
             p.type = TP_STR;
             plist << p;
         }
@@ -742,8 +741,8 @@ void scan_settings::on_btnUpload_released() {
  */
 void scan_settings::on_btnTest_released() {
     m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[QString().fromStdString(val.name_cn)] = val.val; }
-    if(m_setMap.size() == 0) {
+    foreach (auto val, m_para_model->GetData()) { m_setMap[val.name_cn] = val.val; }
+    if (m_setMap.size() == 0) {
         myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
         return;
     }
@@ -767,7 +766,7 @@ void scan_settings::on_btnTest_released() {
             m_mutex.unlock();
             if (target_count == target_ips.size()) {
                 setBusy(false);
-                Toast::showTip("测试完毕");
+                Toast::showTip(tr("测试完毕"));
             }
             qDebug() << i << state << msg;
             m_result_model->updateData(i, msg);

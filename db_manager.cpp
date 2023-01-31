@@ -1,4 +1,5 @@
 #include "db_manager.h"
+#include <QThread>
 #include "myhelper.h"
 QMutex mutex;
 db_manager *db_manager::self = nullptr;
@@ -33,9 +34,10 @@ bool db_manager::start() {
 }
 bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
     list.clear();
-    if (!QSqlDatabase::contains("aaa")) {
+    QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
+    if (!QSqlDatabase::contains(connect_name)) {
         QString file = "data.db3";
-        QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", "aaa");
+        QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", connect_name);
         dbconn.setDatabaseName(file);
         dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");
         dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
@@ -44,7 +46,7 @@ bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
             return false;
         }
     }
-    QSqlDatabase db = QSqlDatabase::database("aaa", false);
+    QSqlDatabase db = QSqlDatabase::database(connect_name, false);
     QSqlQuery query(db);
     QString str =
         QString(
@@ -76,8 +78,25 @@ bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
 bool db_manager::getUser(QString name, QString password, int &level) {
     bool flag = false;
     qDebug() << name << level;
-    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+    QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
+    if (!QSqlDatabase::contains(connect_name)) {
+        QString file = "data.db3";
+        QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", connect_name);
+        dbconn.setDatabaseName(file);
+        dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");
+        dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
+        if (!dbconn.open()) {
+            qDebug() << "Can not open connection: " << dbconn.lastError().driverText();
+            return false;
+        }
+    }
+    QSqlDatabase db = QSqlDatabase::database(connect_name, true);
     qDebug() << db.isOpen() << db.isValid();
+    if ((!db.isValid()) && (!db.isOpen())) {
+        if (!db.open()) {
+            qDebug().noquote() << "Create connection error:" << db.lastError().text();
+        }
+    }
     if ((!db.isValid()) || (!db.isOpen())) return false;
     //    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
@@ -96,7 +115,8 @@ bool db_manager::getUser(QString name, QString password, int &level) {
 bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, SOE_TAG tag) {
     bool flag = false;
     soe_map.clear();
-    QSqlDatabase db = QSqlDatabase::database("wxdb3", false);
+    QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
+    QSqlDatabase db = QSqlDatabase::database(connect_name, true);
     //    qDebug() << db.isOpen() << db.isValid();
     QSqlQuery query(db);
     QString str =

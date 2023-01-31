@@ -143,8 +143,8 @@ class myHelper : public QObject {
     }
 
     //延时
-    static void Sleep(int sec) {
-        QTime dieTime = QTime::currentTime().addMSecs(sec);
+    static void Sleep(int msec) {
+        QTime dieTime = QTime::currentTime().addMSecs(msec);
         while (QTime::currentTime() < dieTime) {
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
         }
@@ -187,7 +187,8 @@ class myHelper : public QObject {
             .arg((ip >> 24) & 0xFF, 0, 16)
             .arg((ip >> 16) & 0xFF, 0, 16)
             .arg((ip >> 8) & 0xFF, 0, 16)
-            .arg(ip & 0xFF, 0, 16).toUpper();
+            .arg(ip & 0xFF, 0, 16)
+            .toUpper();
     }
     static void SetAppValue(const QString &key, const QVariant &value) {
         QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)

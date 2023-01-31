@@ -37,7 +37,7 @@ CmuIpView::CmuIpView(QWidget* parent) : QTabWidget(parent), ui(new Ui::CmuIpView
     pmq = MessageQueue::getInstance();
     pmq->registMsgQueue(99);
     config = {0, 0, 0, 0, 0};
-    this->mycmu->start();
+//    this->mycmu->start();
     connect(ui->lineStaIP, &QLineEdit::editingFinished, this, &CmuIpView::IpChange, Qt::UniqueConnection);
     connect(this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
             static_cast<void (CmuIpView::*)(const QString&)>(&CmuIpView::slot_message_call), Qt::UniqueConnection);
@@ -49,7 +49,7 @@ CmuIpView::~CmuIpView() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
     pmq->sendMsg(0, MsgCmd);
-    this->mycmu->wait();
+//    this->mycmu->wait();
     timer->stop();
     delete timer;
     delete ui;

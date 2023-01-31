@@ -4,5 +4,6 @@
         <file>zh_CN.qm</file>
         <file>qt_en_US.qm</file>
         <file>qt_zh_CN.qm</file>
+        <file>zh_TW.qm</file>
     </qresource>
 </RCC>

@@ -16,8 +16,8 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     connect(timer, &QTimer::timeout, this, &BMSView::timerUpDate);
     mycmu = nullptr;
     bmu_comm = 0;
-    pmq = MessageQueue::getInstance();
-    pmq->registMsgQueue(99);
+    //    pmq = MessageQueue::getInstance();
+    //    pmq->registMsgQueue(99);
     uiInit();
     load_config();
     config = {0, 0, 0, 0, 0};
@@ -49,7 +49,11 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     connect(this->mycmu, &mb_cmu::bmsDataReady, this, &BMSView::flushData);
     connect(this->mycmu, &mb_cmu::bmuDataReady, this, &BMSView::flushBmu);
     connect(this->mycmu, &mb_cmu::bmsSOEReady, this, &BMSView::flushSoe);
-    mycmu->start();
+    connect(this, &BMSView::send_msg, this->mycmu, &mb_cmu::msg_deal);
+    connect(this->mycmu, &mb_cmu::connectChanged, this, [this](QString conn) { m_conn = conn; });
+    TMsgData msg;
+    msg.msg_type = CONFIG_INIT;
+    emit send_msg(msg);
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
     qDebug() << ui->DataWidget->sizeHint();
@@ -98,7 +102,7 @@ bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
 BMSView::~BMSView() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
     if (inputBalance) {
         inputBalance->close();
         inputBalance->deleteLater();
@@ -201,7 +205,7 @@ int BMSView::setValue(QString name, double dval) {
         TMsgData MsgCmd;
         MsgCmd.msg_type = CTRL_AO_ADDR;
         MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(uint16_t));
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
 
     } else {
         qDebug() << "can't find " << name;
@@ -230,7 +234,7 @@ void BMSView::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
-        ui->btnVer->setText(tr("版本号") + QString(":%1").arg(myHelper::IntegerToHexString(val)));
+        ui->btnVer->setText(QString("%1:%2").arg(tr("版本号"), myHelper::IntegerToHexString(val)));
         ui->tbtnConnect->setText(tr("重连"));
         ui->tbtnConnect->setObjectName("reconnect");
     } else {
@@ -239,7 +243,7 @@ void BMSView::timerUpDate() {
         ui->tbtnConnect->setText(tr("连接"));
         ui->tbtnConnect->setObjectName("connect");
     }
-    this->setWindowTitle(QString("%1[%2]").arg(ui->connectIP->text(), ui->labelStatus->text()));
+    this->setWindowTitle(QString("%1[%2]").arg(m_conn, ui->labelStatus->text()));
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
@@ -855,7 +859,7 @@ void BMSView::sendCommand() {
             MsgCmd.msg_type = cmd.type;
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else if (name == "btnRUAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
@@ -872,7 +876,7 @@ void BMSView::sendCommand() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
 
     } else if (name == "btnRpAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
@@ -889,7 +893,7 @@ void BMSView::sendCommand() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
 
     } else if (name == "btnRnAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
@@ -906,7 +910,7 @@ void BMSView::sendCommand() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnBalance") {
         uint8_t mode = 0;
         mode = ui->BalnceMask->value();
@@ -921,13 +925,13 @@ void BMSView::sendCommand() {
                 MsgCmd.msg_type = CTRL_AO_ADDR;
                 uint16_t value[2] = {5408, mode};
                 MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                 MsgCmd.data.clear();
                 QByteArray ba = inputBalance->getValue();
                 if (ba.size() > 0) {
                     MsgCmd.msg_type = CTRL_AO_ADDR;
                     MsgCmd.data.append(ba);
-                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                 }
             });
         }
@@ -948,7 +952,7 @@ void BMSView::sendCommand() {
         uint16_t value = 4096;
         MsgCmd.data.append(reinterpret_cast<char*>(&value), sizeof(uint16_t));
         MsgCmd.data.append(ba);
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnRCtrl") {
         bool ok = false;
         QStringList items;
@@ -967,7 +971,7 @@ void BMSView::sendCommand() {
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {65287, mode};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else if (name == "btnRClrErr") {
         if (myHelper::ShowMessageBoxQuesion(tr("是否清除绝缘检测故障？")) == QDialog::Accepted) {
@@ -975,7 +979,7 @@ void BMSView::sendCommand() {
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {65288, 0xAA55};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else if (name == "btnBalClrErr") {
         if (myHelper::ShowMessageBoxQuesion(tr("是否清除均衡故障？")) == QDialog::Accepted) {
@@ -983,7 +987,7 @@ void BMSView::sendCommand() {
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {65289, 0xAA55};  // 0xFF09
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else if (name == "btnSetSOC") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
@@ -999,7 +1003,7 @@ void BMSView::sendCommand() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnSetSOH") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = 0xFFF6;
@@ -1014,14 +1018,14 @@ void BMSView::sendCommand() {
                 myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
             }
         }
-        if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnAdjSOC") {
         if (myHelper::ShowMessageBoxQuesion(tr("是否校准SOC？")) == QDialog::Accepted) {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {0xFFF5, 0x1EA5};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else
         qDebug() << name;
@@ -1044,7 +1048,7 @@ void BMSView::stateChanged() {
     if (node.reg_type > 0) {
         value[0] = node.reg_addr;
         MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
     }
 }
 void BMSView::checkChanged() {
@@ -1082,7 +1086,7 @@ void BMSView::checkChanged() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_DO;
     MsgCmd.data.append((char*)&value, 2 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
 }
 void BMSView::btn_contrl() {
     TMsgData MsgCmd;
@@ -1091,14 +1095,14 @@ void BMSView::btn_contrl() {
     if (name == "btnReadSOE") {
         MsgCmd.msg_type = CERT_CMD_READ_SOE;
         MsgCmd.data.clear();
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
         ui->labelSOE->setText(tr("读取中...请稍侯..."));
     } else if (name == "btnClearSOE") {
         if (myHelper::ShowMessageBoxQuesion("Sure to clear All SOE ?") == QDialog::Accepted) {
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t val[2] = {0xFFF8, 0xBB66};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-            pmq->sendMsg(0, MsgCmd);
+            emit send_msg(MsgCmd);
             MsgCmd.data.clear();
         }
     } else
@@ -1129,7 +1133,7 @@ void BMSView::on_lineEditIP_editingFinished() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_AO_ADDR;
     MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
 }
 
 void BMSView::on_lineEditServIP_editingFinished() {
@@ -1156,7 +1160,7 @@ void BMSView::on_lineEditServIP_editingFinished() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_AO_ADDR;
     MsgCmd.data.append((char*)&val, 3 * sizeof(uint16_t));
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
 }
 bool BMSView::saveParameters(const QString& filename) {
     QFile file(filename);
@@ -1256,7 +1260,7 @@ void BMSView::on_cbProtocol_currentIndexChanged(const QString& arg1) {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_SET_PRO;
     MsgCmd.data.setNum(ui->cbProtocol->currentData().toUInt());
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
     MsgCmd.data.clear();
 }
 
@@ -1299,13 +1303,13 @@ void BMSView::uiInit() {
                                 MsgCmd.msg_type = CTRL_AO_ADDR;
                                 uint16_t value[2] = {5408, mode};
                                 MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                                if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                                 MsgCmd.data.clear();
                                 QByteArray b = inputBalance->getValue();
                                 if (b.size() > 0) {
                                     MsgCmd.msg_type = CTRL_AO_ADDR;
                                     MsgCmd.data.append(b);
-                                    if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                                 }
                             });
                         }
@@ -1334,7 +1338,7 @@ void BMSView::uiInit() {
                             uint16_t value[2] = {5409, 0};
                             value[1] = configBalance->getValue();
                             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+                            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                         }
                     });
                     // Show context menu at handling position
@@ -1462,7 +1466,7 @@ void BMSView::onUpdateBtnMenu() {
     } else {
         return;
     }
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
     MsgCmd.data.clear();
     return;
 }
@@ -1478,7 +1482,7 @@ void BMSView::on_checkBox_stateChanged(int arg1) {
         MsgCmd.msg_type = CTRL_DUMP;
         MsgCmd.data.append("0");
     }
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
     MsgCmd.data.clear();
 }
 void BMSView::btnClick() {
@@ -1489,14 +1493,14 @@ void BMSView::btnClick() {
         TMsgData MsgCmd;
         MsgCmd.msg_type = CONFIG_IP;
         MsgCmd.data.append(ui->connectIP->text());
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
         MsgCmd.msg_type = CONFIG_PORT;
         MsgCmd.data.clear();
         MsgCmd.data.append((char*)&port, sizeof(port));
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
         MsgCmd.msg_type = CONFIG_INIT;
         MsgCmd.data.clear();
-        pmq->sendMsg(0, MsgCmd);
+        emit send_msg(MsgCmd);
     }
 }
 void BMSView::IpChange() {
@@ -1512,7 +1516,7 @@ void BMSView::IpChange() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = CONFIG_IP;
     MsgCmd.data.append(ip);
-    pmq->sendMsg(0, MsgCmd);
+    emit send_msg(MsgCmd);
     settings->setValue("global/target_ip", ip);
 }
 
@@ -1572,28 +1576,28 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t val[2] = {0xFF0B, index.row() | 0xA500};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
         myMenu->addAction(QString("%1:BMU%2").arg(tr("关闭风扇")).arg(index.row() + 1), this, [this, index]() {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t val[2] = {0xFF0B, index.row() | 0x5A00};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
         myMenu->addAction(tr("开启全部风扇"), this, [this]() {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t val[2] = {0xFF0B, 0xA5FE};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
         myMenu->addAction(tr("关闭全部风扇"), this, [this, index]() {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t val[2] = {0xFF0B, 0xA5FF};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-            if (MsgCmd.data.size() > 0) pmq->sendMsg(0, MsgCmd);
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
         myMenu->move(cursor().pos());
         myMenu->show();

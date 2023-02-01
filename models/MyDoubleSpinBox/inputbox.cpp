@@ -40,9 +40,9 @@ void InputBox::uiInit() {
             } break;
             case CT_VALUE:
             default:
-                ui->text->setMaxLength(32);
+                ui->text->setMaxLength(12);
                 QFontMetrics fm(ui->text->font());
-                ui->text->setMaximumWidth(fm.width("1234567890 kWh"));
+                ui->text->setMaximumWidth(fm.width("12345.67 kWh"));
                 break;
         }
     });

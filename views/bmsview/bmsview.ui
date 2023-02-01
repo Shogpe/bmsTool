@@ -257,7 +257,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -4545,7 +4545,7 @@
        <item row="3" column="0">
         <widget class="InputBox" name="BmuPoleTNum">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4564,7 +4564,7 @@
        <item row="10" column="10">
         <widget class="InputBox" name="UBlock">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4592,7 +4592,7 @@
        <item row="4" column="6">
         <widget class="InputBox" name="FuncMask">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4617,7 +4617,7 @@
        <item row="7" column="9">
         <widget class="InputBox" name="EvmDfT">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4645,7 +4645,7 @@
        <item row="3" column="6">
         <widget class="InputBox" name="ClusterErrMask">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4673,7 +4673,7 @@
        <item row="11" column="10">
         <widget class="InputBox" name="TBlock">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4701,7 +4701,7 @@
        <item row="8" column="9">
         <widget class="InputBox" name="TEvmH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4729,7 +4729,7 @@
        <item row="3" column="9">
         <widget class="InputBox" name="RateAH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4757,7 +4757,7 @@
        <item row="5" column="9">
         <widget class="InputBox" name="VFulDF">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4785,7 +4785,7 @@
        <item row="2" column="0">
         <widget class="InputBox" name="BmuPackTNum">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4804,7 +4804,7 @@
        <item row="3" column="4">
         <widget class="InputBox" name="PackTLL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4832,7 +4832,7 @@
        <item row="1" column="9">
         <widget class="InputBox" name="PreChgI">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4860,7 +4860,7 @@
        <item row="6" column="4">
         <widget class="InputBox" name="PackTdHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4888,7 +4888,7 @@
        <item row="11" column="4">
         <widget class="InputBox" name="PoleTHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4916,7 +4916,7 @@
        <item row="11" column="6">
         <widget class="InputBox" name="ClusterRIns">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4944,7 +4944,7 @@
        <item row="1" column="8">
         <widget class="InputBox" name="ClusterCurShort">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4972,7 +4972,7 @@
        <item row="1" column="6">
         <widget class="InputBox" name="ClusterTErr">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5000,7 +5000,7 @@
        <item row="13" column="0">
         <widget class="InputBox" name="CellUdHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5034,7 +5034,7 @@
        <item row="7" column="10">
         <widget class="InputBox" name="WarnBlock2">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5062,7 +5062,7 @@
        <item row="5" column="4">
         <widget class="InputBox" name="PackTdH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5090,7 +5090,7 @@
        <item row="2" column="9">
         <widget class="InputBox" name="PreSensorRg">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5118,7 +5118,7 @@
        <item row="1" column="10">
         <widget class="InputBox" name="DataBlock2">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5146,7 +5146,7 @@
        <item row="9" column="6">
         <widget class="InputBox" name="BalnceStartDiff">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5174,7 +5174,7 @@
        <item row="11" column="0">
         <widget class="InputBox" name="ClusterVolLL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5202,7 +5202,7 @@
        <item row="5" column="10">
         <widget class="InputBox" name="ErrBlock2">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5230,7 +5230,7 @@
        <item row="5" column="0">
         <widget class="InputBox" name="CellVolHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5258,7 +5258,7 @@
        <item row="12" column="6">
         <widget class="InputBox" name="ClusterRInsH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5286,7 +5286,7 @@
        <item row="7" column="8">
         <widget class="InputBox" name="ClusterEremain">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5314,7 +5314,7 @@
        <item row="13" column="9">
         <widget class="InputBox" name="CPoleTHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5342,7 +5342,7 @@
        <item row="10" column="8">
         <widget class="InputBox" name="ClusterILeakRg">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5370,7 +5370,7 @@
        <item row="7" column="4">
         <widget class="InputBox" name="PackTrH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5411,7 +5411,7 @@
        <item row="13" column="6">
         <widget class="InputBox" name="ClusterCurLeakH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5439,7 +5439,7 @@
        <item row="11" column="9">
         <widget class="InputBox" name="SocLL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5467,7 +5467,7 @@
        <item row="8" column="6">
         <widget class="InputBox" name="BalnceStart">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5495,7 +5495,7 @@
        <item row="3" column="8">
         <widget class="InputBox" name="ClusterCurHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5523,7 +5523,7 @@
        <item row="9" column="10">
         <widget class="InputBox" name="CVFulDF">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5551,7 +5551,7 @@
        <item row="0" column="8">
         <widget class="InputBox" name="ClusterIe">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5614,7 +5614,7 @@
        <item row="6" column="0">
         <widget class="InputBox" name="CellVolL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5642,7 +5642,7 @@
        <item row="9" column="8">
         <widget class="InputBox" name="ClusterCurRange">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5670,7 +5670,7 @@
        <item row="10" column="6">
         <widget class="InputBox" name="ClusterCurLeak">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5698,7 +5698,7 @@
        <item row="8" column="0">
         <widget class="InputBox" name="ClusterVolH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5726,7 +5726,7 @@
        <item row="10" column="4">
         <widget class="InputBox" name="PoleTH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5754,7 +5754,7 @@
        <item row="5" column="8">
         <widget class="InputBox" name="ClusterE">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5782,7 +5782,7 @@
        <item row="2" column="4">
         <widget class="InputBox" name="PackTL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5810,7 +5810,7 @@
        <item row="2" column="10">
         <widget class="InputBox" name="DataBlock3">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5838,7 +5838,7 @@
        <item row="12" column="9">
         <widget class="InputBox" name="CPoleTH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5866,7 +5866,7 @@
        <item row="0" column="6">
         <widget class="InputBox" name="ClusterTAlm">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5897,7 +5897,7 @@
        <item row="6" column="9">
         <widget class="InputBox" name="VEmpDF">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5925,7 +5925,7 @@
        <item row="4" column="0">
         <widget class="InputBox" name="CellVolH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5959,7 +5959,7 @@
        <item row="12" column="0">
         <widget class="InputBox" name="CellUdH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -5993,7 +5993,7 @@
        <item row="11" column="8">
         <widget class="InputBox" name="ClusterVolRange">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6021,7 +6021,7 @@
        <item row="2" column="8">
         <widget class="InputBox" name="ClusterCurH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6059,7 +6059,7 @@
        <item row="0" column="4">
         <widget class="InputBox" name="PackTH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6087,7 +6087,7 @@
        <item row="0" column="10">
         <widget class="InputBox" name="DataBlock1">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6115,7 +6115,7 @@
        <item row="7" column="6">
         <widget class="InputBox" name="BalnceMask">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6146,7 +6146,7 @@
        <item row="8" column="10">
         <widget class="InputBox" name="FuncMask2">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6174,7 +6174,7 @@
        <item row="4" column="9">
         <widget class="InputBox" name="IStaTH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6202,7 +6202,7 @@
        <item row="4" column="10">
         <widget class="InputBox" name="ErrBlock1">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6230,7 +6230,7 @@
        <item row="1" column="0">
         <widget class="InputBox" name="BmuCellNum">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6252,7 +6252,7 @@
        <item row="8" column="4">
         <widget class="InputBox" name="PackTrHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6280,7 +6280,7 @@
        <item row="9" column="9">
         <widget class="InputBox" name="TEvmL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6318,7 +6318,7 @@
        <item row="6" column="8">
         <widget class="InputBox" name="ClusterEAdj">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6346,7 +6346,7 @@
        <item row="10" column="9">
         <widget class="InputBox" name="SocL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6384,7 +6384,7 @@
        <item row="10" column="0">
         <widget class="InputBox" name="ClusterVolL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6412,7 +6412,7 @@
        <item row="1" column="4">
         <widget class="InputBox" name="PackTHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6440,7 +6440,7 @@
        <item row="7" column="0">
         <widget class="InputBox" name="CellVolLL">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6468,7 +6468,7 @@
        <item row="0" column="9">
         <widget class="InputBox" name="PreChgT">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6496,7 +6496,7 @@
        <item row="2" column="6">
         <widget class="InputBox" name="ClusterAlmMask">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6524,7 +6524,7 @@
        <item row="3" column="10">
         <widget class="InputBox" name="DataBlock4">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6552,7 +6552,7 @@
        <item row="9" column="0">
         <widget class="InputBox" name="ClusterVolHH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6580,7 +6580,7 @@
        <item row="6" column="10">
         <widget class="InputBox" name="WarnBlock1">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -6635,7 +6635,7 @@
        <item row="0" column="0">
         <widget class="InputBox" name="ClusterBmuNum">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>

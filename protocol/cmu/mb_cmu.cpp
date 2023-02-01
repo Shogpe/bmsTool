@@ -496,7 +496,7 @@ void mb_cmu::msg_deal(TMsgData MsgCmd) {
 }
 void mb_cmu::timerEvent(QTimerEvent* event) {
     killTimer(event->timerId());
-//    qDebug() << time(nullptr);
+    //    qDebug() << time(nullptr);
     if (time(nullptr) > (myHelper::cvt_TIME(__DATE__) + TIME_OUTOFDATE)) {
         qWarning() << "software out of date exit..";
         this->stop = true;
@@ -506,7 +506,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
     int rc = -1;
     //    TMsgData MsgCmd;
     uint32_t counter = 0;
-//    qDebug() << " run thread:" << QThread::currentThreadId() << m_interval << state << err_counter;
+    //    qDebug() << " run thread:" << QThread::currentThreadId() << m_interval << state << err_counter;
 
     do {
         if (this->stop) break;
@@ -671,14 +671,9 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
             ret = write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time));
         } break;
-        /*case CERT_CMD_READ_SOE: {
+        case CERT_CMD_READ_SOE: {
             ret = ReadSOE();
-            TMsgData MsgCmd;
-            MsgCmd.data.clear();
-            MsgCmd.msg_type = 1;
-            MsgCmd.data.setNum(ret);
-            pMq->sendMsg(99, MsgCmd);
-        } break;*/
+        } break;
         case CTRL_AO_ADDR: {
             uint16_t nb = Msg.data.size();
             if (nb < 2) break;

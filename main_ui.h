@@ -50,6 +50,7 @@ class MainUI : public QWidget {
 
    protected:
     void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *event);
 
    private:
     Ui::MainUI *ui;

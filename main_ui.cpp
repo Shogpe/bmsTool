@@ -24,6 +24,22 @@ void MainUI::closeEvent(QCloseEvent* event) {
         event->ignore();
     }
 }
+void MainUI::changeEvent(QEvent* event) {
+    if (0 != event) {
+        switch (event->type()) {
+            // this event is send if a translator is loaded
+            case QEvent::LanguageChange: {
+//                ui->retranslateUi(this);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    QWidget::changeEvent(event);
+}
 MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();

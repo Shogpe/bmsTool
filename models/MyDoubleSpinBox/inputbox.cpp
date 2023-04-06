@@ -86,6 +86,7 @@ void InputBox::editingFinished() {
     }
 }
 void InputBox::setValueDirect(qreal val) {
+    m_value = val;
     //    qDebug() << prefix() << type() << objectName() << "valchg" << val;
     switch (this->type()) {
         case CT_COMBO:

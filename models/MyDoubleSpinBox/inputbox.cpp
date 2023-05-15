@@ -15,9 +15,9 @@ InputBox::InputBox(QWidget *parent) : QWidget(parent), ui(new Ui::InputBox) {
     uiInit();
 }
 void InputBox::uiInit() {
-    ui->text->setMaxLength(12);
-    QFontMetrics fm(ui->text->font());
-    ui->text->setMaximumWidth(fm.width("12345.67 kWh"));
+//    ui->text->setMaxLength(12);
+//    QFontMetrics fm(ui->text->font());
+//    ui->text->setMaximumWidth(fm.width("12345.67 kWh"));
     ui->text->installEventFilter(this);
     connect(this, &InputBox::prefixChanged, this, [=](QString str) { ui->prefix->setText(str); });
     connect(this, &InputBox::suffixChanged, this, [this]() { setText(QString::number(value())); });

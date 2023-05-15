@@ -9,6 +9,27 @@
 #include "myhelper.h"
 #include "socImporter.h"
 #include "ui_bmsview.h"
+
+/**
+proxy style for text wrapping in pushbutton
+*/
+class QtPushButtonStyleProxy : public QProxyStyle {
+   public:
+    /**
+    Default constructor.
+    */
+    QtPushButtonStyleProxy() : QProxyStyle() {}
+
+    virtual void drawItemText(QPainter* painter, const QRect& rect, int flags, const QPalette& pal, bool enabled,
+                              const QString& text, QPalette::ColorRole textRole) const {
+        flags |= Qt::TextWordWrap;
+        QProxyStyle::drawItemText(painter, rect, flags, pal, enabled, text, textRole);
+    }
+
+   private:
+    Q_DISABLE_COPY(QtPushButtonStyleProxy)
+};
+
 BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -168,7 +189,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
 
-    //定值显示和隐藏
+    // 定值显示和隐藏
     QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
     foreach (InputBox* dspbox, dspboxs) {
         dspbox->hide();
@@ -226,7 +247,7 @@ void BMSView::valueChange(double dval) {
 
 void BMSView::timerUpDate() {
     QTime t;
-    t.restart();  //将此时间设置为当前时间
+    t.restart();  // 将此时间设置为当前时间
     //
     if (mycmu == nullptr) return;
     if (this->mycmu->drv_status) {
@@ -275,7 +296,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     uint32_t comm_status2 = mapData.value("sysComm2", 0);
     bmu_comm = ((uint64_t)comm_status2 << 32) | comm_status1;
     ui->CommStatus->setValue(comm_status2);
-    //刷新定值
+    // 刷新定值
     QList<InputBox*> inputs = ui->tabSet->findChildren<InputBox*>();
     foreach (InputBox* dspbox, inputs) {
         if (mapData.contains(dspbox->objectName())) {
@@ -599,14 +620,14 @@ void BMSView::flushBmu() {
     if (!mycmu) return;
     if (config.bmu_num > ui->tableBMU->rowCount()) return;
 
-    //一定要固定宽度，否则刷新很慢
+    // 一定要固定宽度，否则刷新很慢
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     int cloumn_offset = 0;
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
         cloumn_offset = 0;
-        //版本号
+        // 版本号
         item = new QTableWidgetItem();
         item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
         QFont font = item->font();
@@ -624,7 +645,7 @@ void BMSView::flushBmu() {
         //        item->setToolTip("删除线表示断线");
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         ui->tableBMU->setItem(i, cloumn_offset++, item);
-        //单体电压
+        // 单体电压
         for (int j = 0; j < config.vol_num; j++) {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
@@ -758,7 +779,7 @@ void BMSView::flushBmu() {
             ui->tableBMU->setItem(i, cloumn_offset++, item);
         }
     }
-    //数据刷新完毕后自适应列宽
+    // 数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
@@ -803,7 +824,7 @@ static map<QString, mb_cmd> btnMap = {
     {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
     {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
     {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
-    {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  //预留
+    {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  // 预留
     {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TBase}},
     {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
     {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
@@ -1037,7 +1058,9 @@ void BMSView::stateChanged() {
     CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
                  << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12 << ui->bFunc13
                  << ui->bFunc14 << ui->bFunc15;
-    foreach (QCheckBox* cb, CheckBoxList) { value[1] |= (cb->isChecked() << CheckBoxList.indexOf(cb)); }
+    foreach (QCheckBox* cb, CheckBoxList) {
+        value[1] |= (cb->isChecked() << CheckBoxList.indexOf(cb));
+    }
     if (myHelper::ShowMessageBoxQuesion(
             QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("开启") : tr("关闭")))) !=
         QDialog::Accepted)
@@ -1202,13 +1225,13 @@ bool BMSView::loadParameters(const QString& filename) {
         return false;
     }
     file.close();
-    QDomElement root = doc.documentElement();  //返回根节点
-    QDomNode node = root.firstChild();         //获得第一个子节点
-    while (!node.isNull())                     //如果节点不空
+    QDomElement root = doc.documentElement();  // 返回根节点
+    QDomNode node = root.firstChild();         // 获得第一个子节点
+    while (!node.isNull())                     // 如果节点不空
     {
-        if (node.isElement())  //如果节点是元素
+        if (node.isElement())  // 如果节点是元素
         {
-            QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
+            QDomElement e = node.toElement();  // 转换为元素，注意元素和节点是两个数据结构，其实差不多
             InputBox* dspbox = ui->tabSet->findChild<InputBox*>(e.attribute("name"));
             if (dspbox != nullptr) {
                 if (!dspbox->isHidden()) {
@@ -1217,7 +1240,7 @@ bool BMSView::loadParameters(const QString& filename) {
                 }
             }
         }
-        node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
+        node = node.nextSibling();  // 下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
     qDebug() << "load ok!";
@@ -1244,7 +1267,7 @@ void BMSView::on_btnInput_released() {
         }
     }
 }
-//屏蔽本控件传递事件到父控件
+// 屏蔽本控件传递事件到父控件
 bool BMSView::eventFilter(QObject* obj, QEvent* event) {
     Q_UNUSED(obj);
     Q_UNUSED(event);
@@ -1346,6 +1369,7 @@ void BMSView::uiInit() {
                 });
         QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
         foreach (QPushButton* btn, btns) {
+            btn->setStyle(new QtPushButtonStyleProxy());
             connect(btn, &QPushButton::released, this, &BMSView::sendCommand, Qt::UniqueConnection);
         }
         QList<QCheckBox*> chkboxs = ui->G_FuncMask->findChildren<QCheckBox*>();

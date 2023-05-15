@@ -1021,7 +1021,7 @@ If communication disconnection or no required data points, please try to change 
         <location filename="../views/bmsview/bmsview.ui" line="5067"/>
         <location filename="../views/bmsview/bmsview.ui" line="5070"/>
         <source>绝缘电阻保护值</source>
-        <translation>Insulation resistance protection value</translation>
+        <translation type="unfinished">Insulation resistance protection value</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="6604"/>
@@ -1819,7 +1819,7 @@ If communication disconnection or no required data points, please try to change 
         <location filename="../views/bmsview/bmsview.ui" line="7792"/>
         <location filename="../views/bmsview/bmsview.cpp" line="478"/>
         <source>单簇/多簇</source>
-        <translation>Single Battery cluster/multiple Battery clusters</translation>
+        <translation type="unfinished">Single/Multiple Clusters</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="7799"/>
@@ -2840,7 +2840,7 @@ If communication disconnection or no required data points, please try to change 
     <message>
         <location filename="../main_ui.cpp" line="121"/>
         <source>库博BMS监控软件</source>
-        <translation>Cube BMS monitoring software</translation>
+        <translation type="unfinished">Cube BMS Monitoring Software</translation>
     </message>
     <message>
         <location filename="../main_ui.cpp" line="131"/>

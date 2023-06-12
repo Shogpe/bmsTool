@@ -638,15 +638,15 @@ void BMSView::flushBmu() {
             }
             // pack最大标红
             if (mycmu->bmu_data[i].MaxUcellId == j) {
-                item->setTextColor(QColor(Qt::red));
                 // 簇最大标粗
                 if (mycmu->bms_data.MaxUcellId == i) {
+                    item->setTextColor(QColor(Qt::red));
                     font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinUcellId == j) {
-                item->setTextColor(QColor(Qt::darkGreen));
                 if (mycmu->bms_data.MinUcellId == i) {
+                    item->setTextColor(QColor(Qt::darkGreen));
                     font.setItalic(true);
                 }
             }
@@ -672,16 +672,16 @@ void BMSView::flushBmu() {
 
             // pack最大标红
             if (mycmu->bmu_data[i].MaxTcellId == j) {
-                item->setTextColor(QColor(Qt::red));
                 // 簇最大标粗
                 if (mycmu->bms_data.MaxTcellId == i) {
+                    item->setTextColor(QColor(Qt::red));
                     font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinTcellId == j) {
-                item->setTextColor(QColor(Qt::darkGreen));
                 // 簇最小标斜体
                 if (mycmu->bms_data.MinTcellId == i) {
+                    item->setTextColor(QColor(Qt::darkGreen));
                     font.setItalic(true);
                 }
             }

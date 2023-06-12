@@ -465,7 +465,7 @@ int mb_cmu::ReadALL() {
             }
         }
 
-        if (protocal_ver > CMUV2) {
+        if (protocal_ver == CMUV3) {
             reg_num = config.bmu_num * 2;
             status += ReadData(0x03, 0x900, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {

@@ -10,7 +10,7 @@
 #include "modbus-tcp.h"
 #include "modbus-version.h"
 #include "node_conf.h"
-
+#include <QElapsedTimer>
 using namespace std;
 
 typedef struct {

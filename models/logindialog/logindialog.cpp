@@ -13,7 +13,7 @@ QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
 }
 logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindialog) {
     ui->setupUi(this);
-    setWindowTitle(QString("%1系统登录").arg("BMS 上位机"));
+    setWindowTitle(QString("%1 %2").arg(tr("BMS 上位机"),tr("系统登录")));
 //    setWindowFlags(Qt::WindowCloseButtonHint|Qt::WindowStaysOnTopHint);
     setWindowFlags(Qt::WindowCloseButtonHint);
     this->activateWindow();

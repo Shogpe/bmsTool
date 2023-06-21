@@ -625,6 +625,7 @@ void BMSView::flushBmu() {
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     int cloumn_offset = 0;
     QTableWidgetItem* item;
+    qDebug() << mycmu->bms_data.MinUbmuId << mycmu->bms_data.MaxUbmuId;
     for (int i = 0; i < config.bmu_num; i++) {
         cloumn_offset = 0;
         // 版本号
@@ -660,13 +661,13 @@ void BMSView::flushBmu() {
             // pack最大标红
             if (mycmu->bmu_data[i].MaxUcellId == j) {
                 // 簇最大标粗
-                if (mycmu->bms_data.MaxUcellId == i) {
+                if (mycmu->bms_data.MaxUbmuId == i) {
                     item->setTextColor(QColor(Qt::red));
                     font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinUcellId == j) {
-                if (mycmu->bms_data.MinUcellId == i) {
+                if (mycmu->bms_data.MinUbmuId == i) {
                     item->setTextColor(QColor(Qt::darkGreen));
                     font.setItalic(true);
                 }
@@ -694,14 +695,14 @@ void BMSView::flushBmu() {
             // pack最大标红
             if (mycmu->bmu_data[i].MaxTcellId == j) {
                 // 簇最大标粗
-                if (mycmu->bms_data.MaxTcellId == i) {
+                if (mycmu->bms_data.MaxTbmuId == i) {
                     item->setTextColor(QColor(Qt::red));
                     font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinTcellId == j) {
                 // 簇最小标斜体
-                if (mycmu->bms_data.MinTcellId == i) {
+                if (mycmu->bms_data.MinTbmuId == i) {
                     item->setTextColor(QColor(Qt::darkGreen));
                     font.setItalic(true);
                 }

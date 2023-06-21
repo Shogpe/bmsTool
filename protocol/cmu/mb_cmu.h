@@ -165,10 +165,10 @@ typedef struct {
     uint16_t BalDischgAh[MAX_U];  // 放电均衡Ah
 } BMU_DATA_T;
 typedef struct {
-    uint16_t MaxUcellId;  // 最大单体电压BMU ID
-    uint16_t MinUcellId;  // 最小单体电压BMU ID
-    uint16_t MaxTcellId;  // 最大单体温度BMU ID
-    uint16_t MinTcellId;  // 最小单体温度BMU ID
+    uint16_t MaxUbmuId;  // 最大单体电压BMU ID
+    uint16_t MinUbmuId;  // 最小单体电压BMU ID
+    uint16_t MaxTbmuId;  // 最大单体温度BMU ID
+    uint16_t MinTbmuId;  // 最小单体温度BMU ID
 
 } BMS_DATA_T;
 typedef struct {

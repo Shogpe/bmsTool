@@ -167,7 +167,7 @@ void mb_cmu::Dump2Csv() {
             }
 
             // 20220115添加
-            //状态量个数，电压断线+温度断线+运行状态+故障状态
+            // 状态量个数，电压断线+温度断线+运行状态+故障状态
             double val = this->bmu_data[i].Ubreak;
             data_buf << (QString("%1,").arg(val));
             val = this->bmu_data[i].Tbreak;
@@ -403,8 +403,8 @@ int mb_cmu::ReadALL() {
         status += ReadData(0x04, 0x01, reg_num, p);
         int maxId = 0;
         int minId = 0;
-        int maxClusterId = 0;
-        int minClusterId = 0;
+        int maxBmuId = 0;
+        int minBmuId = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < config.vol_num; j++) {
                 bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
@@ -413,20 +413,23 @@ int mb_cmu::ReadALL() {
             }
             bmu_data[i].MaxUcellId = maxId;
             bmu_data[i].MinUcellId = minId;
-            if (bmu_data[maxClusterId].Ucell[bmu_data[maxClusterId].MaxUcellId] > bmu_data[i].Ucell[maxId])
-                maxClusterId = i;
-            if (bmu_data[minClusterId].Ucell[bmu_data[minClusterId].MaxUcellId] < bmu_data[i].Ucell[minId])
-                minClusterId = i;
+            if (bmu_data[maxBmuId].Ucell[bmu_data[maxBmuId].MaxUcellId] < bmu_data[i].Ucell[maxId]) {
+                qDebug() << maxBmuId << bmu_data[i].Ucell[maxId];
+                maxBmuId = i;
+            }
+            if (bmu_data[minBmuId].Ucell[bmu_data[minBmuId].MinUcellId] > bmu_data[i].Ucell[minId]) {
+                minBmuId = i;
+            }
         }
-        bms_data.MaxUcellId = maxClusterId;
-        bms_data.MinUcellId = minClusterId;
+        bms_data.MaxUbmuId = maxBmuId;
+        bms_data.MinUbmuId = minBmuId;
         // 温度
         reg_num = config.bmu_num * (config.T_num + config.Tp_num);
         status += ReadData(0x04, 0x1000, reg_num, p);
         maxId = 0;
         minId = 0;
-        maxClusterId = 0;
-        minClusterId = 0;
+        maxBmuId = 0;
+        minBmuId = 0;
         for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
                 if (j < (config.T_num)) {
@@ -437,13 +440,11 @@ int mb_cmu::ReadALL() {
             }
             bmu_data[i].MaxTcellId = maxId;
             bmu_data[i].MinTcellId = minId;
-            if (bmu_data[maxClusterId].Tcell[bmu_data[maxClusterId].MaxTcellId] > bmu_data[i].Tcell[maxId])
-                maxClusterId = i;
-            if (bmu_data[minClusterId].Tcell[bmu_data[minClusterId].MaxTcellId] < bmu_data[i].Tcell[minId])
-                minClusterId = i;
+            if (bmu_data[maxBmuId].Tcell[bmu_data[maxBmuId].MaxTcellId] < bmu_data[i].Tcell[maxId]) maxBmuId = i;
+            if (bmu_data[minBmuId].Tcell[bmu_data[minBmuId].MinTcellId] > bmu_data[i].Tcell[minId]) minBmuId = i;
         }
-        bms_data.MaxTcellId = maxClusterId;
-        bms_data.MinTcellId = minClusterId;
+        bms_data.MaxTbmuId = maxBmuId;
+        bms_data.MinTbmuId = minBmuId;
         // 状态
         reg_num = config.bmu_num * 4;
         status += ReadData(0x03, 0x100, reg_num, p);
@@ -472,7 +473,7 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].CanErr = *(p + i * 2 + 1);
             }
         } else if (protocal_ver > CMUV3) {
-            //通信计数
+            // 通信计数
             reg_num = config.bmu_num * 1;
             status += ReadData(0x03, 0xA00, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
@@ -480,7 +481,7 @@ int mb_cmu::ReadALL() {
             }
         }
     }
-    //版本号
+    // 版本号
     reg_num = config.bmu_num * 2 + 2;
     status += ReadData(0x03, 0x500, reg_num, p);
     this->cmu_ver = *(uint32_t*)(p);
@@ -514,7 +515,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
         //            qDebug() << "recv:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," <<
         //            MsgCmd.data.toHex(); DealCMD(MsgCmd);
         //        }
-        //状态机
+        // 状态机
         if (err_counter++ >= 10) {
             qDebug() << "reconnect ip:" << this->mb_ip.c_str() << "port:" << this->mb_port;
             err_counter = 0;

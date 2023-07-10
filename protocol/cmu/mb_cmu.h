@@ -141,8 +141,8 @@ typedef struct {
 } CMU_SOE;
 // BMU 数据
 #define MAX_BMU 64
-#define MAX_U   32
-#define MAX_T   12
+#define MAX_U   64
+#define MAX_T   32
 typedef struct {
     uint16_t Ucell[MAX_U];        // 单体电压
     uint16_t MaxUcellId;          // 最大单体电压ID

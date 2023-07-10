@@ -20,7 +20,7 @@ void frmInputBox::initStyle()
 {
 //    this->setProperty("Form", true);
 //    this->setProperty("CanMove", true);
-    this->setWindowTitle("输入");
+    this->setWindowTitle(tr("输入"));
     //设置窗体标题栏隐藏
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     this->setWindowFlags(Qt::WindowCloseButtonHint);

@@ -11,7 +11,7 @@ frmbalanceConfig::frmbalanceConfig(QWidget *parent) : QDialog(parent), ui(new Ui
 frmbalanceConfig::~frmbalanceConfig() { delete ui; }
 
 void frmbalanceConfig::initStyle() {
-    this->setWindowTitle("均衡配置");
+    this->setWindowTitle(tr("均衡配置"));
     //设置窗体标题栏隐藏
     //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     this->setWindowFlags(Qt::WindowCloseButtonHint);

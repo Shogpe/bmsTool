@@ -49,7 +49,7 @@ static inline uint32_t bswap_32(uint32_t x) { return (bswap_16(x & 0xffff) << 16
 
 class myHelper : public QObject {
    public:
-    //设置为开机启动
+    // 设置为开机启动
     static void AutoRunWithSystem(bool IsAutoRun, QString AppName, QString AppPath) {
         QSettings *reg = new QSettings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
                                        QSettings::NativeFormat);
@@ -61,7 +61,7 @@ class myHelper : public QObject {
         }
     }
 
-    //设置编码为UTF8
+    // 设置编码为UTF8
     static void SetUTF8Code() {
 #if (QT_VERSION <= QT_VERSION_CHECK(5, 0, 0))
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -71,47 +71,64 @@ class myHelper : public QObject {
 #endif
     }
 
-    //设置皮肤样式
+    // 设置皮肤样式
     static void SetStyle(const QString &styleName) {
         QFile file(QString(":/qss/%1.css").arg(styleName));
         file.open(QFile::ReadOnly);
         QString qss = QLatin1String(file.readAll());
         QString paletteColor = qss.mid(20, 7);
-        qApp->setPalette(QPalette(QColor(paletteColor)));  //设置窗体调色板
-        qApp->setStyleSheet(qss);                          //设置主题
+        qApp->setPalette(QPalette(QColor(paletteColor)));  // 设置窗体调色板
+        qApp->setStyleSheet(qss);                          // 设置主题
     }
 
-    //加载中文字符
+    // 加载中文字符
     static void SetTranslation(QString local) {
+        QString default_lang = "en_US";
         static QTranslator *translator = new QTranslator();
+        static QTranslator *qt_translator = new QTranslator();
+
         Q_CHECK_PTR(translator);  // checks creation
         qApp->removeTranslator(translator);
-        if (translator->load(QString("%1").arg(local), ":/lang/")) {
-            if (!qApp->installTranslator(translator)) {
-                qDebug("ERROR INSTALLING TRANSLATOR !!!");
-            }
-        } else {
-            qWarning() << "ERROR LOAD TRANSLATOR !!!" << local;
-        }
-        QTranslator *qt_translator = new QTranslator();
         qApp->removeTranslator(qt_translator);
-        if (qt_translator->load(QString("qt_%1.qm").arg(local), ":/lang/") && (!qt_translator->isEmpty())) {
-            qDebug() << qt_translator->isEmpty();
-            if (!qApp->installTranslator(qt_translator)) {
-                qWarning("ERROR INSTALLING TRANSLATOR !!!");
+
+        try {
+            if (translator->load(QString("%1").arg(local), ":/lang/")) {
+                if (!qApp->installTranslator(translator)) {
+                    qDebug("ERROR INSTALLING TRANSLATOR !!!");
+                }
+            } else {
+                qWarning() << "ERROR LOAD TRANSLATOR !!!" << local;
+                throw("ERROR LOAD TRANSLATOR");
             }
-        } else {
-            qWarning() << "ERROR LOAD QT TRANSLATOR !!!" << QString("qt_") + local;
+            if (qt_translator->load(QString("qt_%1.qm").arg(local), ":/lang/") && (!qt_translator->isEmpty())) {
+                qDebug() << qt_translator->isEmpty();
+                if (!qApp->installTranslator(qt_translator)) {
+                    qWarning("ERROR INSTALLING TRANSLATOR !!!");
+                }
+            } else {
+                qWarning() << "ERROR LOAD QT TRANSLATOR !!!" << QString("qt_") + local;
+                throw("ERROR LOAD TRANSLATOR");
+            }
+        } catch (...) {
+            if (translator->load(QString("%1").arg(default_lang), ":/lang/")) {
+                if (!qApp->installTranslator(translator)) {
+                }
+            }
+            if (qt_translator->load(QString("qt_%1.qm").arg(default_lang), ":/lang/") && (!qt_translator->isEmpty())) {
+                if (!qApp->installTranslator(qt_translator)) {
+                    qWarning("ERROR INSTALLING TRANSLATOR !!!");
+                }
+            }
         }
     }
 
-    //判断是否是IP地址
+    // 判断是否是IP地址
     static bool IsIP(QString IP) {
         QRegExp RegExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
         return RegExp.exactMatch(IP);
     }
 
-    //显示输入框
+    // 显示输入框
     static QString showInputBox(const QString info, bool &blok) {
         frmInputBox input;
 
@@ -121,28 +138,28 @@ class myHelper : public QObject {
         return input.getValue();
     }
 
-    //显示信息框,仅确定按钮
+    // 显示信息框,仅确定按钮
     static void ShowMessageBoxInfo(QString info) {
         frmMessageBox *msg = new frmMessageBox;
         msg->SetMessage(info, 0);
         msg->exec();
     }
 
-    //显示错误框,仅确定按钮
+    // 显示错误框,仅确定按钮
     static void ShowMessageBoxError(QString info) {
         frmMessageBox *msg = new frmMessageBox;
         msg->SetMessage(info, 2);
         msg->exec();
     }
 
-    //显示询问框,确定和取消按钮
+    // 显示询问框,确定和取消按钮
     static int ShowMessageBoxQuesion(QString info) {
         frmMessageBox *msg = new frmMessageBox;
         msg->SetMessage(info, 1);
         return msg->exec();
     }
 
-    //延时
+    // 延时
     static void Sleep(int msec) {
         QTime dieTime = QTime::currentTime().addMSecs(msec);
         while (QTime::currentTime() < dieTime) {

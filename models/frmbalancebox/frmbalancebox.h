@@ -23,16 +23,13 @@ class frmBalanceBox : public QDialog {
    private slots:
 
     void on_btnManually_clicked();
-
-    void on_btnForce_clicked();
-
     void on_btnMode_clicked();
    signals:
     void valueChange(QByteArray b);
 
    private:
     Ui::frmBalanceBox *ui;
-
+    void modeChange();
     void initStyle();  //初始化无边框窗体
     uint8_t curMode;
     QByteArray Value;

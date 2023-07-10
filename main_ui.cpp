@@ -2,25 +2,25 @@
 #include <QTimer>
 #include "FramelessHelper.h"
 #include "Toast.h"
-//#include "cmu4u.h"
+// #include "cmu4u.h"
 #include "iconhelper.h"
-//#include "models/frmcustomplot/frmsimple.h"
+// #include "models/frmcustomplot/frmsimple.h"
 #include "bmsview.h"
 #include "cmu_ip.h"
 #include "scan_settings.h"
 #include "ui_main_ui.h"
 #include "utils.h"
 #include "version.h"
-//#include "rtu_tool.h"
+// #include "rtu_tool.h"
 #include "bms_datalog.h"
 #include "firmwareDialog.h"
 void MainUI::closeEvent(QCloseEvent* event) {
-    //判断账号输入框是否为空（只是作为一个条件）
+    // 判断账号输入框是否为空（只是作为一个条件）
     if (myHelper::ShowMessageBoxQuesion(tr("确定要关闭本程序吗？")) == QDialog::Accepted) {
-        //接收这个事件,当前窗口会关闭
+        // 接收这个事件,当前窗口会关闭
         event->accept();
     } else {
-        //忽略这个事件，当前窗口不会关闭
+        // 忽略这个事件，当前窗口不会关闭
         event->ignore();
     }
 }
@@ -29,7 +29,7 @@ void MainUI::changeEvent(QEvent* event) {
         switch (event->type()) {
             // this event is send if a translator is loaded
             case QEvent::LanguageChange: {
-//                ui->retranslateUi(this);
+                //                ui->retranslateUi(this);
                 break;
             }
             default: {
@@ -136,7 +136,7 @@ void MainUI::initForm() {
     QSize icoSize(32, 32);
     int icoWidth = 85;
 
-    //设置顶部导航按钮
+    // 设置顶部导航按钮
     QList<QToolButton*> tbtns = ui->widgetTop->findChildren<QToolButton*>();
     foreach (QToolButton* btn, tbtns) {
         btn->setIconSize(icoSize);
@@ -148,7 +148,7 @@ void MainUI::initForm() {
     ui->widgetTop->hide();
     //
     ui->btnMain->click();
-    //创建语言切换菜单
+    // 创建语言切换菜单
     QMenu* langue_menu = new QMenu(tr("Langue"), this);
     QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
 
@@ -165,33 +165,35 @@ void MainUI::initForm() {
         if (locale == act->objectName()) act->setChecked(true);
     }
 
-    //创建主菜单,将主题和语言菜单当二级菜单加入主菜单
+    // 创建主菜单,将主题和语言菜单当二级菜单加入主菜单
     QMenu* title_menu = new QMenu(this);
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
-    title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
-    title_menu->actions().constLast()->setObjectName("Rec Convert");
-    title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
-    title_menu->actions().constLast()->setObjectName("Maintenance Tool");
+    if (db_manager::Instance()->userLevel() > 16) {
+        title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("Rec Convert");
+        title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("Maintenance Tool");
+        if (db_manager::Instance()->userName() == "Ganing") {
+            title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
+            title_menu->actions().constLast()->setObjectName("DataLog");
+            title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
+            title_menu->actions().constLast()->setObjectName("BmsView");
+        }
+    }
 
     if (QFileInfo("User Manual.pdf").isFile()) {
         title_menu->addAction(tr("用户手册"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("User Manual");
     }
-    if (db_manager::Instance()->userName() == "Ganing") {
-        title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
-        title_menu->actions().constLast()->setObjectName("DataLog");
-        title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
-        title_menu->actions().constLast()->setObjectName("BmsView");
-    }
     //    title_menu->addAction("固件查看", this, &MainUI::menuClick);
     //    title_menu->addAction("录波转换", this, &MainUI::menuClick);
-    ui->btnMenu->setMenu(title_menu);  //将主菜单设置到菜单按钮
+    ui->btnMenu->setMenu(title_menu);  // 将主菜单设置到菜单按钮
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QByteArray ba = myHelper::GetAppValue("global/layout").toByteArray();
     this->restoreGeometry(ba);
     QString user = db_manager::Instance()->userName();  // settings->value("global/user", "").toString();
-    if (db_manager::Instance()->userLevel() < 16) ui->btnMenu->hide();
+//    if (db_manager::Instance()->userLevel() < 16) ui->btnMenu->hide();
     if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
@@ -206,7 +208,7 @@ void MainUI::initForm() {
         //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
     ui->labUser->setText(user);
-    //关联换肤和切换语言功能
+    // 关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
     //    connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
     this->timer = new QTimer(this);
@@ -242,7 +244,7 @@ void MainUI::buttonClick() {
     //    }
 }
 
-void MainUI::menuClick()  //切换语言
+void MainUI::menuClick()  // 切换语言
 {
     QAction* b = (QAction*)sender();
     qDebug() << b->objectName() << b->text();

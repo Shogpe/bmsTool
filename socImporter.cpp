@@ -25,8 +25,8 @@ QByteArray SOCImport() {
         qDialog.setWindowFlags(Qt::WindowCloseButtonHint);
         qDialog.setOptions(QInputDialog::UseListViewForComboBoxItems);
         qDialog.setComboBoxItems(xlsxR.sheetNames());
-        qDialog.setWindowTitle("选择工作簿...");
-        qDialog.setLabelText("请选择一个作为SOC表导入数据源");
+        qDialog.setWindowTitle(QObject::tr("选择工作簿..."));
+        qDialog.setLabelText(QObject::tr("请选择一个作为SOC表导入数据源"));
 //        qDialog.setCancelButtonText(("放弃"));
 //        qDialog.setOkButtonText(("确定"));
         if (qDialog.exec()) {

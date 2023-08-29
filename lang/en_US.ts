@@ -2848,27 +2848,27 @@ If communication disconnection or no required data points, please try to change 
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="172"/>
+        <location filename="../main_ui.cpp" line="173"/>
         <source>Rec转换</source>
         <translation>Rec Conversion</translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="174"/>
+        <location filename="../main_ui.cpp" line="175"/>
         <source>维护工具</source>
         <translation>Maintenance tool</translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="178"/>
+        <location filename="../main_ui.cpp" line="186"/>
         <source>用户手册</source>
         <translation>User Manual</translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="182"/>
+        <location filename="../main_ui.cpp" line="178"/>
         <source>故障录波解析</source>
         <translation>Fault waveform analysis</translation>
     </message>
     <message>
-        <location filename="../main_ui.cpp" line="184"/>
+        <location filename="../main_ui.cpp" line="180"/>
         <source>新增BMS页面</source>
         <translation>Add BMS Page</translation>
     </message>
@@ -2970,28 +2970,158 @@ If communication disconnection or no required data points, please try to change 
         <source>副边电压异常</source>
         <translation>Abnormal secondary voltage</translation>
     </message>
+    <message>
+        <location filename="../socImporter.cpp" line="28"/>
+        <source>选择工作簿...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="29"/>
+        <source>请选择一个作为SOC表导入数据源</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../db_manager.cpp" line="20"/>
+        <source>数据库文件不存在!请联系软件提供商协助处理。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../db_manager.cpp" line="30"/>
+        <source>数据无法读取:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SOEModel</name>
     <message>
-        <location filename="../models/SOEModel/SOEModel.h" line="53"/>
         <source>%1, %2%3%4系统状态:[%5]</source>
-        <translation>%1, %2%3%4System Status: [%5]</translation>
+        <translation type="vanished">%1, %2%3%4System Status: [%5]</translation>
     </message>
     <message>
-        <location filename="../models/SOEModel/SOEModel.h" line="78"/>
+        <location filename="../models/SOEModel/SOEModel.h" line="58"/>
+        <location filename="../models/SOEModel/SOEModel.h" line="69"/>
+        <source>系统状态</source>
+        <translation>System Status</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="61"/>
+        <source>%1(%2):ID=%3,%4=%5,%6=%7,%8:[%9]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="62"/>
+        <source>未知类型</source>
+        <translation>Unknow Type</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="65"/>
+        <source>值</source>
+        <translation>Value</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="67"/>
+        <source>限值</source>
+        <translation>Limit</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="74"/>
+        <source>Unknow</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="83"/>
         <source>序号</source>
         <translation>Serial number</translation>
     </message>
     <message>
-        <location filename="../models/SOEModel/SOEModel.h" line="80"/>
+        <location filename="../models/SOEModel/SOEModel.h" line="85"/>
         <source>时间</source>
         <translation>Time</translation>
     </message>
     <message>
-        <location filename="../models/SOEModel/SOEModel.h" line="82"/>
+        <location filename="../models/SOEModel/SOEModel.h" line="87"/>
         <source>事件解析</source>
         <translation>Events Parsing</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="116"/>
+        <source>总故障</source>
+        <translation>Total fault</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="117"/>
+        <source>总告警</source>
+        <translation>Total alarm</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="118"/>
+        <source>充满</source>
+        <translation>Fully-charged</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="119"/>
+        <source>放空</source>
+        <translation>Fully-discharged</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="120"/>
+        <source>未初始化</source>
+        <translation>Uninitialized</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="121"/>
+        <source>通信故障</source>
+        <translation>Communication fault</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="122"/>
+        <source>均衡</source>
+        <translation>Balancing</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="123"/>
+        <source>充电</source>
+        <translation>Charging</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="124"/>
+        <source>放电</source>
+        <translation>Discharge</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="125"/>
+        <source>停机</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="126"/>
+        <source>升级</source>
+        <translation>Upgrade</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="127"/>
+        <source>绝缘通信故障</source>
+        <translation>Ins Comm</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="128"/>
+        <source>自检故障</source>
+        <translation>Self-Test</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="129"/>
+        <source>拨码故障</source>
+        <translation>SW Err</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="130"/>
+        <source>BMU故障</source>
+        <translation>BMU Fault</translation>
+    </message>
+    <message>
+        <location filename="../models/SOEModel/SOEModel.h" line="131"/>
+        <source>并网</source>
+        <translation>Parallel on</translation>
     </message>
 </context>
 <context>

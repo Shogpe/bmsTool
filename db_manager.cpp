@@ -17,7 +17,7 @@ db_manager *db_manager::Instance() {
 bool db_manager::start() {
     QString file = "data.db3";
     if (QFile(file).size() <= 4) {
-        myHelper::ShowMessageBoxError("数据库文件不存在!请联系软件提供商协助处理。");
+        myHelper::ShowMessageBoxError(QObject::tr("数据库文件不存在!请联系软件提供商协助处理。"));
         abort();
         return false;
     }
@@ -27,7 +27,7 @@ bool db_manager::start() {
     dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
     if (!dbconn.open()) {
         qCritical() << "Can not open connection: " << dbconn.lastError().driverText();
-        myHelper::ShowMessageBoxError("数据无法读取:" + dbconn.lastError().driverText());
+        myHelper::ShowMessageBoxError(QObject::tr("数据无法读取:") + dbconn.lastError().driverText());
         return false;
     }
     return true;
@@ -118,9 +118,11 @@ bool db_manager::getSOE(QMap<int, ST_DB_SOE> &soe_map, SOE_TAG tag) {
     QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
     QSqlDatabase db = QSqlDatabase::database(connect_name, true);
     //    qDebug() << db.isOpen() << db.isValid();
+    QString locale = myHelper::GetAppValue("locale", "zh_CN").toString();
+    locale = "soe_codec_" + locale;
     QSqlQuery query(db);
     QString str =
-        QString("SELECT evt_code,evt_txt,evt_id,evt_dt,evt_threshold,code FROM soe_codec WHERE tag=%1").arg(tag);
+        QString("SELECT evt_code,evt_txt,evt_id,evt_dt,evt_threshold,code FROM %2 WHERE tag=%1").arg(tag).arg(locale);
     flag = query.exec(str);
     //    qDebug() << str << flag;
     if (!flag) qDebug() << "exec failed: " << query.lastError().text();

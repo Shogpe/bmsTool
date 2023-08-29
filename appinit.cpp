@@ -39,6 +39,7 @@ void AppInit::start() {
     QString default_locale = local.name();
     QString setLocale = myHelper::GetAppValue("locale", default_locale).toString();
     qDebug() << setLocale;
+    myHelper::SetAppValue("locale", setLocale);
     myHelper::SetTranslation(setLocale);
 }
 static int CompareVersion(QString curVer, QString chkVer) {
@@ -49,7 +50,7 @@ static int CompareVersion(QString curVer, QString chkVer) {
     return rc;
 }
 
-void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
+void AppInit::replyFinished(QNetworkReply *reply)  // 当回复结束后
 {
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "upgrade Error";
@@ -57,9 +58,9 @@ void AppInit::replyFinished(QNetworkReply *reply)  //当回复结束后
         if (reply->request().url().toString() == url2) return;
         updateCheck(url2);
     }
-    //请求返回的结果
+    // 请求返回的结果
     QByteArray responseByte = reply->readAll();
-    reply->deleteLater();  //最后要释放reply对象
+    reply->deleteLater();  // 最后要释放reply对象
 
     QJsonParseError jsonpe;
     QJsonDocument json = QJsonDocument::fromJson(responseByte, &jsonpe);
@@ -112,12 +113,12 @@ void AppInit::updateCheck(const QString orgin) {
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
     config.setProtocol(QSsl::TlsV1SslV3);
     QNetworkAccessManager *accessManager = new QNetworkAccessManager(this);
-    //设置url
+    // 设置url
     QNetworkRequest requestInfo;
     requestInfo.setSslConfiguration(config);
     requestInfo.setUrl(QUrl(url));
-    //添加事件循环机制，返回后再运行后面的
+    // 添加事件循环机制，返回后再运行后面的
     accessManager->get(requestInfo);
     connect(accessManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(replyFinished(QNetworkReply *)));
-    //错误处理
+    // 错误处理
 }

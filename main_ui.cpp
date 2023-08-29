@@ -29,7 +29,7 @@ void MainUI::changeEvent(QEvent* event) {
         switch (event->type()) {
             // this event is send if a translator is loaded
             case QEvent::LanguageChange: {
-                //                ui->retranslateUi(this);
+                // ui->retranslateUi(this);
                 break;
             }
             default: {
@@ -88,7 +88,7 @@ void MainUI::initForm() {
 #if 1  // use FramelessHelper on windows
     auto helper = new FramelessHelper(this);
     if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
-        helper->setDisableMaximized(true);
+    // helper->setDisableMaximized(true);
         this->setWindowFlags(Qt::FramelessWindowHint);
     }
     helper->setDraggableMargins(3, 3, 3, 3);

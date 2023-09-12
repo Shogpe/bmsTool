@@ -2,6 +2,7 @@
 #define MB_CMU_H
 
 #include <QDateTime>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QThread>
 #include <iostream>
@@ -10,7 +11,6 @@
 #include "modbus-tcp.h"
 #include "modbus-version.h"
 #include "node_conf.h"
-#include <QElapsedTimer>
 using namespace std;
 
 typedef struct {
@@ -24,19 +24,19 @@ typedef struct {
 typedef struct {
     uint8_t type;         // 寄存器类型
     uint16_t start_addr;  // 寄存器起始地址
-    uint16_t reg_len;     //寄存器长度
+    uint16_t reg_len;     // 寄存器长度
     uint16_t tab_offset;  // 转存表偏移
 } MB_CMD;
 
 typedef enum {
     NONE = 0,
-    THREAD_EXIT,  //线程退出
+    THREAD_EXIT,  // 线程退出
     CONFIG_INIT,  //
     CONFIG_IP,
     CONFIG_PORT,
     CTRL_DO,
     CTRL_AO,
-    CTRL_SEC_AO,  //带密钥命令
+    CTRL_SEC_AO,  // 带密钥命令
     CTRL_CMD_CLR_ENG,
     CTRL_CMD_CLR_SOE,
     CTRL_CMD_CLR_ALL_SOE,
@@ -49,17 +49,17 @@ typedef enum {
     CERT_CMD_READ_SOE,
     CTRL_AO_ADDR,
     CTRL_DUMP,
-    CTRL_SET_PRO,  //设置协议版本
+    CTRL_SET_PRO,  // 设置协议版本
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
 
-#define TAB_SYS_LEN    12  //系统数据:时钟,状态
-#define TAB_ENG_LEN    42  //能量数据:SOC,电量
-#define TAB_CFG_LEN    11  //配置数据:参数
-#define TAB_CMU_LEN    25  //统计数据:计算极值
+#define TAB_SYS_LEN    12  // 系统数据:时钟,状态
+#define TAB_ENG_LEN    42  // 能量数据:SOC,电量
+#define TAB_CFG_LEN    11  // 配置数据:参数
+#define TAB_CMU_LEN    25  // 统计数据:计算极值
 #define TAB_BMU_OFFSET TAB_SYS_LEN + TAB_ENG_LEN + TAB_CMU_LEN
-//升级命令
+// 升级命令
 #define ADDR_UPGRADE 0xFFD0
 #define MB_UpdateCMU 0x5a78  // 23160 下载升级CMU应用程序
 #define MB_UpdateBMU 0x5a33  // 23091 下载升级所有BMU应用程序
@@ -69,31 +69,31 @@ typedef enum {
 #define MB_UpdateCFW 0x7567  // 30055 下载CMU信息文件
 #define MB_UpdBmuNDL 0xa533  // 42291 直接升级BMU应用程序
 #define MB_UpdRins   0xa5b6  // 42422 下载升级绝缘板程序
-//校准命令
+// 校准命令
 #define ADDR_ADJ     0xFFC0
-#define MB_Adj_IZero 0x11  //电流采样零刻度校准
-#define MB_Adj_VZero 0x22  //电压采样零刻度校准
-#define MB_Adj_LZero 0x33  //漏电流零刻度校准
-#define MB_Adj_TZero 0x44  //温度校准
-#define MB_Adj_RZero 0x55  //绝缘电阻校准
+#define MB_Adj_IZero 0x11  // 电流采样零刻度校准
+#define MB_Adj_VZero 0x22  // 电压采样零刻度校准
+#define MB_Adj_LZero 0x33  // 漏电流零刻度校准
+#define MB_Adj_TZero 0x44  // 温度校准
+#define MB_Adj_RZero 0x55  // 绝缘电阻校准
 
-#define MB_Adj_IFull 0xaa11  //电流采样满刻度校准
-#define MB_Adj_VFull 0xaa22  //电压采样满刻度校准
-#define MB_Adj_LFull 0xaa33  //漏电流满刻度校准
+#define MB_Adj_IFull 0xaa11  // 电流采样满刻度校准
+#define MB_Adj_VFull 0xaa22  // 电压采样满刻度校准
+#define MB_Adj_LFull 0xaa33  // 漏电流满刻度校准
 #define MB_Adj_TFull 0xaa44
 #define MB_Adj_RFull 0xaa55
 
-#define MB_Adj_IBase 0xbb11  //电流采样基点校准
-#define MB_Adj_VBase 0xbb22  //电压采样基点校准
-#define MB_Adj_LBase 0xbb33  //漏电流基点校准
+#define MB_Adj_IBase 0xbb11  // 电流采样基点校准
+#define MB_Adj_VBase 0xbb22  // 电压采样基点校准
+#define MB_Adj_LBase 0xbb33  // 漏电流基点校准
 #define MB_Adj_TBase 0xbb44
 #define MB_Adj_RBase 0xbb55
-//绝缘校准
+// 绝缘校准
 #define ADDR_RINS_ADJ 0xF000
 #define MB_RU_ADJ     0xCC11
 #define MB_RP_ADJ     0xCC22
 #define MB_RN_ADJ     0xCC33
-//其他命令
+// 其他命令
 #define ADDR_TIME_ADJ 0xFFE0
 #define ADDR_WR_LOCK  0xFFF0
 #define MB_UNLOCK     0x67A5
@@ -134,8 +134,8 @@ typedef enum {
 typedef struct {
     uint64_t soe_time;   // 事件时间
     uint16_t soe_type;   // 事件类型
-    uint16_t soe_id;     //事件ID
-    uint16_t soe_val;    //当前值
+    uint16_t soe_id;     // 事件ID
+    uint16_t soe_val;    // 当前值
     uint16_t soe_limit;  // 限值
     uint16_t soe_stat;   // 系统状态
 } CMU_SOE;
@@ -158,7 +158,7 @@ typedef struct {
     uint16_t BalStat;             // 均衡状态
     uint16_t BalErr;              // 通道故障(闭锁)状态
     uint16_t BalU24;              // 均衡24V电压
-    int16_t BalIdc;               // 均衡DC电流
+    int16_t BalIdc[MAX_U];        // 均衡DC电流
     uint16_t BalMode;             // 均衡模式+电流
     uint16_t CanErr;              // 通信错误计数
     uint16_t BalChgAh[MAX_U];     // 充电均衡Ah
@@ -184,12 +184,12 @@ typedef union {
     struct {
         /* 以下为系统配置参数,由开发/维护人员修改---------------------------------*/
         uint16_t u16ClusterBmuNum;  // 36BMU数量1个,默认18个,范围:1-60个
-        uint16_t u16BmuCellNum;     //每个BMU单体电池数量
-        uint16_t u16BmuPackTNum;    //每个BMU模组温度个数
-        uint16_t u16BmuPoleTNum;    //每个BMU极柱温度个数
+        uint16_t u16BmuCellNum;     // 每个BMU单体电池数量
+        uint16_t u16BmuPackTNum;    // 每个BMU模组温度个数
+        uint16_t u16BmuPoleTNum;    // 每个BMU极柱温度个数
         uint16_t u16AlarmMask;      // 40报警屏蔽,默认0,0:不使用1:使用
-        uint16_t u16FaultMask;      //故障屏蔽,默认0,0:不使用1:使用
-        uint16_t uFunCtrReg;        //使能(电流/电压/漏电/绝缘/双CAN等)
+        uint16_t u16FaultMask;      // 故障屏蔽,默认0,0:不使用1:使用
+        uint16_t uFunCtrReg;        // 使能(电流/电压/漏电/绝缘/双CAN等)
         uint32_t u32LocalIP;        // 43本地IP低位,192.168 0xa8c0  2143格式
         uint32_t u32TftpServIP;     // TFTP服务器地址低位192.168 0xA8C0 2143格式
     } Name;
@@ -206,13 +206,14 @@ typedef enum {
     CMUV1 = 0,
     CMUV2,    //
     CMUV3,    //
-    CMUV4,    //主动均衡
-    CMUV4_1,  //主动均衡-对外
-    CMUV4_8,  //主动均衡-绝缘
+    CMUV4,    // 主动均衡
+    CMUV4_1,  // 主动均衡-对外
+    CMUV4_8,  // 主动均衡-绝缘
     CMUV3_1,
 } BMS_PROTOCOL;
-#define is_main_line(x)       ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x) ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8))
+#define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8))
+#define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5
 typedef std::function<void(TMsgData &Msg)> fp_msg;
@@ -224,10 +225,10 @@ class mb_cmu : public QObject {
    public:
     mb_cmu(BMS_PROTOCOL ver);
     ~mb_cmu();
-    virtual int Init();  //初始化
+    virtual int Init();  // 初始化
     int ReadALL();       //
-    int ReadCapData();   //读容量数据
-    int Close();         //释放资源
+    int ReadCapData();   // 读容量数据
+    int Close();         // 释放资源
    public:
     QHash<QString, qreal> mapData;
     QHash<QString, NodeReg> mapConfig;
@@ -273,9 +274,9 @@ class mb_cmu : public QObject {
     // 配置表
     BMS_PROTOCOL protocal_ver;
     bool stop;
-    bool stopDump;              //停止保存数据
-    vector<DataReg> reg_list_;  //读取表
-    vector<NodeReg> wr_list_;   //下发表
+    bool stopDump;              // 停止保存数据
+    vector<DataReg> reg_list_;  // 读取表
+    vector<NodeReg> wr_list_;   // 下发表
     int ReadAI();
     int ReadSOE();
     int JudgeReg(NodeReg &node_reg);

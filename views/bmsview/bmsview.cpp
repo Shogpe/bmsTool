@@ -77,7 +77,6 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     emit send_msg(msg);
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
-    qDebug() << ui->DataWidget->sizeHint();
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -509,6 +508,11 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             cb->setText(textList.at(CheckBoxList.indexOf(cb)));
         }
     }
+    if (is_parallel_balanced(this->mycmu->cmu_ver)) {
+        ui->BalnceStartDiff->setPrefix(tr("均衡目标电压"));
+    } else {
+        ui->BalnceStartDiff->setPrefix(tr("均衡启动差值"));
+    }
     if (mapData.contains("BalnceMask") && mapData.contains("BalanceConfig")) {
         ui->balanceStr->show();
         uint16_t mode = mapData.value("BalnceMask");
@@ -531,7 +535,6 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 str = QString("%1:%2").arg(tr("未定义"), str);
                 break;
         }
-
         ui->balanceStr->setText(str);
 
     } else if (mapData.contains("BalnceMask")) {
@@ -625,7 +628,6 @@ void BMSView::flushBmu() {
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     int cloumn_offset = 0;
     QTableWidgetItem* item;
-    qDebug() << mycmu->bms_data.MinUbmuId << mycmu->bms_data.MaxUbmuId;
     for (int i = 0; i < config.bmu_num; i++) {
         cloumn_offset = 0;
         // 版本号
@@ -650,7 +652,11 @@ void BMSView::flushBmu() {
         for (int j = 0; j < config.vol_num; j++) {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
-            item->setText(QString("%1").arg(val, 0, 'g', 5));
+            if (is_parallel_balanced(this->mycmu->cmu_ver)) {
+                item->setText(QString("%1\n%2").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
+            } else {
+                item->setText(QString("%1").arg(val, 0, 'g', 5));
+            }
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             QFont font = item->font();
             if (GET_BIT(mycmu->bmu_data[i].Ubreak, j)) {
@@ -751,10 +757,21 @@ void BMSView::flushBmu() {
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
-            item = new QTableWidgetItem();
-            item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc / 1000.0));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            if (is_parallel_balanced(this->mycmu->cmu_ver)) {
+                item = new QTableWidgetItem();
+                double max_bal_current = 0;
+                for (int k = 0; k < config.vol_num; k++) {
+                    max_bal_current += mycmu->bmu_data[i].BalIdc[k] / 1000.0;
+                }
+                item->setText(QString("%1").arg(max_bal_current));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            } else {
+                item = new QTableWidgetItem();
+                item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc[0] / 1000.0));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            }
             item = new QTableWidgetItem();
             item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));

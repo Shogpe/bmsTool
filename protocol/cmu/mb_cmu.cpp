@@ -182,7 +182,7 @@ void mb_cmu::Dump2Csv() {
             if (is_gender_balanced(protocal_ver)) {
                 val = this->bmu_data[i].BalU24 / 1000.0;
                 data_buf << (QString("%1,").arg(val));
-                val = this->bmu_data[i].BalIdc / 1000.0;
+                val = this->bmu_data[i].BalIdc[0] / 1000.0;
                 data_buf << (QString("%1,").arg(val));
                 data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
                 data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
@@ -376,12 +376,23 @@ int mb_cmu::ReadCapData() {
     int status = 0;
     if (config.bmu_num > 0) {
         // BMU 均衡电量
-        reg_num = config.bmu_num * 2 * config.vol_num;
-        status += ReadData(0x03, 0xA00 + config.bmu_num * 1, reg_num, p);
-        for (int i = 0; i < config.bmu_num; i++) {
-            for (int j = 0; j < config.vol_num; j++) {
-                bmu_data[i].BalChgAh[j] = *(p + i * 2 * config.vol_num + 2 * j);
-                bmu_data[i].BalDischgAh[j] = *(p + i * 2 * config.vol_num + 2 * j + 1);
+        if (is_parallel_balanced(this->cmu_ver)) {
+            reg_num = config.bmu_num * 2 * config.vol_num;
+            status += ReadData(0x04, 0xA00 + config.bmu_num * 1, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                for (int j = 0; j < config.vol_num; j++) {
+                    bmu_data[i].BalChgAh[j] = *(p + i * 2 * config.vol_num + 2 * j);
+                    bmu_data[i].BalDischgAh[j] = *(p + i * 2 * config.vol_num + 2 * j + 1);
+                }
+            }
+        } else {
+            reg_num = config.bmu_num * 2 * config.vol_num;
+            status += ReadData(0x03, 0xA00 + config.bmu_num * 1, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                for (int j = 0; j < config.vol_num; j++) {
+                    bmu_data[i].BalChgAh[j] = *(p + i * 2 * config.vol_num + 2 * j);
+                    bmu_data[i].BalDischgAh[j] = *(p + i * 2 * config.vol_num + 2 * j + 1);
+                }
             }
         }
     }
@@ -397,6 +408,13 @@ int mb_cmu::ReadALL() {
     int status = 0;
     status += ReadAI();
     if (status > 0) emit bmsDataReady(0, mapData);
+    // 版本号,优先读取,下文根据版本号采集不同地址
+    reg_num = config.bmu_num * 2 + 2;
+    status += ReadData(0x03, 0x500, reg_num, p);
+    this->cmu_ver = *(uint32_t*)(p);
+    for (int i = 0; i < config.bmu_num; i++) {
+        bmu_data[i].Version = *(uint32_t*)(p + 2 + i * 2);
+    }
     //
     if (config.bmu_num > 0) {
         reg_num = config.bmu_num * config.vol_num;
@@ -455,14 +473,29 @@ int mb_cmu::ReadALL() {
             bmu_data[i].ErrStat = *(p + i + 3 * config.bmu_num);
         }
         if (is_gender_balanced(protocal_ver)) {
-            reg_num = config.bmu_num * 5;  // 均衡状态等
-            status += ReadData(0x03, 0x900, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {
-                bmu_data[i].BalIdc = *(p + i * BALANCE_NUM);
-                bmu_data[i].BalU24 = *(p + i * BALANCE_NUM + 1);
-                bmu_data[i].BalErr = *(p + i * BALANCE_NUM + 2);
-                bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
-                bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
+            if (is_parallel_balanced(this->cmu_ver)) {
+                // 并充项目
+                reg_num = config.bmu_num * (4 + config.vol_num);  // 均衡状态等
+                status += ReadData(0x03, 0x900, reg_num, p);
+                for (int i = 0; i < config.bmu_num;i++) {
+                    for (int j = 0; j < config.vol_num; j++) {
+                        bmu_data[i].BalIdc[j] = *(p++);
+                    }
+                    bmu_data[i].BalU24 = *(p++);
+                    bmu_data[i].BalErr = *(p++);
+                    bmu_data[i].BalStat = *(p++);
+                    bmu_data[i].BalMode = *(p++);
+                }
+            } else {
+                reg_num = config.bmu_num * 5;  // 均衡状态等
+                status += ReadData(0x03, 0x900, reg_num, p);
+                for (int i = 0; i < config.bmu_num; i++) {
+                    bmu_data[i].BalIdc[0] = *(p + i * BALANCE_NUM);
+                    bmu_data[i].BalU24 = *(p + i * BALANCE_NUM + 1);
+                    bmu_data[i].BalErr = *(p + i * BALANCE_NUM + 2);
+                    bmu_data[i].BalStat = *(p + i * BALANCE_NUM + 3);
+                    bmu_data[i].BalMode = *(p + i * BALANCE_NUM + 4);
+                }
             }
         }
 
@@ -474,20 +507,22 @@ int mb_cmu::ReadALL() {
             }
         } else if (protocal_ver > CMUV3) {
             // 通信计数
-            reg_num = config.bmu_num * 1;
-            status += ReadData(0x03, 0xA00, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {
-                bmu_data[i].CanErr = *(p + i);
+            if (is_parallel_balanced(this->cmu_ver)) {
+                reg_num = config.bmu_num * 1;
+                status += ReadData(0x04, 0xA00, reg_num, p);
+                for (int i = 0; i < config.bmu_num; i++) {
+                    bmu_data[i].CanErr = *(p + i);
+                }
+            } else {
+                reg_num = config.bmu_num * 1;
+                status += ReadData(0x03, 0xA00, reg_num, p);
+                for (int i = 0; i < config.bmu_num; i++) {
+                    bmu_data[i].CanErr = *(p + i);
+                }
             }
         }
     }
-    // 版本号
-    reg_num = config.bmu_num * 2 + 2;
-    status += ReadData(0x03, 0x500, reg_num, p);
-    this->cmu_ver = *(uint32_t*)(p);
-    for (int i = 0; i < config.bmu_num; i++) {
-        bmu_data[i].Version = *(uint32_t*)(p + 2 + i * 2);
-    }
+
     emit bmuDataReady();
     return status;
 }

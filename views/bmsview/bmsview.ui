@@ -25,6 +25,9 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
+  <property name="toolTip">
+   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;请按硬件功能手动选择CMU协议版本；&lt;/p&gt;&lt;p&gt;1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点&lt;/p&gt;&lt;p&gt;2. CMU4.0 新增适配主动均衡；&lt;/p&gt;&lt;p&gt;3. CMU4.6 新增风机转速的读取及风机转速设置控制；&lt;/p&gt;&lt;p&gt;4. CMU4.8 新增绝缘数据点；&lt;/p&gt;&lt;p&gt;如出现通信断连情况或无所需数据点，请尝试更换协议版本。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+  </property>
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
@@ -116,11 +119,7 @@
       <item>
        <widget class="QComboBox" name="cbProtocol">
         <property name="toolTip">
-         <string>请按硬件功能手动选择CMU协议版本；
-1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点
-2. CMU4.0 新增适配主动均衡；
-3. CMU4.8 新增绝缘数据点；
-如出现通信断连情况或无所需数据点，请尝试更换协议版本。</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;请按硬件功能手动选择CMU协议版本；&lt;/p&gt;&lt;p&gt;1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点&lt;/p&gt;&lt;p&gt;2. CMU4.0 新增适配主动均衡；&lt;/p&gt;&lt;p&gt;3. CMU4.6 新增风机转速的读取及风机转速设置控制；&lt;/p&gt;&lt;p&gt;4. CMU4.8 新增绝缘数据点；&lt;/p&gt;&lt;p&gt;如出现通信断连情况或无所需数据点，请尝试更换协议版本。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
@@ -257,7 +256,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -7533,6 +7532,32 @@
             </property>
             <property name="text">
              <string>QF控制分闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="6">
+           <widget class="QPushButton" name="btnHeRongON">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>开启核容功能</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="7">
+           <widget class="QPushButton" name="btnHeRongOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>关闭核容功能</string>
             </property>
            </widget>
           </item>

@@ -115,6 +115,9 @@ typedef enum {
 #define MB_IO_UNLOCK 0xA5B6
 #define MB_IO_LOCK   0x0
 
+
+
+
 #define ADDR_CLEAR_SOE 0xFFF8
 #define MB_CLR_SOE     0xAA55
 #define MB_CLR_ALL_SOE 0xBB66
@@ -130,6 +133,8 @@ typedef enum {
 #define ADDR_CTRL_FAN 0xFF04
 #define ADDR_CTRL_AC  0xFF05
 #define ADDR_CTRL_RES 0xFF06
+#define ADDR_CTRL_HR  0xFFF7
+
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间
@@ -163,6 +168,7 @@ typedef struct {
     uint16_t CanErr;              // 通信错误计数
     uint16_t BalChgAh[MAX_U];     // 充电均衡Ah
     uint16_t BalDischgAh[MAX_U];  // 放电均衡Ah
+    uint8_t  FanSpeed;            // 风扇转速
 } BMU_DATA_T;
 typedef struct {
     uint16_t MaxUbmuId;  // 最大单体电压BMU ID
@@ -209,10 +215,11 @@ typedef enum {
     CMUV4,    // 主动均衡
     CMUV4_1,  // 主动均衡-对外
     CMUV4_8,  // 主动均衡-绝缘
-    CMUV3_1,
+    CMUV3_1, 
+    CMUV4_6,
 } BMS_PROTOCOL;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8)|| (x == CMUV4_6))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5

@@ -36,6 +36,8 @@ class BMSView : public QWidget {
     SOEModel m_model;
     QSettings* settings;
     QMenu* update_menu;
+    bool rtu_enable = false;
+    QMap<int,uint8_t>fan_Speed_map;
 
     frmBalanceBox* inputBalance = nullptr;
     frmbalanceConfig* configBalance = nullptr;

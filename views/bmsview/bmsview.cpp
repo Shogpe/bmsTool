@@ -54,6 +54,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
 
     ui->cbProtocol->addItem("CMU4.0", 3);
     //    ui->cbProtocol->addItem("CMU4.1", 4);
+    ui->cbProtocol->addItem("CMU4.6", 7);
     ui->cbProtocol->addItem("CMU4.8", 5);
     for (int i = 0; i < ui->cbProtocol->count(); i++) {
         if (protocol == ui->cbProtocol->itemText(i)) {
@@ -165,7 +166,12 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
     } else if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
-        hdr_list.append(tr("风机"));
+        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            hdr_list.append(tr("风机转速"));
+        }else{
+            hdr_list.append(tr("风机"));
+        }
+
         hdr_list.append(tr("母线电压(V)"));
         hdr_list.append(tr("均衡电流(A)"));
         hdr_list.append(tr("均衡故障"));
@@ -189,7 +195,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
 
     // 定值显示和隐藏
-    QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
+    QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();    
     foreach (InputBox* dspbox, dspboxs) {
         dspbox->hide();
         if (mapData.contains(dspbox->objectName())) {
@@ -748,8 +754,12 @@ void BMSView::flushBmu() {
 
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             item = new QTableWidgetItem();
-            QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
-            item->setText(fanStatus);
+            if(this->mycmu->GetProtocalVer() == CMUV4_6){
+                item->setText(QString("%1").arg(mycmu->bmu_data[i].FanSpeed));
+            }else{
+                QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
+                item->setText(fanStatus);
+            }
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
 
@@ -864,6 +874,8 @@ static map<QString, mb_cmd> btnMap = {
     {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
     //                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
     //                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+    {"btnHeRongON", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_ON}},
+    {"btnHeRongOFF", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_OFF}},
     {"btnAcON", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_ON}},
     {"btnAcOFF", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_OFF}},
     {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
@@ -1641,6 +1653,69 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
             MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
+        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            myMenu->addAction(tr("使能RTU风扇控制"), this, [this, index]() {
+                TMsgData MsgCmd;
+                MsgCmd.msg_type = CTRL_AO_ADDR;
+                uint16_t val[2] = {0xFF0D, 0xAA55};
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                rtu_enable = true;
+            });
+            myMenu->addAction(tr("禁能RTU风扇控制"), this, [this, index]() {
+                TMsgData MsgCmd;
+                MsgCmd.msg_type = CTRL_AO_ADDR;
+                uint16_t val[2] = {0xFF0D, 0x55AA};
+                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
+                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                rtu_enable = false;
+            });
+            myMenu->addAction(QString("%1:BMU%2").arg(tr("设置转速")).arg(index.row() + 1), this, [this, index]() {
+                TMsgData MsgCmd;
+                MsgCmd.msg_type = CTRL_AO_ADDR;
+
+                if(!rtu_enable){
+                    myHelper::ShowMessageBoxError(tr("请先使能RTU风扇控制"));
+                }else{
+                    int bmuNum = index.row() + 1;
+                    uint8_t speed;
+                    bool block = true;
+
+                    speed = myHelper::showInputBox(tr("风扇转速(0-100)"),block).toUInt();
+                    if(0 <= speed && speed <= 100){
+                        uint16_t temp = 0;
+                        // 修改奇数号bmu风扇转速
+                        if((bmuNum%2) == 1){
+                            temp = speed<<8;
+                            // 判断偶数号bmu风扇转速是否有修改记录
+                            if(fan_Speed_map.contains(bmuNum+1)){
+                                temp |= fan_Speed_map[bmuNum+1];
+                            }
+                        }else{
+                            temp = speed;
+                            // 判断奇数号bmu风扇转速是否有修改记录
+                            if(fan_Speed_map.contains(bmuNum-1)){
+                                temp |= fan_Speed_map[bmuNum-1]<<8;
+                            }
+                        }
+
+                        uint16_t val[2] = {0, 0};
+                        if((bmuNum%2) == 1){
+                            val[0] = 0xFF0E+(bmuNum+1)/2-1;
+                        }else{
+                            val[0] = 0xFF0E+bmuNum/2-1;
+                        }
+
+                        val[1] = temp;
+                        MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+                        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                    }else{
+                        myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
+                    }
+                }
+            });
+        }
+
         myMenu->move(cursor().pos());
         myMenu->show();
         myMenu->setAttribute(Qt::WA_DeleteOnClose);

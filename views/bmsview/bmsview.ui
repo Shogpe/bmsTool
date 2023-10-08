@@ -256,7 +256,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -695,7 +695,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string/>
+                 <string>RTU风扇使能</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -714,7 +714,7 @@
                  <enum>QFrame::Box</enum>
                 </property>
                 <property name="text">
-                 <string/>
+                 <string>RTU核容使能</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

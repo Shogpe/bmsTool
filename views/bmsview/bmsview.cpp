@@ -369,7 +369,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                   << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         QStringList textList;
-        textList << tr("IO解锁") << tr("绝缘检测") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("")
+        textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("") << tr("") << tr("") << tr("")
                  << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0

@@ -499,7 +499,7 @@ int mb_cmu::ReadALL() {
             }
 
             if(protocal_ver == CMUV4_6){
-                reg_num = config.bmu_num/2 +1;
+                reg_num = config.bmu_num/2 +config.bmu_num%2;
                 status += ReadData(0x04, 0x156A, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
                     // 获取奇数bmu风扇转速（从1计数）

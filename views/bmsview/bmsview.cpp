@@ -56,6 +56,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     //    ui->cbProtocol->addItem("CMU4.1", 4);
     ui->cbProtocol->addItem("CMU4.6", 7);
     ui->cbProtocol->addItem("CMU4.8", 5);
+    ui->cbProtocol->addItem("CMU4.9", 8);
     for (int i = 0; i < ui->cbProtocol->count(); i++) {
         if (protocol == ui->cbProtocol->itemText(i)) {
             ui->cbProtocol->setCurrentIndex(i);
@@ -166,7 +167,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->blockSignals(false);
         ui->BalnceStart->setContextMenuPolicy(Qt::NoContextMenu);
     } else if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
-        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+        if(this->mycmu->GetProtocalVer() == CMUV4_6 || this->mycmu->GetProtocalVer() == CMUV4_9){
             hdr_list.append(tr("风机转速"));
         }else{
             hdr_list.append(tr("风机"));
@@ -754,7 +755,7 @@ void BMSView::flushBmu() {
 
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             item = new QTableWidgetItem();
-            if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            if(this->mycmu->GetProtocalVer() == CMUV4_6||this->mycmu->GetProtocalVer() == CMUV4_9){
                 item->setText(QString("%1").arg(mycmu->bmu_data[i].FanSpeed));
             }else{
                 QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
@@ -1653,7 +1654,7 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
             MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         });
-        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+        if(this->mycmu->GetProtocalVer() == CMUV4_6 || this->mycmu->GetProtocalVer() == CMUV4_9){
             myMenu->addAction(tr("使能RTU风扇控制"), this, [this, index]() {
                 TMsgData MsgCmd;
                 MsgCmd.msg_type = CTRL_AO_ADDR;

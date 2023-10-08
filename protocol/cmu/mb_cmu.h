@@ -217,9 +217,10 @@ typedef enum {
     CMUV4_8,  // 主动均衡-绝缘
     CMUV3_1, 
     CMUV4_6,
+    CMUV4_9,
 } BMS_PROTOCOL;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8)|| (x == CMUV4_6))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8)|| (x == CMUV4_6)|| (x == CMUV4_9))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5

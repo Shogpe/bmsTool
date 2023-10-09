@@ -1700,6 +1700,8 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
                             }
                         }
 
+                        fan_Speed_map[bmuNum] = speed;
+
                         uint16_t val[2] = {0, 0};
                         if((bmuNum%2) == 1){
                             val[0] = 0xFF0E+(bmuNum+1)/2-1;

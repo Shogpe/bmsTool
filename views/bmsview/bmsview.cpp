@@ -768,21 +768,24 @@ void BMSView::flushBmu() {
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
-            if (is_parallel_balanced(this->mycmu->cmu_ver)) {
-                item = new QTableWidgetItem();
+
+            item = new QTableWidgetItem();
+            if(this->mycmu->GetProtocalVer() == CMUV4_6){
+                item->setText(QString("%1").arg((float)mycmu->bmu_data[i].BalI48/1000));
+            }
+            else if (is_parallel_balanced(this->mycmu->cmu_ver)) {
                 double max_bal_current = 0;
                 for (int k = 0; k < config.vol_num; k++) {
                     max_bal_current += mycmu->bmu_data[i].BalIdc[k] / 1000.0;
                 }
                 item->setText(QString("%1").arg(max_bal_current));
-                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
             } else {
                 item = new QTableWidgetItem();
-                item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc[0] / 1000.0));
-                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc[0] / 1000.0));           
             }
+            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+            ui->tableBMU->setItem(i, cloumn_offset++, item);
+
             item = new QTableWidgetItem();
             item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));

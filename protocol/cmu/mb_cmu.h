@@ -164,6 +164,7 @@ typedef struct {
     uint16_t BalErr;              // 通道故障(闭锁)状态
     uint16_t BalU24;              // 均衡24V电压
     int16_t BalIdc[MAX_U];        // 均衡DC电流
+    uint16_t BalI48;              // 均衡48V电流
     uint16_t BalMode;             // 均衡模式+电流
     uint16_t CanErr;              // 通信错误计数
     uint16_t BalChgAh[MAX_U];     // 充电均衡Ah

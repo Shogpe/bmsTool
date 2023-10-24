@@ -8,8 +8,8 @@
 #include "downloadmanager.h"
 #include "myhelper.h"
 #include "version.h"
-static char url1[] = "https://gitee.com/lganing/demo/raw/master/uploads/";
-static char url2[] = "https://leeginger.coding.net/p/autoUpdate/d/autoUpdate/git/raw/master/";
+const QString url_gitee = QString("https://gitee.com/lganing/demo/raw/master/uploads/") + VER_FILEDESCRIPTION_STR + ".json";
+const QString url_coding = QString("https://leeginger.coding.net/p/autoUpdate/d/autoUpdate/git/raw/master/") + VER_FILEDESCRIPTION_STR + ".json";
 
 AppInit *AppInit::self = nullptr;
 AppInit *AppInit::Instance() {
@@ -41,6 +41,7 @@ void AppInit::start() {
     qDebug() << setLocale;
     myHelper::SetAppValue("locale", setLocale);
     myHelper::SetTranslation(setLocale);
+    updateCheck(url_gitee);
 }
 static int CompareVersion(QString curVer, QString chkVer) {
     if (!curVer.compare(chkVer)) {
@@ -55,8 +56,8 @@ void AppInit::replyFinished(QNetworkReply *reply)  // 当回复结束后
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "upgrade Error";
         // 请求错误时二次检查
-        if (reply->request().url().toString() == url2) return;
-        updateCheck(url2);
+        if (reply->request().url().toString().contains("coding.net")) return;
+        updateCheck(url_coding);
     }
     // 请求返回的结果
     QByteArray responseByte = reply->readAll();
@@ -99,13 +100,13 @@ void AppInit::replyFinished(QNetworkReply *reply)  // 当回复结束后
             qDebug() << "error, shoud json object";
         }
     } else {
-        qDebug() << "error:" << jsonpe.errorString();
+        qDebug() << "error: reply " << jsonpe.errorString();
     }
 }
 
 void AppInit::updateCheck(const QString orgin) {
     QString url = orgin;
-    if (url.isEmpty()) url = url1;
+    if (url.isEmpty()) url = url_gitee;
     url += (QString(VER_FILEDESCRIPTION_STR) + ".json");
     qDebug() << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString()
              << QSslSocket::sslLibraryVersionString();

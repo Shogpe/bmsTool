@@ -30,16 +30,30 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         emit workFinished(0, tr("Connect Err"));
         return;
     }
+    // 查询当前版本定制单
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    QList<db_manager::ST_DB_NODE> nodes_table;
+    uint protocal_ver = 3;
+    if (g_proto_map.contains(protocol)) {
+        protocal_ver = g_proto_map.value(protocol);
+    }
+    db_manager::Instance()->getNode(nodes_table, protocal_ver);
     vector<MB_NODE> tab_config;
     tab_config.clear();
-    MB_NODE* node_table = cmu_v4_config;
-    int node_table_size = cmu_v4_config_len;
 
-    for (int i = 0; i < node_table_size; i++) {
-        if (node_table[i].val_type != 129) continue;
-        if (!setMap.contains(node_table[i].name)) continue;
-        node_table[i].index = tab_config.size();
-        tab_config.push_back(node_table[i]);
+    for (int i = 0; i < nodes_table.size(); i++) {
+        if (nodes_table.at(i).val_type != 129) continue;
+        if (!setMap.contains(nodes_table.at(i).node_name)) continue;
+        MB_NODE tmp;
+        tmp.index = tab_config.size();
+        strncpy(tmp.name, nodes_table.at(i).node_name.toStdString().c_str(), 64);
+        tmp.reg_type = nodes_table.at(i).reg_type;
+        tmp.reg_addr = nodes_table.at(i).reg_addr;
+        tmp.data_type = nodes_table.at(i).data_type;
+        tmp.val_type = nodes_table.at(i).val_type;
+        tmp.factor = nodes_table.at(i).factor;
+
+        tab_config.push_back(tmp);
     }
     m_mbtcp->init_config(tab_config);
 
@@ -115,22 +129,30 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         emit workFinished(0, tr("Connect Err"));
         return;
     }
-    vector<MB_NODE> tab_config;
-    tab_config.clear();
-    MB_NODE* node_table = cmu_v4_config;
-    int node_table_size = cmu_v4_config_len;
-
-    for (int i = 0; i < node_table_size; i++) {
-        if (node_table[i].val_type != 129) continue;
-        if (!setMap.contains(node_table[i].name)) continue;
-        node_table[i].index = tab_config.size();
-        tab_config.push_back(node_table[i]);
+    // 查询当前版本定制单
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    QList<db_manager::ST_DB_NODE> nodes_table;
+    uint protocal_ver = 3;
+    if (g_proto_map.contains(protocol)) {
+        protocal_ver = g_proto_map.value(protocol);
     }
+    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+    vector<db_manager::ST_DB_NODE> tab_config;
+    tab_config.clear();
+
+    for (int i = 0; i < nodes_table.size(); i++) {
+        db_manager::ST_DB_NODE tmp = nodes_table.at(i);
+        if (tmp.val_type != 129) continue;
+        if (!setMap.contains(tmp.node_name)) continue;
+        tmp.node_id = tab_config.size();
+        tab_config.push_back(tmp);
+    }
+
     int ok_count = 0;
     for (uint i = 0; i < tab_config.size(); i++) {
-        if (setMap.contains(tab_config.at(i).name)) {
+        if (setMap.contains(tab_config.at(i).node_name)) {
             uint16_t addr = tab_config.at(i).reg_addr;
-            double_t dval = setMap.value(tab_config.at(i).name);
+            double_t dval = setMap.value(tab_config.at(i).node_name);
             uint16_t val = tab_config.at(i).factor == 0
                                ? uint16_t(dval)
                                : static_cast<uint16_t>(std::round(dval / tab_config.at(i).factor));
@@ -138,7 +160,7 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
             if (m_mbtcp->write_ao(addr, val) > 0) {
                 ok_count++;
             } else {
-                qWarning() << QString("%1(%2) set %3 failed.").arg(tab_config.at(i).name).arg(addr).arg(dval);
+                qWarning() << QString("%1(%2) set %3 failed.").arg(tab_config.at(i).node_name).arg(addr).arg(dval);
             }
         }
     };
@@ -353,12 +375,12 @@ void scan_settings::checkServer() {
     if (ipAddr != "192.168.1.230") {
         QString network_cmd = "ping 192.168.1.230 -n 1 -w 1000";
         QString result;
-        QProcess network_process;                                                  //不要加this
-        network_process.start(network_cmd);                                        //调用ping 指令
-        network_process.waitForFinished();                                         //等待指令执行完毕
-        result = network_process.readAll();                                        //获取指令执行结果
-                                                                                   //        qDebug() << result;
-        if (result.contains(QString("TTL=")) || result.contains(QString("ttl=")))  //若包含TTL=字符串则认为网络在线
+        QProcess network_process;                                                  // 不要加this
+        network_process.start(network_cmd);                                        // 调用ping 指令
+        network_process.waitForFinished();                                         // 等待指令执行完毕
+        result = network_process.readAll();                                        // 获取指令执行结果
+                                                                                   //         qDebug() << result;
+        if (result.contains(QString("TTL=")) || result.contains(QString("ttl=")))  // 若包含TTL=字符串则认为网络在线
         {
             emit checkRespond(1);
         } else {
@@ -481,7 +503,7 @@ void scan_settings::uiInit() {
                << "Value";
     m_para_model->setHorizontalHeaderLabels(headerList);
     tableView->verticalHeader()->setVisible(false);
-    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  //选中行
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  // 选中行
     tableView->horizontalHeader()->setStretchLastSection(true);
 
     //
@@ -502,7 +524,7 @@ void scan_settings::uiInit() {
                << "Result";
     m_result_model->setHorizontalHeaderLabels(resultList);
     tableView->verticalHeader()->setVisible(false);
-    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  //选中行
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);  // 选中行
     tableView->horizontalHeader()->setStretchLastSection(true);
 
     //
@@ -550,15 +572,15 @@ void scan_settings::loadXml() {
         return;
     }
     file.close();
-    QDomElement root = doc.documentElement();  //返回根节点
-    QDomNode node = root.firstChild();         //获得第一个子节点
+    QDomElement root = doc.documentElement();  // 返回根节点
+    QDomNode node = root.firstChild();         // 获得第一个子节点
     QList<ST_PARA> plist;
     QMap<QString, ST_PARA> data_map;
-    while (!node.isNull())  //如果节点不空
+    while (!node.isNull())  // 如果节点不空
     {
-        if (node.isElement())  //如果节点是元素
+        if (node.isElement())  // 如果节点是元素
         {
-            QDomElement e = node.toElement();  //转换为元素，注意元素和节点是两个数据结构，其实差不多
+            QDomElement e = node.toElement();  // 转换为元素，注意元素和节点是两个数据结构，其实差不多
             if ((e.attribute("name") != nullptr) && (e.attribute("name_cn") != nullptr)) {
                 ST_PARA p;
                 p.name = e.attribute("name_cn").toStdString();
@@ -567,7 +589,7 @@ void scan_settings::loadXml() {
                 data_map[e.attribute("name")] = p;
             }
         }
-        node = node.nextSibling();  //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
+        node = node.nextSibling();  // 下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
     // 排序数据点
@@ -589,7 +611,9 @@ void scan_settings::loadXml() {
 
 void scan_settings::on_btnWrite_released() {
     m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[val.name_cn] = val.val; }
+    foreach (auto val, m_para_model->GetData()) {
+        m_setMap[val.name_cn] = val.val;
+    }
     if (m_setMap.size() == 0) {
         myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
         return;
@@ -741,7 +765,9 @@ void scan_settings::on_btnUpload_released() {
  */
 void scan_settings::on_btnTest_released() {
     m_setMap.clear();
-    foreach (auto val, m_para_model->GetData()) { m_setMap[val.name_cn] = val.val; }
+    foreach (auto val, m_para_model->GetData()) {
+        m_setMap[val.name_cn] = val.val;
+    }
     if (m_setMap.size() == 0) {
         myHelper::ShowMessageBoxError(tr("定值为空，放弃操作！"));
         return;

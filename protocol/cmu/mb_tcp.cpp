@@ -60,6 +60,36 @@ int mb_tcp::init_config(vector<MB_NODE>& tab_config) {
     return 0;
 }
 
+int mb_tcp::init_config(vector<db_manager::ST_DB_NODE>& tab_config) {
+    qDebug() << "init config";
+    NodeReg node_reg_tmp;
+    reg_list_.clear();
+    wr_list_.clear();
+    int index = -1;
+    ST_NODE_DATA tmp_data;
+    tmp_data.sysData.val.f64 = 0;
+    tab_data.clear();
+    name_map.clear();
+    int node_index = 0;
+    for (vector<db_manager::ST_DB_NODE>::iterator node_iter = tab_config.begin(); node_iter != tab_config.end(); node_iter++) {
+        node_reg_tmp.default_val = 0;
+        if (node_iter->reg_type > NONE_REG) {
+            node_reg_tmp.reg_type = node_iter->reg_type;
+            node_reg_tmp.reg_addr = node_iter->reg_addr;
+            node_reg_tmp.data_type = node_iter->data_type;
+            node_reg_tmp.index = node_index++;
+            node_reg_tmp.factor = node_iter->factor;
+            if ((index = JudgeReg(node_reg_tmp)) != -1) {
+                InsertReg(node_reg_tmp, index);
+            } else {
+                NewReg(node_reg_tmp);
+            }
+        }
+        tab_data.push_back(tmp_data);
+        name_map[node_iter->node_name.toStdString()] = node_reg_tmp;
+    }
+    return 0;
+}
 /*
  * 读取数据
  **/

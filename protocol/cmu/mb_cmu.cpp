@@ -8,7 +8,10 @@
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
 const QString recPath = "Rec";
 const QString dataPath = "Data";
-
+QHash<QString, uint> g_proto_map = {
+    {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
+    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},
+};
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
     csvfile = nullptr;
@@ -477,7 +480,7 @@ int mb_cmu::ReadALL() {
                 // 并充项目
                 reg_num = config.bmu_num * (4 + config.vol_num);  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
-                for (int i = 0; i < config.bmu_num;i++) {
+                for (int i = 0; i < config.bmu_num; i++) {
                     for (int j = 0; j < config.vol_num; j++) {
                         bmu_data[i].BalIdc[j] = *(p++);
                     }
@@ -498,24 +501,24 @@ int mb_cmu::ReadALL() {
                 }
             }
 
-            if(protocal_ver == CMUV4_6){
+            if (protocal_ver == CMUV4_6) {
                 reg_num = config.bmu_num;  // 均衡母线电流
                 status += ReadData(0x03, 0xBB8, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
                     bmu_data[i].BalI48 = *(p + i);
                 }
             }
-            if(protocal_ver == CMUV4_6||protocal_ver == CMUV4_9){
-                reg_num = config.bmu_num/2 +config.bmu_num%2;
+            if (protocal_ver == CMUV4_6 || protocal_ver == CMUV4_9) {
+                reg_num = config.bmu_num / 2 + config.bmu_num % 2;
                 status += ReadData(0x04, 0x156A, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
                     // 获取奇数bmu风扇转速（从1计数）
-                    if((i+1)%2 == 1){
-                        bmu_data[i].FanSpeed = *(p + (i+1+1)/2-1);
+                    if ((i + 1) % 2 == 1) {
+                        bmu_data[i].FanSpeed = *(p + (i + 1 + 1) / 2 - 1);
                     }
                     // 获取偶数bmu风扇转速（从2计数）
-                    else{
-                        bmu_data[i].FanSpeed = (*(p + (i+1)/2-1))>>8;
+                    else {
+                        bmu_data[i].FanSpeed = (*(p + (i + 1) / 2 - 1)) >> 8;
                     }
                 }
             }

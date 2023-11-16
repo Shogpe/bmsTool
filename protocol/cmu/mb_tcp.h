@@ -7,6 +7,8 @@
 #include "modbus-version.h"
 #include "modbus.h"
 #include "node_conf.h"
+#include "db_manager.h"
+
 using namespace std;
 
 class mb_tcp : public QObject {
@@ -20,6 +22,7 @@ class mb_tcp : public QObject {
     mb_tcp(QString ip, uint16_t port, uint8_t addr = 1);
     ~mb_tcp();
     int init_config(vector<MB_NODE> &tab_config);  //初始化
+    int init_config(vector<db_manager::ST_DB_NODE>& tab_config);
     vector<ST_NODE_DATA> ReadALL();                //
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);

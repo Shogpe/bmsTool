@@ -268,6 +268,7 @@ void MainUI::menuClick()  // 切换语言
         qDebug() << "set eng";
         myHelper::SetAppValue("Locale", b->objectName());
         myHelper::SetTranslation(b->objectName());
+        myHelper::ShowMessageBoxInfo(tr("restart software to take effect!"));
     } else if (b->objectName() == "User Manual") {
         if (!QDesktopServices::openUrl(QUrl::fromLocalFile("User Manual.pdf"))) {
             myHelper::ShowMessageBoxError("open User Manual docment failed!Please install pdf reader.");

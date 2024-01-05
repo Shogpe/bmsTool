@@ -888,12 +888,14 @@ int mb_cmu::ReadAI() {
                  data_iter++) {
                 if (this->nodes_table.size() > data_iter->index) {
                     qreal value = 0;
-                    if (data_iter->data_type == 514) {
+                    if (data_iter->data_type == 514) { // 0x202
                         value = tab_buf[data_iter->offset] * data_iter->factor;
-                    } else if (data_iter->data_type == 513) {
+                    } else if (data_iter->data_type == 513) { // 0x201
                         value = (int16_t)tab_buf[data_iter->offset] * data_iter->factor;
-                    } else if (data_iter->data_type == 17410) {
-                        value = MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset) * data_iter->factor;
+                    } else if (data_iter->data_type == 17410) { // 0x4402
+                        value = ((uint32_t)MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset)) * data_iter->factor;
+                    } else if (data_iter->data_type == 17409) { // 0x4401
+                        value = ((int32_t)MODBUS_GET_INT32_FROM_INT16_SWAP(tab_buf, data_iter->offset)) * data_iter->factor;
                     } else {
                         value = tab_buf[data_iter->offset] * data_iter->factor;
                     }

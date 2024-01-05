@@ -174,12 +174,12 @@ void MainUI::initForm() {
         title_menu->actions().constLast()->setObjectName("Rec Convert");
         title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("Maintenance Tool");
-        if (db_manager::Instance()->userName() == "Ganing") {
+//        if (db_manager::Instance()->userName() == "Ganing") {
             title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
             title_menu->actions().constLast()->setObjectName("DataLog");
             title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
             title_menu->actions().constLast()->setObjectName("BmsView");
-        }
+//        }
     }
 
     if (QFileInfo("User Manual.pdf").isFile()) {

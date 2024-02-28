@@ -131,7 +131,7 @@ typedef enum {
 #define ADDR_CTRL_AC  0xFF05
 #define ADDR_CTRL_RES 0xFF06
 #define ADDR_CTRL_HR  0xFFF7
-
+#define ADDR_CTRL_FINDADDR 0xFFDC
 //
 typedef struct {
     uint64_t soe_time;   // 事件时间
@@ -153,16 +153,22 @@ typedef struct {
     uint16_t MaxTcellId;          // 最大单体温度ID
     uint16_t MinTcellId;          // 最大单体温度ID
     uint16_t Ubreak;              // 电压断线
+    uint64_t U64break;            // 液冷电压断线
     uint16_t Tbreak;              // 温度断线
+    uint64_t T64break;            // 液冷温度断线
     uint16_t RunStat;             // 运行状态
     uint16_t ErrStat;             // 故障状态
     uint32_t Version;             // 版本号
     uint16_t BalStat;             // 均衡状态
+    uint64_t U64BalStat;          // 液冷均衡状态
+
     uint16_t BalErr;              // 通道故障(闭锁)状态
+    uint64_t U64BalErr;           // 液冷通道故障(闭锁)状态
     uint16_t BalU24;              // 均衡24V电压
     int16_t BalIdc[MAX_U];        // 均衡DC电流
     uint16_t BalI48;              // 均衡48V电流
     uint16_t BalMode;             // 均衡模式+电流
+    int16_t  BalCur;              // 液冷均衡母线电流
     uint16_t CanErr;              // 通信错误计数
     uint16_t BalChgAh[MAX_U];     // 充电均衡Ah
     uint16_t BalDischgAh[MAX_U];  // 放电均衡Ah
@@ -216,9 +222,10 @@ typedef enum {
     CMUV3_1,
     CMUV4_6,
     CMUV4_9,
+    CMUV4_10,// 主动均衡-液冷
 } BMS_PROTOCOL;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5
@@ -257,7 +264,11 @@ class mb_cmu : public QObject {
     void Dump2CsvTitle();
     void Dump2Csv();
     QString GetBitStatus(uint16_t status);
+    QString GetBitStatus(uint64_t status);
     QString GetBalanceValue(uint16_t status);
+    QString GetBalanceValue(uint16_t status,int16_t cur);
+    QString GetBalanceValue(uint64_t status,int16_t *cur);
+
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
     NodeReg GetNodeAddr(QString name);
    public slots:

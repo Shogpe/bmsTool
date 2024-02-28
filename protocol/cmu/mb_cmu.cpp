@@ -10,7 +10,7 @@ const QString recPath = "Rec";
 const QString dataPath = "Data";
 QHash<QString, uint> g_proto_map = {
     {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
-    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},
+    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
 };
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
@@ -55,6 +55,17 @@ QString mb_cmu::GetBitStatus(uint16_t status) {
     //    if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
     return statusList.join("|");
 }
+
+QString mb_cmu::GetBitStatus(uint64_t status)
+{
+    QStringList statusList;
+    for (int i = 0; i < 64; ++i) {
+        if((status>>i)&0x01){
+            statusList << QString("%1").arg(i+1);
+        }
+    }
+    return statusList.join("|");
+}
 // 0:停止均衡;0x55:强制;0xAA:自动;0x88:手动
 
 enum BALANCE_MODE {
@@ -84,6 +95,47 @@ QString mb_cmu::GetBalanceValue(uint16_t status) {
             break;
     }
     return QString("ERR:%1").arg(QString::number(mode));
+}
+
+QString mb_cmu::GetBalanceValue(uint16_t status, int16_t cur)
+{
+    uint16_t mode = status;
+    double Ib = cur;
+    Ib *= 0.001;
+    switch (mode) {
+        case BALANCE_STOP:
+            return "STOP";
+            break;
+        case BALANCE_FORCE:
+            return QString("FORCE:%1 A").arg(QString::number(Ib));
+            break;
+        case BALANCE_AUTO:
+            return QString("AUTO:%1 A").arg(QString::number(Ib));
+            break;
+        case BALANCE_MANUAL:
+            return QString("MANUAL:%1 A").arg(QString::number(Ib));
+            break;
+        default:
+            break;
+    }
+    return QString("ERR:%1").arg(QString::number(mode));
+}
+
+QString mb_cmu::GetBalanceValue(uint64_t status, int16_t *cur)
+{
+    QStringList statusList = {"","","",""};
+    QString str;
+    double Cur;
+
+    for (int i = 0; i < 64; ++i) {              
+        if((status>>i)&0x01){
+            int index = i/(config.vol_num/4);
+            Cur = cur[index] * 0.001;
+            str = tr("CH:%1 Cur:").arg(i+1) + QString::number(Cur,'f',1) + "A";
+            statusList[index] = str;
+        }
+    }
+    return statusList.join("|");
 }
 void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
@@ -127,7 +179,14 @@ void mb_cmu::Dump2CsvTitle() {
         }
         if (protocal_ver > CMUV3) {
             data_buf << (QString("BMU%1_母线电压,").arg(i + 1));
-            data_buf << (QString("BMU%1_均衡电流,").arg(i + 1));
+            if(protocal_ver != CMUV4_10){
+                data_buf << (QString("BMU%1_均衡电流,").arg(i + 1));
+            }else{
+                data_buf << (QString("BMU%1_模组A均衡电流,").arg(i + 1));
+                data_buf << (QString("BMU%1_模组B均衡电流,").arg(i + 1));
+                data_buf << (QString("BMU%1_模组C均衡电流,").arg(i + 1));
+                data_buf << (QString("BMU%1_模组D均衡电流,").arg(i + 1));
+            }
             data_buf << (QString("BMU%1_均衡故障,").arg(i + 1));
             data_buf << (QString("BMU%1_通道状态,").arg(i + 1));
             data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
@@ -170,29 +229,69 @@ void mb_cmu::Dump2Csv() {
             }
 
             // 20220115添加
+            double val = 0;
+            uint64_t u64val = 0;
             // 状态量个数，电压断线+温度断线+运行状态+故障状态
-            double val = this->bmu_data[i].Ubreak;
-            data_buf << (QString("%1,").arg(val));
-            val = this->bmu_data[i].Tbreak;
-            data_buf << (QString("%1,").arg(val));
+            if (protocal_ver != CMUV4_10){
+                val = this->bmu_data[i].Ubreak;
+            }else{
+                val = this->bmu_data[i].U64break;
+            }
+            u64val = val;
+            data_buf << (QString("0x%1,").arg(u64val,0,16));
+
+
+            if (protocal_ver != CMUV4_10){
+                val = this->bmu_data[i].Tbreak;
+            }else{
+                val = this->bmu_data[i].T64break;
+            }
+            u64val = val;
+            data_buf << (QString("0x%1,").arg(u64val,0,16));
+
             val = this->bmu_data[i].RunStat;
-            data_buf << (QString("%1,").arg(val));
+            u64val = val;
+            data_buf << (QString("0x%1,").arg(u64val,4,16,QChar('0')));
             val = this->bmu_data[i].ErrStat;
-            data_buf << (QString("%1,").arg(val));
+            u64val = val;
+            data_buf << (QString("0x%1,").arg(u64val,4,16,QChar('0')));
             if (protocal_ver > CMUV2) {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }
             if (is_gender_balanced(protocal_ver)) {
-                val = this->bmu_data[i].BalU24 / 1000.0;
-                data_buf << (QString("%1,").arg(val));
-                val = this->bmu_data[i].BalIdc[0] / 1000.0;
-                data_buf << (QString("%1,").arg(val));
-                data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
-                data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
-                data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
-                for (int j = 0; j < config.vol_num; j++) {
-                    data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
-                    data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
+                if(protocal_ver != CMUV4_10){
+                    val = this->bmu_data[i].BalU24 / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    val = this->bmu_data[i].BalIdc[0] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
+                    data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
+                    data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
+                    for (int j = 0; j < config.vol_num; j++) {
+                        data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
+                        data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
+                    }
+                }
+                else {
+                    val = this->bmu_data[i].BalU24 / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+
+                    val = this->bmu_data[i].BalIdc[0] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    val = this->bmu_data[i].BalIdc[1] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    val = this->bmu_data[i].BalIdc[2] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    val = this->bmu_data[i].BalIdc[3] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+
+                    data_buf << GetBitStatus(this->bmu_data[i].U64BalErr) << ",";
+                    data_buf << GetBitStatus(this->bmu_data[i].U64BalStat) << ",";
+                    data_buf << GetBalanceValue(this->bmu_data[i].BalMode,this->bmu_data[i].BalCur) << ",";
+                    for (int j = 0; j < config.vol_num; j++) {
+                        data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
+                        data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
+                    }
                 }
             }
         }
@@ -224,9 +323,17 @@ void mb_cmu::Dump2Csv() {
                     object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
                 }
             }
-            val = this->bmu_data[i].Ubreak;
+            if (protocal_ver != CMUV4_10){
+                val = this->bmu_data[i].Ubreak;
+            }else{
+                val = this->bmu_data[i].U64break;
+            }
             object.insert((QString("BMU%1_Ubreak,").arg(i + 1)), val);
-            val = this->bmu_data[i].Tbreak;
+            if (protocal_ver != CMUV4_10){
+                val = this->bmu_data[i].Tbreak;
+            }else{
+                val = this->bmu_data[i].T64break;
+            }
             object.insert((QString("BMU%1_Tbreak,").arg(i + 1)), val);
             val = this->bmu_data[i].RunStat;
             object.insert((QString("BMU%1_Run,").arg(i + 1)), val);
@@ -467,14 +574,53 @@ int mb_cmu::ReadALL() {
         bms_data.MaxTbmuId = maxBmuId;
         bms_data.MinTbmuId = minBmuId;
         // 状态
-        reg_num = config.bmu_num * 4;
-        status += ReadData(0x03, 0x100, reg_num, p);
-        for (int i = 0; i < config.bmu_num; i++) {
-            bmu_data[i].Ubreak = *(p + i);
-            bmu_data[i].Tbreak = *(p + i + 1 * config.bmu_num);
-            bmu_data[i].RunStat = *(p + i + 2 * config.bmu_num);
-            bmu_data[i].ErrStat = *(p + i + 3 * config.bmu_num);
+        if(protocal_ver != CMUV4_10 ){
+            reg_num = config.bmu_num * 4;
+            status += ReadData(0x03, 0x100, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].Ubreak =  *(p + i);
+                bmu_data[i].Tbreak =  *(p + 1 * config.bmu_num + i);
+                bmu_data[i].RunStat = *(p + 2 * config.bmu_num + i);
+                bmu_data[i].ErrStat = *(p + 3 * config.bmu_num + i);
+            }
+        }else{
+            // 读电压断线
+            reg_num = config.bmu_num * 10;
+            status += ReadData(0x03, 0x100, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+//                bmu_data[i].U64break  =  *(p + i*4);
+//                bmu_data[i].U64break |= (*(p + i*4 + 1))<<(config.vol_num/4);
+//                bmu_data[i].U64break |= (*(p + i*4 + 2))<<(config.vol_num/4*2);
+//                bmu_data[i].U64break |= (*(p + i*4 + 3))<<(config.vol_num/4*3);
+
+//                bmu_data[i].T64break  =  *(p + 4 * config.bmu_num + i*4 );
+//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 1))<<(config.T_num/4);
+//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 2))<<(config.T_num/4*2);
+//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 3))<<(config.T_num/4*3);
+
+//                bmu_data[i].RunStat = *(p + 8 * config.bmu_num + i);
+
+//                bmu_data[i].ErrStat = *(p + 9 * config.bmu_num + i);
+
+                bmu_data[i].U64break  =  *(p++);
+                bmu_data[i].U64break |= (uint64_t)(*(p++))<<16;
+                bmu_data[i].U64break |= (uint64_t)(*(p++))<<32;
+                bmu_data[i].U64break |= (uint64_t)(*(p++))<<48;
+
+                bmu_data[i].T64break  =  *(p++);
+                bmu_data[i].T64break |= (uint64_t)(*(p++))<<16;
+                bmu_data[i].T64break |= (uint64_t)(*(p++))<<32;
+                bmu_data[i].T64break |= (uint64_t)(*(p++))<<48;
+
+                bmu_data[i].RunStat = *(p++);
+
+                bmu_data[i].ErrStat = *(p++);
+
+                //qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
+                //qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
+            }
         }
+
         if (is_gender_balanced(protocal_ver)) {
             if (is_parallel_balanced(this->cmu_ver)) {
                 // 并充项目
@@ -489,7 +635,43 @@ int mb_cmu::ReadALL() {
                     bmu_data[i].BalStat = *(p++);
                     bmu_data[i].BalMode = *(p++);
                 }
-            } else {
+            }
+            else if (protocal_ver == CMUV4_10){
+                // 液冷项目
+                reg_num = config.bmu_num * 15;  // 均衡状态等
+                status += ReadData(0x03, 0x900, reg_num, p);
+                for (int i = 0; i < config.bmu_num; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        bmu_data[i].BalIdc[j] = *(p++);
+                    }
+                    bmu_data[i].BalU24 = *(p++);
+
+                    bmu_data[i].U64BalErr = *(p++);                    
+                    bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<16;
+                    bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<32;
+                    bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<48;
+
+
+
+                    //bmu_data[i].U64BalErr = 0x0001000100010001;
+
+                    bmu_data[i].U64BalStat = *(p++);
+                    bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<16;
+                    bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<32;
+                    bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<48;
+
+                    //bmu_data[i].U64BalStat = 0x0001000100010001;
+
+                    bmu_data[i].BalMode = *(p++);
+                    bmu_data[i].BalCur = (int16_t)(*(p++));
+                    //qDebug()<<tr("BMU%1BalU24 = %2:").arg(i).arg(bmu_data[i].BalU24);
+                    //qDebug()<<tr("BMU%1U64BalErr = 0x%2:").arg(i).arg(bmu_data[i].U64BalErr,16,16,QChar('0'));
+                    //qDebug()<<tr("BMU%1U64BalStat = 0x%2:").arg(i).arg(bmu_data[i].U64BalStat,16,16,QChar('0'));
+                    //qDebug()<<tr("BMU%1BalMode = %2:").arg(i).arg(bmu_data[i].BalMode);
+                    //qDebug()<<tr("BMU%1BalCur = %2:").arg(i).arg(bmu_data[i].BalCur);
+                }
+            }
+            else {
                 reg_num = config.bmu_num * 5;  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {

@@ -58,6 +58,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->cbProtocol->addItem("CMU4.6", CMUV4_6);
     ui->cbProtocol->addItem("CMU4.8", CMUV4_8);
     ui->cbProtocol->addItem("CMU4.9", g_proto_map.value("CMU4.9", CMUV4_9));
+    ui->cbProtocol->addItem("CMU4.10", g_proto_map.value("CMU4.10", CMUV4_10));
     for (int i = 0; i < ui->cbProtocol->count(); i++) {
         if (protocol == ui->cbProtocol->itemText(i)) {
             ui->cbProtocol->setCurrentIndex(i);
@@ -170,14 +171,23 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     } else if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
         if (this->mycmu->GetProtocalVer() == CMUV4_6 || this->mycmu->GetProtocalVer() == CMUV4_9) {
             hdr_list.append(tr("风机转速"));
-        } else {
+        } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+
+        }else {
             hdr_list.append(tr("风机"));
         }
 
         hdr_list.append(tr("母线电压(V)"));
-        hdr_list.append(tr("均衡电流(A)"));
-        hdr_list.append(tr("均衡故障"));
-        hdr_list.append(tr("通道状态"));
+        if(this->mycmu->GetProtocalVer() != CMUV4_10){
+            hdr_list.append(tr("均衡电流(A)"));
+            hdr_list.append(tr("均衡故障"));
+            hdr_list.append(tr("通道状态"));
+        }else{
+            hdr_list.append(tr("模组A均衡信息"));
+            hdr_list.append(tr("模组B均衡信息"));
+            hdr_list.append(tr("模组C均衡信息"));
+            hdr_list.append(tr("模组D均衡信息"));
+        }
         hdr_list.append(tr("均衡模式"));
         hdr_list.append(tr("CAN错误数"));
         // 特殊处理
@@ -202,7 +212,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         dspbox->hide();
         if (mapData.contains(dspbox->objectName())) {
             dspbox->show();
-        }
+        }else{qDebug()<<"s:"<<dspbox->objectName();}
     }
     // 扩展表格
     if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
@@ -221,7 +231,11 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), false);
     }
 
-    //
+    // 控制按钮显示与隐藏
+    ui->AutoFindAddr->hide();
+    if(this->mycmu->GetProtocalVer() == CMUV4_10){
+        ui->AutoFindAddr->show();
+    }
 }
 int BMSView::setValue(QString name, double dval) {
     NodeReg node = mycmu->GetNodeAddr(name);
@@ -662,14 +676,28 @@ void BMSView::flushBmu() {
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             if (is_parallel_balanced(this->mycmu->cmu_ver)) {
                 item->setText(QString("%1\n%2").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
-            } else {
+            }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+                QString str = "";
+                if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
+                    str = "闭锁";
+                }
+                item->setText(QString("%1\n%2").arg(val, 0, 'g', 5).arg(str));
+            }else {
                 item->setText(QString("%1").arg(val, 0, 'g', 5));
             }
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             QFont font = item->font();
-            if (GET_BIT(mycmu->bmu_data[i].Ubreak, j)) {
+            uint64_t breakLineTemp = 0;
+            if (mycmu->GetProtocalVer()!= CMUV4_10){
+                breakLineTemp = mycmu->bmu_data[i].Ubreak;
+            }else{
+                breakLineTemp = mycmu->bmu_data[i].U64break;
+            }          
+            if (GET_BIT(breakLineTemp, j)) {
+
                 font.setStrikeOut(true);
             } else {
+
                 font.setStrikeOut(false);
             }
             // pack最大标红
@@ -686,6 +714,12 @@ void BMSView::flushBmu() {
                     font.setItalic(true);
                 }
             }
+
+            if(this->mycmu->GetProtocalVer() == CMUV4_10){
+                if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
+                    item->setTextColor(QColor(Qt::red));
+                }
+            }
             //
             item->setFont(font);
             item->setToolTip(tr("Strikethrough indicates disconnection"));
@@ -700,7 +734,13 @@ void BMSView::flushBmu() {
             item->setText(QString("%1").arg(val, 0, 'g', 5));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             QFont font = item->font();
-            if (GET_BIT(mycmu->bmu_data[i].Tbreak, j)) {
+            uint64_t TbreakLineTemp = 0;
+            if (mycmu->GetProtocalVer()!= CMUV4_10){
+                TbreakLineTemp = mycmu->bmu_data[i].Tbreak;
+            }else{
+                TbreakLineTemp = mycmu->bmu_data[i].T64break;
+            }
+            if (GET_BIT(TbreakLineTemp, j)) {
                 font.setStrikeOut(true);
             } else {
                 font.setStrikeOut(false);
@@ -755,49 +795,90 @@ void BMSView::flushBmu() {
         ui->tableBMU->setItem(i, cloumn_offset++, item);
 
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
-            item = new QTableWidgetItem();
+
             if (this->mycmu->GetProtocalVer() == CMUV4_6 || this->mycmu->GetProtocalVer() == CMUV4_9) {
+                item = new QTableWidgetItem();
                 item->setText(QString("%1").arg(mycmu->bmu_data[i].FanSpeed));
-            } else {
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+
+            }else {
+                item = new QTableWidgetItem();
                 QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
                 item->setText(fanStatus);
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
             }
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+
 
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-            item = new QTableWidgetItem();
+
             if (this->mycmu->GetProtocalVer() == CMUV4_6) {
+                item = new QTableWidgetItem();
                 item->setText(QString("%1").arg((float)mycmu->bmu_data[i].BalI48 / 1000));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
             } else if (is_parallel_balanced(this->mycmu->cmu_ver)) {
+                item = new QTableWidgetItem();
                 double max_bal_current = 0;
                 for (int k = 0; k < config.vol_num; k++) {
                     max_bal_current += mycmu->bmu_data[i].BalIdc[k] / 1000.0;
                 }
                 item->setText(QString("%1").arg(max_bal_current));
-            } else {
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+                QStringList strl = mycmu->GetBalanceValue(mycmu->bmu_data[i].U64BalStat,
+                                                          mycmu->bmu_data[i].BalIdc).split("|");               
+                if(strl.count()>4){
+                    for (int j = 0; j < 4; ++j) {
+                        item = new QTableWidgetItem();
+                        item->setText("");
+                        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                        ui->tableBMU->setItem(i, cloumn_offset++, item);
+                    }
+                }else{
+                    for (int j = 0; j < 4; ++j) {
+                        item = new QTableWidgetItem();
+                        item->setText(strl[j]);
+                        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                        ui->tableBMU->setItem(i, cloumn_offset++, item);
+                    }
+                }
+            }else {
                 item = new QTableWidgetItem();
                 item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc[0] / 1000.0));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
             }
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-            item = new QTableWidgetItem();
-            item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
-            item = new QTableWidgetItem();
-            item->setText(GetBitStatus(mycmu->bmu_data[i].BalStat));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
-            item = new QTableWidgetItem();
-            item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
-            item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            if(this->mycmu->GetProtocalVer() != CMUV4_10){
+                item = new QTableWidgetItem();
+                item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+                item = new QTableWidgetItem();
+                item->setText(GetBitStatus(mycmu->bmu_data[i].BalStat));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+                item = new QTableWidgetItem();
+                item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            }else{
+                item = new QTableWidgetItem();
+                item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode,mycmu->bmu_data[i].BalCur));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableBMU->setItem(i, cloumn_offset++, item);
+            }
+
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
@@ -878,6 +959,7 @@ static map<QString, mb_cmd> btnMap = {
     {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
     //                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
     //                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+    {"AutoFindAddr", {CTRL_AO_ADDR, ADDR_CTRL_FINDADDR, MB_CTRL_ON}},
     {"btnHeRongON", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_ON}},
     {"btnHeRongOFF", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_OFF}},
     {"btnAcON", {CTRL_AO_ADDR, ADDR_CTRL_AC, MB_CTRL_ON}},
@@ -1388,6 +1470,7 @@ void BMSView::uiInit() {
                         if (configBalance == nullptr) {
                             configBalance = new frmbalanceConfig();
                         }
+                        configBalance->protocal_ver = this->mycmu->GetProtocalVer();
                         configBalance->setValue(mode);
                         if (configBalance->exec() == QDialog::Accepted) {
                             TMsgData MsgCmd;

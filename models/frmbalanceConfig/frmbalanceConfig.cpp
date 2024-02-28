@@ -25,9 +25,16 @@ void frmbalanceConfig::initStyle() {
 }
 bool frmbalanceConfig::setValue(uint16_t value) {
     this->m_value = value;
-    ui->nChannel->setValue(m_value >> 12 & 0x0F);
-    ui->iBalance->setValue(m_value >> 8 & 0x0F);
-    ui->tBalance->setValue(m_value & 0xFF);
+    if(protocal_ver != CMUV4_10){
+        ui->nChannel->setValue(m_value >> 12 & 0x0F);
+        ui->iBalance->setValue(m_value >> 8 & 0x0F);
+        ui->tBalance->setValue(m_value & 0xFF);
+    }else{
+        ui->nChannel->setValue(m_value >> 11 & 0x1F);
+        ui->iBalance->setValue(m_value >> 8 & 0x07);
+        ui->tBalance->setValue(m_value & 0xFF);
+    }
+
     return true;
 }
 void frmbalanceConfig::on_btnManually_clicked() {
@@ -45,7 +52,12 @@ void frmbalanceConfig::on_btnManually_clicked() {
 }
 
 uint16_t frmbalanceConfig::loadValue() {
-    this->m_value = ((uint16_t)ui->nChannel->value() & 0xF) << 12 | ((uint16_t)ui->iBalance->value() & 0xF) << 8 |
-                    ((uint16_t)(ui->tBalance->value()) & 0xFF);
+    if(protocal_ver != CMUV4_10){
+        this->m_value = ((uint16_t)ui->nChannel->value() & 0xF) << 12 | ((uint16_t)ui->iBalance->value() & 0xF) << 8 |
+                        ((uint16_t)(ui->tBalance->value()) & 0xFF);
+    }else{
+        this->m_value = ((uint16_t)ui->nChannel->value() & 0x1F) << 11 | ((uint16_t)ui->iBalance->value() & 0x7) << 8 |
+                        ((uint16_t)(ui->tBalance->value()) & 0xFF);
+    }
     return this->m_value;
 }

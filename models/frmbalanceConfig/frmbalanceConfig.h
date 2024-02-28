@@ -2,6 +2,7 @@
 #define FRM_BALANCEBOX_CONFIG_H
 
 #include <QDialog>
+#include "mb_cmu.h"
 
 namespace Ui {
 class frmbalanceConfig;
@@ -18,6 +19,7 @@ class frmbalanceConfig : public QDialog {
 
     uint16_t getValue() const { return m_value; }
     bool setValue(uint16_t value);
+    BMS_PROTOCOL protocal_ver;
 
    private slots:
 

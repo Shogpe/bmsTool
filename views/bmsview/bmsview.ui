@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1128</width>
-    <height>552</height>
+    <width>1170</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,6 +24,9 @@
   </property>
   <property name="windowTitle">
    <string>Widget</string>
+  </property>
+  <property name="toolTip">
+   <string/>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>
@@ -116,7 +119,7 @@
       <item>
        <widget class="QComboBox" name="cbProtocol">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;请按硬件功能手动选择CMU协议版本；&lt;/p&gt;&lt;p&gt;1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点&lt;/p&gt;&lt;p&gt;2. CMU4.0 新增适配主动均衡；&lt;/p&gt;&lt;p&gt;3. CMU4.6 新增风机转速的读取及风机转速设置控制；&lt;/p&gt;&lt;p&gt;4. CMU4.8 新增绝缘数据点；&lt;/p&gt;&lt;p&gt;5. CMU4.9 在4.8基础上新增风扇转速获取与设置；&lt;/p&gt;&lt;p&gt;如出现通信断连情况或无所需数据点，请尝试更换协议版本。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;请按硬件功能手动选择CMU协议版本；&lt;/p&gt;&lt;p&gt;1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点&lt;/p&gt;&lt;p&gt;2. CMU4.0 新增适配主动均衡；&lt;/p&gt;&lt;p&gt;3. CMU4.6 新增风机转速的读取及风机转速设置控制；&lt;/p&gt;&lt;p&gt;4. CMU4.8 新增绝缘数据点；&lt;/p&gt;&lt;p&gt;5. CMU4.9 在4.8基础上新增风扇转速获取与设置；&lt;/p&gt;&lt;p&gt;5. CMU4.10 适用主动均衡液冷CMU通信；&lt;/p&gt;&lt;p&gt;如出现通信断连情况或无所需数据点，请尝试更换协议版本。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
@@ -253,7 +256,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -4760,36 +4763,8 @@
        <property name="spacing">
         <number>3</number>
        </property>
-       <item row="7" column="0">
-        <widget class="InputBox" name="CellVolLL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体电压下下限</string>
-         </property>
-         <property name="prefix">
-          <string>单体电压下下限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>6.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="6">
-        <widget class="InputBox" name="ClusterRIns">
+       <item row="10" column="10">
+        <widget class="InputBox" name="UBlock">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -4800,38 +4775,13 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>绝缘电阻保护值</string>
+          <string>单体电压数据屏蔽位A</string>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>绝缘电阻保护值</string>
-         </property>
-         <property name="suffix">
-          <string>kΩ</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="10">
-        <widget class="InputBox" name="WarnBlock2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>告警屏蔽位2</string>
-         </property>
-         <property name="prefix">
-          <string>告警屏蔽位2</string>
+          <string>单体电压数据屏蔽位A</string>
          </property>
          <property name="suffix">
           <string/>
@@ -4844,185 +4794,29 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="4">
-        <widget class="InputBox" name="PackTdH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温差上限</string>
-         </property>
-         <property name="prefix">
-          <string>单体温差上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="InputBox" name="CellVolH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体电压上限</string>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhFormattedNumbersOnly</set>
-         </property>
-         <property name="prefix">
-          <string>单体电压上限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>6.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="InputBox" name="PackTH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温度上限</string>
-         </property>
-         <property name="prefix">
-          <string>单体温度上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="9">
-        <widget class="InputBox" name="PreChgI">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>预充结束电流</string>
-         </property>
-         <property name="prefix">
-          <string>预充结束电流</string>
-         </property>
-         <property name="suffix">
-          <string>A</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="0">
-        <widget class="InputBox" name="CellUdH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体压差上限</string>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhFormattedNumbersOnly</set>
-         </property>
-         <property name="prefix">
-          <string>单体欠压自杀延时</string>
-         </property>
-         <property name="suffix">
-          <string>S</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>6554.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="10">
-        <widget class="InputBox" name="DataBlock2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>数据屏蔽位2</string>
-         </property>
-         <property name="prefix">
-          <string>数据屏蔽位2</string>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
+       <item row="18" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QPushButton" name="btnLoadDefault">
+           <property name="toolTip">
+            <string>加载上次保存的默认参数</string>
+           </property>
+           <property name="text">
+            <string>加载默认</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSaveDefault">
+           <property name="toolTip">
+            <string>保存当前参数作为默认参数</string>
+           </property>
+           <property name="text">
+            <string>保存默认</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="9" column="9">
         <widget class="InputBox" name="TEvmL">
@@ -5052,8 +4846,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="6">
-        <widget class="InputBox" name="ClusterErrMask">
+       <item row="11" column="10">
+        <widget class="InputBox" name="UBlock2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -5064,10 +4858,13 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>保护屏蔽</string>
+          <string>单体电压数据屏蔽位B</string>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>保护屏蔽</string>
+          <string>单体电压数据屏蔽位B</string>
          </property>
          <property name="suffix">
           <string/>
@@ -5076,40 +4873,12 @@
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>100000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="9">
-        <widget class="InputBox" name="SocLL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>SOC下下限</string>
-         </property>
-         <property name="prefix">
-          <string>SOC下下限</string>
-         </property>
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
           <double>65536.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="9" column="8">
-        <widget class="InputBox" name="ClusterCurRange">
+       <item row="8" column="10">
+        <widget class="InputBox" name="FuncMask2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -5120,47 +4889,19 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>电流量程</string>
+          <string>功能使能位2</string>
          </property>
          <property name="prefix">
-          <string>电流量程</string>
+          <string>功能使能位2</string>
          </property>
          <property name="suffix">
-          <string>A</string>
+          <string/>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="8">
-        <widget class="InputBox" name="ClusterEAdj">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇校正容量</string>
-         </property>
-         <property name="prefix">
-          <string>簇校正容量</string>
-         </property>
-         <property name="suffix">
-          <string>kWh</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
+          <double>65536.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -5183,56 +4924,6 @@
          </property>
          <property name="suffix">
           <string/>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="InputBox" name="BmuCellNum">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体电压数</string>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="prefix">
-          <string>单体电压数</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="9">
-        <widget class="InputBox" name="TEvmH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>环控温度上限</string>
-         </property>
-         <property name="prefix">
-          <string>环控温度上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
          </property>
          <property name="minimum">
           <double>-65536.000000000000000</double>
@@ -5273,8 +4964,8 @@
          </property>
         </widget>
        </item>
-       <item row="11" column="4">
-        <widget class="InputBox" name="PoleTHH">
+       <item row="13" column="10">
+        <widget class="InputBox" name="UBlock4">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -5285,646 +4976,13 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>极柱温度上上限</string>
+          <string>单体电压数据屏蔽位D</string>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
          </property>
          <property name="prefix">
-          <string>极柱温度上上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="InputBox" name="ClusterVolHH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压上上限</string>
-         </property>
-         <property name="prefix">
-          <string>簇电压上上限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="6">
-        <widget class="QLabel" name="balanceStr">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="10">
-        <widget class="InputBox" name="DataBlock3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>数据屏蔽位3</string>
-         </property>
-         <property name="prefix">
-          <string>数据屏蔽位3</string>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="10">
-        <widget class="InputBox" name="DataBlock4">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>数据屏蔽位4</string>
-         </property>
-         <property name="prefix">
-          <string>数据屏蔽位4</string>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="InputBox" name="ClusterVolLL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压下下限</string>
-         </property>
-         <property name="prefix">
-          <string>簇电压下下限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="8">
-        <widget class="InputBox" name="ClusterILeakRg">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>漏电流量程</string>
-         </property>
-         <property name="prefix">
-          <string>漏电流量程</string>
-         </property>
-         <property name="suffix">
-          <string>mA</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="10">
-        <widget class="InputBox" name="ErrBlock1">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>保护屏蔽位1</string>
-         </property>
-         <property name="prefix">
-          <string>保护屏蔽位1</string>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <widget class="InputBox" name="ClusterTErr">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>保护动作延时</string>
-         </property>
-         <property name="prefix">
-          <string>保护动作延时</string>
-         </property>
-         <property name="suffix">
-          <string>S</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="9">
-        <widget class="InputBox" name="IStaTH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>充放检测阈值</string>
-         </property>
-         <property name="prefix">
-          <string>充放检测阈值</string>
-         </property>
-         <property name="suffix">
-          <string>A</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="6">
-        <widget class="InputBox" name="ClusterRInsH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>绝缘电阻告警值</string>
-         </property>
-         <property name="prefix">
-          <string>绝缘电阻告警值</string>
-         </property>
-         <property name="suffix">
-          <string>kΩ</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="InputBox" name="CellVolL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体电压下限</string>
-         </property>
-         <property name="prefix">
-          <string>单体电压下限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>6.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="9">
-        <widget class="InputBox" name="RateAH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇额定Ah数</string>
-         </property>
-         <property name="prefix">
-          <string>簇额定Ah数</string>
-         </property>
-         <property name="suffix">
-          <string>Ah</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="4">
-        <widget class="InputBox" name="PoleTH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>极柱温度上限</string>
-         </property>
-         <property name="prefix">
-          <string>极柱温度上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="InputBox" name="ClusterVolL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压下限</string>
-         </property>
-         <property name="prefix">
-          <string>簇电压下限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="4">
-        <widget class="InputBox" name="PackTrH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温升上限</string>
-         </property>
-         <property name="prefix">
-          <string>单体温升上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="InputBox" name="ClusterVolH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压上限</string>
-         </property>
-         <property name="prefix">
-          <string>簇电压上限</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="InputBox" name="BmuPoleTNum">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>极柱温度数量</string>
-         </property>
-         <property name="prefix">
-          <string>极柱温度数</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="8">
-        <widget class="InputBox" name="ClusterCurHH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>电流上上限</string>
-         </property>
-         <property name="prefix">
-          <string>电流上上限</string>
-         </property>
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="9">
-        <widget class="InputBox" name="VEmpDF">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>放空回差</string>
-         </property>
-         <property name="prefix">
-          <string>放空回差</string>
-         </property>
-         <property name="suffix">
-          <string>mV</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="10">
-        <widget class="InputBox" name="FuncMask2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>功能使能位2</string>
-         </property>
-         <property name="prefix">
-          <string>功能使能位2</string>
-         </property>
-         <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="6">
-        <widget class="InputBox" name="ClusterTAlm">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>告警和保护延时</string>
-         </property>
-         <property name="prefix">
-          <string>告警和保护延时</string>
-         </property>
-         <property name="suffix">
-          <string>S</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-         <property name="type" stdset="0">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="InputBox" name="BmuPackTNum">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温度数</string>
-         </property>
-         <property name="prefix">
-          <string>单体温度数</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="9">
-        <widget class="InputBox" name="EvmDfT">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>环控温度回差</string>
-         </property>
-         <property name="prefix">
-          <string>环控温度回差</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>-65536.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="10">
-        <widget class="InputBox" name="ErrBlock2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>保护屏蔽位2</string>
-         </property>
-         <property name="prefix">
-          <string>保护屏蔽位2</string>
+          <string>单体电压数据屏蔽位D</string>
          </property>
          <property name="suffix">
           <string/>
@@ -5968,8 +5026,8 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="8">
-        <widget class="InputBox" name="ClusterEremain">
+       <item row="3" column="9">
+        <widget class="InputBox" name="RateAH">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -5980,97 +5038,13 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>簇剩余电量</string>
+          <string>簇额定Ah数</string>
          </property>
          <property name="prefix">
-          <string>簇剩余电量</string>
+          <string>簇额定Ah数</string>
          </property>
          <property name="suffix">
-          <string>kWh</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="6">
-        <widget class="InputBox" name="ClusterCurLeak">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>漏电流保护值</string>
-         </property>
-         <property name="prefix">
-          <string>漏电流保护值</string>
-         </property>
-         <property name="suffix">
-          <string>mA</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="10">
-        <widget class="InputBox" name="CVFulDF">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压充满放空回差</string>
-         </property>
-         <property name="prefix">
-          <string>簇电压放空充满回差</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="9">
-        <widget class="InputBox" name="VFulDF">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇电压放空充满回差</string>
-         </property>
-         <property name="prefix">
-          <string>充满回差</string>
-         </property>
-         <property name="suffix">
-          <string>mV</string>
+          <string>Ah</string>
          </property>
          <property name="minimum">
           <double>-65536.000000000000000</double>
@@ -6080,8 +5054,8 @@
          </property>
         </widget>
        </item>
-       <item row="13" column="6">
-        <widget class="InputBox" name="ClusterCurLeakH">
+       <item row="8" column="6">
+        <widget class="InputBox" name="BalnceStart">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6092,24 +5066,24 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>漏电流告警值</string>
+          <string>均衡启动阈值</string>
          </property>
          <property name="prefix">
-          <string>漏电流告警值</string>
+          <string>均衡启动阈值</string>
          </property>
          <property name="suffix">
-          <string>mA</string>
+          <string>V</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>2000.000000000000000</double>
+          <double>10.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="5" column="8">
-        <widget class="InputBox" name="ClusterE">
+       <item row="11" column="4">
+        <widget class="InputBox" name="PoleTHH">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6120,24 +5094,132 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>簇容量</string>
+          <string>极柱温度上上限</string>
          </property>
          <property name="prefix">
-          <string>簇容量</string>
+          <string>极柱温度上上限</string>
          </property>
          <property name="suffix">
-          <string>kWh</string>
+          <string>℃</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>2000.000000000000000</double>
+          <double>100.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="InputBox" name="CellVolHH">
+       <item row="5" column="4">
+        <widget class="InputBox" name="PackTdH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温差上限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温差上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="10">
+        <widget class="InputBox" name="ErrBlock2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>保护屏蔽位2</string>
+         </property>
+         <property name="prefix">
+          <string>保护屏蔽位2</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="4">
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QLabel" name="label_91">
+           <property name="text">
+            <string>服务器IP设定</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditServIP">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="maxLength">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="6">
+        <widget class="InputBox" name="ClusterAlmMask">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电池包温度断线屏蔽</string>
+         </property>
+         <property name="prefix">
+          <string>电池包温度断线屏蔽</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="InputBox" name="ClusterVolLL">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6148,10 +5230,10 @@
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="toolTip">
-          <string>单体电压上上限</string>
+          <string>簇电压下下限</string>
          </property>
          <property name="prefix">
-          <string>单体电压上上限</string>
+          <string>簇电压下下限</string>
          </property>
          <property name="suffix">
           <string>V</string>
@@ -6160,7 +5242,35 @@
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>6.000000000000000</double>
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="9">
+        <widget class="InputBox" name="VEmpDF">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>放空回差</string>
+         </property>
+         <property name="prefix">
+          <string>放空回差</string>
+         </property>
+         <property name="suffix">
+          <string>mV</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -6192,6 +5302,370 @@
          </property>
         </widget>
        </item>
+       <item row="6" column="0">
+        <widget class="InputBox" name="CellVolL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压下限</string>
+         </property>
+         <property name="prefix">
+          <string>单体电压下限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="6">
+        <widget class="InputBox" name="ClusterCurLeak">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>漏电流保护值</string>
+         </property>
+         <property name="prefix">
+          <string>漏电流保护值</string>
+         </property>
+         <property name="suffix">
+          <string>mA</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="InputBox" name="ClusterBmuNum">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇单元数量</string>
+         </property>
+         <property name="prefix">
+          <string>簇单元数量</string>
+         </property>
+         <property name="suffix">
+          <string>个</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="6">
+        <widget class="InputBox" name="ClusterErrMask">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>保护屏蔽</string>
+         </property>
+         <property name="prefix">
+          <string>保护屏蔽</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="InputBox" name="CellVolLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压下下限</string>
+         </property>
+         <property name="prefix">
+          <string>单体电压下下限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="InputBox" name="CellVolH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压上限</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhFormattedNumbersOnly</set>
+         </property>
+         <property name="prefix">
+          <string>单体电压上限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="9">
+        <widget class="InputBox" name="IStaTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>充放检测阈值</string>
+         </property>
+         <property name="prefix">
+          <string>充放检测阈值</string>
+         </property>
+         <property name="suffix">
+          <string>A</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="10">
+        <widget class="InputBox" name="DataBlock4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>数据屏蔽位4</string>
+         </property>
+         <property name="prefix">
+          <string>数据屏蔽位4</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="9">
+        <widget class="InputBox" name="PreChgI">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>预充结束电流</string>
+         </property>
+         <property name="prefix">
+          <string>预充结束电流</string>
+         </property>
+         <property name="suffix">
+          <string>A</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="9">
+        <widget class="InputBox" name="TEvmH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>环控温度上限</string>
+         </property>
+         <property name="prefix">
+          <string>环控温度上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="6">
+        <widget class="InputBox" name="ClusterRInsH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>绝缘电阻告警值</string>
+         </property>
+         <property name="prefix">
+          <string>绝缘电阻告警值</string>
+         </property>
+         <property name="suffix">
+          <string>kΩ</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="4">
+        <widget class="InputBox" name="PoleTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>极柱温度上限</string>
+         </property>
+         <property name="prefix">
+          <string>极柱温度上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="10">
+        <widget class="InputBox" name="DataBlock3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>数据屏蔽位3</string>
+         </property>
+         <property name="prefix">
+          <string>数据屏蔽位3</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="8">
         <widget class="InputBox" name="ClusterCurShort">
          <property name="sizePolicy">
@@ -6211,6 +5685,34 @@
          </property>
          <property name="suffix">
           <string>%</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="InputBox" name="ClusterVolH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压上限</string>
+         </property>
+         <property name="prefix">
+          <string>簇电压上限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
@@ -6248,8 +5750,8 @@
          </property>
         </widget>
        </item>
-       <item row="12" column="9">
-        <widget class="InputBox" name="CPoleTH">
+       <item row="8" column="4">
+        <widget class="InputBox" name="PackTrHH">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6260,24 +5762,24 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>簇极柱温度上限</string>
+          <string>单体温升上上限</string>
          </property>
          <property name="prefix">
-          <string>簇极柱温度上限</string>
+          <string>单体温升上上限</string>
          </property>
          <property name="suffix">
           <string>℃</string>
          </property>
          <property name="minimum">
-          <double>-65536.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>65536.000000000000000</double>
+          <double>100.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="InputBox" name="ClusterBmuNum">
+       <item row="10" column="0">
+        <widget class="InputBox" name="ClusterVolL">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6288,18 +5790,24 @@
           <enum>Qt::StrongFocus</enum>
          </property>
          <property name="toolTip">
-          <string>簇单元数量</string>
+          <string>簇电压下限</string>
          </property>
          <property name="prefix">
-          <string>簇单元数量</string>
+          <string>簇电压下限</string>
          </property>
          <property name="suffix">
-          <string>个</string>
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="6" column="4">
-        <widget class="InputBox" name="PackTdHH">
+       <item row="9" column="10">
+        <widget class="InputBox" name="CVFulDF">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6310,19 +5818,38 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>单体温差上上限</string>
+          <string>簇电压充满放空回差</string>
          </property>
          <property name="prefix">
-          <string>单体温差上上限</string>
+          <string>簇电压放空充满回差</string>
          </property>
          <property name="suffix">
-          <string>℃</string>
+          <string>V</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>100.000000000000000</double>
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="InputBox" name="BmuPackTNum">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度数</string>
+         </property>
+         <property name="prefix">
+          <string>单体温度数</string>
          </property>
         </widget>
        </item>
@@ -6354,8 +5881,8 @@
          </property>
         </widget>
        </item>
-       <item row="10" column="10">
-        <widget class="InputBox" name="UBlock">
+       <item row="7" column="8">
+        <widget class="InputBox" name="ClusterEremain">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6366,72 +5893,13 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>单体电压数据屏蔽位</string>
-         </property>
-         <property name="wrapping">
-          <bool>false</bool>
+          <string>簇剩余电量</string>
          </property>
          <property name="prefix">
-          <string>单体电压数据屏蔽位</string>
+          <string>簇剩余电量</string>
          </property>
          <property name="suffix">
-          <string/>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>65536.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="InputBox" name="PackTHH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温度上上限</string>
-         </property>
-         <property name="prefix">
-          <string>单体温度上上限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="8">
-        <widget class="InputBox" name="ClusterIe">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>额定电流</string>
-         </property>
-         <property name="prefix">
-          <string>额定电流</string>
-         </property>
-         <property name="suffix">
-          <string>A</string>
+          <string>kWh</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
@@ -6441,8 +5909,8 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="10">
-        <widget class="InputBox" name="WarnBlock1">
+       <item row="15" column="10">
+        <widget class="InputBox" name="TBlock2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6453,10 +5921,10 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>告警屏蔽位1</string>
+          <string>温度屏蔽位B</string>
          </property>
          <property name="prefix">
-          <string>告警屏蔽位1</string>
+          <string>温度屏蔽位B</string>
          </property>
          <property name="suffix">
           <string/>
@@ -6469,8 +5937,8 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="4">
-        <widget class="InputBox" name="PackTrHH">
+       <item row="13" column="6">
+        <widget class="InputBox" name="ClusterCurLeakH">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6481,24 +5949,24 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>单体温升上上限</string>
+          <string>漏电流告警值</string>
          </property>
          <property name="prefix">
-          <string>单体温升上上限</string>
+          <string>漏电流告警值</string>
          </property>
          <property name="suffix">
-          <string>℃</string>
+          <string>mA</string>
          </property>
          <property name="minimum">
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>100.000000000000000</double>
+          <double>2000.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
-        <widget class="InputBox" name="PackTL">
+       <item row="7" column="10">
+        <widget class="InputBox" name="WarnBlock2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6509,66 +5977,10 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>单体温度下限</string>
+          <string>告警屏蔽位2</string>
          </property>
          <property name="prefix">
-          <string>单体温度下限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>-10.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="InputBox" name="PackTLL">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>单体温度下下限</string>
-         </property>
-         <property name="prefix">
-          <string>单体温度下下限</string>
-         </property>
-         <property name="suffix">
-          <string>℃</string>
-         </property>
-         <property name="minimum">
-          <double>-50.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="6">
-        <widget class="InputBox" name="ClusterAlmMask">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>电池包温度断线屏蔽</string>
-         </property>
-         <property name="prefix">
-          <string>电池包温度断线屏蔽</string>
+          <string>告警屏蔽位2</string>
          </property>
          <property name="suffix">
           <string/>
@@ -6577,7 +5989,35 @@
           <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>100000.000000000000000</double>
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="8">
+        <widget class="InputBox" name="ClusterCurRange">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电流量程</string>
+         </property>
+         <property name="prefix">
+          <string>电流量程</string>
+         </property>
+         <property name="suffix">
+          <string>A</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -6606,8 +6046,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="8">
-        <widget class="InputBox" name="ClusterCurH">
+       <item row="7" column="9">
+        <widget class="InputBox" name="EvmDfT">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6618,79 +6058,10 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>电流上限</string>
+          <string>环控温度回差</string>
          </property>
          <property name="prefix">
-          <string>电流上限</string>
-         </property>
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>2000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="6">
-        <widget class="InputBox" name="BalnceStart">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>均衡启动阈值</string>
-         </property>
-         <property name="prefix">
-          <string>均衡启动阈值</string>
-         </property>
-         <property name="suffix">
-          <string>V</string>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>10.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="17" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="13" column="9">
-        <widget class="InputBox" name="CPoleTHH">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>簇极柱温度上上限</string>
-         </property>
-         <property name="prefix">
-          <string>簇极柱温度上上限</string>
+          <string>环控温度回差</string>
          </property>
          <property name="suffix">
           <string>℃</string>
@@ -6703,8 +6074,60 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="9">
-        <widget class="InputBox" name="PreChgT">
+       <item row="5" column="0">
+        <widget class="InputBox" name="CellVolHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压上上限</string>
+         </property>
+         <property name="prefix">
+          <string>单体电压上上限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="4">
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>BMS IP设定</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditIP">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="maxLength">
+            <number>15</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="4">
+        <widget class="InputBox" name="PackTdHH">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -6715,21 +6138,45 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>预充结束时间</string>
+          <string>单体温差上上限</string>
          </property>
          <property name="prefix">
-          <string>预充结束时间</string>
+          <string>单体温差上上限</string>
          </property>
          <property name="suffix">
-          <string>S</string>
+          <string>℃</string>
          </property>
          <property name="minimum">
-          <double>-65536.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>65536.000000000000000</double>
+          <double>100.000000000000000</double>
          </property>
         </widget>
+       </item>
+       <item row="19" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <widget class="QPushButton" name="btnInput">
+           <property name="toolTip">
+            <string>从xml文件导入定值</string>
+           </property>
+           <property name="text">
+            <string>从文件导入</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnOutput">
+           <property name="toolTip">
+            <string>导出本页定值至xml文件</string>
+           </property>
+           <property name="text">
+            <string>导出至文件</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="13" column="0">
         <widget class="InputBox" name="CellUdHH">
@@ -6765,7 +6212,7 @@
          </property>
         </widget>
        </item>
-       <item row="11" column="10">
+       <item row="14" column="10">
         <widget class="InputBox" name="TBlock">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -6777,10 +6224,10 @@
           <enum>Qt::WheelFocus</enum>
          </property>
          <property name="toolTip">
-          <string>温度屏蔽位</string>
+          <string>温度屏蔽位A</string>
          </property>
          <property name="prefix">
-          <string>温度屏蔽位</string>
+          <string>温度屏蔽位A</string>
          </property>
          <property name="suffix">
           <string/>
@@ -6793,101 +6240,834 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <item>
-          <widget class="QPushButton" name="btnLoadDefault">
-           <property name="toolTip">
-            <string>加载上次保存的默认参数</string>
-           </property>
-           <property name="text">
-            <string>加载默认</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnSaveDefault">
-           <property name="toolTip">
-            <string>保存当前参数作为默认参数</string>
-           </property>
-           <property name="text">
-            <string>保存默认</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="0" column="6">
+        <widget class="InputBox" name="ClusterTAlm">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>告警和保护延时</string>
+         </property>
+         <property name="prefix">
+          <string>告警和保护延时</string>
+         </property>
+         <property name="suffix">
+          <string>S</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+         <property name="type" stdset="0">
+          <string/>
+         </property>
+        </widget>
        </item>
-       <item row="16" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_12">
-         <item>
-          <widget class="QPushButton" name="btnInput">
-           <property name="toolTip">
-            <string>从xml文件导入定值</string>
-           </property>
-           <property name="text">
-            <string>从文件导入</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnOutput">
-           <property name="toolTip">
-            <string>导出本页定值至xml文件</string>
-           </property>
-           <property name="text">
-            <string>导出至文件</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="6" column="8">
+        <widget class="InputBox" name="ClusterEAdj">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇校正容量</string>
+         </property>
+         <property name="prefix">
+          <string>簇校正容量</string>
+         </property>
+         <property name="suffix">
+          <string>kWh</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
        </item>
-       <item row="15" column="4">
-        <layout class="QHBoxLayout" name="horizontalLayout_13">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>BMS IP设定</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditIP">
-           <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
-           </property>
-           <property name="maxLength">
-            <number>15</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="2" column="4">
+        <widget class="InputBox" name="PackTL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度下限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温度下限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
        </item>
-       <item row="16" column="4">
-        <layout class="QHBoxLayout" name="horizontalLayout_14">
-         <item>
-          <widget class="QLabel" name="label_91">
-           <property name="text">
-            <string>服务器IP设定</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditServIP">
-           <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
-           </property>
-           <property name="maxLength">
-            <number>15</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="6" column="6">
+        <widget class="QLabel" name="balanceStr">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="InputBox" name="ClusterTErr">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>保护动作延时</string>
+         </property>
+         <property name="prefix">
+          <string>保护动作延时</string>
+         </property>
+         <property name="suffix">
+          <string>S</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="10">
+        <widget class="InputBox" name="TBlock3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>温度屏蔽位C</string>
+         </property>
+         <property name="prefix">
+          <string>温度屏蔽位C</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="9">
+        <widget class="InputBox" name="VFulDF">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压放空充满回差</string>
+         </property>
+         <property name="prefix">
+          <string>充满回差</string>
+         </property>
+         <property name="suffix">
+          <string>mV</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="InputBox" name="ClusterVolHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇电压上上限</string>
+         </property>
+         <property name="prefix">
+          <string>簇电压上上限</string>
+         </property>
+         <property name="suffix">
+          <string>V</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="6">
+        <widget class="InputBox" name="ClusterRIns">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>绝缘电阻保护值</string>
+         </property>
+         <property name="prefix">
+          <string>绝缘电阻保护值</string>
+         </property>
+         <property name="suffix">
+          <string>kΩ</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="InputBox" name="BmuCellNum">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压数</string>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压数</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="8">
+        <widget class="InputBox" name="ClusterCurHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电流上上限</string>
+         </property>
+         <property name="prefix">
+          <string>电流上上限</string>
+         </property>
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="10">
+        <widget class="InputBox" name="ErrBlock1">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>保护屏蔽位1</string>
+         </property>
+         <property name="prefix">
+          <string>保护屏蔽位1</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="InputBox" name="PackTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度上限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温度上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="8">
+        <widget class="InputBox" name="ClusterCurH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>电流上限</string>
+         </property>
+         <property name="prefix">
+          <string>电流上限</string>
+         </property>
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="9">
+        <widget class="InputBox" name="SocLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>SOC下下限</string>
+         </property>
+         <property name="prefix">
+          <string>SOC下下限</string>
+         </property>
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="9">
+        <widget class="InputBox" name="CPoleTH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇极柱温度上限</string>
+         </property>
+         <property name="prefix">
+          <string>簇极柱温度上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="8">
+        <widget class="InputBox" name="ClusterILeakRg">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>漏电流量程</string>
+         </property>
+         <property name="prefix">
+          <string>漏电流量程</string>
+         </property>
+         <property name="suffix">
+          <string>mA</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="4">
+        <widget class="InputBox" name="PackTrH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温升上限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温升上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="22" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="9">
+        <widget class="InputBox" name="PreChgT">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>预充结束时间</string>
+         </property>
+         <property name="prefix">
+          <string>预充结束时间</string>
+         </property>
+         <property name="suffix">
+          <string>S</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="InputBox" name="CellUdH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体压差上限</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhFormattedNumbersOnly</set>
+         </property>
+         <property name="prefix">
+          <string>单体欠压自杀延时</string>
+         </property>
+         <property name="suffix">
+          <string>S</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>6554.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="InputBox" name="PackTHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度上上限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温度上上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="InputBox" name="BmuPoleTNum">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>极柱温度数量</string>
+         </property>
+         <property name="prefix">
+          <string>极柱温度数</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="9">
+        <widget class="InputBox" name="CPoleTHH">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇极柱温度上上限</string>
+         </property>
+         <property name="prefix">
+          <string>簇极柱温度上上限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>-65536.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="10">
+        <widget class="InputBox" name="DataBlock2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>数据屏蔽位2</string>
+         </property>
+         <property name="prefix">
+          <string>数据屏蔽位2</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="8">
+        <widget class="InputBox" name="ClusterIe">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>额定电流</string>
+         </property>
+         <property name="prefix">
+          <string>额定电流</string>
+         </property>
+         <property name="suffix">
+          <string>A</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="8">
+        <widget class="InputBox" name="ClusterE">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>簇容量</string>
+         </property>
+         <property name="prefix">
+          <string>簇容量</string>
+         </property>
+         <property name="suffix">
+          <string>kWh</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>2000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="InputBox" name="PackTLL">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体温度下下限</string>
+         </property>
+         <property name="prefix">
+          <string>单体温度下下限</string>
+         </property>
+         <property name="suffix">
+          <string>℃</string>
+         </property>
+         <property name="minimum">
+          <double>-50.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="10">
+        <widget class="InputBox" name="WarnBlock1">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>告警屏蔽位1</string>
+         </property>
+         <property name="prefix">
+          <string>告警屏蔽位1</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="10">
+        <widget class="InputBox" name="UBlock3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>单体电压数据屏蔽位C</string>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="prefix">
+          <string>单体电压数据屏蔽位C</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="10">
+        <widget class="InputBox" name="TBlock4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>温度屏蔽位D</string>
+         </property>
+         <property name="prefix">
+          <string>温度屏蔽位D</string>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>65536.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -7555,6 +7735,19 @@
             </property>
             <property name="text">
              <string>关闭核容功能</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QPushButton" name="AutoFindAddr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>自动寻址</string>
             </property>
            </widget>
           </item>
@@ -8258,7 +8451,6 @@
   <tabstop>FuncMask2</tabstop>
   <tabstop>CVFulDF</tabstop>
   <tabstop>UBlock</tabstop>
-  <tabstop>TBlock</tabstop>
   <tabstop>btnRZeroAdj</tabstop>
   <tabstop>DataWidget</tabstop>
   <tabstop>bDO0</tabstop>

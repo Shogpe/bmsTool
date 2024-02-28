@@ -22,7 +22,7 @@ typedef struct {
 typedef QMap<uint16_t, ST_SOE_CONF> SOE_MAP;
 #define UINT16          1
 #define INT16           2
-#define GET_BIT(x, bit) (((x) & (1 << (bit))) >> (bit))
+#define GET_BIT(x, bit) (((x) & ((uint64_t)1 << (bit))) >> (bit))
 class SOEModel : public QAbstractTableModel {
     Q_OBJECT
     QList<CMU_SOE> m_data;

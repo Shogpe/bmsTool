@@ -139,6 +139,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnFixTime">
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="text">
+         <string>对时</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnUpload">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>

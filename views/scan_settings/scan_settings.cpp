@@ -281,6 +281,14 @@ void testWorker::doCommand(QString ip, uint command) {
                 emit workFinished(0, QString("%1:%2").arg(tr("BMS解锁失败"), m_mbtcp->get_error_msg()));
             }
         } break;
+        case CMD_FixTime: {
+            uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
+            if (m_mbtcp->write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time)) > 0) {
+                emit workFinished(1, tr("对时成功."));
+            } else {
+                emit workFinished(0, QString("%1:%2").arg(tr("对时失败"), m_mbtcp->get_error_msg()));
+            }
+        } break;
         default:
             emit workFinished(0, QString("%1:%2").arg(tr("未定义命令"), command));
             break;
@@ -806,3 +814,37 @@ void scan_settings::on_btnFwCheck_released() {
     firmwareDialog* w = new firmwareDialog(nullptr);
     w->exec();
 }
+
+void scan_settings::on_btnFixTime_released()
+{
+    ip_analyze();
+    if (target_ips.size()) {
+        setBusy(true);
+    }
+
+    for (int i = 0; i < target_ips.size(); i++) {
+        QThread* thread = new QThread();
+        testWorker* task = new testWorker(target_ips.at(i), this->m_setMap, CMD_FixTime);
+        task->moveToThread(thread);
+
+        connect(thread, &QThread::started, task, &testWorker::doWork);
+        connect(task, &testWorker::workFinished, thread, &QThread::quit);
+        // automatically delete thread and task object when work is done:
+        connect(task, &testWorker::workFinished, task, &testWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        connect(task, &testWorker::workFinished, this, [this, i](int state, QString msg) {
+            m_mutex.lock();
+            target_count++;
+            m_mutex.unlock();
+            if (target_count == target_ips.size()) {
+                setBusy(false);
+                Toast::showTip(tr("操作完毕"));
+            }
+            qDebug() << i << state << msg;
+            m_result_model->updateData(i, msg);
+        });
+
+        thread->start();
+    }
+}
+

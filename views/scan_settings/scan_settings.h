@@ -53,6 +53,7 @@ enum CMD_TYPE {
     CMD_RESET_ADJ,
     CMD_RESET_PAR,
     CMD_SetIp,
+    CMD_FixTime,
 };
 //只读单元格
 class ReadOnlyDelegate : public QItemDelegate {
@@ -260,7 +261,9 @@ class scan_settings : public QWidget {
     void on_btnFwCheck_released();
     //定时检查
     void checkServer();
-   signals:
+    void on_btnFixTime_released();
+
+signals:
     void checkRespond(int result);
 };
 

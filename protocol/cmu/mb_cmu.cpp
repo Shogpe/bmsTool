@@ -141,7 +141,8 @@ void mb_cmu::Dump2CsvTitle() {
     if (stopDump) return;
     if ((rec & CSV) != CSV) return;
     fileTime = QDateTime::currentDateTime();
-    QString fileName = fileTime.toString("yyyyMMdd_hhmmss");
+    QString currentip = (QString::fromStdString(mb_ip).split('.'))[3];
+    QString fileName = currentip +"_"+ fileTime.toString("yyyyMMdd_hhmmss");
     fileName.append(".csv");
     if (csvfile) csvfile->close();
     csvfile = new QFile(dataPath + "/" + fileName);

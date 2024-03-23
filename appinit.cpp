@@ -83,8 +83,8 @@ void AppInit::replyFinished(QNetworkReply *reply)  // 当回复结束后
                     qDebug() << VER_FILEVERSION_STR << "===>" << version
                              << CompareVersion(VER_FILEVERSION_STR, version);
                     if (CompareVersion(VER_FILEVERSION_STR, version) < 0) {
-                        QString warningStr = "检测到新版本!\n版本号：" + version + "\n" + "更新时间：" + date + "\n" +
-                                             "更新说明：" + desc;
+                        QString warningStr = tr("检测到新版本!\n版本号：") + version + "\n" + tr("更新时间：") + date + "\n" +
+                                             tr("更新说明：") + desc;
                         //                    QMessageBox box;
                         //                    int ret = box.warning(nullptr, "检查更新", warningStr, "去下载",
                         //                    "不更新"); if (ret == 0)  //点击更新

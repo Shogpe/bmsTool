@@ -146,7 +146,7 @@
       <item>
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
-         <string>存储</string>
+         <string>纪录</string>
         </property>
        </widget>
       </item>
@@ -256,7 +256,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -7119,7 +7119,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>对时</string>
+             <string>校时</string>
             </property>
            </widget>
           </item>

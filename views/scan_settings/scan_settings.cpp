@@ -284,9 +284,9 @@ void testWorker::doCommand(QString ip, uint command) {
         case CMD_FixTime: {
             uint32_t unix_time = static_cast<uint32_t>(time(nullptr));
             if (m_mbtcp->write_ao(ADDR_TIME_ADJ, 2, (uint16_t*)(&unix_time)) > 0) {
-                emit workFinished(1, tr("对时成功."));
+                emit workFinished(1, tr("校时成功."));
             } else {
-                emit workFinished(0, QString("%1:%2").arg(tr("对时失败"), m_mbtcp->get_error_msg()));
+                emit workFinished(0, QString("%1:%2").arg(tr("校时失败."), m_mbtcp->get_error_msg()));
             }
         } break;
         default:

@@ -101,7 +101,7 @@
          <string>检查定值是否和加载定值一致。请先加载定值</string>
         </property>
         <property name="text">
-         <string>检查定值</string>
+         <string>参数比对</string>
         </property>
        </widget>
       </item>
@@ -114,14 +114,14 @@
          <string>下发定值至下位机。请先加载定值</string>
         </property>
         <property name="text">
-         <string>下发定值</string>
+         <string>参数写入</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnLoadXml">
         <property name="text">
-         <string>加载定值</string>
+         <string>选择参数</string>
         </property>
        </widget>
       </item>
@@ -131,7 +131,7 @@
          <enum>Qt::DefaultContextMenu</enum>
         </property>
         <property name="text">
-         <string>批量控制</string>
+         <string>群体控制</string>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -144,7 +144,7 @@
          <enum>Qt::DefaultContextMenu</enum>
         </property>
         <property name="text">
-         <string>对时</string>
+         <string>校时</string>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -181,7 +181,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>固件校验</string>
+         <string>更新档资讯</string>
         </property>
        </widget>
       </item>

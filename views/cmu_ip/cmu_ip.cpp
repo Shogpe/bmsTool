@@ -67,12 +67,12 @@ void CmuIpView::timerUpDate() {
       ui->labelStatus->setText(tr("已连接"));
       if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
       uint32_t val = this->mycmu->cmu_ver;
-      ui->labelVer->setText(QString("版本号:%1").arg(myHelper::IntegerToHexString(val)));
-      ui->tbtnConnect->setText("重连");
+      ui->labelVer->setText(tr("版本号:%1").arg(myHelper::IntegerToHexString(val)));
+      ui->tbtnConnect->setText(tr("重连"));
     } else {
       ui->labelStatus->setStyleSheet("color:red");
       ui->labelStatus->setText(tr("未连接"));
-      ui->tbtnConnect->setText("连接");
+      ui->tbtnConnect->setText(tr("连接"));
     }
     flushData();
 }
@@ -101,7 +101,7 @@ void CmuIpView::on_lineBmsIP_editingFinished() {
     }
     uint32_t ip = myHelper::IPV4StringToInteger(ip_str);
     if((ip>>16 & 0xFFFF) != 0xC0A8){
-      myHelper::ShowMessageBoxError(QString("网段必须为192.168.x.x"));
+      myHelper::ShowMessageBoxError(tr("网段必须为192.168.x.x"));
       pEdit->undo();
       return;
     }

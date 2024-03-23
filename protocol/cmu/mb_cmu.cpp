@@ -169,31 +169,31 @@ void mb_cmu::Dump2CsvTitle() {
             data_buf << (QString("BMU%1_T%2,").arg(i + 1).arg(j + 1));
         }
         for (int j = 0; j < config.Tp_num; j++) {
-            data_buf << (QString("BMU%1_Tp%2,").arg(i + 1).arg(j + 1));
+            data_buf << (tr("BMU%1_Tp%2,").arg(i + 1).arg(j + 1));
         }
-        data_buf << (QString("BMU%1_电压断线,").arg(i + 1));
-        data_buf << (QString("BMU%1_温度断线,").arg(i + 1));
-        data_buf << (QString("BMU%1_运行状态,").arg(i + 1));
-        data_buf << (QString("BMU%1_故障状态,").arg(i + 1));
+        data_buf << (tr("BMU%1_电压断线,").arg(i + 1));
+        data_buf << (tr("BMU%1_温度断线,").arg(i + 1));
+        data_buf << (tr("BMU%1_运行状态,").arg(i + 1));
+        data_buf << (tr("BMU%1_故障状态,").arg(i + 1));
         if (protocal_ver > CMUV2) {
-            data_buf << (QString("BMU%1_CAN错误,").arg(i + 1));
+            data_buf << (tr("BMU%1_CAN错误,").arg(i + 1));
         }
         if (protocal_ver > CMUV3) {
-            data_buf << (QString("BMU%1_母线电压,").arg(i + 1));
+            data_buf << (tr("BMU%1_母线电压,").arg(i + 1));
             if(protocal_ver != CMUV4_10){
-                data_buf << (QString("BMU%1_均衡电流,").arg(i + 1));
+                data_buf << (tr("BMU%1_均衡电流,").arg(i + 1));
             }else{
-                data_buf << (QString("BMU%1_模组A均衡电流,").arg(i + 1));
-                data_buf << (QString("BMU%1_模组B均衡电流,").arg(i + 1));
-                data_buf << (QString("BMU%1_模组C均衡电流,").arg(i + 1));
-                data_buf << (QString("BMU%1_模组D均衡电流,").arg(i + 1));
+                data_buf << (tr("BMU%1_模组A均衡电流,").arg(i + 1));
+                data_buf << (tr("BMU%1_模组B均衡电流,").arg(i + 1));
+                data_buf << (tr("BMU%1_模组C均衡电流,").arg(i + 1));
+                data_buf << (tr("BMU%1_模组D均衡电流,").arg(i + 1));
             }
-            data_buf << (QString("BMU%1_均衡故障,").arg(i + 1));
-            data_buf << (QString("BMU%1_通道状态,").arg(i + 1));
-            data_buf << (QString("BMU%1_均衡模式,").arg(i + 1));
+            data_buf << (tr("BMU%1_均衡故障,").arg(i + 1));
+            data_buf << (tr("BMU%1_通道状态,").arg(i + 1));
+            data_buf << (tr("BMU%1_均衡模式,").arg(i + 1));
             for (int j = 0; j < config.vol_num; ++j) {
-                data_buf << (QString("BMU%1_%2充电Ah,").arg(i + 1).arg(j + 1));
-                data_buf << (QString("BMU%1_%2放电Ah,").arg(i + 1).arg(j + 1));
+                data_buf << (tr("BMU%1_%2充电Ah,").arg(i + 1).arg(j + 1));
+                data_buf << (tr("BMU%1_%2放电Ah,").arg(i + 1).arg(j + 1));
             }
         }
     }

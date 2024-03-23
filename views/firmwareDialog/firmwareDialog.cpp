@@ -11,7 +11,7 @@ firmwareDialog::firmwareDialog(QWidget* parent) : QDialog(parent), ui(new Ui::fi
     ui->setupUi(this);
     // remove question mark from the title bar
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowTitle(tr("固件信息查看"));
+    setWindowTitle(tr("更新档资讯查看"));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 firmwareDialog::~firmwareDialog() { delete ui; }
@@ -182,7 +182,7 @@ int firmwareDialog::loadfile(QString fileName) {
             "firmware_crc32:0x%04x,firmware_size:%d bytes,Version:0x%x,Compile time:%s %s",
             hdr.head_len, hdr.head_type, hdr.check_sum, hdr.firmware_crc32, hdr.firmware_size, hdr.firmware_version,
             hdr.RELEASEDATE, hdr.RELEASETIME);
-        ui->info->setText(QString("签名v2, 固件类型 %1, 固件版本 %2, 固件长度 %3 字节, 发布日期 %4 %5")
+        ui->info->setText(tr("签名v2, 更新档类型 %1, 更新档版本 %2, 更新档长度 %3 Bytes, 发布日期 %4 %5")
                               .arg(hdr.head_type)
                               .arg(myHelper::IntegerToHexString(hdr.firmware_version))
                               .arg(hdr.firmware_size)
@@ -193,7 +193,7 @@ int firmwareDialog::loadfile(QString fileName) {
             "firmware_crc32:0x%04x,firmware_size:%d bytes,Version:0x%x,Compile time:%s %s",
             hdr.head_len, hdr.head_type, hdr.check_sum, hdr.firmware_crc32, hdr.firmware_size, hdr.firmware_version,
             hdr.RELEASEDATE, hdr.RELEASETIME);
-        ui->info->setText(QString("签名v1, 固件类型 %1, 固件版本 %2, 固件长度 %3 字节, 发布日期 %4 %5")
+        ui->info->setText(tr("签名v1, 更新档类型 %1, 更新档版本 %2, 更新档长度 %3 Bytes, 发布日期 %4 %5")
                               .arg(hdr.head_type)
                               .arg(myHelper::IntegerToHexString(hdr.firmware_version))
                               .arg(hdr.firmware_size)

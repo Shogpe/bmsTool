@@ -248,7 +248,7 @@ class mb_cmu : public QObject {
     QHash<QString, qreal> mapData;
     QHash<QString, NodeReg> mapConfig;
     QList<db_manager::ST_DB_NODE> nodes_table;
-    uint16_t tab_reg[1000];
+    uint16_t tab_reg[5000];
     BMU_DATA_T bmu_data[MAX_BMU];
     BMS_DATA_T bms_data;
     ST_SysPara sys_para;

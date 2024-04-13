@@ -25,9 +25,9 @@ DESTDIR     = $$PWD/output/
 #include(ThirdParty/ThirdParty.pri)
 # include(ThirdParty/log4qt/log4qt.pri)
 include(models/models.pri)
+include(views/views.pri)
 include(3rdParty.pri)
 include(protocol/protocol.pri)
-include(views/views.pri)
 
 SOURCES     += main.cpp \
     MessageQueue.cpp \

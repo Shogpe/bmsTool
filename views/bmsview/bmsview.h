@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QTableWidget>
 #include <QWidget>
+#include <frmSaveLog.h>
 #include <iostream>
 #include "frmbalanceConfig.h"
 #include "frmbalancebox.h"
@@ -75,9 +76,12 @@ class BMSView : public QWidget {
     void flushSoe(const ST_SOE &soe);
     void pop_bmuTable_menu(const QPoint& pos);
 
-   private:
+    void on_btn_debugLog_clicked();
+
+private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
+    frmSaveLog savelog;
 signals:
     void send_msg(TMsgData MsgCmd);
 };

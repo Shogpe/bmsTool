@@ -692,6 +692,7 @@ void BMSView::flushBmu() {
                 breakLineTemp = mycmu->bmu_data[i].Ubreak;
             }else{
                 breakLineTemp = mycmu->bmu_data[i].U64break;
+                qWarning()<<"mycmu->bmu_data["<<i<<"].U64break:"<<mycmu->bmu_data[i].U64break;
             }          
             if (GET_BIT(breakLineTemp, j)) {
 
@@ -1828,3 +1829,9 @@ void BMSView::changeEvent(QEvent* event) {
 
     QWidget::changeEvent(event);
 }
+
+void BMSView::on_btn_debugLog_clicked()
+{
+    savelog.show();
+}
+

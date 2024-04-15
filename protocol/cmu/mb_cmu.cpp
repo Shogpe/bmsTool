@@ -584,41 +584,36 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].RunStat = *(p + 2 * config.bmu_num + i);
                 bmu_data[i].ErrStat = *(p + 3 * config.bmu_num + i);
             }
-        }else{
-            // 读电压断线
+        }else{            
+            uint16_t *pt;
             reg_num = config.bmu_num * 10;
             status += ReadData(0x03, 0x100, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {
-//                bmu_data[i].U64break  =  *(p + i*4);
-//                bmu_data[i].U64break |= (*(p + i*4 + 1))<<(config.vol_num/4);
-//                bmu_data[i].U64break |= (*(p + i*4 + 2))<<(config.vol_num/4*2);
-//                bmu_data[i].U64break |= (*(p + i*4 + 3))<<(config.vol_num/4*3);
 
-//                bmu_data[i].T64break  =  *(p + 4 * config.bmu_num + i*4 );
-//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 1))<<(config.T_num/4);
-//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 2))<<(config.T_num/4*2);
-//                bmu_data[i].T64break |= (*(p + 4 * config.bmu_num + i*4 + 3))<<(config.T_num/4*3);
+            for (int i = 0; i < config.bmu_num; i++){
 
-//                bmu_data[i].RunStat = *(p + 8 * config.bmu_num + i);
+                // 读电压断线
+                pt = p+i*4;
+                bmu_data[i].U64break  =  *pt;
+                bmu_data[i].U64break |= (*(pt + 1))<<(config.vol_num/4);
+                bmu_data[i].U64break |= (*(pt + 2))<<(config.vol_num/4*2);
+                bmu_data[i].U64break |= (*(pt + 3))<<(config.vol_num/4*3);
 
-//                bmu_data[i].ErrStat = *(p + 9 * config.bmu_num + i);
+                // 读温度断线
+                pt = (p+config.bmu_num*4)+i*4;
+                bmu_data[i].T64break  =  *pt;
+                bmu_data[i].T64break |= (*(pt + 1))<<(16);
+                bmu_data[i].T64break |= (*(pt + 2))<<(32);
+                bmu_data[i].T64break |= (*(pt + 3))<<(48);
 
-                bmu_data[i].U64break  =  *(p++);
-                bmu_data[i].U64break |= (uint64_t)(*(p++))<<16;
-                bmu_data[i].U64break |= (uint64_t)(*(p++))<<32;
-                bmu_data[i].U64break |= (uint64_t)(*(p++))<<48;
+                // 读运行状态
+                pt = (p+config.bmu_num*8)+i;
+                bmu_data[i].RunStat = *pt;
+                // 读故障状态
+                pt = (p+config.bmu_num*9)+i;
+                bmu_data[i].ErrStat = *pt;
 
-                bmu_data[i].T64break  =  *(p++);
-                bmu_data[i].T64break |= (uint64_t)(*(p++))<<16;
-                bmu_data[i].T64break |= (uint64_t)(*(p++))<<32;
-                bmu_data[i].T64break |= (uint64_t)(*(p++))<<48;
-
-                bmu_data[i].RunStat = *(p++);
-
-                bmu_data[i].ErrStat = *(p++);
-
-                //qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
-                //qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
+                qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
+                qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
             }
         }
 

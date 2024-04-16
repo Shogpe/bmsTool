@@ -675,13 +675,13 @@ void BMSView::flushBmu() {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             if (is_parallel_balanced(this->mycmu->cmu_ver)) {
-                item->setText(QString("%1\n%2").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
+                item->setText(QString("%1 %2").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
             }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QString str = "";
                 if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
                     str = "闭锁";
                 }
-                item->setText(QString("%1\n%2").arg(val,5,'f', 3,'0').arg(str));
+                item->setText(QString("%1 %2").arg(val,5,'f', 3,'0').arg("str"));
             }else {
                 item->setText(QString("%1").arg(val, 0, 'g', 5));
             }
@@ -692,7 +692,7 @@ void BMSView::flushBmu() {
                 breakLineTemp = mycmu->bmu_data[i].Ubreak;
             }else{
                 breakLineTemp = mycmu->bmu_data[i].U64break;
-                qWarning()<<"mycmu->bmu_data["<<i<<"].U64break:"<<mycmu->bmu_data[i].U64break;
+                //qWarning()<<"mycmu->bmu_data["<<i<<"].U64break:"<<mycmu->bmu_data[i].U64break;
             }          
             if (GET_BIT(breakLineTemp, j)) {
 

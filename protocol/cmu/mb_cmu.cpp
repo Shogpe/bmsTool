@@ -612,8 +612,8 @@ int mb_cmu::ReadALL() {
                 pt = (p+config.bmu_num*9)+i;
                 bmu_data[i].ErrStat = *pt;
 
-                qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
-                qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
+                //qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
+                //qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
             }
         }
 

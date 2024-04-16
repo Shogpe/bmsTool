@@ -681,7 +681,7 @@ void BMSView::flushBmu() {
                 if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
                     str = "闭锁";
                 }
-                item->setText(QString("%1 %2").arg(val,5,'f', 3,'0').arg("str"));
+                item->setText(QString("%1 %2").arg(val,5,'f', 3,'0').arg(str));
             }else {
                 item->setText(QString("%1").arg(val, 0, 'g', 5));
             }

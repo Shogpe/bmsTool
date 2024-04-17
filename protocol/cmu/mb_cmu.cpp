@@ -547,6 +547,15 @@ int mb_cmu::ReadALL() {
                 pt = p + config.bmu_num*3;
                 bmu_data[i].BMUSN = *(pt + i);
             }
+
+            reg_num = config.bmu_num * 2;
+            status += ReadData(0x04, 0x157C, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                // 读模块1温度
+                bmu_data[i].ModT1 = *(p + i*2);
+                // 读模块2温度
+                bmu_data[i].ModT2 = *(p + i*2 + 1);
+            }
         }
 
         reg_num = config.bmu_num * config.vol_num;

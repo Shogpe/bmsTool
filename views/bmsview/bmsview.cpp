@@ -223,6 +223,8 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
             hdr_list2.append(tr("硬体版本"));
             hdr_list2.append(tr("BOOT版本"));
             hdr_list2.append(tr("生产流水号"));
+            hdr_list2.append(tr("模块温度1"));
+            hdr_list2.append(tr("模块温度2"));
         }
 
         for (int i = 0; i < config.vol_num; i++) {
@@ -670,7 +672,7 @@ void BMSView::flushBmu() {
         } else {
             item->setTextColor(QColor(Qt::red));
             font.setStrikeOut(true);
-            font.setBold(true);
+            //font.setBold(true);
         }
         item->setFont(font);
         item->setToolTip(tr("Strikethrough indicates disconnection"));
@@ -682,7 +684,7 @@ void BMSView::flushBmu() {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             if (is_parallel_balanced(this->mycmu->cmu_ver)) {
-                item->setText(QString("%1 [%2]").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
+                item->setText(QString("%1 [%2]").arg(val,5,'f', 3,'0').arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
             }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QString str = "";
                 if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
@@ -713,13 +715,13 @@ void BMSView::flushBmu() {
                 // 簇最大标粗
                 if (mycmu->bms_data.MaxUbmuId == i) {
                     item->setTextColor(QColor(Qt::red));
-                    font.setBold(true);
+                    //font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinUcellId == j) {
                 if (mycmu->bms_data.MinUbmuId == i) {
                     item->setTextColor(QColor(Qt::darkGreen));
-                    font.setItalic(true);
+                    //font.setItalic(true);
                 }
             }
 
@@ -759,7 +761,7 @@ void BMSView::flushBmu() {
                 // 簇最大标粗
                 if (mycmu->bms_data.MaxTbmuId == i) {
                     item->setTextColor(QColor(Qt::red));
-                    font.setBold(true);
+                    //font.setBold(true);
                 }
             }
             if (mycmu->bmu_data[i].MinTcellId == j) {
@@ -935,6 +937,19 @@ void BMSView::flushBmu() {
                 sn = this->mycmu->bmu_data[i].BMUSN;
                 item->setText(QString("%1.%2").arg((uint8_t)(sn>>8),0,10)
                                               .arg((uint8_t)sn,0,10));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableExtView->setItem(i, offset++, item);
+
+                double T;
+                item = new QTableWidgetItem();
+                T = this->mycmu->bmu_data[i].ModT1/10.0;
+                item->setText(QString("%1").arg(T,0,'g',5));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableExtView->setItem(i, offset++, item);
+
+                item = new QTableWidgetItem();
+                T = this->mycmu->bmu_data[i].ModT2/10.0;
+                item->setText(QString("%1").arg(T,0,'g',5));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
 

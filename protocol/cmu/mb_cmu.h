@@ -150,6 +150,8 @@ typedef struct {
     uint16_t MaxUcellId;          // 最大单体电压ID
     uint16_t MinUcellId;          // 最小单体电压ID
     int16_t Tcell[MAX_T];         // 温度
+    int16_t ModT1;                // 模块温度1
+    int16_t ModT2;                // 模块温度2
     uint16_t MaxTcellId;          // 最大单体温度ID
     uint16_t MinTcellId;          // 最大单体温度ID
     uint16_t Ubreak;              // 电压断线

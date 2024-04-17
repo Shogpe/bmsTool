@@ -218,6 +218,13 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
         QStringList hdr_list2;
+
+        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            hdr_list2.append(tr("硬体版本"));
+            hdr_list2.append(tr("BOOT版本"));
+            hdr_list2.append(tr("生产流水号"));
+        }
+
         for (int i = 0; i < config.vol_num; i++) {
             hdr_list2.append(tr("充电Ah") + QString::number(i + 1));
             hdr_list2.append(tr("放电Ah") + QString::number(i + 1));
@@ -675,13 +682,13 @@ void BMSView::flushBmu() {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
             if (is_parallel_balanced(this->mycmu->cmu_ver)) {
-                item->setText(QString("%1 %2").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
+                item->setText(QString("%1 [%2]").arg(val, 0, 'g', 5).arg(mycmu->bmu_data[i].BalIdc[j] / 1000.0));
             }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QString str = "";
                 if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
                     str = "闭锁";
                 }
-                item->setText(QString("%1 %2").arg(val,5,'f', 3,'0').arg(str));
+                item->setText(QString("%1 [%2]").arg(val,5,'f', 3,'0').arg(str));
             }else {
                 item->setText(QString("%1").arg(val, 0, 'g', 5));
             }
@@ -903,19 +910,62 @@ void BMSView::flushBmu() {
         ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         ui->tableExtView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         for (int i = 0; i < config.bmu_num; i++) {
-            offset = 0;
-            double val = 0;
-            for (int j = 0; j < config.vol_num; j++) {
+            if(this->mycmu->GetProtocalVer() == CMUV4_6){
+                offset = 0;
+
+                uint16_t hw;
                 item = new QTableWidgetItem();
-                val = this->mycmu->bmu_data[i].BalChgAh[j];
-                item->setText(QString("%1").arg(val, 0, 'g', 5));
+                hw = this->mycmu->bmu_data[i].HVersion;
+                item->setText(QString("%1.%2").arg(hw>>8,2,16,QChar('0')).arg((uint8_t)hw,2,16,QChar('0')));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
+
+                uint32_t bootversion;
                 item = new QTableWidgetItem();
-                val = this->mycmu->bmu_data[i].BalDischgAh[j];
-                item->setText(QString("%1").arg(val, 0, 'g', 5));
+                bootversion = this->mycmu->bmu_data[i].BMUBootVersion;
+                item->setText(QString("%1.%2.%3.%4").arg((uint8_t)(bootversion>>24),2,16,QChar('0'))
+                                                    .arg((uint8_t)(bootversion>>16),2,16,QChar('0'))
+                                                    .arg((uint8_t)(bootversion>>8),2,16,QChar('0'))
+                                                    .arg((uint8_t)bootversion,2,16,QChar('0')));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
+
+                uint16_t sn;
+                item = new QTableWidgetItem();
+                sn = this->mycmu->bmu_data[i].BMUSN;
+                item->setText(QString("%1.%2").arg((uint8_t)(sn>>8),0,10)
+                                              .arg((uint8_t)sn,0,10));
+                item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                ui->tableExtView->setItem(i, offset++, item);
+
+                double val = 0;
+                for (int j = 0; j < config.vol_num; j++) {
+                    item = new QTableWidgetItem();
+                    val = this->mycmu->bmu_data[i].BalChgAh[j];
+                    item->setText(QString("%1").arg(val, 0, 'g', 5));
+                    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                    ui->tableExtView->setItem(i, offset++, item);
+                    item = new QTableWidgetItem();
+                    val = this->mycmu->bmu_data[i].BalDischgAh[j];
+                    item->setText(QString("%1").arg(val, 0, 'g', 5));
+                    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                    ui->tableExtView->setItem(i, offset++, item);
+                }
+            }else{
+                offset = 0;
+                double val = 0;
+                for (int j = 0; j < config.vol_num; j++) {
+                    item = new QTableWidgetItem();
+                    val = this->mycmu->bmu_data[i].BalChgAh[j];
+                    item->setText(QString("%1").arg(val, 0, 'g', 5));
+                    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                    ui->tableExtView->setItem(i, offset++, item);
+                    item = new QTableWidgetItem();
+                    val = this->mycmu->bmu_data[i].BalDischgAh[j];
+                    item->setText(QString("%1").arg(val, 0, 'g', 5));
+                    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                    ui->tableExtView->setItem(i, offset++, item);
+                }
             }
         }
         ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);

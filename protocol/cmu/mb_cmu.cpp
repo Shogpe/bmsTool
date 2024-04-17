@@ -528,6 +528,27 @@ int mb_cmu::ReadALL() {
     }
     //
     if (config.bmu_num > 0) {
+
+        if(protocal_ver == CMUV4_6 )
+        {
+            uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
+            uint16_t *pt;
+            reg_num = config.bmu_num * 4;
+            status += ReadData(0x03, (int)starAddr, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                // 读硬件版本号
+                pt = p;
+                bmu_data[i].HVersion = *(pt + i);
+                // 读bmuboot版本号
+                pt = p + config.bmu_num;
+                bmu_data[i].BMUBootVersion  = (*(pt + i*2 +1));
+                bmu_data[i].BMUBootVersion |= *(pt + i*2)<<16;
+                // 读bmu生产流水号
+                pt = p + config.bmu_num*3;
+                bmu_data[i].BMUSN = *(pt + i);
+            }
+        }
+
         reg_num = config.bmu_num * config.vol_num;
         status += ReadData(0x04, 0x01, reg_num, p);
         int maxId = 0;

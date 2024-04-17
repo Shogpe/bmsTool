@@ -159,6 +159,9 @@ typedef struct {
     uint16_t RunStat;             // 运行状态
     uint16_t ErrStat;             // 故障状态
     uint32_t Version;             // 版本号
+    uint16_t HVersion;            // 硬件版本号
+    uint32_t BMUBootVersion;      // BMUboot版本号
+    uint16_t BMUSN;               // BMU生成流水号
     uint16_t BalStat;             // 均衡状态
     uint64_t U64BalStat;          // 液冷均衡状态
 

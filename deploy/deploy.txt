@@ -1,0 +1,15 @@
+;!@Install@!UTF-8!
+SetEnvironment="Name=家储上位机程序"
+Title="%Name%"
+BeginPrompt="即将安装 %Name% ..."
+CancelPrompt="您想取消安装吗?"
+ExtractDialogText="请等待..."
+ExtractPathText="选择安装文件夹"
+ExtractTitle="解压中..."
+GUIFlags="8+32+64+256+4096"
+GUIMode="1"
+InstallPath="%%S\\HomeEnergyBox"
+OverwriteMode="2"
+RunProgram="\"%%T\\HomeEnergyBox.exe\""
+Shortcut="Du,{\"%%T\\HomeEnergyBox.exe\"},{},{},{%Name%},{%Name%},{%%T},{%%T\\HomeEnergyBox.exe},{0}"
+;!@InstallEnd@!

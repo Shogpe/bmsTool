@@ -19,11 +19,13 @@ class frmBalanceBox : public QDialog {
     QByteArray getValue() const { return Value; }
     uint8_t getMode() const { return curMode; }
     bool setMode(uint8_t mode);
+    QString CMUVsersion;
 
    private slots:
 
     void on_btnManually_clicked();
     void on_btnMode_clicked();
+    void cb_AllCheckStateChange();
    signals:
     void valueChange(QByteArray b);
 

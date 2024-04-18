@@ -37,6 +37,7 @@ void frmBalanceBox::initStyle() {
     ui->gManual->hide();
     curMode = ui->cbMode->currentData().toUInt();
     connect(ui->cbMode, &QComboBox::currentTextChanged, this, &frmBalanceBox::modeChange);
+    connect(ui->cb_manual_AllSelect,&QCheckBox::stateChanged,this,&frmBalanceBox::cb_AllCheckStateChange);
 }
 
 void frmBalanceBox::modeChange() {
@@ -77,6 +78,14 @@ void frmBalanceBox::modeChange() {
         default:
             ui->gManual->hide();
             break;
+    }    
+
+    if(curMode == BALANCE_MANUAL && CMUVsersion == "CMUV4_6"){
+        ui->splitter_manual_V460->show();
+        ui->wCellID->hide();
+    }else{
+        ui->splitter_manual_V460->hide();
+        ui->wCellID->show();
     }
 }
 
@@ -121,15 +130,38 @@ void frmBalanceBox::on_btnManually_clicked() {
             this->saveValue();
         } break;
         case BALANCE_MANUAL: {
-            uint16_t val[4] = {0};
-            val[0] = 0xF0A0;
-            val[1] = 0x88;
-            val[2] = ((uint16_t)ui->BmuID1->value() & 0xFF) << 8 | ((uint16_t)ui->CellID->value() & 0xF) << 4 |
-                     ((uint16_t)(ui->cbDirection->currentIndex() + 1) & 0xF);
-            val[3] = ((uint16_t)(ui->doubleI->value()) & 0xFF) << 8 | ((uint16_t)ui->time->value() & 0xFF);
-            Value.clear();
-            Value.append(reinterpret_cast<char *>(&val), sizeof(val));
-            this->saveValue();
+            if(CMUVsersion == "CMUV4_6"){
+                uint16_t val[5] = {0};
+                val[0] = 0xF0A0;
+                val[1] = 0x88;
+                val[2] = ((uint16_t)ui->BmuID1->value() & 0xFF) << 8 | (0 & 0xF) << 4 |
+                         ((uint16_t)(ui->cbDirection->currentIndex() + 1) & 0xF);
+                val[3] = ((uint16_t)(ui->doubleI->value()) & 0xFF) << 8 | ((uint16_t)ui->time->value() & 0xFF);
+
+                uint16_t chl = 0;
+                QList<QCheckBox*> cblist = ui->gb_Manual_Channel->findChildren<QCheckBox *>();
+                foreach (QCheckBox *item, cblist)
+                {
+                    if(item->checkState() == Qt::Checked)
+                    {
+                        chl |= (1 << (item->text().toInt()-1));
+                    }
+                }
+                val[4] = chl;
+                Value.clear();
+                Value.append(reinterpret_cast<char *>(&val), sizeof(val));
+                this->saveValue();
+            }else{
+                uint16_t val[4] = {0};
+                val[0] = 0xF0A0;
+                val[1] = 0x88;
+                val[2] = ((uint16_t)ui->BmuID1->value() & 0xFF) << 8 | ((uint16_t)ui->CellID->value() & 0xF) << 4 |
+                         ((uint16_t)(ui->cbDirection->currentIndex() + 1) & 0xF);
+                val[3] = ((uint16_t)(ui->doubleI->value()) & 0xFF) << 8 | ((uint16_t)ui->time->value() & 0xFF);
+                Value.clear();
+                Value.append(reinterpret_cast<char *>(&val), sizeof(val));
+                this->saveValue();
+            }
         } break;
         case BALANCE_CHG: {
             uint16_t val[5] = {0};
@@ -165,4 +197,38 @@ bool frmBalanceBox::setMode(uint8_t mode) {
 void frmBalanceBox::on_btnMode_clicked() {
     Value.clear();
     this->saveValue();
+}
+
+void frmBalanceBox::cb_AllCheckStateChange()
+{
+    QCheckBox *cbox = (QCheckBox*)sender();
+    bool check_flag = false;
+    QList<QCheckBox*> cblist;
+
+    if(cbox->objectName() == "cb_manual_AllSelect"){
+        cblist = ui->gb_Manual_Channel->findChildren<QCheckBox *>();
+    }else{
+        return;
+    }
+
+
+    if(cbox->checkState() == Qt::Checked){
+        check_flag = true;
+    }else{
+        check_flag = false;
+    }
+
+    if(!cblist.empty()){
+        foreach (QCheckBox *item, cblist){
+            if(check_flag){
+                if(item->checkState() == Qt::Unchecked){
+                    item->setCheckState(Qt::Checked);
+                }
+            }else{
+                if(item->checkState() == Qt::Checked){
+                    item->setCheckState(Qt::Unchecked);
+                }
+            }
+        }
+    }
 }

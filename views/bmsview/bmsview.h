@@ -48,6 +48,8 @@ class BMSView : public QWidget {
     bool saveParameters(const QString& filename);
     bool loadParameters(const QString& filename);
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
+    void StartBalanceForm(void);
+
    private slots:
     void timerUpDate();
     void valueChange(double dval);

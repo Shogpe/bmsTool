@@ -123,6 +123,41 @@ bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     file.close();
     return true;
 }
+
+void BMSView::StartBalanceForm()
+{
+    uint8_t mode = 0;
+    mode = ui->BalnceMask->value();
+    qDebug() << mode;
+    //        bool lbok;
+    if (inputBalance == nullptr) {
+        inputBalance = new frmBalanceBox();
+        connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
+            TMsgData MsgCmd;
+            uint16_t mode = inputBalance->getMode();
+            qDebug() << mode;
+            MsgCmd.msg_type = CTRL_AO_ADDR;
+            uint16_t value[2] = {5408, mode};
+            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            MsgCmd.data.clear();
+            QByteArray ba = inputBalance->getValue();
+            if (ba.size() > 0) {
+                MsgCmd.msg_type = CTRL_AO_ADDR;
+                MsgCmd.data.append(ba);
+                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            }
+        });
+    }
+    if(this->mycmu->GetProtocalVer() == CMUV4_6){
+        inputBalance->CMUVsersion = "CMUV4_6";
+    }else{
+        inputBalance->CMUVsersion = "Other";
+    }
+    inputBalance->setMode(mode);
+    inputBalance->open();
+    inputBalance->activateWindow();
+}
 BMSView::~BMSView() {
     TMsgData MsgCmd;
     MsgCmd.msg_type = THREAD_EXIT;
@@ -539,11 +574,11 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             cb->setText(textList.at(CheckBoxList.indexOf(cb)));
         }
     }
-    if (is_parallel_balanced(this->mycmu->cmu_ver)) {
-        ui->BalnceStartDiff->setPrefix(tr("均衡目标电压"));
-    } else {
-        ui->BalnceStartDiff->setPrefix(tr("均衡启动差值"));
-    }
+//    if (this->mycmu->GetProtocalVer() == CMUV4_6) {
+//        ui->BalnceStartDiff->setPrefix(tr("均衡目标电压"));
+//    } else {
+//        ui->BalnceStartDiff->setPrefix(tr("均衡启动差值"));
+//    }
     if (mapData.contains("BalnceMask") && mapData.contains("BalanceConfig")) {
         ui->balanceStr->show();
         uint16_t mode = mapData.value("BalnceMask");
@@ -1115,32 +1150,7 @@ void BMSView::sendCommand() {
         }
         if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnBalance") {
-        uint8_t mode = 0;
-        mode = ui->BalnceMask->value();
-        qDebug() << mode;
-        //        bool lbok;
-        if (inputBalance == nullptr) {
-            inputBalance = new frmBalanceBox();
-            connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
-                TMsgData MsgCmd;
-                uint16_t mode = inputBalance->getMode();
-                qDebug() << mode;
-                MsgCmd.msg_type = CTRL_AO_ADDR;
-                uint16_t value[2] = {5408, mode};
-                MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                MsgCmd.data.clear();
-                QByteArray ba = inputBalance->getValue();
-                if (ba.size() > 0) {
-                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                    MsgCmd.data.append(ba);
-                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                }
-            });
-        }
-        inputBalance->setMode(mode);
-        inputBalance->open();
-        inputBalance->activateWindow();
+        StartBalanceForm();
     } else if (name == "btnImportSOC") {
         QByteArray ba = SOCImport();
         //        if ((sizeof(uint16_t) * 101) != b.size()) {
@@ -1498,29 +1508,7 @@ void BMSView::uiInit() {
                     // Create menu and insert some actions
                     QMenu myMenu;
                     myMenu.addAction(tr("修改"), this, [=]() {
-                        int mode = ui->BalnceMask->value();
-                        if (inputBalance == nullptr) {
-                            inputBalance = new frmBalanceBox();
-                            connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
-                                TMsgData MsgCmd;
-                                uint16_t mode = inputBalance->getMode();
-                                qDebug() << mode;
-                                MsgCmd.msg_type = CTRL_AO_ADDR;
-                                uint16_t value[2] = {5408, mode};
-                                MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                                MsgCmd.data.clear();
-                                QByteArray b = inputBalance->getValue();
-                                if (b.size() > 0) {
-                                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                                    MsgCmd.data.append(b);
-                                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                                }
-                            });
-                        }
-                        inputBalance->setMode(mode);
-                        inputBalance->open();
-                        inputBalance->activateWindow();
+                        StartBalanceForm();
                     });
                     // Show context menu at handling position
                     myMenu.exec(globalPos);

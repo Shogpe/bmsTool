@@ -71,7 +71,7 @@ void Log(QtMsgType type, const char *msg)
         QString file = context.file;
         QString function = context.function;
         if (line > 0) {
-            content = QString("行号: %1  文件: %2  函数: %3\n%4").arg(line).arg(file).arg(function).arg(content);
+            content = QObject::tr("行号: %1  文件: %2  函数: %3\n%4").arg(line).arg(file).arg(function).arg(content);
         }
     }
 #endif

@@ -133,23 +133,23 @@ void frmSaveLog::initForm()
     }
 
     //添加日志文件大小下拉框
-    ui->cboxSize->addItem("不启用", 0);
+    ui->cboxSize->addItem(tr("不启用"), 0);
     ui->cboxSize->addItem("5kb", 5);
     ui->cboxSize->addItem("10kb", 10);
     ui->cboxSize->addItem("30kb", 30);
     ui->cboxSize->addItem("1mb", 1024);
 
-    ui->cboxRow->addItem("不启用", 0);
-    ui->cboxRow->addItem("100条", 100);
-    ui->cboxRow->addItem("500条", 500);
-    ui->cboxRow->addItem("2000条", 2000);
-    ui->cboxRow->addItem("10000条", 10000);
+    ui->cboxRow->addItem(tr("不启用"), 0);
+    ui->cboxRow->addItem(tr("100条"), 100);
+    ui->cboxRow->addItem(tr("500条"), 500);
+    ui->cboxRow->addItem(tr("2000条"), 2000);
+    ui->cboxRow->addItem(tr("10000条"), 10000);
 
-    ui->cboxViewRows->addItem("100条", 100);
-    ui->cboxViewRows->addItem("300条", 300);
-    ui->cboxViewRows->addItem("700条", 700);
-    ui->cboxViewRows->addItem("1000条", 1000);
-    ui->cboxViewRows->addItem("2000条", 2000);
+    ui->cboxViewRows->addItem(tr("100条"), 100);
+    ui->cboxViewRows->addItem(tr("300条"), 300);
+    ui->cboxViewRows->addItem(tr("700条"), 700);
+    ui->cboxViewRows->addItem(tr("1000条"), 1000);
+    ui->cboxViewRows->addItem(tr("2000条"), 2000);
 }
 
 // 此append函数仅用于调试所用
@@ -180,8 +180,8 @@ void frmSaveLog::append(const QString &flag)
     }
 
     QString str2 = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
-    QString str3 = flag.isEmpty() ? "自动插入消息" : flag;
-    QString msg = QString("%1当前时间: %2 %3").arg(str1).arg(str2).arg(str3);
+    QString str3 = flag.isEmpty() ? tr("自动插入消息") : flag;
+    QString msg = tr("%1当前时间: %2 %3").arg(str1).arg(str2).arg(str3);
 
     //开启网络重定向换成英文方便接收解析不乱码
     //对方接收解析的工具未必是utf8

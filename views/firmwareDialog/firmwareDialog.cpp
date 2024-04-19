@@ -62,7 +62,7 @@ bool checkSignV1(QByteArray data, FIRMWARE_HEAER& hdr_tmp, FIRMWARE_TAIL& tail) 
             qDebug() << "address:" << is_head_valid << sizeof(FIRMWARE_HEAER) << offset;
 
             if (hdr_tmp.firmware_crc32 != crc) {
-                qDebug() << "文件校验错误";
+                qDebug() << QObject::tr("文件校验错误");
                 qDebug()
                     << QString("crc=%1,%2").arg(crc, 8, 16, QChar('0')).arg(hdr_tmp.firmware_crc32, 8, 16, QChar('0'))
                     << hdr_tmp.firmware_size;
@@ -78,7 +78,7 @@ bool checkSignV1(QByteArray data, FIRMWARE_HEAER& hdr_tmp, FIRMWARE_TAIL& tail) 
                 hdr->check_sum += *(p16 + j);
             }
             if (hdr->check_sum != hdr_tmp.check_sum) {
-                qDebug() << "固件信息校验错误";
+                qDebug() << QObject::tr("固件信息校验错误");
                 qDebug() << QString("check_sum=%1,%2")
                                 .arg(hdr->check_sum, 4, 16, QChar('0'))
                                 .arg(hdr_tmp.check_sum, 4, 16, QChar('0'));
@@ -129,7 +129,7 @@ bool checkSignV2(QByteArray data, FIRMWARE_HEAER& hdr_tmp, FIRMWARE_TAIL& tail) 
             qDebug() << "address:" << is_head_valid << sizeof(FIRMWARE_HEAER) << offset;
 
             if (hdr_tmp.firmware_crc32 != crc) {
-                qDebug() << "文件校验错误";
+                qDebug() << QObject::tr("文件校验错误");
                 qDebug()
                     << QString("crc=%1,%2").arg(crc, 8, 16, QChar('0')).arg(hdr_tmp.firmware_crc32, 8, 16, QChar('0'))
                     << hdr_tmp.firmware_size;
@@ -144,7 +144,7 @@ bool checkSignV2(QByteArray data, FIRMWARE_HEAER& hdr_tmp, FIRMWARE_TAIL& tail) 
                 check_sum += *(p16 + j);
             }
             if (check_sum != hdr->check_sum) {
-                qDebug() << "固件信息校验错误";
+                qDebug() << QObject::tr("固件信息校验错误");
                 qDebug() << QString("check_sum=%1,%2")
                                 .arg(check_sum, 4, 16, QChar('0'))
                                 .arg(hdr->check_sum, 4, 16, QChar('0'));

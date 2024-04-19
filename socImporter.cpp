@@ -40,7 +40,7 @@ QByteArray SOCImport() {
                     }
                     cell = xlsxR.cellAt(1, 2);  // get cell pointer.
                     if (cell == NULL || "单体电压" != cell->readValue().toString()) {
-                        qDebug() << "load \"单体电压\" error.";
+                        qDebug() << QObject::tr("load \"单体电压\" error.");
                         data.clear();
                         break;
                     }
@@ -60,16 +60,16 @@ QByteArray SOCImport() {
                     break;
                 } while (true);
                 if (0 == data.size()) {
-                    myHelper::ShowMessageBoxError("数据格式错误！");
+                    myHelper::ShowMessageBoxError(QObject::tr("数据格式错误！"));
                 } else if ((sizeof(uint16_t) * 101) != data.size()) {
-                    myHelper::ShowMessageBoxError("数据长度不合法！");
+                    myHelper::ShowMessageBoxError(QObject::tr("数据长度不合法！"));
                 }
             } else {
-                myHelper::ShowMessageBoxError("工作簿加载错误！");
+                myHelper::ShowMessageBoxError(QObject::tr("工作簿加载错误！"));
             }
         }
     } else {
-        myHelper::ShowMessageBoxError("表格加载错误！");
+        myHelper::ShowMessageBoxError(QObject::tr("表格加载错误！"));
     }
 
     return data;

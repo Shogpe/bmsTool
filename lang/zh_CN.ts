@@ -3167,6 +3167,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../socImporter.cpp" line="43"/>
+        <source>load &quot;单体电压&quot; error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="63"/>
+        <source>数据格式错误！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="65"/>
+        <source>数据长度不合法！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="68"/>
+        <source>工作簿加载错误！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="72"/>
+        <source>表格加载错误！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../db_manager.cpp" line="20"/>
         <source>数据库文件不存在!请联系软件提供商协助处理。</source>
         <translation type="unfinished"></translation>
@@ -3174,6 +3199,24 @@
     <message>
         <location filename="../db_manager.cpp" line="30"/>
         <source>数据无法读取:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/savelog.cpp" line="74"/>
+        <source>行号: %1  文件: %2  函数: %3
+%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="65"/>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="132"/>
+        <source>文件校验错误</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="81"/>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="147"/>
+        <source>固件信息校验错误</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3802,6 +3845,59 @@
         <source>日志显示</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="136"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="142"/>
+        <source>不启用</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="143"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="148"/>
+        <source>100条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="144"/>
+        <source>500条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="145"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="152"/>
+        <source>2000条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="146"/>
+        <source>10000条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="149"/>
+        <source>300条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="150"/>
+        <source>700条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="151"/>
+        <source>1000条</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="183"/>
+        <source>自动插入消息</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="184"/>
+        <source>%1当前时间: %2 %3</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>frmbalanceConfig</name>
@@ -4110,6 +4206,11 @@
         <location filename="../views/scan_settings/scan_settings.cpp" line="326"/>
         <location filename="../views/scan_settings/scan_settings.cpp" line="330"/>
         <source>传输失败</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="326"/>
+        <source>文件:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

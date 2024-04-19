@@ -1698,7 +1698,7 @@ If communication disconnection or no required data points, please try to change 
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="83"/>
         <source>debug</source>
-        <translation type="unfinished"></translation>
+        <translation>debug</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="5808"/>
@@ -2200,27 +2200,27 @@ If communication disconnection or no required data points, please try to change 
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="258"/>
         <source>硬体版本</source>
-        <translation type="unfinished"></translation>
+        <translation>Hardware version</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="259"/>
         <source>BOOT版本</source>
-        <translation type="unfinished"></translation>
+        <translation>BOOT version</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="260"/>
         <source>生产流水号</source>
-        <translation type="unfinished"></translation>
+        <translation>Production serial number</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="261"/>
         <source>模块温度1</source>
-        <translation type="unfinished"></translation>
+        <translation>Module temperature 1</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="262"/>
         <source>模块温度2</source>
-        <translation type="unfinished"></translation>
+        <translation>Module temperature 2</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="499"/>
@@ -3197,6 +3197,31 @@ If communication disconnection or no required data points, please try to change 
         <translation>Select one to import to the data source as the SOC table</translation>
     </message>
     <message>
+        <location filename="../socImporter.cpp" line="43"/>
+        <source>load &quot;单体电压&quot; error.</source>
+        <translation>load &quot;cell voltage&quot; error.</translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="63"/>
+        <source>数据格式错误！</source>
+        <translation>data formatting error!</translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="65"/>
+        <source>数据长度不合法！</source>
+        <translation>The data length is not legal!</translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="68"/>
+        <source>工作簿加载错误！</source>
+        <translation>Workbook loading error!</translation>
+    </message>
+    <message>
+        <location filename="../socImporter.cpp" line="72"/>
+        <source>表格加载错误！</source>
+        <translation>Table loading error!</translation>
+    </message>
+    <message>
         <location filename="../db_manager.cpp" line="20"/>
         <source>数据库文件不存在!请联系软件提供商协助处理。</source>
         <translation>The database file does not exist! Contact the software provider.</translation>
@@ -3205,6 +3230,24 @@ If communication disconnection or no required data points, please try to change 
         <location filename="../db_manager.cpp" line="30"/>
         <source>数据无法读取:</source>
         <translation>Data cannot be read:</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/savelog.cpp" line="74"/>
+        <source>行号: %1  文件: %2  函数: %3
+%4</source>
+        <translation>Line: %1 File: %2 Function: %3 %4</translation>
+    </message>
+    <message>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="65"/>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="132"/>
+        <source>文件校验错误</source>
+        <translation>File check error</translation>
+    </message>
+    <message>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="81"/>
+        <location filename="../views/firmwareDialog/firmwareDialog.cpp" line="147"/>
+        <source>固件信息校验错误</source>
+        <translation>The firmware information verification is incorrect</translation>
     </message>
 </context>
 <context>
@@ -3526,92 +3569,92 @@ If communication disconnection or no required data points, please try to change 
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="303"/>
         <source>Channel:</source>
-        <translation type="unfinished"></translation>
+        <translation>Channel:</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="310"/>
         <source>全选</source>
-        <translation type="unfinished"></translation>
+        <translation>Check All</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="324"/>
         <source>8</source>
-        <translation type="unfinished">8</translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="331"/>
         <source>11</source>
-        <translation type="unfinished">11</translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="338"/>
         <source>12</source>
-        <translation type="unfinished">12</translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="345"/>
         <source>16</source>
-        <translation type="unfinished">16</translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="352"/>
         <source>3</source>
-        <translation type="unfinished">3</translation>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="359"/>
         <source>2</source>
-        <translation type="unfinished">2</translation>
+        <translation>2</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="366"/>
         <source>6</source>
-        <translation type="unfinished">6</translation>
+        <translation>6</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="373"/>
         <source>13</source>
-        <translation type="unfinished">13</translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="380"/>
         <source>7</source>
-        <translation type="unfinished">7</translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="387"/>
         <source>10</source>
-        <translation type="unfinished">10</translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="394"/>
         <source>5</source>
-        <translation type="unfinished">5</translation>
+        <translation>5</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="401"/>
         <source>1</source>
-        <translation type="unfinished">1</translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="408"/>
         <source>15</source>
-        <translation type="unfinished">15</translation>
+        <translation>15</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="415"/>
         <source>9</source>
-        <translation type="unfinished">9</translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="422"/>
         <source>14</source>
-        <translation type="unfinished">14</translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="429"/>
         <source>4</source>
-        <translation type="unfinished">4</translation>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../models/frmbalancebox/frmbalancebox.ui" line="517"/>
@@ -3797,68 +3840,121 @@ If communication disconnection or no required data points, please try to change 
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="46"/>
         <source>6000</source>
-        <translation type="unfinished">6000</translation>
+        <translation>6000</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="59"/>
         <source>窗口行数</source>
-        <translation type="unfinished">Window lines</translation>
+        <translation>Window lines</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="66"/>
         <source>文件大小</source>
-        <translation type="unfinished"></translation>
+        <translation>File Size</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="73"/>
         <source>文件行数</source>
-        <translation type="unfinished"></translation>
+        <translation>File line number</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="83"/>
         <source>监听端口</source>
-        <translation type="unfinished"></translation>
+        <translation>Listener Port</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="95"/>
         <source>开启日志文件重定向</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable log file redirection</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="102"/>
         <source>日志输出到网络</source>
-        <translation type="unfinished"></translation>
+        <translation>Logs are output to the network</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="109"/>
         <source>开启窗口重定向</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable window redirection</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="116"/>
         <source>取消重定向</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel redirection</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.ui" line="123"/>
         <source>手动清除窗体日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Manually clear the form log</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.cpp" line="82"/>
         <location filename="../models/SaveLog/frmsavelog.cpp" line="106"/>
         <source>frmSaveLog/Type_%1</source>
-        <translation type="unfinished"></translation>
+        <translation>frmSaveLog/Type_%1</translation>
     </message>
     <message>
         <location filename="../models/SaveLog/frmsavelog.cpp" line="117"/>
         <source>日志显示</source>
-        <translation type="unfinished"></translation>
+        <translation>Log display</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="136"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="142"/>
+        <source>不启用</source>
+        <translation>Disable</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="143"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="148"/>
+        <source>100条</source>
+        <translation>100 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="144"/>
+        <source>500条</source>
+        <translation>500 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="145"/>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="152"/>
+        <source>2000条</source>
+        <translation>2000 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="146"/>
+        <source>10000条</source>
+        <translation>10000 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="149"/>
+        <source>300条</source>
+        <translation>300 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="150"/>
+        <source>700条</source>
+        <translation>700 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="151"/>
+        <source>1000条</source>
+        <translation>1000 pieces</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="183"/>
+        <source>自动插入消息</source>
+        <translation>Auto-insert message</translation>
+    </message>
+    <message>
+        <location filename="../models/SaveLog/frmsavelog.cpp" line="184"/>
+        <source>%1当前时间: %2 %3</source>
+        <translation>%1 Current time: %2 %3</translation>
     </message>
 </context>
 <context>
@@ -4194,6 +4290,11 @@ If failed, please use local upgrade server.</translation>
         <location filename="../views/scan_settings/scan_settings.cpp" line="330"/>
         <source>传输失败</source>
         <translation>Transfer Fail</translation>
+    </message>
+    <message>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="326"/>
+        <source>文件:</source>
+        <translation>File：</translation>
     </message>
     <message>
         <location filename="../views/scan_settings/scan_settings.cpp" line="334"/>

@@ -323,7 +323,7 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     //
     connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
     connect(&qtftp, &Qtftp::fileSent, this, [this](int ret, QString file) {
-        qDebug() << "文件:" << file << ((ret == 0) ? tr("传输成功") : tr("传输失败"));
+        qDebug() << tr("文件:") << file << ((ret == 0) ? tr("传输成功") : tr("传输失败"));
         auto list = m_result_model->GetData();
         for (int i = 0; i < list.size(); i++) {
             if (file == QString::fromStdString(list.at(i).name))

@@ -7103,13 +7103,13 @@
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>2800.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>3650.000000000000000</double>
+          <double>4000.000000000000000</double>
          </property>
          <property name="value">
-          <double>3600.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
         </widget>
        </item>

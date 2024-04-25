@@ -25,7 +25,8 @@ class db_manager {
     enum SOE_TAG {
         SOE_BMS1 = 1,
         SOE_BMS2 = 2,
-        SOE_RTU1 = 3,
+        SOE_BMS3 = 3,
+        SOE_RTU1 = 4,
     };
 
     typedef struct {

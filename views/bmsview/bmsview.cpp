@@ -680,7 +680,12 @@ QString getBmuInfo2(uint16_t status) {
 void BMSView::flushSoe(const ST_SOE& soe) {
     if (soe.list_soe.count()) {
         ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-        m_model.setData(soe.list_soe, db_manager::SOE_BMS2);
+        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            m_model.setData(soe.list_soe, db_manager::SOE_BMS3);
+        }else{
+            m_model.setData(soe.list_soe, db_manager::SOE_BMS2);
+        }
+
         ui->labelSOE->setText(QString("New:%1,Total:%2").arg(soe.new_soe_count).arg(soe.soe_count));
         ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
@@ -723,9 +728,9 @@ void BMSView::flushBmu() {
             }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QString str = "";
                 if((mycmu->bmu_data[i].U64BalErr>>j)&0x01){
-                    str = "闭锁";
+                    str = "[闭锁]";
                 }
-                item->setText(QString("%1 [%2]").arg(val,5,'f', 3,'0').arg(str));
+                item->setText(QString("%1 %2").arg(val,5,'f', 3,'0').arg(str));
             }else {
                 item->setText(QString("%1").arg(val, 0, 'g', 5));
             }

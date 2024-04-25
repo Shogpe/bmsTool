@@ -1130,7 +1130,11 @@ int mb_cmu::ReadSOE() {
     cmu_soe.list_soe.clear();
     if (((is_gender_balanced(protocal_ver)) && (this->cmu_ver >= 0x00000402)) ||
         ((is_main_line(protocal_ver)) && (this->cmu_ver >= 0x00000407))) {
-        cmu_soe.type = db_manager::SOE_BMS2;
+        if(protocal_ver == CMUV4_6){
+            cmu_soe.type = db_manager::SOE_BMS3;
+        }else{
+            cmu_soe.type = db_manager::SOE_BMS2;
+        }
     } else {
         cmu_soe.type = db_manager::SOE_BMS1;
     }

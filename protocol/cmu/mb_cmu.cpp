@@ -624,16 +624,16 @@ int mb_cmu::ReadALL() {
                 // 读电压断线
                 pt = p+i*4;
                 bmu_data[i].U64break  =  *pt;
-                bmu_data[i].U64break |= (*(pt + 1))<<(config.vol_num/4);
-                bmu_data[i].U64break |= (*(pt + 2))<<(config.vol_num/4*2);
-                bmu_data[i].U64break |= (*(pt + 3))<<(config.vol_num/4*3);
+                bmu_data[i].U64break |= (uint64_t)(*(pt + 1))<<(16);
+                bmu_data[i].U64break |= (uint64_t)(*(pt + 2))<<(32);
+                bmu_data[i].U64break |= (uint64_t)(*(pt + 3))<<(48);
 
                 // 读温度断线
                 pt = (p+config.bmu_num*4)+i*4;
                 bmu_data[i].T64break  =  *pt;
-                bmu_data[i].T64break |= (*(pt + 1))<<(16);
-                bmu_data[i].T64break |= (*(pt + 2))<<(32);
-                bmu_data[i].T64break |= (*(pt + 3))<<(48);
+                bmu_data[i].T64break |= (uint64_t)(*(pt + 1))<<(16);
+                bmu_data[i].T64break |= (uint64_t)(*(pt + 2))<<(32);
+                bmu_data[i].T64break |= (uint64_t)(*(pt + 3))<<(48);
 
                 // 读运行状态
                 pt = (p+config.bmu_num*8)+i;

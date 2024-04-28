@@ -495,7 +495,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bAlm12_2 << ui->bAlm13_2 << ui->bAlm14_2 << ui->bAlm15_2;
         QStringList textList = {tr("BMU拨码异常"),    tr("电压线束断线"),   tr("温度线束断线"),
                                 tr("簇极柱温度断线"), tr("电压传感器断线"), tr("电流传感器断线"),
-                                tr("断路器拒动"),     tr("接触器拒动"),     tr("备用8")};
+                                tr("断路器拒动"),     tr("接触器拒动"),     tr("绝缘板采样压差过大")};
         textList << tr("备用9") << tr("备用10") << tr("备用11") << tr("备用12") << tr("备用13") << tr("备用14")
                  << tr("备用15") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
@@ -975,8 +975,17 @@ void BMSView::flushBmu() {
                 uint16_t sn;
                 item = new QTableWidgetItem();
                 sn = this->mycmu->bmu_data[i].BMUSN;
-                item->setText(QString("%1.%2").arg((uint8_t)(sn>>8),0,10)
-                                              .arg((uint8_t)sn,0,10));
+                QString str = "";
+                if(sn == 0x0069){
+                    str = tr("金升阳");
+                }else if(sn == 0x0060){
+                    str = tr("爱浦");
+                }else{
+                    str = tr("未知");
+                }
+
+                item->setText(QString("%1.%2[%3]").arg((uint8_t)(sn>>8),0,10)
+                                              .arg((uint8_t)sn,0,10).arg(str));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
 

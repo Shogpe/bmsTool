@@ -162,6 +162,10 @@ void mb_cmu::Dump2CsvTitle() {
         }
     }
     for (int i = 0; i < config.bmu_num; i++) {
+        if(protocal_ver == CMUV4_6){
+            data_buf << (tr("BMU%1_模块温度1,").arg(i + 1));
+            data_buf << (tr("BMU%1_模块温度2,").arg(i + 1));
+        }
         for (int j = 0; j < config.vol_num; ++j) {
             data_buf << (QString("BMU%1_U%2,").arg(i + 1).arg(j + 1));
         }
@@ -220,6 +224,13 @@ void mb_cmu::Dump2Csv() {
             }
         }
         for (int i = 0; i < config.bmu_num; i++) {
+            if(protocal_ver == CMUV4_6){
+                double val = this->bmu_data[i].ModT1 / 10.0;
+                data_buf << (QString("%1,").arg(val));
+                val = this->bmu_data[i].ModT2 / 10.0;
+                data_buf << (QString("%1,").arg(val));
+            }
+
             for (int j = 0; j < config.vol_num; j++) {
                 double val = this->bmu_data[i].Ucell[j] / 10000.0;
                 data_buf << (QString("%1,").arg(val));

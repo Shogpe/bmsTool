@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QtDebug>
 #include <QtXml>
+#include <Rebootbmus.h>
 #include "Toast.h"
 #include "myhelper.h"
 #include "socImporter.h"
@@ -14,7 +15,7 @@
 proxy style for text wrapping in pushbutton
 */
 class QtPushButtonStyleProxy : public QProxyStyle {
-   public:
+public:
     /**
     Default constructor.
     */
@@ -26,7 +27,7 @@ class QtPushButtonStyleProxy : public QProxyStyle {
         QProxyStyle::drawItemText(painter, rect, flags, pal, enabled, text, textRole);
     }
 
-   private:
+private:
     Q_DISABLE_COPY(QtPushButtonStyleProxy)
 };
 
@@ -68,14 +69,17 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
 
     this->mycmu = new mb_cmu((BMS_PROTOCOL)ui->cbProtocol->currentData().toUInt());
     connect(
-        this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
-        [this](const QString& msg) { Toast::showTip(msg, nullptr); }, Qt::UniqueConnection);
+                this->mycmu, static_cast<void (mb_cmu::*)(const QString&)>(&mb_cmu::signal_message), this,
+                [this](const QString& msg) { Toast::showTip(msg, nullptr); }, Qt::UniqueConnection);
     qRegisterMetaType<QHash<QString, qreal>>("QHash<QString,qreal>");
     connect(this->mycmu, &mb_cmu::bmsDataReady, this, &BMSView::flushData);
     connect(this->mycmu, &mb_cmu::bmuDataReady, this, &BMSView::flushBmu);
     connect(this->mycmu, &mb_cmu::bmsSOEReady, this, &BMSView::flushSoe);
     connect(this, &BMSView::send_msg, this->mycmu, &mb_cmu::msg_deal);
     connect(this->mycmu, &mb_cmu::connectChanged, this, [this](QString conn) { m_conn = conn; });
+    rebootbmus=new Rebootbmus(this);
+    rebootbmus->setWindowFlags(Qt::Window); // 设置窗口标志
+    connect(rebootbmus,&Rebootbmus::send_data,this,&BMSView::rebootBmus);
     TMsgData msg;
     msg.msg_type = CONFIG_INIT;
     emit send_msg(msg);
@@ -302,7 +306,7 @@ void BMSView::valueChange(double dval) {
     InputBox* b = qobject_cast<InputBox*>(sender());
     if (!b) return;
     if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
-        QDialog::Accepted) {
+            QDialog::Accepted) {
         return;
     }
     b->clearFocus();
@@ -401,8 +405,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("BMU拨码") << tr("BMU故障") << tr("并网");
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
-                                ? "color:red;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:red;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
             Label->setText(textList.at(SysStatus.indexOf(Label)));
         }
@@ -433,8 +437,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
-                                ? "color:red;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:red;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
             Label->setText(textList.at(SysStatus.indexOf(Label)));
             //                if (SysStatus.indexOf(Label) > 2) {
@@ -453,8 +457,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bErr14 << ui->bErr15;
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
-                                ? "color:red;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:red;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
         }
     }
@@ -467,8 +471,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bErr12_2 << ui->bErr13_2 << ui->bErr14_2 << ui->bErr15_2;
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
-                                ? "color:red;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:red;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
         }
     }
@@ -481,8 +485,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                    << ui->bAlm14 << ui->bAlm15;
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
-                                ? "color:gold;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:gold;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
         }
     }
@@ -502,7 +506,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             int index = StatusList.indexOf(Label);
             if (index < textList.size()) {
                 QString color =
-                    ((value >> index) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green;";
+                        ((value >> index) & 0x01) > 0 ? "color:gold;text-decoration:underline;font:bold;" : "color:green;";
                 Label->setStyleSheet(QString("%1").arg(color));
                 Label->setText(textList.at(index));
                 Label->setHidden(false);
@@ -525,8 +529,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                  << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
-                                ? "color:red;text-decoration:underline;font:bold;"
-                                : "color:green;";
+                    ? "color:red;text-decoration:underline;font:bold;"
+                    : "color:green;";
             Label->setStyleSheet(QString("%1").arg(color));
             Label->setText(textList.at(StatusList.indexOf(Label)));
         }
@@ -574,32 +578,32 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             cb->setText(textList.at(CheckBoxList.indexOf(cb)));
         }
     }
-//    if (this->mycmu->GetProtocalVer() == CMUV4_6) {
-//        ui->BalnceStartDiff->setPrefix(tr("均衡目标电压"));
-//    } else {
-//        ui->BalnceStartDiff->setPrefix(tr("均衡启动差值"));
-//    }
+    //    if (this->mycmu->GetProtocalVer() == CMUV4_6) {
+    //        ui->BalnceStartDiff->setPrefix(tr("均衡目标电压"));
+    //    } else {
+    //        ui->BalnceStartDiff->setPrefix(tr("均衡启动差值"));
+    //    }
     if (mapData.contains("BalnceMask") && mapData.contains("BalanceConfig")) {
         ui->balanceStr->show();
         uint16_t mode = mapData.value("BalnceMask");
         uint16_t value = mapData.value("BalanceConfig");
         QString str = QString(tr("%1对,%2A,%3秒")).arg(value >> 12).arg((value >> 8) & 0xF).arg(value & 0xFF);
         switch (mode) {
-            case 0x00:
-                str = QString("%1:%2").arg(tr("禁止均衡"), str);
-                break;
-            case 0x55:
-                str = QString("%1:%2").arg(tr("强制均衡"), str);
-                break;
-            case 0xAA:
-                str = QString("%1:%2").arg(tr("自动均衡"), str);
-                break;
-            case 0x88:
-                str = QString("%1:%2").arg(tr("手动均衡"), str);
-                break;
-            default:
-                str = QString("%1:%2").arg(tr("未定义"), str);
-                break;
+        case 0x00:
+            str = QString("%1:%2").arg(tr("禁止均衡"), str);
+            break;
+        case 0x55:
+            str = QString("%1:%2").arg(tr("强制均衡"), str);
+            break;
+        case 0xAA:
+            str = QString("%1:%2").arg(tr("自动均衡"), str);
+            break;
+        case 0x88:
+            str = QString("%1:%2").arg(tr("手动均衡"), str);
+            break;
+        default:
+            str = QString("%1:%2").arg(tr("未定义"), str);
+            break;
         }
         ui->balanceStr->setText(str);
 
@@ -608,21 +612,21 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         uint16_t mode = mapData.value("BalnceMask");
         QString str;
         switch (mode) {
-            case 0x00:
-                str = tr("禁止均衡");
-                break;
-            case 0x55:
-                str = tr("强制均衡");
-                break;
-            case 0xAA:
-                str = tr("自动均衡");
-                break;
-            case 0x88:
-                str = tr("手动均衡");
-                break;
-            default:
-                str = tr("未定义");
-                break;
+        case 0x00:
+            str = tr("禁止均衡");
+            break;
+        case 0x55:
+            str = tr("强制均衡");
+            break;
+        case 0xAA:
+            str = tr("自动均衡");
+            break;
+        case 0x88:
+            str = tr("手动均衡");
+            break;
+        default:
+            str = tr("未定义");
+            break;
         }
 
         ui->balanceStr->setText(str);
@@ -742,7 +746,7 @@ void BMSView::flushBmu() {
             }else{
                 breakLineTemp = mycmu->bmu_data[i].U64break;
                 //qWarning()<<"mycmu->bmu_data["<<i<<"].U64break:"<<mycmu->bmu_data[i].U64break;
-            }          
+            }
             if (GET_BIT(breakLineTemp, j)) {
 
                 font.setStrikeOut(true);
@@ -884,7 +888,7 @@ void BMSView::flushBmu() {
                 ui->tableBMU->setItem(i, cloumn_offset++, item);
             } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QStringList strl = mycmu->GetBalanceValue(mycmu->bmu_data[i].U64BalStat,
-                                                          mycmu->bmu_data[i].BalIdc).split("|");               
+                                                          mycmu->bmu_data[i].BalIdc).split("|");
                 if(strl.count()>4){
                     for (int j = 0; j < 4; ++j) {
                         item = new QTableWidgetItem();
@@ -966,9 +970,9 @@ void BMSView::flushBmu() {
                 item = new QTableWidgetItem();
                 bootversion = this->mycmu->bmu_data[i].BMUBootVersion;
                 item->setText(QString("%1.%2.%3.%4").arg((uint8_t)(bootversion>>24),2,16,QChar('0'))
-                                                    .arg((uint8_t)(bootversion>>16),2,16,QChar('0'))
-                                                    .arg((uint8_t)(bootversion>>8),2,16,QChar('0'))
-                                                    .arg((uint8_t)bootversion,2,16,QChar('0')));
+                              .arg((uint8_t)(bootversion>>16),2,16,QChar('0'))
+                              .arg((uint8_t)(bootversion>>8),2,16,QChar('0'))
+                              .arg((uint8_t)bootversion,2,16,QChar('0')));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
 
@@ -985,7 +989,7 @@ void BMSView::flushBmu() {
                 }
 
                 item->setText(QString("%1.%2[%3]").arg((uint8_t)(sn>>8),0,10)
-                                              .arg((uint8_t)sn,0,10).arg(str));
+                              .arg((uint8_t)sn,0,10).arg(str));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
 
@@ -1185,7 +1189,7 @@ void BMSView::sendCommand() {
         QStringList items;
         items << tr("全程投入") << tr("远程投入") << tr("远程断开");
         QString text =
-            QInputDialog::getItem(this, tr("绝缘检测控制"), tr("请输入绝缘检测控制方式："), items, 0, false, &ok);
+                QInputDialog::getItem(this, tr("绝缘检测控制"), tr("请输入绝缘检测控制方式："), items, 0, false, &ok);
         qDebug() << ok << text;
         if (ok) {
             uint16_t mode = 0x0;
@@ -1254,6 +1258,8 @@ void BMSView::sendCommand() {
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
+    } else if (name == "btnRebootBMUs") {
+        rebootbmus->show();
     } else
         qDebug() << name;
 }
@@ -1268,8 +1274,8 @@ void BMSView::stateChanged() {
         value[1] |= (cb->isChecked() << CheckBoxList.indexOf(cb));
     }
     if (myHelper::ShowMessageBoxQuesion(
-            QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("开启") : tr("关闭")))) !=
-        QDialog::Accepted)
+                QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("开启") : tr("关闭")))) !=
+            QDialog::Accepted)
         return;
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_AO_ADDR;
@@ -1302,14 +1308,14 @@ void BMSView::checkChanged() {
     box.setButtonText(QMessageBox::Cancel, QString(tr("取 消")));
     int ret = box.exec();
     switch (ret) {
-        case QMessageBox::Yes:
-            value[1] = true;
-            break;
-        case QMessageBox::No:
-            value[1] = false;
-            break;
-        default:
-            return;
+    case QMessageBox::Yes:
+        value[1] = true;
+        break;
+    case QMessageBox::No:
+        value[1] = false;
+        break;
+    default:
+        return;
     }
 #endif
     TMsgData MsgCmd;
@@ -1518,40 +1524,40 @@ void BMSView::uiInit() {
         connect(ui->BalnceMask, static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested),
                 this,
                 [=](const QPoint& pos) {  // Handle global position
-                    QPoint globalPos = ui->BalnceMask->mapToGlobal(pos);
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("修改"), this, [=]() {
-                        StartBalanceForm();
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
+            QPoint globalPos = ui->BalnceMask->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改"), this, [=]() {
+                StartBalanceForm();
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
         connect(ui->BalnceStart,
                 static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
                 [=](const QPoint& pos) {  // Handle global position
-                    QPoint globalPos = ui->BalnceStart->mapToGlobal(pos);
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("修改均衡配置"), this, [=]() {
-                        int mode = ui->BalnceStart->value();
-                        if (configBalance == nullptr) {
-                            configBalance = new frmbalanceConfig();
-                        }
-                        configBalance->protocal_ver = this->mycmu->GetProtocalVer();
-                        configBalance->setValue(mode);
-                        if (configBalance->exec() == QDialog::Accepted) {
-                            TMsgData MsgCmd;
-                            MsgCmd.msg_type = CTRL_AO_ADDR;
-                            uint16_t value[2] = {5409, 0};
-                            value[1] = configBalance->getValue();
-                            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                        }
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
+            QPoint globalPos = ui->BalnceStart->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改均衡配置"), this, [=]() {
+                int mode = ui->BalnceStart->value();
+                if (configBalance == nullptr) {
+                    configBalance = new frmbalanceConfig();
+                }
+                configBalance->protocal_ver = this->mycmu->GetProtocalVer();
+                configBalance->setValue(mode);
+                if (configBalance->exec() == QDialog::Accepted) {
+                    TMsgData MsgCmd;
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    uint16_t value[2] = {5409, 0};
+                    value[1] = configBalance->getValue();
+                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
         QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
         foreach (QPushButton* btn, btns) {
             btn->setStyle(new QtPushButtonStyleProxy());
@@ -1577,39 +1583,39 @@ void BMSView::uiInit() {
         connect(ui->ViewSOE,
                 static_cast<void (QTableView::*)(const QPoint& pos)>(&QTableView::customContextMenuRequested), this,
                 [=](const QPoint& pos) {  // Handle global position
-                    QPoint globalPos = ui->ViewSOE->mapToGlobal(pos);
+            QPoint globalPos = ui->ViewSOE->mapToGlobal(pos);
 
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("导出当前SOE"), this, [=]() {
-                        QString fileName = QFileDialog::getSaveFileName(
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("导出当前SOE"), this, [=]() {
+                QString fileName = QFileDialog::getSaveFileName(
                             this, tr("Save File"),
                             tr("SOE导出") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
                             tr("Excel(*.csv)"));
-                        if (fileName.isEmpty()) return;
-                        QFile file(fileName);
-                        if (file.open(QIODevice::WriteOnly)) {
-                            QTextStream stream(&file);
-                            stream << QChar(0xfeff);
-                            int cc = m_model.columnCount();
-                            QStringList list;
-                            for (int i = 0; i < cc; i++) {
-                                list << m_model.headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
-                            }
-                            stream << list.join(",") << endl;
-                            for (int i = 0; i < m_model.rowCount(); i++) {
-                                list.clear();
-                                for (int j = 0; j < cc; j++) {
-                                    list << m_model.index(i, j).data().toString();
-                                }
-                                stream << list.join(",") << endl;
-                            }
-                            file.close();
+                if (fileName.isEmpty()) return;
+                QFile file(fileName);
+                if (file.open(QIODevice::WriteOnly)) {
+                    QTextStream stream(&file);
+                    stream << QChar(0xfeff);
+                    int cc = m_model.columnCount();
+                    QStringList list;
+                    for (int i = 0; i < cc; i++) {
+                        list << m_model.headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
+                    }
+                    stream << list.join(",") << endl;
+                    for (int i = 0; i < m_model.rowCount(); i++) {
+                        list.clear();
+                        for (int j = 0; j < cc; j++) {
+                            list << m_model.index(i, j).data().toString();
                         }
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
+                        stream << list.join(",") << endl;
+                    }
+                    file.close();
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
         //
         ui->tableBMU->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->tableBMU,
@@ -1619,25 +1625,25 @@ void BMSView::uiInit() {
         connect(ui->tableExtView,
                 static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
                 [=](const QPoint& pos) {  // Handle global position
-                    QTableWidget* table = (QTableWidget*)sender();
-                    QPoint globalPos = table->mapToGlobal(pos);
+            QTableWidget* table = (QTableWidget*)sender();
+            QPoint globalPos = table->mapToGlobal(pos);
 
-                    // Create menu and insert some actions
-                    QMenu myMenu;
-                    myMenu.addAction(tr("导出当前数据"), this, [=]() {
-                        QString fileName = QFileDialog::getSaveFileName(
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("导出当前数据"), this, [=]() {
+                QString fileName = QFileDialog::getSaveFileName(
                             this, tr("Save File"),
                             tr("BMU扩展数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
                             tr("csv File(*.csv)"));
-                        if (fileName.isNull()) {
-                            return;
-                        }
+                if (fileName.isNull()) {
+                    return;
+                }
 
-                        exportExecl(table, fileName);
-                    });
-                    // Show context menu at handling position
-                    myMenu.exec(globalPos);
-                });
+                exportExecl(table, fileName);
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
     }
     // 按钮
     QMenu* rebootMenu = new QMenu(this);
@@ -1645,6 +1651,8 @@ void BMSView::uiInit() {
     rebootMenu->actions().constLast()->setObjectName("btnRebootCMU");
     rebootMenu->addAction(tr("重启BMU"), this, &BMSView::sendCommand);
     rebootMenu->actions().constLast()->setObjectName("btnRebootBMU");
+    rebootMenu->addAction(tr("重启n次BMU"), this, &BMSView::sendCommand);
+    rebootMenu->actions().constLast()->setObjectName("btnRebootBMUs");
     ui->btnReboot->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->btnReboot->setMenu(rebootMenu);
 }
@@ -1773,8 +1781,8 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
         QMenu* myMenu = new QMenu(table);
         myMenu->addAction(tr("导出当前数据"), this, [=]() {
             QString fileName = QFileDialog::getSaveFileName(
-                this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
-                tr("csv File(*.csv)"));
+                        this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+                        tr("csv File(*.csv)"));
             if (fileName.isNull()) {
                 return;
             }
@@ -1880,17 +1888,27 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
         //        myMenu.exec(globalPos);
     }
 }
+
+void BMSView::rebootBmus()
+{
+    TMsgData MsgCmd;
+    mb_cmd cmd = {CTRL_CMD_REBOOT, ADDR_REBOOT, MB_REBOOT_BMU};
+    MsgCmd.msg_type = cmd.type;
+    MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
+    MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+}
 void BMSView::changeEvent(QEvent* event) {
     if (0 != event) {
         switch (event->type()) {
-            // this event is send if a translator is loaded
-            case QEvent::LanguageChange: {
-                ui->retranslateUi(this);
-                break;
-            }
-            default: {
-                break;
-            }
+        // this event is send if a translator is loaded
+        case QEvent::LanguageChange: {
+            ui->retranslateUi(this);
+            break;
+        }
+        default: {
+            break;
+        }
         }
     }
 

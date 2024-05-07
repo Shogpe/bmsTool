@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QTableWidget>
 #include <QWidget>
+#include <Rebootbmus.h>
 #include <frmSaveLog.h>
 #include <iostream>
 #include "frmbalanceConfig.h"
@@ -49,6 +50,7 @@ class BMSView : public QWidget {
     bool loadParameters(const QString& filename);
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
     void StartBalanceForm(void);
+    Rebootbmus* rebootbmus=NULL;
 
    private slots:
     void timerUpDate();
@@ -84,6 +86,9 @@ private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
     frmSaveLog savelog;
+
+public slots:
+    void rebootBmus();
 signals:
     void send_msg(TMsgData MsgCmd);
 };

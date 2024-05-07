@@ -34,7 +34,7 @@ void Rebootbmus::btnclick()
             timer_script.stop();
         }
     }else if(btn->objectName()=="pb_Debug"){
-        savelog->show();
+        savelog.show();
     }
 }
 

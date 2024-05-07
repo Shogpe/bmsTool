@@ -20,7 +20,7 @@ class Rebootbmus : public QWidget
 public:
     explicit Rebootbmus(QWidget *parent = nullptr);
     ~Rebootbmus();
-    frmSaveLog *savelog;
+    frmSaveLog savelog;
     ProVersion version;
 
 private:

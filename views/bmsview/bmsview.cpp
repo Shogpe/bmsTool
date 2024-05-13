@@ -984,6 +984,8 @@ void BMSView::flushBmu() {
                     str = tr("金升阳");
                 }else if(sn == 0x0060){
                     str = tr("爱浦");
+                }else if(sn == 0x006B){
+                    str = tr("源特");
                 }else{
                     str = tr("未知");
                 }

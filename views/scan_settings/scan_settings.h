@@ -45,6 +45,7 @@ enum CMD_TYPE {
     CMD_CHECK_SET,
     CMD_UP_CMU,
     CMD_UP_BMU,
+    CMD_UP_BMUBOOT,
     CMD_UP_INS,
     CMD_RD_VER_BMS,
     CMD_RD_VER_INS,

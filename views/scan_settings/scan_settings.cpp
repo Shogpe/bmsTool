@@ -211,6 +211,16 @@ void testWorker::doCommand(QString ip, uint command) {
                 emit workFinished(0, QString("%1:%2").arg(tr("发送升级BMU 失败"), m_mbtcp->get_error_msg()));
             }
         } break;
+        case CMD_UP_BMUBOOT: {
+            val = 0x5A66;  // 升级BMUBoot
+            uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
+            sec_cmd[8] = val;
+            if (m_mbtcp->write_ao(0xFFD0, 9, sec_cmd) > 0) {
+                emit workFinished(1, tr("发送升级BMUBoot OK"));
+            } else {
+                emit workFinished(0, QString("%1:%2").arg(tr("发送升级BMUBoot 失败"), m_mbtcp->get_error_msg()));
+            }
+        } break;
         case CMD_UP_INS: {
             val = 0xA5B6;  // 升级绝缘板
             uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
@@ -397,6 +407,7 @@ void scan_settings::checkServer() {
     } else {
         emit checkRespond(2);
     }
+
     m_timer->start(5000);
 }
 void scan_settings::setBusy(bool is_busy) {
@@ -545,6 +556,7 @@ void scan_settings::uiInit() {
     QMenu* update_menu = new QMenu;
     update_menu->addAction(tr("下载升级BMS"), this, &scan_settings::btnCtrlMenu);
     update_menu->addAction(tr("下载升级BMU"), this, &scan_settings::btnCtrlMenu);
+    update_menu->addAction(tr("下载升级BMUBOOT"), this, &scan_settings::btnCtrlMenu);
     update_menu->addAction(tr("下载升级绝缘板"), this, &scan_settings::btnCtrlMenu);
     update_menu->addAction(tr("读取BMS版本号"), this, &scan_settings::btnCtrlMenu);
     update_menu->addAction(tr("读取绝缘版本号"), this, &scan_settings::btnCtrlMenu);

@@ -1,4 +1,4 @@
-#include "bmsview.h"
+﻿#include "bmsview.h"
 #include <QDateTime>
 #include <QLineEdit>
 #include <QMessageBox>
@@ -948,7 +948,7 @@ void BMSView::flushBmu() {
     }
     // 数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    //ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     if (ui->tabBalance->isEnabled()) {
         QTableWidgetItem* item;

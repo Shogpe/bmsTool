@@ -4180,73 +4180,78 @@ If communication disconnection or no required data points, please try to change 
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="183"/>
+        <source>BMU%1_风机转速,</source>
+        <translation>BMU%1 Fan speed,</translation>
+    </message>
+    <message>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="186"/>
         <source>BMU%1_CAN错误,</source>
         <translation>BMU%1_CAN error,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="186"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="189"/>
         <source>BMU%1_母线电压,</source>
         <translation>BMU%1_ Bus voltage,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="188"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="191"/>
         <source>BMU%1_均衡电流,</source>
         <translation>BMU%1_ Balanced current,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="190"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="193"/>
         <source>BMU%1_模组A均衡电流,</source>
         <translation>BMU%1_ Module A equalizes current,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="191"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="194"/>
         <source>BMU%1_模组B均衡电流,</source>
         <translation>BMU%1_ Module B equalizes current,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="192"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="195"/>
         <source>BMU%1_模组C均衡电流,</source>
         <translation>BMU%1_ Module C equalizes current,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="193"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="196"/>
         <source>BMU%1_模组D均衡电流,</source>
         <translation>BMU%1_ Module D equalizes current,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="195"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="198"/>
         <source>BMU%1_均衡故障,</source>
         <translation>BMU%1_ Balancing fault,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="196"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="199"/>
         <source>BMU%1_通道状态,</source>
         <translation>BMU%1_ Channel Status,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="197"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="200"/>
         <source>BMU%1_均衡模式,</source>
         <translation>BMU%1_ Balanced mode,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="199"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="202"/>
         <source>BMU%1_%2充电Ah,</source>
         <translation>BMU%1_%2 Charging Ah,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="200"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="203"/>
         <source>BMU%1_%2放电Ah,</source>
         <translation>BMU%1_%2 Discharge Ah,</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="1001"/>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="1002"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="1007"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="1008"/>
         <source>操作失败</source>
         <translation>Operation failed</translation>
     </message>
     <message>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="1004"/>
-        <location filename="../protocol/cmu/mb_cmu.cpp" line="1005"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="1010"/>
+        <location filename="../protocol/cmu/mb_cmu.cpp" line="1011"/>
         <source>操作成功</source>
         <translation>Operation succeeded</translation>
     </message>
@@ -4417,109 +4422,109 @@ If failed, please use local upgrade server.</translation>
         <translation>Start Local Server If Necessary</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="513"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="514"/>
         <source>BMS维护工具</source>
         <translation>BMS Maintaince Tool</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="556"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="557"/>
         <source>下载升级BMS</source>
         <translation>Download BMS firmware and upgrading</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="557"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="558"/>
         <source>下载升级BMU</source>
         <translation>Download BMU firmware and upgrading</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="558"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="559"/>
         <source>下载升级BMUBOOT</source>
         <translation>Download and upgrade BMUBOOT</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="559"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="560"/>
         <source>下载升级绝缘板</source>
         <translation>Download Insulation Board and upgrading</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="560"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="561"/>
         <source>读取BMS版本号</source>
         <translation>Read BMS Version</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="561"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="562"/>
         <source>读取绝缘版本号</source>
         <translation>Read Ins Version</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="562"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="563"/>
         <source>BMU拨码锁定⚿</source>
         <translation>BMU DIP Switch Lock</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="563"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="564"/>
         <source>BMU拨码解锁</source>
         <translation>BMU DIP Switch Unlock</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="564"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="565"/>
         <source>恢复校准参数</source>
         <translation>Reset Adj Par</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="565"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="566"/>
         <source>恢复运行参数</source>
         <translation>Reset Run Par</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="569"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="570"/>
         <source>设置服务IP为本地</source>
         <translation>Set Server IP</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="571"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="572"/>
         <source>恢复默认服务IP</source>
         <translation>Reset Default Server IP</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="637"/>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="791"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="638"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="792"/>
         <source>定值为空，放弃操作！</source>
         <translation>Set value to null, abort operation!</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="640"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="641"/>
         <source>是否批量下发参数？</source>
         <translation>Do Send all parameters?</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="664"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="665"/>
         <source>写入完毕</source>
         <translation>Write Finished</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="705"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="706"/>
         <source>未知命令</source>
         <translation>Unkown Command</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="708"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="709"/>
         <source>是否执行</source>
         <translation>Execution？</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="734"/>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="852"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="735"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="853"/>
         <source>操作完毕</source>
         <translation>Finished</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="771"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="772"/>
         <source>传输中...</source>
         <translation>Transfer...</translation>
     </message>
     <message>
-        <location filename="../views/scan_settings/scan_settings.cpp" line="814"/>
+        <location filename="../views/scan_settings/scan_settings.cpp" line="815"/>
         <source>测试完毕</source>
         <translation>Test Finished</translation>
     </message>

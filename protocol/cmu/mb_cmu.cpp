@@ -179,6 +179,9 @@ void mb_cmu::Dump2CsvTitle() {
         data_buf << (tr("BMU%1_温度断线,").arg(i + 1));
         data_buf << (tr("BMU%1_运行状态,").arg(i + 1));
         data_buf << (tr("BMU%1_故障状态,").arg(i + 1));
+        if(protocal_ver == CMUV4_9) {
+            data_buf << (tr("BMU%1_风机转速,").arg(i + 1));
+        }
         if (protocal_ver > CMUV2) {
             data_buf << (tr("BMU%1_CAN错误,").arg(i + 1));
         }
@@ -267,6 +270,9 @@ void mb_cmu::Dump2Csv() {
             val = this->bmu_data[i].ErrStat;
             u64val = val;
             data_buf << (QString("0x%1,").arg(u64val,4,16,QChar('0')));
+            if(protocal_ver == CMUV4_9) {
+                data_buf << (this->bmu_data[i].FanSpeed) << ",";
+            }
             if (protocal_ver > CMUV2) {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }

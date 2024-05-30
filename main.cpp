@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QFile>
 #include <QMainWindow>
 #include <QTextCodec>
@@ -50,6 +50,9 @@ int main(int argc, char *argv[]) {
     dlg->deleteLater();
     MainUI w;
     //    scan_settings w;
+    QProcess process(&w);
+    QString toolPath = QCoreApplication::applicationDirPath()+"/toolUpdate.exe";
+            process.startDetached(toolPath);
     w.show();
     int ret = a.exec();
     if (ret == EXIT_CODE_REBOOT) {

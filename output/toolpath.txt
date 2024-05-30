@@ -1,0 +1,3 @@
+toolName:bms_tool.exe
+onlinePath:\\10.115.10.214\WorkShare\new_water\bms_tool
+neverRemind:false

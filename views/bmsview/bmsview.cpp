@@ -264,6 +264,10 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
             hdr_list2.append(tr("生产流水号"));
             hdr_list2.append(tr("模块温度1"));
             hdr_list2.append(tr("模块温度2"));
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            hdr_list2.append(tr("BOOT版本"));
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            hdr_list2.append(tr("BOOT版本"));
         }
 
         for (int i = 0; i < config.vol_num; i++) {
@@ -972,7 +976,7 @@ void BMSView::flushBmu() {
                 item->setText(QString("%1.%2.%3.%4").arg((uint8_t)(bootversion>>24),2,16,QChar('0'))
                               .arg((uint8_t)(bootversion>>16),2,16,QChar('0'))
                               .arg((uint8_t)(bootversion>>8),2,16,QChar('0'))
-                              .arg((uint8_t)bootversion,2,16,QChar('0')));
+                              .arg((uint8_t)(bootversion>>0),2,16,QChar('0')));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableExtView->setItem(i, offset++, item);
 
@@ -1023,6 +1027,20 @@ void BMSView::flushBmu() {
                 }
             }else{
                 offset = 0;
+
+                if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV4_10){
+                    offset = 0;
+                    uint32_t bootversion;
+                    item = new QTableWidgetItem();
+                    bootversion = this->mycmu->bmu_data[i].BMUBootVersion;
+                    item->setText(QString("%1.%2.%3.%4").arg((uint8_t)(bootversion>>24),2,16,QChar('0'))
+                                  .arg((uint8_t)(bootversion>>16),2,16,QChar('0'))
+                                  .arg((uint8_t)(bootversion>>8),2,16,QChar('0'))
+                                  .arg((uint8_t)(bootversion>>0),2,16,QChar('0')));
+                    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+                    ui->tableExtView->setItem(i, offset++, item);
+                }
+
                 double val = 0;
                 for (int j = 0; j < config.vol_num; j++) {
                     item = new QTableWidgetItem();

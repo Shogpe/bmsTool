@@ -1722,6 +1722,22 @@ void BMSView::on_checkBox_stateChanged(int arg1) {
     emit send_msg(MsgCmd);
     MsgCmd.data.clear();
 }
+void BMSView::on_cb_ErrorLog_stateChanged(int arg1)
+{
+    qDebug() << QString("%1").arg(arg1);
+    TMsgData MsgCmd;
+    QCheckBox* cbox = (QCheckBox*)this->sender();
+    if (cbox->isChecked()) {
+        MsgCmd.msg_type = CTRL_DUMPERRLOG;
+        MsgCmd.data.clear();
+    } else {
+        MsgCmd.msg_type = CTRL_DUMPERRLOG;
+        MsgCmd.data.append("0");
+    }
+    emit send_msg(MsgCmd);
+    MsgCmd.data.clear();
+}
+
 void BMSView::btnClick() {
     QToolButton* b = (QToolButton*)sender();
     QString name = b->objectName();
@@ -1939,4 +1955,7 @@ void BMSView::on_btn_debugLog_clicked()
 {
     savelog.show();
 }
+
+
+
 

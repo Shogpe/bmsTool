@@ -1,4 +1,4 @@
-#ifndef MB_CMU_H
+﻿#ifndef MB_CMU_H
 #define MB_CMU_H
 
 #include <QDateTime>
@@ -49,6 +49,7 @@ typedef enum {
     CERT_CMD_READ_SOE,
     CTRL_AO_ADDR,
     CTRL_DUMP,
+    CTRL_DUMPERRLOG,
     CTRL_SET_PRO,  // 设置协议版本
 } MSG_TYPE;
 #define CMU_ONLINE    0
@@ -265,9 +266,17 @@ class mb_cmu : public QObject {
     int max_offset;
     //    MessageQueue *pMq;
     QFile *csvfile;
-    QDateTime fileTime;
+    QDateTime fileTime;    
     void Dump2CsvTitle();
     void Dump2Csv();
+
+    QFile *csvfile_errLog;
+    QDateTime fileTime_errLog;
+    void DumpErrLog2CsvTitle();
+    void DumpErrLog2Csv();
+    QMap<uint,QList<uint16_t>>UCellMap;
+    QMap<uint,QMap<QString,QString>>oldErrDataBufMap;
+
     QString GetBitStatus(uint16_t status);
     QString GetBitStatus(uint64_t status);
     QString GetBalanceValue(uint16_t status);
@@ -299,6 +308,7 @@ class mb_cmu : public QObject {
     BMS_PROTOCOL protocal_ver;
     bool stop;
     bool stopDump;              // 停止保存数据
+    bool stopDumpErrLog;        // 停止保存故障数据
     vector<DataReg> reg_list_;  // 读取表
     vector<NodeReg> wr_list_;   // 下发表
     int ReadAI();

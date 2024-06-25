@@ -1,4 +1,4 @@
-#ifndef BMSVIEW_H
+﻿#ifndef BMSVIEW_H
 #define BMSVIEW_H
 
 #include <QSettings>
@@ -81,6 +81,8 @@ class BMSView : public QWidget {
     void pop_bmuTable_menu(const QPoint& pos);
 
     void on_btn_debugLog_clicked();
+
+    void on_cb_ErrorLog_stateChanged(int arg1);
 
 private:
     void changeEvent(QEvent* event);

@@ -8,6 +8,7 @@
 static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
 const QString recPath = "Rec";
 const QString dataPath = "Data";
+const QString errLogDataPath = "ErrLog";
 QHash<QString, uint> g_proto_map = {
     {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
     {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
@@ -15,7 +16,9 @@ QHash<QString, uint> g_proto_map = {
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
     csvfile = nullptr;
+    csvfile_errLog = nullptr;
     stopDump = true;
+    stopDumpErrLog = true;
     drv_status = 0;
     stop = false;
     mb_ip = "192.168.1.120";
@@ -24,6 +27,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     protocal_ver = ver;
     isDirExist(recPath);
     isDirExist(dataPath);
+    isDirExist(errLogDataPath);
     //    pMq = MessageQueue::getInstance();
     //    pMq->registMsgQueue(0);
     qRegisterMetaType<ST_SOE>("ST_SOE");
@@ -390,10 +394,120 @@ void mb_cmu::Dump2Csv() {
         file.close();
     }
 }
+
+void mb_cmu::DumpErrLog2CsvTitle()
+{
+    if (stopDumpErrLog) return;
+    fileTime_errLog = QDateTime::currentDateTime();
+    QString currentip = (QString::fromStdString(mb_ip).split('.'))[3];
+    QString fileName = currentip +"_"+ fileTime_errLog.toString("yyyyMMdd_hhmmss");
+    fileName.append(".csv");
+    if (csvfile_errLog) csvfile_errLog->close();
+    csvfile_errLog = new QFile(errLogDataPath + "/" + fileName);
+    if (!csvfile_errLog->open(QIODevice::WriteOnly | QIODevice::Text)) {
+        delete csvfile_errLog;
+        csvfile_errLog = nullptr;
+        qDebug() << "Cannot open file for writing: " << qPrintable(csvfile_errLog->errorString());
+        return;
+    }
+    QTextStream data_buf(csvfile_errLog);
+    // 写入UTF-BOM头部
+    data_buf << QChar(0xfeff);
+    data_buf << "Time,";
+    data_buf << tr("故障ID,");
+    data_buf << tr("运行状态,");
+    data_buf << tr("故障状态,");
+    data_buf << tr("电压采集异常通道及对应电压,");
+    data_buf << tr("电池温度异常通道及对应温度,");
+    data_buf << endl;
+}
+
+void mb_cmu::DumpErrLog2Csv()
+{
+    if (stopDumpErrLog) return;
+    if (!csvfile_errLog) {
+        DumpErrLog2CsvTitle();
+    } else {
+        // 检查csv文件以便分割文件 12小时
+        if (fileTime_errLog.secsTo(QDateTime::currentDateTime()) >= FILE_ROTATE_TIME) {
+            DumpErrLog2CsvTitle();
+        }
+    }
+    QTextStream data_buf(csvfile_errLog);
+    QMap<QString,QString>errDataBufMap;
+    errDataBufMap.clear();
+    bool errisexist = false;
+
+    for (int i = 0; i < config.bmu_num; i++) {
+        // 获取故障时间
+        errDataBufMap["Time"] = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        // 获取故障ID
+        errDataBufMap["ID"] = QString("%1").arg(i,2,10,QLatin1Char('0'));
+        // 获取运行状态
+        errDataBufMap["RunStat"] = QString("0x%1").arg(this->bmu_data[i].RunStat, 4, 16, QLatin1Char('0'));
+        // 获取故障状态
+        if(this->bmu_data[i].ErrStat !=0){
+            errDataBufMap["ErrStat"] = QString("0x%1").arg(this->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0'));
+        }else{
+            errDataBufMap["ErrStat"] = "";
+        }
+        // 获取故障电压
+        std::sort(UCellMap[i].begin(),UCellMap[i].end());
+        uint16_t avgValue = 0;
+        uint32_t sum = 0;
+        errDataBufMap["ErrUcell"] = "";
+        if(UCellMap[i].count()>=4){
+            UCellMap[i].removeFirst();
+            UCellMap[i].removeFirst();
+            UCellMap[i].removeLast();
+            UCellMap[i].removeLast();
+            for (int j = 0; j < UCellMap[i].count()-4; ++j) {
+                sum += UCellMap[i].at(j);
+            }
+            avgValue = sum / (UCellMap[i].count()-4);
+
+            for (int k = 0; k < config.vol_num; ++k) {                
+                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= 0.005){
+                    errDataBufMap["ErrUcell"] += QString("%1 [%2] ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
+                }
+            }
+        }
+        // 获取故障温度
+        errDataBufMap["ErrTcell"] = "";
+        for (int k = 0; k < config.T_num+config.Tp_num; ++k) {
+            if(abs(this->bmu_data[i].Tcell[k]/10 - 25) > 2){
+                if(k>=config.T_num){
+                    errDataBufMap["ErrTcell"] += QString("P%1 [%2] ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                }else{
+                    errDataBufMap["ErrTcell"] += QString("T%1 [%2] ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                }
+            }
+        }
+        if( (errDataBufMap["ErrStat"]  != "" && errDataBufMap["ErrStat"]  != oldErrDataBufMap[i]["ErrStat"])   ||
+            (errDataBufMap["ErrUcell"] != "" && errDataBufMap["ErrUcell"] != oldErrDataBufMap[i]["ErrUcell"]) ||
+            (errDataBufMap["ErrTcell"] != "" && errDataBufMap["ErrTcell"] != oldErrDataBufMap[i]["ErrTcell"]) ){
+
+            data_buf<<errDataBufMap["Time"]<<","
+                    <<errDataBufMap["ID"]<<","
+                    <<errDataBufMap["RunStat"]<<","
+                    <<errDataBufMap["ErrStat"]<<","
+                    <<errDataBufMap["ErrUcell"]<<","
+                    <<errDataBufMap["ErrTcell"]<<",";
+            data_buf << endl;
+        }        
+        oldErrDataBufMap[i]["ErrStat"]  = errDataBufMap["ErrStat"];
+        oldErrDataBufMap[i]["ErrUcell"] = errDataBufMap["ErrUcell"];
+        oldErrDataBufMap[i]["ErrTcell"] = errDataBufMap["ErrTcell"];
+    }
+    csvfile_errLog->flush();
+}
+
 mb_cmu::~mb_cmu() {
     if (this->cmu) this->Close();
     if (csvfile) csvfile->close();
     csvfile = nullptr;
+    if (csvfile_errLog) csvfile_errLog->close();
+    csvfile_errLog = nullptr;
     stop = true;
     m_thread->quit();
     m_thread->wait();
@@ -609,9 +723,11 @@ int mb_cmu::ReadALL() {
         int minId = 0;
         int maxBmuId = 0;
         int minBmuId = 0;
-        for (int i = 0; i < config.bmu_num; i++) {
+        UCellMap.clear();
+        for (int i = 0; i < config.bmu_num; i++) {            
             for (int j = 0; j < config.vol_num; j++) {
                 bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
+                UCellMap[i]<<bmu_data[i].Ucell[j];
                 if (bmu_data[i].Ucell[j] > bmu_data[i].Ucell[maxId]) maxId = j;
                 if (bmu_data[i].Ucell[j] < bmu_data[i].Ucell[minId]) minId = j;
             }
@@ -846,6 +962,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                     }
                     state = SM_INIT;
                     Dump2Csv();
+                    DumpErrLog2Csv();
                 }
                 break;
             case SM_CONNECT: {
@@ -1013,6 +1130,23 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 csvfile->close();
                 delete csvfile;
                 csvfile = nullptr;
+            }
+
+            ret = 0;
+        } break;
+        case CTRL_DUMPERRLOG: {
+            uint16_t nb = Msg.data.size();
+            stopDumpErrLog = (nb > 0);
+            if(stopDumpErrLog == false){
+                oldErrDataBufMap.clear();
+                qDebug()<<"clear oldErrDataBufMap";
+            }
+            qDebug() << "stop ErrLog storage:" << stopDumpErrLog;
+            if (stopDumpErrLog && csvfile_errLog) {
+                qDebug() << "close ErrLog data file";
+                csvfile_errLog->close();
+                delete csvfile_errLog;
+                csvfile_errLog = nullptr;
             }
 
             ret = 0;

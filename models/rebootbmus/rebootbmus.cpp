@@ -1,4 +1,4 @@
-#include "rebootbmus.h"
+﻿#include "rebootbmus.h"
 #include "ui_rebootbmus.h"
 #include <QDebug>
 
@@ -8,9 +8,7 @@ Rebootbmus::Rebootbmus(QWidget *parent) :
     ui(new Ui::Rebootbmus)
 {
     ui->setupUi(this);
-    connect(ui->pB_StartSend,&QPushButton::clicked,this,&Rebootbmus::btnclick);
-    connect(ui->pb_Debug,&QPushButton::clicked,this,&Rebootbmus::btnclick);
-
+    connect(ui->pB_StartSend,&QPushButton::clicked,this,&Rebootbmus::btnclick);    
     connect(&timer_script,&QTimer::timeout,this,&Rebootbmus::timerUpadte);
     timer_script.setInterval(1000);
 }
@@ -33,8 +31,6 @@ void Rebootbmus::btnclick()
             btn->setText(tr("开始发送"));
             timer_script.stop();
         }
-    }else if(btn->objectName()=="pb_Debug"){
-        savelog.show();
     }
 }
 

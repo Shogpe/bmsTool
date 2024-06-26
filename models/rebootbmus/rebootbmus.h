@@ -1,9 +1,8 @@
-#ifndef Rebootbmus_H
+﻿#ifndef Rebootbmus_H
 #define Rebootbmus_H
 
 #include <QTimer>
 #include <QWidget>
-#include "SaveLog/frmsavelog.h"
 
 namespace Ui {
 class Rebootbmus;
@@ -20,7 +19,6 @@ class Rebootbmus : public QWidget
 public:
     explicit Rebootbmus(QWidget *parent = nullptr);
     ~Rebootbmus();
-    frmSaveLog savelog;
     ProVersion version;
 
 private:

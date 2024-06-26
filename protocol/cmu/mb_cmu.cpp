@@ -467,7 +467,7 @@ void mb_cmu::DumpErrLog2Csv()
             avgValue = sum / (UCellMap[i].count()-4);
 
             for (int k = 0; k < config.vol_num; ++k) {                
-                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= 0.005){
+                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= errLogUcellLimitValue){
                     errDataBufMap["ErrUcell"] += QString("%1 [%2] ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
                 }
             }
@@ -475,11 +475,11 @@ void mb_cmu::DumpErrLog2Csv()
         // 获取故障温度
         errDataBufMap["ErrTcell"] = "";
         for (int k = 0; k < config.T_num+config.Tp_num; ++k) {
-            if(abs(this->bmu_data[i].Tcell[k]/10 - 25) > 2){
+            if(abs(this->bmu_data[i].Tcell[k]/10 - 25) > errLogTempLimitValue){
                 if(k>=config.T_num){
-                    errDataBufMap["ErrTcell"] += QString("P%1 [%2] ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                    errDataBufMap["ErrTcell"] += QString("P%1[%2]  ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
                 }else{
-                    errDataBufMap["ErrTcell"] += QString("T%1 [%2] ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                    errDataBufMap["ErrTcell"] += QString("T%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
                 }
             }
         }
@@ -534,7 +534,7 @@ int mb_cmu::Init() {
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
     db_manager::Instance()->getNode(this->nodes_table, protocal_ver);
-    qDebug() << this->nodes_table.size();
+    qDebug()<<"nodes_table.size:"<< this->nodes_table.size();
     mapData.clear();
     mapConfig.clear();
     for (int i = 0; i < this->nodes_table.size(); i++) {
@@ -734,7 +734,6 @@ int mb_cmu::ReadALL() {
             bmu_data[i].MaxUcellId = maxId;
             bmu_data[i].MinUcellId = minId;
             if (bmu_data[maxBmuId].Ucell[bmu_data[maxBmuId].MaxUcellId] < bmu_data[i].Ucell[maxId]) {
-                qDebug() << maxBmuId << bmu_data[i].Ucell[maxId];
                 maxBmuId = i;
             }
             if (bmu_data[minBmuId].Ucell[bmu_data[minBmuId].MinUcellId] > bmu_data[i].Ucell[minId]) {
@@ -921,7 +920,7 @@ int mb_cmu::ReadALL() {
     return status;
 }
 void mb_cmu::msg_deal(TMsgData MsgCmd) {
-    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << "," << MsgCmd.data.toHex();
+    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << MsgCmd.data;
     DealCMD(MsgCmd);
 }
 void mb_cmu::timerEvent(QTimerEvent* event) {
@@ -996,6 +995,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                         config.Tp_num = sys_para.Name.u16BmuPoleTNum > MAX_T ? MAX_T : sys_para.Name.u16BmuPoleTNum;
                         config.status_num = 4;
                         Dump2CsvTitle();
+                        DumpErrLog2CsvTitle();
                         qDebug() << "table changed!";
                         mapData["bmu_num"] = config.bmu_num;
                         mapData["vol_num"] = config.vol_num;
@@ -1139,9 +1139,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             stopDumpErrLog = (nb > 0);
             if(stopDumpErrLog == false){
                 oldErrDataBufMap.clear();
-                qDebug()<<"clear oldErrDataBufMap";
             }
-            qDebug() << "stop ErrLog storage:" << stopDumpErrLog;
             if (stopDumpErrLog && csvfile_errLog) {
                 qDebug() << "close ErrLog data file";
                 csvfile_errLog->close();
@@ -1158,6 +1156,23 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
                 qDebug() << "new cmu version:" << protocal_ver + 1;
                 Init();
                 Dump2CsvTitle();
+                DumpErrLog2CsvTitle();
+            }
+            ret = 0;
+        } break;        
+        case CTRL_SET_ERRLOG_ULIMIT: {
+            uint16_t nb = Msg.data.size();
+            if (nb != 0) {
+                errLogUcellLimitValue = Msg.data.toInt()/1000.0;
+                qDebug() << "errLogUcellLimitValue:" << errLogUcellLimitValue;
+            }
+            ret = 0;
+        } break;
+        case CTRL_SET_ERRLOG_TLIMIT: {
+            uint16_t nb = Msg.data.size();
+            if (nb != 0) {
+                errLogTempLimitValue = Msg.data.toInt();
+                qDebug() << "errLogTempLimitValue:" << errLogTempLimitValue;
             }
             ret = 0;
         } break;

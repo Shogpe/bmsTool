@@ -85,6 +85,13 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     emit send_msg(msg);
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
+
+    uint errLogUcellLimit = settings->value("global/le_ErrLogUcellLimit", 50).toUInt();
+    uint errLogTempLimit = settings->value("global/le_ErrLogTempLimit", 2).toUInt();
+    ui->le_ErrLogUcellLimit->setText(QString::number(errLogUcellLimit));
+    emit ui->le_ErrLogUcellLimit->editingFinished();
+    ui->le_ErrLogTempLimit->setText(QString::number(errLogTempLimit));
+    emit ui->le_ErrLogTempLimit->editingFinished();
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -132,14 +139,12 @@ void BMSView::StartBalanceForm()
 {
     uint8_t mode = 0;
     mode = ui->BalnceMask->value();
-    qDebug() << mode;
     //        bool lbok;
     if (inputBalance == nullptr) {
         inputBalance = new frmBalanceBox();
         connect(inputBalance, &frmBalanceBox::valueChange, [this]() {
             TMsgData MsgCmd;
             uint16_t mode = inputBalance->getMode();
-            qDebug() << mode;
             MsgCmd.msg_type = CTRL_AO_ADDR;
             uint16_t value[2] = {5408, mode};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
@@ -176,7 +181,6 @@ BMSView::~BMSView() {
 }
 
 void BMSView::uiChange(QHash<QString, qreal> mapData) {
-    qDebug() << "uiChange" << mapData.size();
     ui->tableBMU->setRowCount(config.bmu_num);
     /* 设置 tableWidget */
     //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
@@ -251,7 +255,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         dspbox->hide();
         if (mapData.contains(dspbox->objectName())) {
             dspbox->show();
-        }else{qDebug()<<"s:"<<dspbox->objectName();}
+        }
     }
     // 扩展表格
     if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
@@ -314,7 +318,7 @@ void BMSView::valueChange(double dval) {
         return;
     }
     b->clearFocus();
-    qDebug() << b->objectName() << ":" << dval;
+    //qDebug() << b->objectName() << ":" << dval;
     setValue(b->objectName(), dval);
 }
 
@@ -1281,7 +1285,7 @@ void BMSView::sendCommand() {
     } else if (name == "btnRebootBMUs") {
         rebootbmus->show();
     } else
-        qDebug() << name;
+        qDebug() << "don`t define :" << name ;
 }
 void BMSView::stateChanged() {
     QCheckBox* b = (QCheckBox*)sender();
@@ -1361,7 +1365,7 @@ void BMSView::btn_contrl() {
             MsgCmd.data.clear();
         }
     } else
-        qDebug() << name;
+        qDebug()<< "don`t define :" << name;
 }
 
 void BMSView::on_lineEditIP_editingFinished() {
@@ -1475,7 +1479,7 @@ bool BMSView::loadParameters(const QString& filename) {
         node = node.nextSibling();  // 下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }
     doc.clear();
-    qDebug() << "load ok!";
+    qDebug() << "Paramet File load ok!";
     return true;
 }
 void BMSView::on_btnOutput_released() {
@@ -1504,13 +1508,13 @@ bool BMSView::eventFilter(QObject* obj, QEvent* event) {
     Q_UNUSED(obj);
     Q_UNUSED(event);
     if (obj == ui->tableBMU) {
-        qDebug() << obj << event;
+        qDebug() << "ignore event for parent:" << obj << event;
     }
 
     return true;  // QWidget::eventFilter(obj, event);
 }
 void BMSView::on_cbProtocol_currentIndexChanged(const QString& arg1) {
-    qDebug() << arg1;
+    qDebug() << "Protocol_Changed:" << arg1;
     settings->setValue("global/protocol", arg1);
     TMsgData MsgCmd;
     MsgCmd.msg_type = CTRL_SET_PRO;
@@ -1709,7 +1713,7 @@ void BMSView::onUpdateBtnMenu() {
 }
 
 void BMSView::on_checkBox_stateChanged(int arg1) {
-    qDebug() << QString("%1").arg(arg1);
+    //qDebug() << QString("%1").arg(arg1);
     TMsgData MsgCmd;
     QCheckBox* cbox = (QCheckBox*)this->sender();
     if (cbox->isChecked()) {
@@ -1724,7 +1728,7 @@ void BMSView::on_checkBox_stateChanged(int arg1) {
 }
 void BMSView::on_cb_ErrorLog_stateChanged(int arg1)
 {
-    qDebug() << QString("%1").arg(arg1);
+    //qDebug() << QString("%1").arg(arg1);
     TMsgData MsgCmd;
     QCheckBox* cbox = (QCheckBox*)this->sender();
     if (cbox->isChecked()) {
@@ -1777,9 +1781,11 @@ bool BMSView::load_config() {
     settings = new QSettings("config.ini", QSettings::IniFormat);
     QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
     int target_port = settings->value("global/target_port", 502).toUInt();
+
     ui->connectIP->setText(target_ip);
     ui->spinBoxPort->setValue(target_port);
     ui->DataWidget->setCurrentIndex(0);
+
     return true;
 }
 
@@ -1812,7 +1818,7 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
         QTableWidget* table = ui->tableBMU;
         //        QPoint globalPos = table->mapToGlobal(pos);
         QModelIndex index = table->indexAt(pos);
-        qDebug() << index.row();
+        //qDebug() << index.row();
         // Create menu and insert some actions
         QMenu* myMenu = new QMenu(table);
         myMenu->addAction(tr("导出当前数据"), this, [=]() {
@@ -1958,4 +1964,33 @@ void BMSView::on_btn_debugLog_clicked()
 
 
 
+
+
+void BMSView::on_le_ErrLogUcellLimit_editingFinished()
+{
+    bool ok;
+    uint data = ui->le_ErrLogUcellLimit->text().toUInt(&ok,10);
+    if(ok){
+        settings->setValue("global/le_ErrLogUcellLimit", data);
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_ULIMIT;
+        MsgCmd.data.setNum(data);
+        emit send_msg(MsgCmd);
+        MsgCmd.data.clear();
+    }
+}
+
+void BMSView::on_le_ErrLogTempLimit_editingFinished()
+{
+    bool ok;
+    uint data = ui->le_ErrLogTempLimit->text().toUInt(&ok,10);
+    if(ok){
+        settings->setValue("global/le_ErrLogTempLimit", data);
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_TLIMIT;
+        MsgCmd.data.setNum(data);
+        emit send_msg(MsgCmd);
+        MsgCmd.data.clear();
+    }
+}
 

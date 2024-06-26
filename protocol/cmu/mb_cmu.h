@@ -51,6 +51,8 @@ typedef enum {
     CTRL_DUMP,
     CTRL_DUMPERRLOG,
     CTRL_SET_PRO,  // 设置协议版本
+    CTRL_SET_ERRLOG_ULIMIT,  // 设置故障日志单体故障阈值
+    CTRL_SET_ERRLOG_TLIMIT,  // 设置故障日志温度故障阈值
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -271,11 +273,14 @@ class mb_cmu : public QObject {
     void Dump2Csv();
 
     QFile *csvfile_errLog;
-    QDateTime fileTime_errLog;
+    QDateTime fileTime_errLog;    
     void DumpErrLog2CsvTitle();
     void DumpErrLog2Csv();
     QMap<uint,QList<uint16_t>>UCellMap;
     QMap<uint,QMap<QString,QString>>oldErrDataBufMap;
+    double errLogUcellLimitValue = 0;
+    double errLogTempLimitValue = 0;
+
 
     QString GetBitStatus(uint16_t status);
     QString GetBitStatus(uint64_t status);

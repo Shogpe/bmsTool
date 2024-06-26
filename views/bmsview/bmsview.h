@@ -84,6 +84,10 @@ class BMSView : public QWidget {
 
     void on_cb_ErrorLog_stateChanged(int arg1);
 
+    void on_le_ErrLogUcellLimit_editingFinished();
+
+    void on_le_ErrLogTempLimit_editingFinished();
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");

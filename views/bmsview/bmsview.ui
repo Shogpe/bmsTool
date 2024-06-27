@@ -166,7 +166,7 @@
       <item>
        <widget class="QCheckBox" name="cb_ErrorLog">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;记录测试过程中产生的异常数据，并进行了数据标注&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;记录测试过程中产生的异常数据，自动追踪捕捉 “故障状态码” ”单体电压采集异常“ “温度采集异常” 三类异常，产生的存储文件在执行程序目录下的ErrLog文件夹中，文件名以IP地址为前缀，创建日期为后缀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>故障纪录</string>
@@ -8437,13 +8437,13 @@
          <x>0</x>
          <y>10</y>
          <width>288</width>
-         <height>87</height>
+         <height>179</height>
         </rect>
        </property>
        <property name="title">
         <string>老化测试参数配置</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_19">
+       <layout class="QVBoxLayout" name="verticalLayout_20">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_15">
           <property name="sizeConstraint">
@@ -8506,6 +8506,63 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>当相同异常一直出现，你想？</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
+             <item>
+              <widget class="QRadioButton" name="rb_ErrLog_OnceWrite">
+               <property name="text">
+                <string>记录一次</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rb_ErrLog_alwaysWrite">
+               <property name="text">
+                <string>一直记录</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <item>
+              <widget class="QRadioButton" name="rb_ErrLog_NtimesWrite">
+               <property name="text">
+                <string>出现N次后记录</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="sb_ErrLog_Count">
+               <property name="suffix">
+                <string>次</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>99999</number>
+               </property>
+               <property name="value">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>

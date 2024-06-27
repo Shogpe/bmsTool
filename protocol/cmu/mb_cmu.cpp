@@ -422,6 +422,32 @@ void mb_cmu::DumpErrLog2CsvTitle()
     data_buf << endl;
 }
 
+// id       : int      当前故障所在板子ID
+// err_type : QString  当前故障类型
+// val      : uint     当前故障值
+bool mb_cmu::IsErrCanWrite(int id, QString err_type, uint val)
+{
+    uint *cnt = &(OldErrLogBufMap[id][err_type][val]);
+    bool isWrite = false;
+    (*cnt)++;
+
+    if(logSaveMethod == ERRLOG_ONCE){
+        if((*cnt) == 1){
+            isWrite = true;
+            (*cnt) = 1;
+        }
+    }else if(logSaveMethod == ERRLOG_ALWAYS){
+        isWrite = true;
+    }else if(logSaveMethod == ERRLOG_NTIMES){
+        if((*cnt) >= errLogCount){
+            isWrite = true;
+            (*cnt) = 0;
+        }
+    }
+
+    return isWrite;
+}
+
 void mb_cmu::DumpErrLog2Csv()
 {
     if (stopDumpErrLog) return;
@@ -446,10 +472,11 @@ void mb_cmu::DumpErrLog2Csv()
         // 获取运行状态
         errDataBufMap["RunStat"] = QString("0x%1").arg(this->bmu_data[i].RunStat, 4, 16, QLatin1Char('0'));
         // 获取故障状态
+        errDataBufMap["ErrStat"] = "";
         if(this->bmu_data[i].ErrStat !=0){
-            errDataBufMap["ErrStat"] = QString("0x%1").arg(this->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0'));
-        }else{
-            errDataBufMap["ErrStat"] = "";
+            if(IsErrCanWrite(i,"ErrStat",this->bmu_data[i].ErrStat)){
+                errDataBufMap["ErrStat"] = QString("0x%1").arg(this->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0'));
+            }
         }
         // 获取故障电压
         std::sort(UCellMap[i].begin(),UCellMap[i].end());
@@ -467,8 +494,10 @@ void mb_cmu::DumpErrLog2Csv()
             avgValue = sum / (UCellMap[i].count()-4);
 
             for (int k = 0; k < config.vol_num; ++k) {                
-                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= errLogUcellLimitValue){
-                    errDataBufMap["ErrUcell"] += QString("%1 [%2] ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
+                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= errLogUcellLimitValue){                    
+                    if(IsErrCanWrite(i,"ErrUcell",k)){
+                        errDataBufMap["ErrUcell"] += QString("%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
+                    }
                 }
             }
         }
@@ -476,16 +505,17 @@ void mb_cmu::DumpErrLog2Csv()
         errDataBufMap["ErrTcell"] = "";
         for (int k = 0; k < config.T_num+config.Tp_num; ++k) {
             if(abs(this->bmu_data[i].Tcell[k]/10 - 25) > errLogTempLimitValue){
-                if(k>=config.T_num){
-                    errDataBufMap["ErrTcell"] += QString("P%1[%2]  ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
-                }else{
-                    errDataBufMap["ErrTcell"] += QString("T%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                if(IsErrCanWrite(i,"ErrTcell", k)){
+                    if(k>=config.T_num){
+                        errDataBufMap["ErrTcell"] += QString("P%1[%2]  ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                    }else{
+                        errDataBufMap["ErrTcell"] += QString("T%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
+                    }
                 }
             }
         }
-        if( (errDataBufMap["ErrStat"]  != "" && errDataBufMap["ErrStat"]  != oldErrDataBufMap[i]["ErrStat"])   ||
-            (errDataBufMap["ErrUcell"] != "" && errDataBufMap["ErrUcell"] != oldErrDataBufMap[i]["ErrUcell"]) ||
-            (errDataBufMap["ErrTcell"] != "" && errDataBufMap["ErrTcell"] != oldErrDataBufMap[i]["ErrTcell"]) ){
+
+        if( errDataBufMap["ErrStat"]  != "" || errDataBufMap["ErrUcell"] != "" || errDataBufMap["ErrTcell"] != "" ){
 
             data_buf<<errDataBufMap["Time"]<<","
                     <<errDataBufMap["ID"]<<","
@@ -494,10 +524,7 @@ void mb_cmu::DumpErrLog2Csv()
                     <<errDataBufMap["ErrUcell"]<<","
                     <<errDataBufMap["ErrTcell"]<<",";
             data_buf << endl;
-        }        
-        oldErrDataBufMap[i]["ErrStat"]  = errDataBufMap["ErrStat"];
-        oldErrDataBufMap[i]["ErrUcell"] = errDataBufMap["ErrUcell"];
-        oldErrDataBufMap[i]["ErrTcell"] = errDataBufMap["ErrTcell"];
+        }
     }
     csvfile_errLog->flush();
 }
@@ -1138,7 +1165,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint16_t nb = Msg.data.size();
             stopDumpErrLog = (nb > 0);
             if(stopDumpErrLog == false){
-                oldErrDataBufMap.clear();
+                OldErrLogBufMap.clear();
             }
             if (stopDumpErrLog && csvfile_errLog) {
                 qDebug() << "close ErrLog data file";
@@ -1173,6 +1200,20 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             if (nb != 0) {
                 errLogTempLimitValue = Msg.data.toInt();
                 qDebug() << "errLogTempLimitValue:" << errLogTempLimitValue;
+            }
+            ret = 0;
+        } break;
+        case CTRL_SET_ERRLOG_METHOD: {
+            uint16_t nb = Msg.data.size();
+            OldErrLogBufMap.clear();
+            if(nb == 1){
+                logSaveMethod = (ERRLOG_METHOD)Msg.data.toInt();
+                qDebug()<<" errlogSaveMethod:" << logSaveMethod;
+            }else if(nb == 4){
+                uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+                logSaveMethod = (ERRLOG_METHOD)p[0];
+                errLogCount = p[1];
+                qDebug()<<" errlogSaveMethod:" << logSaveMethod <<" errLogCount:"<<errLogCount;
             }
             ret = 0;
         } break;

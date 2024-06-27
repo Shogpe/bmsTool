@@ -53,6 +53,7 @@ typedef enum {
     CTRL_SET_PRO,  // 设置协议版本
     CTRL_SET_ERRLOG_ULIMIT,  // 设置故障日志单体故障阈值
     CTRL_SET_ERRLOG_TLIMIT,  // 设置故障日志温度故障阈值
+    CTRL_SET_ERRLOG_METHOD,  // 设置故障日志记录方式
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -232,6 +233,15 @@ typedef enum {
     CMUV4_9,
     CMUV4_10,// 主动均衡-液冷
 } BMS_PROTOCOL;
+typedef enum {
+    ERRLOG_ONCE = 0,  // 一次
+    ERRLOG_ALWAYS,    // 总是
+    ERRLOG_NTIMES     // N次
+} ERRLOG_METHOD;
+typedef struct {
+    uint16_t value;
+    uint16_t cnt;
+} ERRLOG_Data_t;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
 #define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
@@ -277,9 +287,12 @@ class mb_cmu : public QObject {
     void DumpErrLog2CsvTitle();
     void DumpErrLog2Csv();
     QMap<uint,QList<uint16_t>>UCellMap;
-    QMap<uint,QMap<QString,QString>>oldErrDataBufMap;
+    //  ID        故障类型        故障信息<故障值，计数>
+    QMap<uint,QMap<QString,QMap<uint,uint>>>OldErrLogBufMap;
     double errLogUcellLimitValue = 0;
     double errLogTempLimitValue = 0;
+    ERRLOG_METHOD logSaveMethod = ERRLOG_ONCE;
+    uint16_t errLogCount = 5;
 
 
     QString GetBitStatus(uint16_t status);
@@ -334,5 +347,7 @@ class mb_cmu : public QObject {
     void bmsDataReady(int type, QHash<QString, qreal> mapData);
     void bmsSOEReady(ST_SOE soe);
     void connectChanged(const QString &conn);
+private:
+    bool IsErrCanWrite(int id, QString err_type, uint val);
 };
 #endif  // MB_CMU_H

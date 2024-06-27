@@ -92,6 +92,11 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     emit ui->le_ErrLogUcellLimit->editingFinished();
     ui->le_ErrLogTempLimit->setText(QString::number(errLogTempLimit));
     emit ui->le_ErrLogTempLimit->editingFinished();
+
+    connect(ui->rb_ErrLog_OnceWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
+    connect(ui->rb_ErrLog_alwaysWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
+    connect(ui->rb_ErrLog_NtimesWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
+    connect(ui->sb_ErrLog_Count,&QSpinBox::textChanged,this,&BMSView::radioBtnToggledChanged);
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -1992,5 +1997,27 @@ void BMSView::on_le_ErrLogTempLimit_editingFinished()
         emit send_msg(MsgCmd);
         MsgCmd.data.clear();
     }
+}
+
+void BMSView::radioBtnToggledChanged()
+{
+    TMsgData MsgCmd;
+    if(ui->rb_ErrLog_OnceWrite->isChecked()){
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_METHOD;
+        MsgCmd.data.setNum(ERRLOG_ONCE);
+        emit send_msg(MsgCmd);
+    }else if(ui->rb_ErrLog_alwaysWrite->isChecked()){
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_METHOD;
+        MsgCmd.data.setNum(ERRLOG_ALWAYS);
+        emit send_msg(MsgCmd);
+    }else if(ui->rb_ErrLog_NtimesWrite->isChecked()){
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_METHOD;
+        uint16_t value[2] = {0, 0};
+        value[0] = ERRLOG_NTIMES;
+        value[1] = ui->sb_ErrLog_Count->value();
+        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+        emit send_msg(MsgCmd);
+    }
+    MsgCmd.data.clear();
 }
 

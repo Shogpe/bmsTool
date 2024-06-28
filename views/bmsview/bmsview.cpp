@@ -96,7 +96,9 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     connect(ui->rb_ErrLog_OnceWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
     connect(ui->rb_ErrLog_alwaysWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
     connect(ui->rb_ErrLog_NtimesWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
-    connect(ui->sb_ErrLog_Count,&QSpinBox::textChanged,this,&BMSView::radioBtnToggledChanged);
+    connect(ui->sb_ErrLog_Count,&QSpinBox::textChanged,this,[=](){
+        this->radioBtnToggledChanged(true);
+    });
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -1999,8 +2001,10 @@ void BMSView::on_le_ErrLogTempLimit_editingFinished()
     }
 }
 
-void BMSView::radioBtnToggledChanged()
+void BMSView::radioBtnToggledChanged(bool arg)
 {
+    if(arg == false)return;
+
     TMsgData MsgCmd;
     if(ui->rb_ErrLog_OnceWrite->isChecked()){
         MsgCmd.msg_type = CTRL_SET_ERRLOG_METHOD;

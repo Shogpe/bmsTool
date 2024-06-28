@@ -166,7 +166,7 @@
       <item>
        <widget class="QCheckBox" name="cb_ErrorLog">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;记录测试过程中产生的异常数据，自动追踪捕捉 “故障状态码” ”单体电压采集异常“ “温度采集异常” 三类异常，产生的存储文件在执行程序目录下的ErrLog文件夹中，文件名以IP地址为前缀，创建日期为后缀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;纪录测试过程中产生的异常数据，自动追踪捕捉 “故障状态码” ”单体电压采集异常“ “温度采集异常” 三类异常，产生的存储文件在执行程序目录下的ErrLog文件夹中，文件名以IP地址为前缀，创建日期为后缀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>故障纪录</string>
@@ -8517,6 +8517,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_16">
              <item>
               <widget class="QRadioButton" name="rb_ErrLog_OnceWrite">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：抓取一次测试过程中出现的所有故障，相同故障出现第二次不会纪录&lt;/p&gt;&lt;p&gt;注意：由于只抓一次，请保证测试前纪录干净，也即是需要在测试开始前，重新勾选一次故障纪录复选框&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>记录一次</string>
                </property>
@@ -8527,6 +8530,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="rb_ErrLog_alwaysWrite">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出现异常就抓取到本地文件，无其他约束&lt;/p&gt;&lt;p&gt;注意：此功能会导致纪录文件比较大，不建议老化测试使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>一直记录</string>
                </property>
@@ -8538,8 +8544,11 @@
             <layout class="QHBoxLayout" name="horizontalLayout_18">
              <item>
               <widget class="QRadioButton" name="rb_ErrLog_NtimesWrite">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：相同异常出现N次后就抓取到本地文件&lt;/p&gt;&lt;p&gt;注意：不建议老化测试使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
-                <string>出现N次后记录</string>
+                <string>每隔N次后纪录</string>
                </property>
               </widget>
              </item>

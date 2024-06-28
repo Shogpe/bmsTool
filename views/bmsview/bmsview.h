@@ -88,7 +88,7 @@ class BMSView : public QWidget {
 
     void on_le_ErrLogTempLimit_editingFinished();
 
-    void radioBtnToggledChanged();
+    void radioBtnToggledChanged(bool arg);
 
 private:
     void changeEvent(QEvent* event);

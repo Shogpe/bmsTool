@@ -608,8 +608,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
+        <source>纪录一次</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.ui" line="8534"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出现异常就抓取到本地文件，无其他约束&lt;/p&gt;&lt;p&gt;注意：此功能会导致纪录文件比较大，不建议老化测试使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
+        <source>一直纪录</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -620,16 +630,6 @@
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8551"/>
         <source>每隔N次后纪录</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
-        <source>记录一次</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
-        <source>一直记录</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

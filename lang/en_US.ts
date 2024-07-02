@@ -578,9 +578,19 @@ Version number:</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; function: Capture all faults that occur during a test, and the same faults will not be recorded the second time &lt;/p&gt;&lt;p&gt; Note: Since it is only captured once, please ensure that the record is clean before the test, that is, you need to re-check the fault record check box before the test starts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
+        <source>纪录一次</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.ui" line="8534"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出现异常就抓取到本地文件，无其他约束&lt;/p&gt;&lt;p&gt;注意：此功能会导致纪录文件比较大，不建议老化测试使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Function: Grab the local file when there is an exception, no other constraints &lt;/p&gt;&lt;p&gt; Note: This function will cause the record file is relatively large, not recommended for aging test use, mainly used for developers to track faults &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
+        <source>一直纪录</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8548"/>
@@ -593,14 +603,12 @@ Version number:</translation>
         <translation>Record after every N times</translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
         <source>记录一次</source>
-        <translation>Record once</translation>
+        <translation type="vanished">Record once</translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
         <source>一直记录</source>
-        <translation>Always record</translation>
+        <translation type="vanished">Always record</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8558"/>

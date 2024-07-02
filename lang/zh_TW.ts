@@ -973,9 +973,19 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：抓取一次測試過程中出現的所有故障，相同故障出現第二次不會紀錄&lt;/p&gt;&lt;p&gt;註意：由於只抓一次，請保證測試前紀錄幹凈，也即是需要在測試開始前，重新勾選一次故障紀錄復選框&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
+        <source>纪录一次</source>
+        <translation>紀錄一次</translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.ui" line="8534"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出现异常就抓取到本地文件，无其他约束&lt;/p&gt;&lt;p&gt;注意：此功能会导致纪录文件比较大，不建议老化测试使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出現異常就抓取到本地文件，無其他約束&lt;/p&gt;&lt;p&gt;註意：此功能會導致紀錄文件比較大，不建議老化測試使用，主要用於開發人員追蹤故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
+        <source>一直纪录</source>
+        <translation>一直紀錄</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8548"/>
@@ -992,18 +1002,16 @@
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：抓取一次測試過程中出現的所有故障，相同故障出現第二次不會記錄&lt;/p&gt;&lt;p&gt;註意：由於只抓一次，請保證測試前記錄幹凈，也即是需要在測試開始前，重新勾選一次故障記錄復選框&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8524"/>
         <source>记录一次</source>
-        <translation>記錄一次</translation>
+        <translation type="vanished">記錄一次</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出现异常就抓取到本地文件，无其他约束&lt;/p&gt;&lt;p&gt;注意：此功能会导致纪录文件比较大，不建议测试人员使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：出現異常就抓取到本地文件，無其他約束&lt;/p&gt;&lt;p&gt;註意：此功能會導致紀錄文件比較大，不建議測試人員使用，主要用於開發人員追蹤故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../views/bmsview/bmsview.ui" line="8537"/>
         <source>一直记录</source>
-        <translation>一直記錄</translation>
+        <translation type="vanished">一直記錄</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;功能：相同异常出现N次后就抓取到本地文件&lt;/p&gt;&lt;p&gt;注意：不建议测试人员使用，主要用于开发人员追踪故障&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

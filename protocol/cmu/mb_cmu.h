@@ -286,7 +286,7 @@ class mb_cmu : public QObject {
     QDateTime fileTime_errLog;    
     void DumpErrLog2CsvTitle();
     void DumpErrLog2Csv();
-    QMap<uint,QList<uint16_t>>UCellMap;
+    QMap<uint,QList<uint16_t>>ChlCellMap;
     //  ID        故障类型        故障信息<故障值，计数>
     QMap<uint,QMap<QString,QMap<uint,uint>>>OldErrLogBufMap;
     double errLogUcellLimitValue = 0;

@@ -461,8 +461,32 @@ void mb_cmu::DumpErrLog2Csv()
     }
     QTextStream data_buf(csvfile_errLog);
     QMap<QString,QString>errDataBufMap;
+    QList<uint>chlAvgList;
+
     errDataBufMap.clear();
+    chlAvgList.clear();
     bool errisexist = false;
+
+    for (int i = 0; i < config.vol_num; ++i) {
+        uint32_t sum = 0;
+
+       std::sort(ChlCellMap[i].begin(),ChlCellMap[i].end());
+       if(ChlCellMap[i].count()>4){
+           ChlCellMap[i].removeFirst();
+           ChlCellMap[i].removeFirst();
+           ChlCellMap[i].removeLast();
+           ChlCellMap[i].removeLast();
+       }else if(ChlCellMap[i].count()>2){
+           ChlCellMap[i].removeFirst();
+           ChlCellMap[i].removeLast();
+       }
+
+       for (int j = 0; j < ChlCellMap[i].count(); ++j) {
+           sum += ChlCellMap[i].at(j);
+       }
+
+       chlAvgList << sum / ChlCellMap[i].count();
+    }
 
     for (int i = 0; i < config.bmu_num; i++) {
         // 获取故障时间
@@ -478,29 +502,17 @@ void mb_cmu::DumpErrLog2Csv()
                 errDataBufMap["ErrStat"] = QString("0x%1").arg(this->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0'));
             }
         }
-        // 获取故障电压
-        std::sort(UCellMap[i].begin(),UCellMap[i].end());
-        uint16_t avgValue = 0;
-        uint32_t sum = 0;
-        errDataBufMap["ErrUcell"] = "";
-        if(UCellMap[i].count()>=4){
-            UCellMap[i].removeFirst();
-            UCellMap[i].removeFirst();
-            UCellMap[i].removeLast();
-            UCellMap[i].removeLast();
-            for (int j = 0; j < UCellMap[i].count()-4; ++j) {
-                sum += UCellMap[i].at(j);
-            }
-            avgValue = sum / (UCellMap[i].count()-4);
 
-            for (int k = 0; k < config.vol_num; ++k) {                
-                if(abs(this->bmu_data[i].Ucell[k]/10000.0 - avgValue/10000.0) >= errLogUcellLimitValue){                    
-                    if(IsErrCanWrite(i,"ErrUcell",k)){
-                        errDataBufMap["ErrUcell"] += QString("%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
-                    }
+        // 获取故障电压
+        errDataBufMap["ErrUcell"] = "";
+        for (int k = 0; k < config.vol_num; ++k) {
+            if(abs(this->bmu_data[i].Ucell[k]/10000.0 - chlAvgList[k]/10000.0) >= errLogUcellLimitValue){
+                if(IsErrCanWrite(i,"ErrUcell",k)){
+                    errDataBufMap["ErrUcell"] += QString("%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
                 }
             }
         }
+
         // 获取故障温度
         errDataBufMap["ErrTcell"] = "";
         for (int k = 0; k < config.T_num+config.Tp_num; ++k) {
@@ -750,11 +762,12 @@ int mb_cmu::ReadALL() {
         int minId = 0;
         int maxBmuId = 0;
         int minBmuId = 0;
-        UCellMap.clear();
+        ChlCellMap.clear();
+
         for (int i = 0; i < config.bmu_num; i++) {            
             for (int j = 0; j < config.vol_num; j++) {
                 bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
-                UCellMap[i]<<bmu_data[i].Ucell[j];
+                ChlCellMap[j]<<bmu_data[i].Ucell[j];
                 if (bmu_data[i].Ucell[j] > bmu_data[i].Ucell[maxId]) maxId = j;
                 if (bmu_data[i].Ucell[j] < bmu_data[i].Ucell[minId]) minId = j;
             }

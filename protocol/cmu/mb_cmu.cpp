@@ -428,12 +428,14 @@ void mb_cmu::DumpErrLog2CsvTitle()
 bool mb_cmu::IsErrCanWrite(int id, QString err_type, uint val)
 {
     uint *cnt = &(OldErrLogBufMap[id][err_type][val]);
+
     bool isWrite = false;
     (*cnt)++;
 
     if(logSaveMethod == ERRLOG_ONCE){
         if((*cnt) == 1){
-            isWrite = true;
+            isWrite = true;            
+        }else{
             (*cnt) = 1;
         }
     }else if(logSaveMethod == ERRLOG_ALWAYS){
@@ -506,7 +508,8 @@ void mb_cmu::DumpErrLog2Csv()
         // 获取故障电压
         errDataBufMap["ErrUcell"] = "";
         for (int k = 0; k < config.vol_num; ++k) {
-            if(abs(this->bmu_data[i].Ucell[k]/10000.0 - chlAvgList[k]/10000.0) >= errLogUcellLimitValue){
+            if( (abs((int)(this->bmu_data[i].Ucell[k] - chlAvgList[k])) >= errLogUcellLimitValue ) ||
+                (abs((int)(chlAvgList[k] - 33000)) >= errLogStdLimitValue)                         ){
                 if(IsErrCanWrite(i,"ErrUcell",k)){
                     errDataBufMap["ErrUcell"] += QString("%1[%2]  ").arg(k+1,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Ucell[k]/10000.0,5,'f', 3,'0');
                 }
@@ -516,7 +519,7 @@ void mb_cmu::DumpErrLog2Csv()
         // 获取故障温度
         errDataBufMap["ErrTcell"] = "";
         for (int k = 0; k < config.T_num+config.Tp_num; ++k) {
-            if(abs(this->bmu_data[i].Tcell[k]/10 - 25) > errLogTempLimitValue){
+            if(abs(this->bmu_data[i].Tcell[k] - 250) >= errLogTempLimitValue){
                 if(IsErrCanWrite(i,"ErrTcell", k)){
                     if(k>=config.T_num){
                         errDataBufMap["ErrTcell"] += QString("P%1[%2]  ").arg(k+1-config.T_num,2,10,QLatin1Char('0')).arg(this->bmu_data[i].Tcell[k] / 10.0,6,'f',1,' ');
@@ -528,7 +531,6 @@ void mb_cmu::DumpErrLog2Csv()
         }
 
         if( errDataBufMap["ErrStat"]  != "" || errDataBufMap["ErrUcell"] != "" || errDataBufMap["ErrTcell"] != "" ){
-
             data_buf<<errDataBufMap["Time"]<<","
                     <<errDataBufMap["ID"]<<","
                     <<errDataBufMap["RunStat"]<<","
@@ -1203,7 +1205,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_SET_ERRLOG_ULIMIT: {
             uint16_t nb = Msg.data.size();
             if (nb != 0) {
-                errLogUcellLimitValue = Msg.data.toInt()/1000.0;
+                errLogUcellLimitValue = Msg.data.toInt()*10;
                 qDebug() << "errLogUcellLimitValue:" << errLogUcellLimitValue;
             }
             ret = 0;
@@ -1211,8 +1213,16 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_SET_ERRLOG_TLIMIT: {
             uint16_t nb = Msg.data.size();
             if (nb != 0) {
-                errLogTempLimitValue = Msg.data.toInt();
+                errLogTempLimitValue = Msg.data.toInt()*10;
                 qDebug() << "errLogTempLimitValue:" << errLogTempLimitValue;
+            }
+            ret = 0;
+        } break;
+        case CTRL_SET_ERRLOG_STDVAL: {
+            uint16_t nb = Msg.data.size();
+            if (nb != 0) {
+                errLogStdLimitValue = Msg.data.toInt()*10;
+                qDebug() << "errLogStdLimitValue:" << errLogStdLimitValue;
             }
             ret = 0;
         } break;

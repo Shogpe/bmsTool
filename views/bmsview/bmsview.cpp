@@ -86,12 +86,16 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     timer->start(500);
     Toast::showTip(tr("初始化完成"), nullptr);
 
-    uint errLogUcellLimit = settings->value("global/le_ErrLogUcellLimit", 50).toUInt();
+    uint errLogUcellLimit = settings->value("global/le_ErrLogUcellLimit", 100).toUInt();
     uint errLogTempLimit = settings->value("global/le_ErrLogTempLimit", 2).toUInt();
+    uint errLogStdLimit = settings->value("global/le_ErrLog_StdValue", 1000).toUInt();
+
     ui->le_ErrLogUcellLimit->setText(QString::number(errLogUcellLimit));
     emit ui->le_ErrLogUcellLimit->editingFinished();
     ui->le_ErrLogTempLimit->setText(QString::number(errLogTempLimit));
     emit ui->le_ErrLogTempLimit->editingFinished();
+    ui->le_ErrLog_StdValue->setText(QString::number(errLogStdLimit));
+    emit ui->le_ErrLog_StdValue->editingFinished();
 
     connect(ui->rb_ErrLog_OnceWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
     connect(ui->rb_ErrLog_alwaysWrite,&QRadioButton::toggled,this,&BMSView::radioBtnToggledChanged);
@@ -1995,6 +1999,20 @@ void BMSView::on_le_ErrLogTempLimit_editingFinished()
         settings->setValue("global/le_ErrLogTempLimit", data);
         TMsgData MsgCmd;
         MsgCmd.msg_type = CTRL_SET_ERRLOG_TLIMIT;
+        MsgCmd.data.setNum(data);
+        emit send_msg(MsgCmd);
+        MsgCmd.data.clear();
+    }
+}
+
+void BMSView::on_le_ErrLog_StdValue_editingFinished()
+{
+    bool ok;
+    uint data = ui->le_ErrLog_StdValue->text().toUInt(&ok,10);
+    if(ok){
+        settings->setValue("global/le_ErrLog_StdValue", data);
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_SET_ERRLOG_STDVAL;
         MsgCmd.data.setNum(data);
         emit send_msg(MsgCmd);
         MsgCmd.data.clear();

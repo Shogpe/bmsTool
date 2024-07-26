@@ -53,6 +53,7 @@ typedef enum {
     CTRL_SET_PRO,  // 设置协议版本
     CTRL_SET_ERRLOG_ULIMIT,  // 设置故障日志单体故障阈值
     CTRL_SET_ERRLOG_TLIMIT,  // 设置故障日志温度故障阈值
+    CTRL_SET_ERRLOG_STDVAL,  // 设置故障日志标准差阈值
     CTRL_SET_ERRLOG_METHOD,  // 设置故障日志记录方式
 } MSG_TYPE;
 #define CMU_ONLINE    0
@@ -291,6 +292,8 @@ class mb_cmu : public QObject {
     QMap<uint,QMap<QString,QMap<uint,uint>>>OldErrLogBufMap;
     double errLogUcellLimitValue = 0;
     double errLogTempLimitValue = 0;
+    double errLogStdLimitValue = 0;
+
     ERRLOG_METHOD logSaveMethod = ERRLOG_ONCE;
     uint16_t errLogCount = 5;
 

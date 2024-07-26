@@ -90,6 +90,8 @@ class BMSView : public QWidget {
 
     void radioBtnToggledChanged(bool arg);
 
+    void on_le_ErrLog_StdValue_editingFinished();
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");

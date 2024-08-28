@@ -67,7 +67,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     connect(tftpd, &TFTPServer::fileTransferFinished, this, [this](int ret, QString msg) {
         manager->notify("TFTP", QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
     });
-    tftpd->init("192.168.1.230", 69, "firmware");
+    tftpd->init("192.168.1.230", 69, "firmware", "uploadfile");
     //qtftp->startServer();
 }
 

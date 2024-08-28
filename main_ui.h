@@ -1,4 +1,4 @@
-#ifndef UIDEMO08_H
+﻿#ifndef UIDEMO08_H
 #define UIDEMO08_H
 
 #include <QWidget>
@@ -12,6 +12,7 @@
 
 #include <AbstractAppender.h>
 #include <Logger.h>
+#include <Qtftp.h>
 
 class LogAppender : public AbstractAppender {
    protected:
@@ -59,6 +60,7 @@ class MainUI : public QWidget {
     QTimer *timer;
 
     TFTPServer *tftpd;
+    Qtftp * qtftp;
     NotifyManager *manager;
     QSettings *settings;
     LogAppender appender;

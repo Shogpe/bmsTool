@@ -1,4 +1,4 @@
-#include "main_ui.h"
+﻿#include "main_ui.h"
 #include <QTimer>
 #include "FramelessHelper.h"
 #include "Toast.h"
@@ -44,6 +44,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
 
+    //this->qtftp = new Qtftp();
     this->tftpd = new TFTPServer();
     // 可建立全局实例
     manager = new NotifyManager(this);
@@ -67,6 +68,7 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
         manager->notify("TFTP", QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
     });
     tftpd->init("192.168.1.230", 69, "firmware");
+    //qtftp->startServer();
 }
 
 MainUI::~MainUI() {

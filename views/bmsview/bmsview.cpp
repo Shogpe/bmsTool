@@ -202,8 +202,12 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     for (int i = 0; i < config.vol_num; i++) {
         hdr_list.append(("Vol" + QString::number(i + 1)));
     }
-    for (int i = 0; i < config.T_num; i++) {
-        hdr_list.append(("Tpack" + QString::number(i + 1)));
+    for (int i = 0; i < config.T_num; i++) {        
+        if(i>=24){
+            hdr_list.append(("Tpack" + QString::number(i + 1) + tr("铜排")));
+        }else{
+            hdr_list.append(("Tpack" + QString::number(i + 1)));
+        }
     }
     for (int i = 0; i < config.Tp_num; i++) {
         hdr_list.append(("Tp" + QString::number(i + 1)));
@@ -678,6 +682,14 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     ui->TpMax->setPrefix(QString("%1(%2)").arg(tr("最大极柱温度"), myHelper::IDToString(id, config.Tp_num)));
     id = mapData.value("TrMaxID");
     ui->TrMax->setPrefix(QString("%1(%2)").arg(tr("最大单体温升"), myHelper::IDToString(id, config.T_num)));
+    if(mapData.contains("TmcopperMaxID")){
+        id = mapData.value("TmcopperMaxID");
+        ui->TmcopperMax->setPrefix(QString("%1(%2)").arg(tr("最高模组铜排温度"), myHelper::IDToString(id, config.T_num)));
+    }
+    if(mapData.contains("TmcopperMinID")){
+        id = mapData.value("TmcopperMinID");
+        ui->TmcopperMin->setPrefix(QString("%1(%2)").arg(tr("最低模组铜排温度"), myHelper::IDToString(id, config.T_num)));
+    }
 }
 QString getBmuInfo2(uint16_t status) {
     QStringList statusList;

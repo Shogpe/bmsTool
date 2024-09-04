@@ -1902,46 +1902,42 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
                 TMsgData MsgCmd;
                 MsgCmd.msg_type = CTRL_AO_ADDR;
 
-                if (!rtu_enable) {
-                    myHelper::ShowMessageBoxError(tr("请先使能RTU风扇控制"));
-                } else {
-                    int bmuNum = index.row() + 1;
-                    uint8_t speed;
-                    bool block = true;
+                int bmuNum = index.row() + 1;
+                uint8_t speed;
+                bool block = true;
 
-                    speed = myHelper::showInputBox(tr("风扇转速(0-100)"), block).toUInt();
-                    if (0 <= speed && speed <= 100) {
-                        uint16_t temp = 0;
-                        // 修改奇数号bmu风扇转速
-                        if ((bmuNum % 2) == 1) {
-                            temp = speed << 8;
-                            // 判断偶数号bmu风扇转速是否有修改记录
-                            if (fan_Speed_map.contains(bmuNum + 1)) {
-                                temp |= fan_Speed_map[bmuNum + 1];
-                            }
-                        } else {
-                            temp = speed;
-                            // 判断奇数号bmu风扇转速是否有修改记录
-                            if (fan_Speed_map.contains(bmuNum - 1)) {
-                                temp |= fan_Speed_map[bmuNum - 1] << 8;
-                            }
+                speed = myHelper::showInputBox(tr("风扇转速(0-100)"), block).toUInt();
+                if (0 <= speed && speed <= 100) {
+                    uint16_t temp = 0;
+                    // 修改奇数号bmu风扇转速
+                    if ((bmuNum % 2) == 1) {
+                        temp = speed << 8;
+                        // 判断偶数号bmu风扇转速是否有修改记录
+                        if (fan_Speed_map.contains(bmuNum + 1)) {
+                            temp |= fan_Speed_map[bmuNum + 1];
                         }
-
-                        fan_Speed_map[bmuNum] = speed;
-
-                        uint16_t val[2] = {0, 0};
-                        if ((bmuNum % 2) == 1) {
-                            val[0] = 0xFF0E + (bmuNum + 1) / 2 - 1;
-                        } else {
-                            val[0] = 0xFF0E + bmuNum / 2 - 1;
-                        }
-
-                        val[1] = temp;
-                        MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-                        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                     } else {
-                        myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
+                        temp = speed;
+                        // 判断奇数号bmu风扇转速是否有修改记录
+                        if (fan_Speed_map.contains(bmuNum - 1)) {
+                            temp |= fan_Speed_map[bmuNum - 1] << 8;
+                        }
                     }
+
+                    fan_Speed_map[bmuNum] = speed;
+
+                    uint16_t val[2] = {0, 0};
+                    if ((bmuNum % 2) == 1) {
+                        val[0] = 0xFF0E + (bmuNum + 1) / 2 - 1;
+                    } else {
+                        val[0] = 0xFF0E + bmuNum / 2 - 1;
+                    }
+
+                    val[1] = temp;
+                    MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                } else {
+                    myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
                 }
             });
         }

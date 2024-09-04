@@ -1840,7 +1840,7 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
     {  // Handle global position
         QTableWidget* table = ui->tableBMU;
         //        QPoint globalPos = table->mapToGlobal(pos);
-        QModelIndex index = table->indexAt(pos);
+        QModelIndex index = table->indexAt(pos);        
         //qDebug() << index.row();
         // Create menu and insert some actions
         QMenu* myMenu = new QMenu(table);
@@ -1899,9 +1899,10 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
                 rtu_enable = false;
             });
             myMenu->addAction(QString("%1:BMU%2").arg(tr("设置转速")).arg(index.row() + 1), this, [this, index]() {
+
+#if 0
                 TMsgData MsgCmd;
                 MsgCmd.msg_type = CTRL_AO_ADDR;
-
                 int bmuNum = index.row() + 1;
                 uint8_t speed;
                 bool block = true;
@@ -1939,6 +1940,55 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
                 } else {
                     myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
                 }
+#endif
+#if 1
+
+                int bmu_nums = ui->tableBMU->rowCount();
+                int bmuNum = 0;
+                uint8_t speed;
+                bool block = true;
+
+                speed = myHelper::showInputBox(tr("风扇转速(0-100)"), block).toUInt();
+
+                if (0 <= speed && speed <= 100) {
+                    for (int i = 0; i < bmu_nums; ++i) {
+                        bmuNum = i + 1;
+                        uint16_t temp = 0;
+                        TMsgData MsgCmd;
+                        MsgCmd.msg_type = CTRL_AO_ADDR;
+
+                        // 修改奇数号bmu风扇转速
+                        if ((bmuNum % 2) == 1) {
+                            temp = speed << 8;
+                            // 判断偶数号bmu风扇转速是否有修改记录
+                            if (fan_Speed_map.contains(bmuNum + 1)) {
+                                temp |= fan_Speed_map[bmuNum + 1];
+                            }
+                        } else {
+                            temp = speed;
+                            // 判断奇数号bmu风扇转速是否有修改记录
+                            if (fan_Speed_map.contains(bmuNum - 1)) {
+                                temp |= fan_Speed_map[bmuNum - 1] << 8;
+                            }
+                        }
+
+                        fan_Speed_map[bmuNum] = speed;
+
+                        uint16_t val[2] = {0, 0};
+                        if ((bmuNum % 2) == 1) {
+                            val[0] = 0xFF0E + (bmuNum + 1) / 2 - 1;
+                        } else {
+                            val[0] = 0xFF0E + bmuNum / 2 - 1;
+                        }
+
+                        val[1] = temp;
+                        MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+                        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                    }
+                }else{
+                    myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
+                }
+#endif
             });
         }
 

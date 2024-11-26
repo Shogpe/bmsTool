@@ -1,4 +1,4 @@
-#ifndef NODE_CONF_H
+﻿#ifndef NODE_CONF_H
 #define NODE_CONF_H
 #include <iostream>
 #include <vector>
@@ -101,7 +101,11 @@ typedef struct {
 } ST_NODE_DATA;
 
 extern MB_NODE cmu_v4_config[];
-extern const int cmu_v4_config_len;
+extern MB_NODE cmu_v4_10config[];
+extern MB_NODE cmu_v4_6config[];
+extern MB_NODE cmu_v5_0config[];
+extern int GetCMUConfigArrayLen(MB_NODE arg[]);
+//extern const int cmu_v4_config_len;
 
 #ifdef __cplusplus
 }

@@ -6,6 +6,8 @@ include($$PWD/frmbalancebox/frmbalancebox.pri)
 #include($$PWD/frmcustomplot/frmexample.pri)
 include($$PWD/logindialog/logindialog.pri)
 include($$PWD/frmbalanceConfig/frmbalanceConfig.pri)
+include($$PWD/SwitchPowerConfig/SwitchPowerConfig.pri)
 include($$PWD/MyDoubleSpinBox/MyDoubleSpinBox.pri)
 include($$PWD/SaveLog/savelog.pri)
 include($$PWD/rebootbmus/rebootbmus.pri)
+

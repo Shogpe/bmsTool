@@ -1,4 +1,4 @@
-#include "scan_settings.h"
+﻿#include "scan_settings.h"
 #include <QtNetwork/QNetworkInterface.h>
 #include <QDateTime>
 #include <QHostAddress>
@@ -615,13 +615,36 @@ void scan_settings::loadXml() {
     // 排序数据点
     vector<MB_NODE> tab_config;
     tab_config.clear();
-    MB_NODE* node_table = cmu_v4_config;
-    int node_table_size = cmu_v4_config_len;
+
+    MB_NODE* node_table;
+    int node_table_size;
+
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    uint protocal_ver = 3;
+    if (g_proto_map.contains(protocol)) {
+        protocal_ver = g_proto_map.value(protocol);
+    }
+
+    if(protocal_ver == CMUV4_6){
+        node_table = cmu_v4_6config;
+        node_table_size = GetCMUConfigArrayLen(cmu_v4_6config);
+    }else if(protocal_ver == CMUV4_10){
+        node_table = cmu_v4_10config;
+        node_table_size = GetCMUConfigArrayLen(cmu_v4_10config);
+    }else if(protocal_ver == CMUV5_0){
+        node_table = cmu_v5_0config;
+        node_table_size = GetCMUConfigArrayLen(cmu_v5_0config);
+    }else{
+        node_table = cmu_v4_config;
+        node_table_size = GetCMUConfigArrayLen(cmu_v4_config);
+    }
+
     for (int i = 0; i < node_table_size; i++) {
         if (node_table[i].val_type != 129) continue;
         if (!data_map.contains(node_table[i].name)) continue;
         plist.append(data_map.value(node_table[i].name));
     }
+
     ui->stdSetting->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->stdSetting->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     m_para_model->updateData(plist);

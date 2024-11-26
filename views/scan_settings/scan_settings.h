@@ -1,4 +1,4 @@
-#ifndef _SCAN_SETTING_H
+﻿#ifndef _SCAN_SETTING_H
 #define _SCAN_SETTING_H
 
 #include <QDebug>

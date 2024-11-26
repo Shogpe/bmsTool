@@ -124,9 +124,14 @@ typedef enum {
 #define MB_CLR_SOE     0xAA55
 #define MB_CLR_ALL_SOE 0xBB66
 
+#define ADDR_CLEAR_SYSLOCK 0xFFF9
+#define MB_CLR_SYSLOCK 0xA5A5
+
 #define ADDR_CTRL_AUTO 0x2000
 #define MB_CTRL_ON     0xAA55
 #define MB_CTRL_OFF    0x55AA
+
+
 
 #define ADDR_CTRL_KMP 0xFF00
 #define ADDR_CTRL_KMN 0xFF01
@@ -233,6 +238,7 @@ typedef enum {
     CMUV4_6,
     CMUV4_9,
     CMUV4_10,// 主动均衡-液冷
+    CMUV5_0, // 主动均衡-风机-增加三级告警
 } BMS_PROTOCOL;
 typedef enum {
     ERRLOG_ONCE = 0,  // 一次
@@ -244,7 +250,7 @@ typedef struct {
     uint16_t cnt;
 } ERRLOG_Data_t;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10)|| (x == CMUV5_0))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5

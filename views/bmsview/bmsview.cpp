@@ -6,6 +6,7 @@
 #include <QtDebug>
 #include <QtXml>
 #include <Rebootbmus.h>
+#include "SwitchPowerConfig.h"
 #include "Toast.h"
 #include "myhelper.h"
 #include "socImporter.h"
@@ -60,6 +61,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->cbProtocol->addItem("CMU4.8", CMUV4_8);
     ui->cbProtocol->addItem("CMU4.9", g_proto_map.value("CMU4.9", CMUV4_9));
     ui->cbProtocol->addItem("CMU4.10", g_proto_map.value("CMU4.10", CMUV4_10));
+    ui->cbProtocol->addItem("CMU5.0", g_proto_map.value("CMU5.0", CMUV5_0));
     for (int i = 0; i < ui->cbProtocol->count(); i++) {
         if (protocol == ui->cbProtocol->itemText(i)) {
             ui->cbProtocol->setCurrentIndex(i);
@@ -251,7 +253,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         // 特殊处理
         ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setObjectName("BalanceConfig");
-        ui->BalnceStart->setPrefix(tr("均衡配置") + " ");
+        ui->BalnceStart->setPrefix(tr("均衡配置") + " ");        
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
         ui->BalnceStart->setToolTip(tr("均衡配置"));
@@ -272,6 +274,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
             dspbox->show();
         }
     }
+
     // 扩展表格
     if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
         ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
@@ -283,7 +286,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
             hdr_list2.append(tr("生产流水号"));
             hdr_list2.append(tr("模块温度1"));
             hdr_list2.append(tr("模块温度2"));
-        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV5_0){
             hdr_list2.append(tr("BOOT版本"));
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
             hdr_list2.append(tr("BOOT版本"));
@@ -303,9 +306,14 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     }
 
     // 控制按钮显示与隐藏
-    ui->AutoFindAddr->hide();
+    ui->AutoFindAddr->hide();    
     if(this->mycmu->GetProtocalVer() == CMUV4_10){
         ui->AutoFindAddr->show();
+    }
+
+    ui->btnClrSysLock->hide();
+    if(this->mycmu->GetProtocalVer() == CMUV5_0){
+        ui->btnClrSysLock->show();
     }
 }
 int BMSView::setValue(QString name, double dval) {
@@ -456,8 +464,13 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                   << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         QStringList textList;
-        textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
-                 << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        if(this->mycmu->GetProtocalVer() == CMUV5_0){
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS开机") << tr("SOC请求校准")
+                     << tr("系统锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }else{
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
+                     << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
                     ? "color:red;text-decoration:underline;font:bold;"
@@ -1055,7 +1068,7 @@ void BMSView::flushBmu() {
             }else{
                 offset = 0;
 
-                if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV4_10){
+                if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV4_10 || this->mycmu->GetProtocalVer() == CMUV5_0){
                     offset = 0;
                     uint32_t bootversion;
                     item = new QTableWidgetItem();
@@ -1123,6 +1136,7 @@ static map<QString, mb_cmd> btnMap = {
     {"btnKMPOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMP, MB_CTRL_OFF}},
     {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
     {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
+    {"btnClrSysLock", {CTRL_AO_ADDR, ADDR_CLEAR_SYSLOCK, MB_CLR_SYSLOCK}},
     //                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
     //                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
     {"AutoFindAddr", {CTRL_AO_ADDR, ADDR_CTRL_FINDADDR, MB_CTRL_ON}},
@@ -1301,13 +1315,13 @@ void BMSView::sendCommand() {
         if (myHelper::ShowMessageBoxQuesion(tr("是否校准SOC？")) == QDialog::Accepted) {
             TMsgData MsgCmd;
             MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {0xFFF5, 0x1EA5};
+            uint16_t value[2] = {65525, 0x1EA5};
             MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     } else if (name == "btnRebootBMUs") {
         rebootbmus->show();
-    } else
+    }else
         qDebug() << "don`t define :" << name ;
 }
 void BMSView::stateChanged() {
@@ -1605,6 +1619,99 @@ void BMSView::uiInit() {
             // Show context menu at handling position
             myMenu.exec(globalPos);
         });
+
+        connect(ui->SwitchONACPower,
+                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+                [=](const QPoint& pos) {  // Handle global position
+            QPoint globalPos = ui->SwitchONACPower->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改"), this, [=]() {
+                SwitchPowerConfig spc;
+                spc.setMessage(tr("合闸有交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
+                spc.setValue(ui->SwitchONACPower->value());
+                if (spc.exec() == QDialog::Accepted) {
+                    TMsgData MsgCmd;
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    uint16_t value[2] = {5450, 0};
+                    value[1] = spc.getValue();
+                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
+
+        connect(ui->SwitchPower,
+                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+                [=](const QPoint& pos) {  // Handle global position
+            QPoint globalPos = ui->SwitchPower->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改"), this, [=]() {
+                SwitchPowerConfig spc;
+                spc.setMessage(tr("合闸无交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
+                spc.setValue(ui->SwitchPower->value());
+                if (spc.exec() == QDialog::Accepted) {
+                    TMsgData MsgCmd;
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    uint16_t value[2] = {5451, 0};
+                    value[1] = spc.getValue();
+                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
+
+        connect(ui->SwitchOFFPower,
+                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+                [=](const QPoint& pos) {  // Handle global position
+            QPoint globalPos = ui->SwitchOFFPower->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改"), this, [=]() {
+                SwitchPowerConfig spc;
+                spc.setMessage(tr("分闸功耗配置"),tr("有交流功耗"),tr("无交流功耗"));
+                spc.setValue(ui->SwitchOFFPower->value());
+                if (spc.exec() == QDialog::Accepted) {
+                    TMsgData MsgCmd;
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    uint16_t value[2] = {5452, 0};
+                    value[1] = spc.getValue();
+                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
+
+        connect(ui->BMUPower,
+                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+                [=](const QPoint& pos) {  // Handle global position
+            QPoint globalPos = ui->BMUPower->mapToGlobal(pos);
+            // Create menu and insert some actions
+            QMenu myMenu;
+            myMenu.addAction(tr("修改"), this, [=]() {
+                SwitchPowerConfig spc;
+                spc.setMessage(tr("BMU功耗配置"),tr("BMU功耗"),tr("保留"));
+                spc.setValue(ui->BMUPower->value());
+                if (spc.exec() == QDialog::Accepted) {
+                    TMsgData MsgCmd;
+                    MsgCmd.msg_type = CTRL_AO_ADDR;
+                    uint16_t value[2] = {5453, 0};
+                    value[1] = spc.getValue();
+                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                }
+            });
+            // Show context menu at handling position
+            myMenu.exec(globalPos);
+        });
+
         QList<QPushButton*> btns = ui->tabCtrl->findChildren<QPushButton*>();
         foreach (QPushButton* btn, btns) {
             btn->setStyle(new QtPushButtonStyleProxy());

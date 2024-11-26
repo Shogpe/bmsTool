@@ -12,6 +12,7 @@ const QString errLogDataPath = "ErrLog";
 QHash<QString, uint> g_proto_map = {
     {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
     {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
+    {"CMU5.0", CMUV5_0}
 };
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
@@ -35,7 +36,6 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     m_thread = new QThread();
     moveToThread(m_thread);
     m_thread->start();
-
     Init();
 }
 QString mb_cmu::GetBitStatus(uint16_t status) {
@@ -727,7 +727,7 @@ int mb_cmu::ReadALL() {
                 // 读模块2温度
                 bmu_data[i].ModT2 = *(p + i*2 + 1);
             }
-        }else if(protocal_ver == CMUV4_8){
+        }else if(protocal_ver == CMUV4_8 ||protocal_ver == CMUV5_0){
             uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
             uint16_t *pt;
             reg_num = config.bmu_num * 3;
@@ -962,7 +962,13 @@ int mb_cmu::ReadALL() {
     return status;
 }
 void mb_cmu::msg_deal(TMsgData MsgCmd) {
-    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size() << MsgCmd.data;
+    QString str = "";
+    for (int i = 0; i < MsgCmd.data.size(); ++i) {
+        str += QString("0x%1 ").arg((uint8_t)MsgCmd.data[i],2,16,QLatin1Char('0'));
+    }
+
+    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size()<<str;
+
     DealCMD(MsgCmd);
 }
 void mb_cmu::timerEvent(QTimerEvent* event) {
@@ -1193,7 +1199,7 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         } break;
         case CTRL_SET_PRO: {
             uint16_t nb = Msg.data.size();
-            if (nb == 1) {
+            if (nb >= 1) {
                 protocal_ver = BMS_PROTOCOL(Msg.data.toInt());
                 qDebug() << "new cmu version:" << protocal_ver + 1;
                 Init();

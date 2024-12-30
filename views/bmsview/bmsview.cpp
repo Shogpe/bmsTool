@@ -442,6 +442,22 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             textList << tr("CMU总故障") << tr("CMU总报警") << tr("充满") << tr("放空") << tr("系统未初始化") << tr("预留")
                      << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("预留") << tr("预留")
                      << tr("BMU拨码") << tr("CMU总预警") << tr("并网");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
+                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
+                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
+                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
+                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
         }else{
             textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
                      << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
@@ -480,6 +496,18 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
             textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS开机") << tr("SOC请求校准")
                      << tr("系统锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
+                     << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC请求校准")
+                     << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
+                     << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
+                     << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else{
             textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
@@ -511,6 +539,26 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("预留") << tr("预留")<< tr("pack极柱高温故障") << tr("充放电过流故障")
                      << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
                      << tr("簇漏电故障") << tr("HVU极柱高温故障") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
+                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
+                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
+                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
+                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
+                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
+                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
+                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
+                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
+                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
+                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
+                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
+                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else{
             textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
                      << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
@@ -539,6 +587,26 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
                      << tr("电芯过压故障锁定") << tr("电芯欠压故障锁定")<< tr("充放电过流故障锁定") << tr("电芯高温故障锁定")
                      << tr("电芯低温故障锁定") << tr("PACK极柱高温故障") << tr("HVU极柱高温故障") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
+                     << tr("预留") << tr("预留")<< tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
+                     << tr("预留") << tr("预留")<< tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
+                     << tr("预留") << tr("预留")<< tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
+                     << tr("预留") << tr("预留")<< tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }else{
             textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
@@ -569,6 +637,26 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("预留") << tr("预留 ")<< tr("PACK极柱高温告警") << tr("充放电过流告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("预留")
                      << tr("预留") << tr("HVU极柱高温告警") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
+                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+                     << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
+                     << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
+                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+                     << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
+                     << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
+                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+                     << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
+                     << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
+                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+                     << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
+                     << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else{
             textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
                      << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
@@ -597,6 +685,26 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             textList << tr("预留") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("电流采集告警")<< tr("断路器拒动告警") << tr("接触器拒动告警")
                      << tr("PACK气溶胶动作告警") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            textList << tr("BMU拨码异常") << tr("电压线束断线") << tr("温度线束断线") << tr("簇极柱温度断线")
+                     << tr("电压传感器断线") << tr("预留传感器断线 ")<< tr("断路器拒动") << tr("接触器器拒动")
+                     << tr("簇压差过大") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
+            textList << tr("BMU拨码异常") << tr("电压线束断线") << tr("温度线束断线") << tr("簇极柱温度断线")
+                     << tr("电压传感器断线") << tr("预留传感器断线 ")<< tr("断路器拒动") << tr("接触器器拒动")
+                     << tr("簇压差过大") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
+            textList << tr("BMU拨码异常") << tr("电压线束断线") << tr("温度线束断线") << tr("簇极柱温度断线")
+                     << tr("电压传感器断线") << tr("预留传感器断线 ")<< tr("断路器拒动") << tr("接触器器拒动")
+                     << tr("簇压差过大") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留");
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            textList << tr("BMU拨码异常") << tr("电压线束断线") << tr("温度线束断线") << tr("簇极柱温度断线")
+                     << tr("电压传感器断线") << tr("预留传感器断线 ")<< tr("断路器拒动") << tr("接触器器拒动")
+                     << tr("簇压差过大") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }else{
             textList << tr("BMU拨码异常") << tr("电压线束断线") << tr("温度线束断线") << tr("簇极柱温度断线")

@@ -1331,9 +1331,9 @@ static map<QString, mb_cmd> btnMap = {
     {"btnIleakFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LFull}},
     {"btnIleakBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LBase}},
     {"btnIleakZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_LZero}},
-    {"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  // 预留
+    //{"btnRFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TFull}},  // 预留
     {"btnRBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TBase}},
-    {"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
+    //{"btnRZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_TZero}},
     {"btnUFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VFull}},
     {"btnUBaseAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VBase}},
     {"btnUZeroAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_VZero}},
@@ -1393,7 +1393,53 @@ void BMSView::sendCommand() {
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
-    } else if (name == "btnRUAdj") {
+    }else if (name == "btnRZeroAdj") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        val[0] = ADDR_ADJ;
+        val[1] = MB_Adj_TZero;
+        bool lbok;
+        QString value = myHelper::showInputBox(tr("预留传感器低点校准(-4V< X <0V)"), lbok,"-3.8");
+        if (lbok) {
+            double dval = value.toDouble(&lbok)+4;
+            if (lbok) {
+                if(0<dval&&dval<4){
+                    val[2] = (dval-4)*375+1500;
+                    qDebug() << "RZeroAdj:" << val[2];
+                    MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+                }else{
+                    myHelper::ShowMessageBoxError(tr("invalid value:%1 must >-4 && < 0!").arg(value));
+                }
+
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+
+    } else if (name == "btnRFullAdj") {
+        MsgCmd.msg_type = CTRL_SEC_AO;
+        val[0] = ADDR_ADJ;
+        val[1] = MB_Adj_TFull;
+        bool lbok;
+        QString value = myHelper::showInputBox(tr("预留传感器高点校准(0V< X <4V)"), lbok,"3.8");
+        if (lbok) {
+            double dval = value.toDouble(&lbok);
+            if (lbok) {
+                if(0<dval&&dval<4){
+                    val[2] = dval*375+1500;
+                    qDebug() << "RFullAdj:" << val[2];
+                    MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
+                }else{
+                    myHelper::ShowMessageBoxError(tr("invalid value:%1 must >0 && <4!").arg(value));
+                }
+
+            } else {
+                myHelper::ShowMessageBoxError(tr("invalid value:%1!").arg(value));
+            }
+        }
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+
+    }else if (name == "btnRUAdj") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = ADDR_RINS_ADJ;
         val[1] = MB_RU_ADJ;

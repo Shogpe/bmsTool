@@ -1,4 +1,4 @@
-#ifndef FRMINPUTBOX_H
+﻿#ifndef FRMINPUTBOX_H
 #define FRMINPUTBOX_H
 
 #include <QDialog>
@@ -17,6 +17,7 @@ public:
     ~frmInputBox();
 
     void setMessage(const QString title);
+    void setInitText(const QString inittext);
 
     QString getValue()const {
         return strValue;

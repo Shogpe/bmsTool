@@ -345,6 +345,7 @@ class mb_cmu : public QObject {
     void InsertReg(NodeReg &node_reg, int index);
     int ReadData(uint8_t type, int start, int len, uint16_t *dest);
     int sec_ctrl(uint16_t addr, uint16_t type);
+    int sec_ctrl(uint16_t addr, uint16_t type,uint16_t value);
     int write_ao(uint16_t addr, uint16_t len, uint16_t *pv);
     int write_ao(uint16_t addr, uint16_t v);
     int ParseData();

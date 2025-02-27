@@ -5,7 +5,7 @@
 #include "myhelper.h"
 #include "node_conf.h"
 #include "utils.h"
-static uint16_t sec_cmd[9] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566};
+static uint16_t sec_cmd[10] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566, 0x7788};
 const QString recPath = "Rec";
 const QString dataPath = "Data";
 const QString errLogDataPath = "ErrLog";
@@ -1135,9 +1135,13 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         }
         case CTRL_SEC_AO: {
             uint16_t nb = Msg.data.size();
-            if (nb != 2 * sizeof(uint16_t)) break;
-            uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
-            ret = sec_ctrl(p[0], p[1]);
+            if (nb == 2 * sizeof(uint16_t)){
+                uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+                ret = sec_ctrl(p[0], p[1]);
+            }else if(nb == 3 * sizeof(uint16_t)){
+                uint16_t* p = reinterpret_cast<uint16_t*>(Msg.data.data());
+                ret = sec_ctrl(p[0], p[1],p[2]);
+            }
         } break;
         case CTRL_CMD_UNLOCK: {
             ret = write_ao(ADDR_WR_LOCK, MB_UNLOCK);
@@ -1287,6 +1291,11 @@ int mb_cmu::write_ao(uint16_t addr, uint16_t v) {
 int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type) {
     sec_cmd[8] = type;
     return write_ao(addr, 9, sec_cmd);
+}
+int mb_cmu::sec_ctrl(uint16_t addr, uint16_t type,uint16_t value) {
+    sec_cmd[8] = type;
+    sec_cmd[9] = value;
+    return write_ao(addr, 10, sec_cmd);
 }
 int mb_cmu::ParseData() {
     int ret = -1;

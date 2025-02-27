@@ -1,4 +1,4 @@
-#ifndef MYHELPER_H
+﻿#ifndef MYHELPER_H
 #define MYHELPER_H
 
 #include <QtCore>
@@ -137,7 +137,16 @@ class myHelper : public QObject {
 
         return input.getValue();
     }
+    // 显示输入框
+    static QString showInputBox(const QString info, bool &blok,const QString initText) {
+        frmInputBox input;
 
+        input.setInitText(initText);
+        input.setMessage(info);
+        blok = input.exec();
+
+        return input.getValue();
+    }
     // 显示信息框,仅确定按钮
     static void ShowMessageBoxInfo(QString info) {
         frmMessageBox *msg = new frmMessageBox;

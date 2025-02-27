@@ -1,4 +1,4 @@
-#include "frminputbox.h"
+﻿#include "frminputbox.h"
 #include "ui_frminputbox.h"
 #include "myhelper.h"
 #include "iconhelper.h"
@@ -35,7 +35,12 @@ void frmInputBox::initStyle()
 void frmInputBox::setMessage(QString title)
 {
     ui->labInfo->setText(title);
-//    ui->groupBox->set;
+    //    ui->groupBox->set;
+}
+
+void frmInputBox::setInitText(const QString inittext)
+{
+    ui->txtValue->setText(inittext);
 }
 
 void frmInputBox::on_btnOk_clicked()

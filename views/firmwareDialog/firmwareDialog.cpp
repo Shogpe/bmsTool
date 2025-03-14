@@ -1,4 +1,4 @@
-#include "firmwareDialog.h"
+﻿#include "firmwareDialog.h"
 #include <QDebug>
 #include <QFileDialog>
 #include <QMenu>
@@ -6,6 +6,8 @@
 #include "crc32.h"
 #include "myhelper.h"
 #include "ui_firmwareDialog.h"
+#include "db_manager.h"
+
 firmwareDialog::firmwareDialog(QWidget* parent) : QDialog(parent), ui(new Ui::firmwareDialog) {
     state = 0;
     ui->setupUi(this);

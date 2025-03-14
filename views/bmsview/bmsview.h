@@ -50,6 +50,7 @@ class BMSView : public QWidget {
     bool loadParameters(const QString& filename);
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
     void StartBalanceForm(void);
+    void initUserLevelForm();
     Rebootbmus* rebootbmus=NULL;
 
    private slots:

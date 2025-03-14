@@ -113,6 +113,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QComboBox" name="cbProtocol">
         <property name="enabled">
          <bool>false</bool>
@@ -150,7 +157,6 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -226,7 +232,7 @@
          <x>0</x>
          <y>0</y>
          <width>1002</width>
-         <height>652</height>
+         <height>651</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">

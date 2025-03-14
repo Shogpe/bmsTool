@@ -89,10 +89,12 @@ void MainUI::initForm() {
     IconHelper::Instance()->setIcon(ui->btnMenu_Close, QChar(0xf00d));
 #if 1  // use FramelessHelper on windows
     auto helper = new FramelessHelper(this);
-    if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
+    if (db_manager::isUserLevelValid()) {
     // helper->setDisableMaximized(true);
         this->setWindowFlags(Qt::FramelessWindowHint);
     }
+
+
     helper->setDraggableMargins(3, 3, 3, 3);
     helper->setMaximizedMargins(3, 3, 3, 3);
     helper->setTitleBarHeight(ui->titleBar->sizeHint().height());
@@ -171,17 +173,18 @@ void MainUI::initForm() {
     QMenu* title_menu = new QMenu(this);
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
-    if (db_manager::Instance()->userLevel() > 16) {
-        title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
-        title_menu->actions().constLast()->setObjectName("Rec Convert");
+    if (db_manager::isUserLevelValid()) {
         title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("Maintenance Tool");
-//        if (db_manager::Instance()->userName() == "Ganing") {
+        title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
+        title_menu->actions().constLast()->setObjectName("BmsView");
+
+        if(db_manager::Instance()->userLevel() > db_manager::LEVEL_GUEST){
+            title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
+            title_menu->actions().constLast()->setObjectName("Rec Convert");
             title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
             title_menu->actions().constLast()->setObjectName("DataLog");
-            title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
-            title_menu->actions().constLast()->setObjectName("BmsView");
-//        }
+        }
     }
 
     if (QFileInfo("User Manual.pdf").isFile()) {
@@ -196,29 +199,57 @@ void MainUI::initForm() {
     this->restoreGeometry(ba);
     QString user = db_manager::Instance()->userName();  // settings->value("global/user", "").toString();
 //    if (db_manager::Instance()->userLevel() < 16) ui->btnMenu->hide();
-    if (db_manager::Instance()->userLevel() > 0 && db_manager::Instance()->userLevel() != 31) {
+    if (db_manager::isUserLevelValid()) {
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (db_manager::Instance()->userLevel() == 1) {
+    } else if (db_manager::Instance()->userLevel() == db_manager::LEVEL_ERROR_L) {
         int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
-    } else if (db_manager::Instance()->userLevel() == 31) {  // Widget,RTUView
+    } else if (db_manager::Instance()->userLevel() == db_manager::LEVEL_ERROR_H) {  // Widget,RTUView
         int index = ui->stackedWidget->addWidget(new BMSView(this));
         ui->stackedWidget->setCurrentIndex(index);
         //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
-    ui->labUser->setText(user);
+
     // 关联换肤和切换语言功能
     ui->btnMenu->setPopupMode(QToolButton::InstantPopup);
     //    connect(themeGroup, &QActionGroup::triggered, this, &MainUI::changeTheme);
+
+    initUserLevelForm();
+
     this->timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this,
             [=]() { ui->labTime->setText(QDateTime::currentDateTime().toString("hh:mm:ss")); });
     timer->start(500);
 }
+
+
+void MainUI::initUserLevelForm()
+{
+    if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
+    {
+        ui->lb_userMode->setText(tr("  -访客模式"));
+        ui->labUser->setText("guest");
+        ui->lb_userMode->setStyleSheet("color:darkGreen");
+    }
+    else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
+    {
+        ui->lb_userMode->setText(tr("  -超级用户"));
+        ui->labUser->setText("super user");
+        ui->lb_userMode->setStyleSheet("color:darkRed");
+    }
+    else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
+    {
+        ui->lb_userMode->setText(tr("  -内部调试模式-开发人员专用"));
+        ui->labUser->setText("debug mode");
+        ui->lb_userMode->setStyleSheet("color:darkRed");
+    }
+
+}
+
 
 void MainUI::buttonClick() {
     QToolButton* b = (QToolButton*)sender();

@@ -47,6 +47,7 @@ class MainUI : public QWidget {
 
    public:
     explicit MainUI(QWidget *parent = nullptr);
+    void initUserLevelForm();
     ~MainUI();
 
    protected:
@@ -64,6 +65,8 @@ class MainUI : public QWidget {
     NotifyManager *manager;
     QSettings *settings;
     LogAppender appender;
+
+
    private slots:
     void initForm();
     void buttonClick();

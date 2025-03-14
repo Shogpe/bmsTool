@@ -32,6 +32,27 @@ private:
     Q_DISABLE_COPY(QtPushButtonStyleProxy)
 };
 
+
+void BMSView::initUserLevelForm()
+{
+    if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
+    {
+        ui->btn_debugLog->setVisible(false);
+        ui->SOC_Inside->setVisible(false);
+    }
+    else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
+    {
+        ui->btn_debugLog->setVisible(true);
+        ui->SOC_Inside->setVisible(true);
+    }
+    else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
+    {
+        ui->btn_debugLog->setVisible(true);
+        ui->SOC_Inside->setVisible(true);
+    }
+
+}
+
 BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -105,6 +126,8 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     connect(ui->sb_ErrLog_Count,&QSpinBox::textChanged,this,[=](){
         this->radioBtnToggledChanged(true);
     });
+
+    initUserLevelForm();
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);

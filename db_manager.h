@@ -1,4 +1,4 @@
-#ifndef DB_SQLITE_H
+﻿#ifndef DB_SQLITE_H
 #define DB_SQLITE_H
 #include <QDebug>
 #include <QMutex>
@@ -10,6 +10,7 @@
 
 Q_IMPORT_PLUGIN(SqliteCipherDriverPlugin)
 #endif
+
 
 class db_manager {
    public:
@@ -28,6 +29,17 @@ class db_manager {
         SOE_BMS3 = 3,
         SOE_RTU1 = 4,
     };
+    enum USER_LEVEL{
+        LEVEL_ERROR_L = 0,
+        LEVEL_GUEST = 1,
+        LEVEL_SUPER = 2,
+        LEVEL_DEBUG = 3,
+        LEVEL_ERROR_H = 31,
+    };
+    static bool isUserLevelValid()
+    {
+        return (db_manager::Instance()->userLevel() > LEVEL_ERROR_L && db_manager::Instance()->userLevel() != LEVEL_ERROR_H);
+    }
 
     typedef struct {
         int node_id;

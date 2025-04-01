@@ -141,6 +141,7 @@ typedef enum {
 #define ADDR_CTRL_AC  0xFF05
 #define ADDR_CTRL_RES 0xFF06
 #define ADDR_CTRL_HR  0xFFF7
+#define ADDR_CTRL_COMM_SELF_DETECTE 0xFFFA
 #define ADDR_CTRL_FINDADDR 0xFFDC
 //
 typedef struct {

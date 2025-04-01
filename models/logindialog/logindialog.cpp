@@ -93,25 +93,14 @@ void logindialog::on_pushButton_login_clicked() {
         myHelper::ShowMessageBoxError(tr("动态密码不能为空!"));
         return;
     }
-    QString pwd = ui->lineEdit_pwd->text();
-    pwd = QString(QCryptographicHash::hash(pwd.toLocal8Bit(), QCryptographicHash::Md5).toHex());
 
     if(ui->chk_guest->isChecked() == false && ui->lineEdit_pwd->text() != "")
     {
         getPw();
 
-//        QString str = "";
-
-//        foreach(QString s, pwList)
-//        {
-//            str+=s;
-//            str+="\n";
-//        }
-//        ui->test->setText(str);
-
         if(ui->lineEdit_pwd->text() == SUPER_PW)
         {
-            level = 3;
+            level = db_manager::LEVEL_DEBUG;
             db_manager::Instance()->setUserLevel(level);
             accept();
         }
@@ -119,9 +108,9 @@ void logindialog::on_pushButton_login_clicked() {
         {
             foreach(QString s, pwList)
             {
-                if(ui->lineEdit_pwd->text() == s)
+                if(ui->lineEdit_pwd->text().simplified() == s)
                 {
-                    level = 2;
+                    level = db_manager::LEVEL_SUPER;
                     db_manager::Instance()->setUserLevel(level);
                     accept();
                     return;

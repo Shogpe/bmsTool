@@ -53,6 +53,11 @@ class BMSView : public QWidget {
     void initUserLevelForm();
     Rebootbmus* rebootbmus=NULL;
 
+    QHash<QString, qreal> pcsPowerMapDataCache;
+
+    int bmsDebugModeCnt = 0;
+    QTime timeCache;
+
    private slots:
     void timerUpDate();
     void valueChange(double dval);
@@ -78,6 +83,10 @@ class BMSView : public QWidget {
     //
     void flushData(int type, QHash<QString, qreal> mapData);
     void flushBmu();
+    void flushBmuVolt();
+    void flushBmuTemp();
+    void flushBmuVer();
+    void flushBmuEx();
     void flushSoe(const ST_SOE &soe);
     void pop_bmuTable_menu(const QPoint& pos);
 

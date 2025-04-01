@@ -2,6 +2,7 @@
 #define NODE_CONF_H
 #include <iostream>
 #include <vector>
+#include <QString>
 using  std::vector;
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 #ifdef __cplusplus
@@ -100,11 +101,25 @@ typedef struct {
     ST_SYS_DATA sysData;    //转化为系统格式数据
 } ST_NODE_DATA;
 
+
+
+#define CONFIG_METHOD_1 1
+#define CONFIG_METHOD_2 2
+#define CONFIG_METHOD_USE CONFIG_METHOD_2
+
+#if CONFIG_METHOD_USE == CONFIG_METHOD_1
 extern MB_NODE cmu_v4_config[];
 extern MB_NODE cmu_v4_10config[];
 extern MB_NODE cmu_v4_6config[];
 extern MB_NODE cmu_v5_0config[];
 extern int GetCMUConfigArrayLen(MB_NODE arg[]);
+#endif
+
+#if CONFIG_METHOD_USE == CONFIG_METHOD_2
+
+extern QString cmu_config_name[];
+extern int GetCMUConfigArrayLen(void);
+#endif
 //extern const int cmu_v4_config_len;
 
 #ifdef __cplusplus

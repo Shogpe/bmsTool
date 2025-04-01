@@ -38,17 +38,96 @@ void BMSView::initUserLevelForm()
     if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
     {
         ui->btn_debugLog->setVisible(false);
-        ui->SOC_Inside->setVisible(false);
+        ui->btnImportSOC->setVisible(false);
+
+        ui->groupBoxDebugReg->setVisible(false);
+
+        ui->gp_sysPara3->setVisible(false);
+        ui->gp_filePort->setVisible(false);
+        foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
+        {
+            obj->setEnabled(false);
+        }
+
+        ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
+
+        ui->G_FuncMask->setVisible(true);
+        ui->G_sysCtrl->setVisible(false);
+        ui->G_SensorCali->setVisible(false);
+        ui->G_DeviceCtrl->setVisible(false);
+        ui->G_DeviceDebug->setVisible(false);
+        ui->wd_fill->setVisible(true);
+
+        ui->G_FuncMask->setEnabled(false);
+        ui->G_sysCtrl->setEnabled(false);
+        ui->G_SensorCali->setEnabled(false);
+        ui->G_DeviceCtrl->setEnabled(false);
+        ui->G_DeviceDebug->setEnabled(false);
+
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
     {
-        ui->btn_debugLog->setVisible(true);
-        ui->SOC_Inside->setVisible(true);
+        ui->btn_debugLog->setVisible(false);
+        ui->btnImportSOC->setVisible(false);
+
+        ui->groupBoxDebugReg->setVisible(false);
+
+        ui->gp_sysPara3->setVisible(false);
+        ui->gp_filePort->setVisible(true);
+        foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
+        {
+            obj->setEnabled(true);
+        }
+        foreach(InputBox* obj, ui->gp_sysPara2->findChildren<InputBox*>())
+        {
+            obj->setEnabled(false);
+        }
+        foreach(InputBox* obj, ui->gp_sysPara3->findChildren<InputBox*>())
+        {
+            obj->setEnabled(false);
+        }
+
+        ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
+
+        ui->G_FuncMask->setVisible(true);
+        ui->G_sysCtrl->setVisible(true);
+        ui->G_SensorCali->setVisible(true);
+        ui->G_DeviceCtrl->setVisible(true);
+        ui->G_DeviceDebug->setVisible(false);
+        ui->wd_fill->setVisible(false);
+
+        ui->G_FuncMask->setEnabled(true);
+        ui->G_sysCtrl->setEnabled(true);
+        ui->G_SensorCali->setEnabled(true);
+        ui->G_DeviceCtrl->setEnabled(true);
+        ui->G_DeviceDebug->setEnabled(false);
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
     {
         ui->btn_debugLog->setVisible(true);
-        ui->SOC_Inside->setVisible(true);
+        ui->btnImportSOC->setVisible(true);
+
+        ui->groupBoxDebugReg->setVisible(false);
+
+        ui->gp_sysPara3->setVisible(true);
+        ui->gp_filePort->setVisible(true);
+        foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
+        {
+            obj->setEnabled(true);
+        }
+
+        ui->G_FuncMask->setVisible(true);
+        ui->G_sysCtrl->setVisible(true);
+        ui->G_SensorCali->setVisible(true);
+        ui->G_DeviceCtrl->setVisible(true);
+        ui->G_DeviceDebug->setVisible(true);
+        ui->wd_fill->setVisible(false);
+
+        ui->G_FuncMask->setEnabled(true);
+        ui->G_sysCtrl->setEnabled(true);
+        ui->G_SensorCali->setEnabled(true);
+        ui->G_DeviceCtrl->setEnabled(true);
+        ui->G_DeviceDebug->setEnabled(true);
     }
 
 }
@@ -128,6 +207,8 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     });
 
     initUserLevelForm();
+
+
 }
 bool BMSView::exportExecl(QTableWidget* tableWidget, QString dirFile) {
     QFile file(dirFile);
@@ -217,17 +298,29 @@ BMSView::~BMSView() {
 }
 
 void BMSView::uiChange(QHash<QString, qreal> mapData) {
-    ui->tableBMU->setRowCount(config.bmu_num);
-    /* 设置 tableWidget */
-    //  tableWidget->verticalHeader()->setVisible(false);   //隐藏列表头
-    //  tableWidget->horizontalHeader()->setVisible(false); //隐藏行表头
-    // ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+
     QStringList hdr_list;
-    hdr_list.append(tr("版本号"));
+
+    //tableW Volt
+    hdr_list.clear();
+    ui->tableBMU->setRowCount(config.bmu_num);
+
     for (int i = 0; i < config.vol_num; i++) {
         hdr_list.append(("Vol" + QString::number(i + 1)));
     }
-    for (int i = 0; i < config.T_num; i++) {        
+
+
+
+    ui->tableBMU->setColumnCount(hdr_list.size());
+    ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
+    ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
+    ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+
+
+    //tableW Temp
+    ui->tableTemp->setRowCount(config.bmu_num);
+    hdr_list.clear();
+    for (int i = 0; i < config.T_num; i++) {
         if(i>=24){
             hdr_list.append(("Tpack" + QString::number(i + 1) + tr("铜排")));
         }else{
@@ -237,6 +330,16 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     for (int i = 0; i < config.Tp_num; i++) {
         hdr_list.append(("Tp" + QString::number(i + 1)));
     }
+    ui->tableTemp->setColumnCount(hdr_list.size());
+    ui->tableTemp->setHorizontalHeaderLabels(hdr_list);
+    ui->tableTemp->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
+    ui->tableTemp->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+
+
+    //tableW Ver
+    ui->tableVer->setRowCount(config.bmu_num);
+    hdr_list.clear();
+    hdr_list.append(tr("版本号"));
     hdr_list.append(tr("运行状态"));
     hdr_list.append(tr("故障状态"));
     if (is_main_line(this->mycmu->GetProtocalVer())) {
@@ -276,7 +379,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         // 特殊处理
         ui->BalnceStart->blockSignals(true);
         ui->BalnceStart->setObjectName("BalanceConfig");
-        ui->BalnceStart->setPrefix(tr("均衡配置") + " ");        
+        ui->BalnceStart->setPrefix(tr("均衡配置") + " ");
         ui->BalnceStart->setSuffix("");
         ui->BalnceStart->setMaximum(100000);
         ui->BalnceStart->setToolTip(tr("均衡配置"));
@@ -284,10 +387,43 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->BalnceStart->setContextMenuPolicy(Qt::CustomContextMenu);
     }
 
-    ui->tableBMU->setColumnCount(hdr_list.size());
-    ui->tableBMU->setHorizontalHeaderLabels(hdr_list);
-    ui->tableBMU->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
-    ui->tableBMU->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+    ui->tableVer->setColumnCount(hdr_list.size());
+    ui->tableVer->setHorizontalHeaderLabels(hdr_list);
+    ui->tableVer->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
+    ui->tableVer->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+
+
+    //tableW Ex
+    if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
+        hdr_list.clear();
+        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
+
+        if(this->mycmu->GetProtocalVer() == CMUV4_6){
+            hdr_list.append(tr("硬体版本"));
+            hdr_list.append(tr("BOOT版本"));
+            hdr_list.append(tr("生产流水号"));
+            hdr_list.append(tr("模块温度1"));
+            hdr_list.append(tr("模块温度2"));
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV5_0){
+            hdr_list.append(tr("BOOT版本"));
+        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
+            hdr_list.append(tr("BOOT版本"));
+        }
+
+        for (int i = 0; i < config.vol_num; i++) {
+            hdr_list.append(tr("充电Ah") + QString::number(i + 1));
+            hdr_list.append(tr("放电Ah") + QString::number(i + 1));
+        }
+        ui->tableExtView->setRowCount(config.bmu_num);
+        ui->tableExtView->setColumnCount(hdr_list.size());
+        ui->tableExtView->setHorizontalHeaderLabels(hdr_list);
+        ui->tableExtView->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
+        ui->tableExtView->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
+    } else {
+        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), false);
+    }
+
+
 
     // 定值显示和隐藏
     QList<InputBox*> dspboxs = ui->tabSet->findChildren<InputBox*>();
@@ -297,36 +433,11 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
             dspbox->show();
         }
     }
-
-    // 扩展表格
-    if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
-        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), true);
-        QStringList hdr_list2;
-
-        if(this->mycmu->GetProtocalVer() == CMUV4_6){
-            hdr_list2.append(tr("硬体版本"));
-            hdr_list2.append(tr("BOOT版本"));
-            hdr_list2.append(tr("生产流水号"));
-            hdr_list2.append(tr("模块温度1"));
-            hdr_list2.append(tr("模块温度2"));
-        }else if(this->mycmu->GetProtocalVer() == CMUV4_8 || this->mycmu->GetProtocalVer() == CMUV5_0){
-            hdr_list2.append(tr("BOOT版本"));
-        }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
-            hdr_list2.append(tr("BOOT版本"));
-        }
-
-        for (int i = 0; i < config.vol_num; i++) {
-            hdr_list2.append(tr("充电Ah") + QString::number(i + 1));
-            hdr_list2.append(tr("放电Ah") + QString::number(i + 1));
-        }
-        ui->tableExtView->setRowCount(config.bmu_num);
-        ui->tableExtView->setColumnCount(hdr_list2.size());
-        ui->tableExtView->setHorizontalHeaderLabels(hdr_list2);
-        ui->tableExtView->setSelectionBehavior(QAbstractItemView::SelectItems);    // 单个选中
-        ui->tableExtView->setSelectionMode(QAbstractItemView::ExtendedSelection);  // 可以选中多个
-    } else {
-        ui->DataWidget->setTabEnabled(ui->DataWidget->indexOf(ui->tabBalance), false);
+    if(mapData.contains("SwitchONACPower")){
+        ui->AllOnOffPower->show();
     }
+
+
 
     // 控制按钮显示与隐藏
     ui->AutoFindAddr->hide();    
@@ -399,7 +510,7 @@ QString BMSView::GetBitStatus(uint16_t value, QString tips) {
     } else {
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
             tipList = QStringList({"采样芯片处于配置状态", "BMU 处于均衡状态", "采样芯片时钟异常", "温度低温异常",
-                                   "温度过温异常", "单体过压故障", "单体欠压故障", "单体断线故障",
+                                   "温度过温异常", "电芯过压故障", "电芯欠压故障", "电芯断线故障",
                                    "采样线总正断线故障", "采样线总负断线故障", "采样芯片寄存器校验异常", "采样芯片参考电压异常",
                                    "采样芯片校准电压异常", "采样芯片复用采样通道异常", "采样芯片故障", "采样芯片故障"});
         }else{
@@ -412,6 +523,8 @@ QString BMSView::GetBitStatus(uint16_t value, QString tips) {
     return statusList.join("|");
 }
 void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
+
+
     if (type == 1) {
         config.bmu_num = mapData.value("bmu_num", 0);
         config.vol_num = mapData.value("vol_num", 0);
@@ -422,10 +535,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     // memcpy(&config, &mycmu->config, sizeof(config));
     if (config.bmu_num > ui->tableBMU->rowCount()) return;
-    uint32_t comm_status1 = mapData.value("sysComm1", 0);
-    uint32_t comm_status2 = mapData.value("sysComm2", 0);
-    bmu_comm = ((uint64_t)comm_status2 << 32) | comm_status1;
-    ui->CommStatus->setValue(comm_status2);
+
     // 刷新定值
     QList<InputBox*> inputs = ui->tabSet->findChildren<InputBox*>();
     foreach (InputBox* dspbox, inputs) {
@@ -441,50 +551,87 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     foreach (InputBox* dspbox, dspboxs) {
         if (mapData.contains(dspbox->objectName())) {
             dspbox->show();
-            dspbox->setValue(mapData.value(dspbox->objectName()));
+            if(dspbox->objectName().endsWith("ID"))
+            {
+                dspbox->setText(myHelper::IDToString(mapData.value(dspbox->objectName()), config.vol_num));
+            }
+            else
+            {
+                dspbox->setValue(mapData.value(dspbox->objectName()));
+            }
+
         } else {
             dspbox->hide();
         }
     }
     if (mapData.contains("sysComm2")) {
         ui->CommStatus->show();
-        ui->CommStatus->setValue(comm_status2);
+        uint32_t comm_status1 = mapData.value("sysComm1", 0);
+        uint32_t comm_status2 = mapData.value("sysComm2", 0);
+
+        bmu_comm = ((uint64_t)comm_status2 << 32) | comm_status1;
+        uint64_t bmuOffLine = ~bmu_comm;
+//        qDebug() << config.bmu_num << QString("comm2 0x%1, comm1 0x%2, comm 0x%3")
+//                    .arg(comm_status2,8,16,QChar('0'))
+//                    .arg(comm_status1,8,16,QChar('0'))
+//                    .arg(bmu_comm,16,16,QChar('0'));
+        QString offLineId = "";
+        for(int i = 0; i < config.bmu_num; i++)
+        {
+            if(bmuOffLine&(uint64_t(0x01)<<i))
+            {
+                offLineId += QString::number(i+1)+ " ";
+            }
+        }
+        ui->CommStatus->setText(offLineId);
+        if(offLineId == "")
+        {
+            ui->CommStatus->setToolTip(tr("none"));
+        }
+        else
+        {
+            ui->CommStatus->setToolTip(offLineId);
+        }
     }
     if (mapData.contains("sysTime")) {
         ui->sysTime->setValue(mapData.value("sysTime"));
     }
     if (mapData.contains("sysStatus1")) {
         uint16_t value = mapData.value("sysStatus1");
-        ui->G_SysStatus->setTitle(QString("%1(%2)").arg(tr("系统状态")).arg(value));
+        uint16_t valueApend = mapData.value("sysStatus2");
+        ui->G_SysStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("系统状态"))
+                                  .arg(value,4,16,QChar('0'))
+                                  .arg(valueApend,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
         QList<QLabel*> SysStatus;
         SysStatus << ui->bSysErr << ui->bSysAlm << ui->bSysFull << ui->bSysEmpty << ui->bSysInit << ui->bSysCommErr
                   << ui->bSysBalance << ui->bSysCharge << ui->bSysDischarge << ui->bSysStop << ui->bSys10 << ui->bSys11
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            textList << tr("CMU总故障") << tr("CMU总报警") << tr("充满") << tr("放空") << tr("系统未初始化") << tr("预留")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("预留") << tr("预留")
-                     << tr("BMU拨码") << tr("CMU总预警") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("预留")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("预留") << tr("预留")
+                     << tr("BMU拨码异常") << tr("CMU总预警") << tr("并网状态");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
-            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
-                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("BMU通信")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码异常") << tr("BMU故障") << tr("并网状态");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
-            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
-                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("BMU通信")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码异常") << tr("BMU故障") << tr("并网状态");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
-            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
-                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("BMU通信")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码异常") << tr("BMU故障") << tr("并网状态");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
-            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
-                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("BMU通信")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码异常") << tr("BMU故障") << tr("并网状态");
         }else{
-            textList << tr("总故障") << tr("总告警") << tr("充满") << tr("放空") << tr("未初始化") << tr("BMU通信")
-                     << tr("均衡") << tr("充电") << tr("放电") << tr("停机") << tr("升级") << tr("绝缘通信") << tr("自检")
-                     << tr("BMU拨码") << tr("BMU故障") << tr("并网");
+            textList << tr("CMU总故障") << tr("CMU总告警") << tr("电池充满") << tr("电池放空") << tr("系统未初始化") << tr("BMU通信")
+                     << tr("均衡状态") << tr("电池充电") << tr("电池放电") << tr("系统停机") << tr("升级标志") << tr("绝缘通信") << tr("自检")
+                     << tr("BMU拨码异常") << tr("BMU故障") << tr("并网状态");
         }
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
@@ -494,45 +641,83 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             Label->setText(textList.at(SysStatus.indexOf(Label)));
         }
     }
-    if (mapData.contains("BootVer")) {
-        ui->BootVer->show();
-        uint32_t value = mapData.value("BootVer");
-        ui->BootVer->setValue((value));
-    } else {
-        ui->BootVer->hide();
+//    if (mapData.contains("BootVer")) {
+//        ui->BootVer->show();
+//        uint32_t value = mapData.value("BootVer");
+//        ui->BootVer->setValue((value));
+//    } else {
+//        ui->BootVer->hide();
+//    }
+//    if (mapData.contains("InsVer")) {
+//        ui->InsVer->show();
+//        uint32_t value = mapData.value("InsVer");
+//        ui->InsVer->setValue((value));
+//    } else {
+//        ui->InsVer->hide();
+//    }
+
+    pcsPowerMapDataCache.clear();
+    if(mapData.contains("SwitchONACPower")){
+//        ui->AllOnOffPower->show();
+        if(!mapData.contains("NoAcPCSOnPower")){
+            pcsPowerMapDataCache = mapData;
+            uint16_t value1 = mapData.value("SwitchONACPower");
+            uint16_t value2 = mapData.value("SwitchPower");
+            uint16_t value3 = mapData.value("SwitchOFFPower");
+//            qDebug() << value1 << value2 << value3;
+            ui->AllOnOffPower->setText(QString("0x%1 0x%2 0x%3")
+                                       .arg(value1,4,16,QChar('0'))
+                                       .arg(value2,4,16,QChar('0'))
+                                       .arg(value3,4,16,QChar('0')));
+        }else{
+            pcsPowerMapDataCache = mapData;
+            uint16_t value1 = mapData.value("SwitchONACPower");
+            uint16_t value2 = mapData.value("SwitchPower");
+            uint16_t value3 = mapData.value("SwitchOFFPower");
+            uint16_t value4 = mapData.value("NoAcPCSOnPower");
+            uint16_t value5 = mapData.value("NoAcPCSOffPower");
+            ui->AllOnOffPower->setText(QString("0x%1 0x%2 0x%3 0x%4 0x%5")
+                                       .arg(value1,4,16,QChar('0'))
+                                       .arg(value2,4,16,QChar('0'))
+                                       .arg(value3,4,16,QChar('0'))
+                                       .arg(value4,4,16,QChar('0'))
+                                       .arg(value5,4,16,QChar('0')));
+//            qDebug() << value1 << value2 << value3 << value4 << value5 ;
+        }
+
+    }else{
+//        ui->AllOnOffPower->hide();
     }
-    if (mapData.contains("InsVer")) {
-        ui->InsVer->show();
-        uint32_t value = mapData.value("InsVer");
-        ui->InsVer->setValue((value));
-    } else {
-        ui->InsVer->hide();
-    }
+
     if (mapData.contains("sysStatus2")) {
         uint16_t value = mapData.value("sysStatus2");
-        ui->G_SysStatus_2->setTitle(QString("%1(%2)").arg(tr("系统状态") + "2").arg(value));
+        uint16_t valueApend = mapData.value("sysStatus1");
+        ui->G_SysStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("系统状态"))
+                                  .arg(valueApend,4,16,QChar('0'))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
         QList<QLabel*> SysStatus;
         SysStatus << ui->bSysErr_2 << ui->bSysAlm_2 << ui->bSysFull_2 << ui->bSysEmpty_2 << ui->bSysInit_2
                   << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2 << ui->bSysDischarge_2 << ui->bSysStop_2
                   << ui->bSys10_2 << ui->bSys11_2 << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS开机") << tr("SOC请求校准")
-                     << tr("系统锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
+                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC请求校准")
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("") << tr("") << tr("")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else{
-            textList << tr("IO解锁") << tr("绝缘检测") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
+            textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("") << tr("")
                      << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }
         foreach (QLabel* Label, SysStatus) {
@@ -546,11 +731,16 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             //                }
         }
     } else {
-        ui->G_SysStatus_2->setHidden(true);
+        ui->G_SysStatus->setHidden(true);
     }
     if (mapData.contains("sysErrStatus")) {
         uint16_t value = mapData.value("sysErrStatus");
-        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态") + "1").arg(value));
+        uint16_t valueApend = mapData.value("sysErrStatus2");
+        ui->G_ErrStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("故障状态"))
+                                  .arg(value,4,16,QChar('0'))
+                                  .arg(valueApend,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+//        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态") + "1").arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bErr0 << ui->bErr1 << ui->bErr2 << ui->bErr3 << ui->bErr4 << ui->bErr5 << ui->bErr6
                    << ui->bErr7 << ui->bErr8 << ui->bErr9 << ui->bErr10 << ui->bErr11 << ui->bErr12 << ui->bErr13
@@ -563,30 +753,30 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
                      << tr("簇漏电故障") << tr("HVU极柱高温故障") << tr("预留") << tr("预留");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
-            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
-                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
-                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
-                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+            textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
+                     << tr("电芯温升保护") << tr("温差过大保护") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
+                     << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
-            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
-                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
-                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
-                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+            textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
+                     << tr("电芯温升保护") << tr("温差过大保护") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
+                     << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
-            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
-                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
-                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
-                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+            textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
+                     << tr("电芯温升保护") << tr("温差过大保护") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
+                     << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
-            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
-                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
-                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
-                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+            textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
+                     << tr("电芯温升保护") << tr("温差过大保护") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
+                     << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低") << tr("压差过大");
         }else{
-            textList << tr("单体过压保护") << tr("单体欠压保护") << tr("单体过温保护") << tr("单体低温保护")
-                     << tr("单体温升保护") << tr("温差过大保护") << tr("极柱过温保护") << tr("过负荷保护")
-                     << tr("短路保护") << tr("簇过压保护") << tr("簇欠压保护") << tr("绝缘过低保护")
-                     << tr("漏电流保护")<< tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
+            textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
+                     << tr("电芯温升保护") << tr("温差过大保护") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
+                     << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低") << tr("压差过大");
         }
 
         foreach (QLabel* Label, StatusList) {
@@ -599,7 +789,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     if (mapData.contains("sysErrStatus2")) {
         uint16_t value = mapData.value("sysErrStatus2");
-        ui->G_ErrStatus_2->setTitle(QString("%1(%2)").arg(tr("保护状态") + "2").arg(value));
+        uint16_t valueApend = mapData.value("sysErrStatus");
+        ui->G_ErrStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("故障状态"))
+                                  .arg(valueApend,4,16,QChar('0'))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+//        ui->G_ErrStatus->setTitle(QString("%1(%2)").arg(tr("保护状态") + "2").arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bErr0_2 << ui->bErr1_2 << ui->bErr2_2 << ui->bErr3_2 << ui->bErr4_2 << ui->bErr5_2
                    << ui->bErr6_2 << ui->bErr7_2 << ui->bErr8_2 << ui->bErr9_2 << ui->bErr10_2 << ui->bErr11_2
@@ -607,9 +802,9 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
-                     << tr("电芯过压故障锁定") << tr("电芯欠压故障锁定")<< tr("充放电过流故障锁定") << tr("电芯高温故障锁定")
-                     << tr("电芯低温故障锁定") << tr("PACK极柱高温故障") << tr("HVU极柱高温故障") << tr("预留")
+            textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
+                     << tr("电芯过压锁定") << tr("电芯欠压锁定")<< tr("充放电过流锁定") << tr("电芯高温锁定")
+                     << tr("电芯低温锁定") << tr("PACK极柱高温故障") << tr("HVU极柱高温故障") << tr("预留")
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
             textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
@@ -633,7 +828,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }else{
             textList << tr("烟感保护") << tr("水浸保护") << tr("消防保护") << tr("急停保护")
-                     << tr("单体高压锁定") << tr("单体低压锁定")<< tr("电流过大锁定") << tr("模组高温锁定")
+                     << tr("电芯高压锁定") << tr("电芯低压锁定")<< tr("电流过大锁定") << tr("模组高温锁定")
                      << tr("模组低温锁定") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }
@@ -648,7 +843,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     if (mapData.contains("sysAlmStatus")) {
         uint16_t value = mapData.value("sysAlmStatus");
-        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态") + "1").arg(value));
+        uint16_t valueApend = mapData.value("sysAlmStatus2");
+        ui->G_AlmStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("告警状态"))
+                                  .arg(value,4,16,QChar('0'))
+                                  .arg(valueApend,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+//        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态") + "1").arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bAlm0 << ui->bAlm1 << ui->bAlm2 << ui->bAlm3 << ui->bAlm4 << ui->bAlm5 << ui->bAlm6
                    << ui->bAlm7 << ui->bAlm8 << ui->bAlm9 << ui->bAlm10 << ui->bAlm11 << ui->bAlm12 << ui->bAlm13
@@ -661,28 +861,28 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("预留")
                      << tr("预留") << tr("HVU极柱高温告警") << tr("预留") << tr("预留");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
-            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
-                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+            textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯过温告警") << tr("电芯低温告警")
+                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
-            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
-                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+            textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯过温告警") << tr("电芯低温告警")
+                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
-            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
-                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+            textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯过温告警") << tr("电芯低温告警")
+                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
-            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
-                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+            textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯过温告警") << tr("电芯低温告警")
+                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }else{
-            textList << tr("单体过压告警") << tr("单体欠压告警") << tr("单体过温告警") << tr("单体低温告警")
-                     << tr("单体温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
+            textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯过温告警") << tr("电芯低温告警")
+                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("极柱过温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱过温") << tr("SOC过低") << tr("压差过大");
         }
@@ -697,7 +897,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     if (mapData.contains("sysAlmStatus2")) {
         uint16_t value = mapData.value("sysAlmStatus2");
-        ui->G_AlmStatus_2->setTitle(QString("%1(%2)").arg(tr("告警状态") + "2").arg(value));
+        uint16_t valueApend = mapData.value("sysAlmStatus");
+        ui->G_AlmStatus->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("告警状态"))
+                                  .arg(valueApend,4,16,QChar('0'))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+//        ui->G_AlmStatus->setTitle(QString("%1(%2)").arg(tr("告警状态") + "2").arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bAlm0_2 << ui->bAlm1_2 << ui->bAlm2_2 << ui->bAlm3_2 << ui->bAlm4_2 << ui->bAlm5_2
                    << ui->bAlm6_2 << ui->bAlm7_2 << ui->bAlm8_2 << ui->bAlm9_2 << ui->bAlm10_2 << ui->bAlm11_2
@@ -751,7 +956,10 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
     if (mapData.contains("sysPreAlmStatus")) {
         uint16_t value = mapData.value("sysPreAlmStatus");
-        ui->G_PreAlmStatus->setTitle(QString("%1(%2)").arg(tr("预警状态") + "1").arg(value));
+        ui->G_PreAlmStatus->setTitle(QString("%1: (0x%2)")
+                                  .arg(tr("预警状态"))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+//        ui->G_PreAlmStatus->setTitle(QString("%1(%2)").arg(tr("预警状态") + "1").arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bPreAlm0 << ui->bPreAlm1 << ui->bPreAlm2 << ui->bPreAlm3 << ui->bPreAlm4 << ui->bPreAlm5
                    << ui->bPreAlm6 << ui->bPreAlm7 << ui->bPreAlm8 << ui->bPreAlm9 << ui->bPreAlm10 << ui->bPreAlm11
@@ -761,8 +969,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
             textList << tr("电芯电压采集异常") << tr("电芯温度采集异常") << tr("PACK极柱温度采集") << tr("HVU极柱温度采样")
                      << tr("簇总压采集异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
-                     << tr("均衡功能异常") << tr("CMU-BMU通讯异常") << tr("CMU-绝缘检测板通讯异常") << tr("CAN电流传感器信号")
-                     << tr("AI电流传感器信号异常") << tr("预留") << tr("预留") << tr("预留");
+                     << tr("均衡功能异常") << tr("CMU-BMU通讯异常") << tr("CMU-绝缘检测板通讯异常") << tr("CAN霍尔信号")
+                     << tr("AI霍尔信号异常") << tr("预留") << tr("预留") << tr("预留");
         }else{
             textList << tr("预留") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("预留 ")<< tr("预留") << tr("预留")
@@ -785,16 +993,27 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
     if (mapData.contains("sysDIStatus")) {
         uint16_t value = mapData.value("sysDIStatus");
-        ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
+        ui->G_DIStatus->setTitle(QString("%1: (0x%2)")
+                                  .arg(tr("DI状态"))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+        //ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5 << ui->bDI6 << ui->bDI7
                    << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11 << ui->bDI12 << ui->bDI13 << ui->bDI14
                    << ui->bDI15;
         QStringList textList;
-        textList << tr("QF状态") << tr("KM+状态") << tr("KM-状态") << tr("KMR状态") << tr("故障输入") << tr("主从状态")
-                 << tr("预留DIN1(水浸)") << tr("交流有压") << tr("急停保护") << tr("QF继电器状态")
-                 << tr("故障输出继电器状态") << tr("BMU风扇继电器状态") << tr("高压箱风扇继电器状态")
-                 << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
+        if(this->mycmu->GetProtocalVer() == CMUV5_0){
+            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("预留状态输入1") << tr("预留状态输入2")
+                     << tr("预留状态输入3") << tr("交流有压状态") << tr("黑启动控制状态") << tr("外部硬线跳QF状态")
+                     << tr("总故障继电器状态") << tr("BMU风扇继电器状态") << tr("HVU风扇继电器状态")
+                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("预留状态输入4");
+        }else{
+            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("故障输入") << tr("主从状态")
+                     << tr("预留DIN1(水浸)") << tr("交流有压状态") << tr("急停保护") << tr("QF继电器状态")
+                     << tr("故障输出继电器状态") << tr("BMU风扇继电器状态") << tr("高压箱风扇继电器状态")
+                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
+        }
+
         foreach (QLabel* Label, StatusList) {
             QString color = ((value >> StatusList.indexOf(Label)) & 0x01) > 0
                     ? "color:red;text-decoration:underline;font:bold;"
@@ -805,45 +1024,99 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     if (mapData.contains("sysDOStatus")) {
         uint16_t value = mapData.value("sysDOStatus");
-        ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value));
-        QList<QCheckBox*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
-                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-        QStringList textList;
-        textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
-                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
-                 << tr("备用12") << tr("充满输出") << tr("放空输出") << tr("备用15") << tr("备用16");
-        foreach (QCheckBox* rb, RadioList) {
-            bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
-            QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green;";
-            rb->setStyleSheet(QString("%1").arg(color));
-            rb->blockSignals(true);
-            rb->setChecked(bit);
-            rb->blockSignals(false);
-            rb->setText(textList.at(RadioList.indexOf(rb)));
-        }
+        ui->G_DeviceDebug->setTitle(QString("%1(%2)").arg(tr("外设调测-DO状态")).arg(value,4,16,QChar('0')));
     }
+////        QList<QCheckBox*> RadioList;
+////        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+////                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+//        QStringList textList;
+//        textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
+//                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
+//                 << tr("备用12") << tr("充满输出") << tr("放空输出") << tr("备用15") << tr("备用16");
+////        foreach (QCheckBox* rb, RadioList) {
+////            bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
+////            QString color = bit ? "color:red;text-decoration:underline;font:bold;" : "color:green;";
+////            rb->setStyleSheet(QString("%1").arg(color));
+////            rb->blockSignals(true);
+////            rb->setChecked(bit);
+////            rb->blockSignals(false);
+////            rb->setText(textList.at(RadioList.indexOf(rb)));
+////        }
+//    }
     if (mapData.contains("FuncMask")) {
         uint16_t value = mapData.value("FuncMask");
-        ui->G_FuncMask->setTitle(QString("%1(%2)").arg(tr("使能位")).arg(value));
+        uint16_t valueApend = mapData.value("FuncMask2");
+        ui->G_FuncMask->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("使能位"))
+                                  .arg(value,4,16,QChar('0'))
+                                  .arg(valueApend,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+
+//        ui->G_FuncMask->setTitle(QString("%1(%2)").arg(tr("使能位")).arg(value));
         QList<QCheckBox*> CheckBoxList;
-        CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
-                     << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12
+        CheckBoxList << ui->bFunc00 << ui->bFunc01 << ui->bFunc02 << ui->bFunc03 << ui->bFunc04 << ui->bFunc05 << ui->bFunc06
+                     << ui->bFunc07 << ui->bFunc08 << ui->bFunc09 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12
                      << ui->bFunc13 << ui->bFunc14 << ui->bFunc15;
         QStringList textList;
-        textList << tr("使能双CAN") << tr("使能电流传感器") << tr("使能电压传感器") << tr("使能漏电流传感器")
-                 << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
-                 << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
-                 << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
+
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             if(this->mycmu->GetProtocalVer() == CMUV5_0){
-                textList.replace(0, tr("使能CAN电流传感器"));
-                textList.replace(1, tr("使能绝缘板采样电压"));
-                textList.replace(12, tr("开启SOC校准"));
+                textList << tr("使能CAN电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
+                         << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限制") << tr("使能本地环控")
+                         << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("使能SOC校准")
+                         << tr("并/解列模式") << tr("禁用预充逻辑") << tr("禁用安防保护");
             }else{
-                textList.replace(0, tr("使能预留传感器"));
-                textList.replace(1, tr("使能绝缘板采样电压"));
+                textList << tr("使能预留传感器") << tr("使能绝缘板采样电压") << tr("使能电压传感器") << tr("使能漏电流传感器")
+                         << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
+                         << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                         << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
             }
+        }else
+        {
+            textList << tr("使能双CAN") << tr("使能电流传感器") << tr("使能电压传感器") << tr("使能漏电流传感器")
+                     << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
+                     << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                     << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
+        }
+        foreach (QCheckBox* cb, CheckBoxList) {
+            cb->blockSignals(true);
+            cb->setChecked(((value >> CheckBoxList.indexOf(cb)) & 0x01) > 0);
+            cb->blockSignals(false);
+            cb->setText(textList.at(CheckBoxList.indexOf(cb)));
+        }
+    }
+    if (mapData.contains("FuncMask2")) {
+        uint16_t value = mapData.value("FuncMask2");
+        uint16_t valueApend = mapData.value("FuncMask");
+        ui->G_FuncMask->setTitle(QString("%1: (0x%2)(0x%3)")
+                                  .arg(tr("使能位"))
+                                  .arg(valueApend,4,16,QChar('0'))
+                                  .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
+
+//        ui->G_FuncMask->setTitle(QString("%1(%2)").arg(tr("使能位")).arg(value));
+        QList<QCheckBox*> CheckBoxList;
+        CheckBoxList << ui->bFuncEx00 << ui->bFuncEx01 << ui->bFuncEx02 << ui->bFuncEx03 << ui->bFuncEx04 << ui->bFuncEx05 << ui->bFuncEx06
+                     << ui->bFuncEx07 << ui->bFuncEx08 << ui->bFuncEx09 << ui->bFuncEx10 << ui->bFuncEx11 << ui->bFuncEx12
+                     << ui->bFuncEx13 << ui->bFuncEx14 << ui->bFuncEx15;
+        QStringList textList;
+
+        if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
+            if(this->mycmu->GetProtocalVer() == CMUV5_0){
+                textList << tr("使能全程投入绝缘检测") << tr("使能激进均衡策略") << tr("开启恒压充电模式") << tr("使能SOC均衡调整模式")
+                         << tr("使能SOC计算阈值0.2A") << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                         << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                         << tr("预留") << tr("预留") << tr("预留");
+            }else{
+                textList << tr("使能全程投入绝缘检测") << tr("使能激进均衡策略") << tr("开启恒压充电模式") << tr("使能SOC均衡调整模式")
+                         << tr("使能SOC计算阈值0.2A") << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                         << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                         << tr("预留") << tr("预留") << tr("预留");
+            }
+        }else
+        {
+            textList << tr("使能双CAN") << tr("使能电流传感器") << tr("使能电压传感器") << tr("使能漏电流传感器")
+                     << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
+                     << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                     << tr("并列/解列") << tr("禁用预充") << tr("禁用安防");
         }
         foreach (QCheckBox* cb, CheckBoxList) {
             cb->blockSignals(true);
@@ -916,31 +1189,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         if (mapData.contains("LocalIP"))
             ui->lineEditIP->setText(myHelper::IPV4IntegerToString(mapData.value("LocalIP")));
     }
-    uint16_t id = mapData.value("UmaxID");
-    ui->Umax->setPrefix(QString("%1(%2)").arg(tr("最大单体电压"), myHelper::IDToString(id, config.vol_num)));
-    //    ui->UmaxID->setText(QString("%1(%2)").arg(tr("最大单体电压"), myHelper::IDToString(id, config.vol_num)));
-    id = mapData.value("UminID");
-    ui->Umin->setPrefix(QString("%1(%2)").arg(tr("最小单体电压"), myHelper::IDToString(id, config.vol_num)));
-    id = mapData.value("TmaxID");
-    ui->Tmax->setPrefix(QString("%1(%2)").arg(tr("最高单体温度"), myHelper::IDToString(id, config.T_num)));
-    id = mapData.value("TminID");
-    ui->Tmin->setPrefix(QString("%1(%2)").arg(tr("最低单体温度"), myHelper::IDToString(id, config.T_num)));
-    id = mapData.value("UmMaxID");
-    ui->UmMax->setPrefix(QString("%1(%2)").arg(tr("最大模组电压"), myHelper::IDToString(id, config.vol_num)));
-    id = mapData.value("UdMaxID");
-    ui->UdMax->setPrefix(QString("%1(%2)").arg(tr("最大单体压差"), myHelper::IDToString(id, config.vol_num)));
-    id = mapData.value("TpMaxID");
-    ui->TpMax->setPrefix(QString("%1(%2)").arg(tr("最大极柱温度"), myHelper::IDToString(id, config.Tp_num)));
-    id = mapData.value("TrMaxID");
-    ui->TrMax->setPrefix(QString("%1(%2)").arg(tr("最大单体温升"), myHelper::IDToString(id, config.T_num)));
-    if(mapData.contains("TmcopperMaxID")){
-        id = mapData.value("TmcopperMaxID");
-        ui->TmcopperMax->setPrefix(QString("%1(%2)").arg(tr("最高模组铜排温度"), myHelper::IDToString(id, config.T_num)));
-    }
-    if(mapData.contains("TmcopperMinID")){
-        id = mapData.value("TmcopperMinID");
-        ui->TmcopperMin->setPrefix(QString("%1(%2)").arg(tr("最低模组铜排温度"), myHelper::IDToString(id, config.T_num)));
-    }
+
 }
 QString getBmuInfo2(uint16_t status) {
     QStringList statusList;
@@ -956,7 +1205,7 @@ QString getBmuInfo2(uint16_t status) {
     if (GET_BIT(status, 9)) statusList << QObject::tr("均衡母线错误");
     if (GET_BIT(status, 10)) statusList << QObject::tr("均衡电流异常");
     if (GET_BIT(status, 11)) statusList << QObject::tr("24V母线异常");
-    if (GET_BIT(status, 12)) statusList << QObject::tr("单体电压异常");
+    if (GET_BIT(status, 12)) statusList << QObject::tr("电芯电压异常");
     if (GET_BIT(status, 13)) statusList << QObject::tr("均衡参数错误");
     if (GET_BIT(status, 14)) statusList << QObject::tr("Mos异常");
     if (GET_BIT(status, 15)) statusList << QObject::tr("副边电压异常");
@@ -976,36 +1225,14 @@ void BMSView::flushSoe(const ST_SOE& soe) {
         ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
 }
-void BMSView::flushBmu() {
-    if (!mycmu) return;
-    if (config.bmu_num > ui->tableBMU->rowCount()) return;
-
+void BMSView::flushBmuVolt(){
     // 一定要固定宽度，否则刷新很慢
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    int cloumn_offset = 0;
+
     QTableWidgetItem* item;
     for (int i = 0; i < config.bmu_num; i++) {
-        cloumn_offset = 0;
-        // 版本号
-        item = new QTableWidgetItem();
-        item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
-        QFont font = item->font();
-        if (this->bmu_comm >> i & 0x01) {
-            item->setTextColor(QColor(Qt::darkGreen));
-            font.setStrikeOut(false);
-            font.setBold(false);
-        } else {
-            item->setTextColor(QColor(Qt::red));
-            font.setStrikeOut(true);
-            //font.setBold(true);
-        }
-        item->setFont(font);
-        item->setToolTip(tr("Strikethrough indicates disconnection"));
-        //        item->setToolTip("删除线表示断线");
-        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
-        // 单体电压
+        // 电芯电压
         for (int j = 0; j < config.vol_num; j++) {
             item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Ucell[j] / 10000.0;
@@ -1059,11 +1286,39 @@ void BMSView::flushBmu() {
             //
             item->setFont(font);
             item->setToolTip(tr("Strikethrough indicates disconnection"));
-            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+            ui->tableBMU->setItem(i, j, item);
         }
 
-        cloumn_offset += config.vol_num;
 
+
+        // 电压断线，温度断线，运行状态，故障状态
+        //        item = new QTableWidgetItem();
+        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Ubreak, 4, 16, QLatin1Char('0')));
+        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Ubreak));
+        //        //        if (0 == i) qDebug() << GetBitStatus(mycmu->bmu_data[i].Ubreak);
+        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+        //        item = new QTableWidgetItem();
+        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Tbreak, 4, 16, QLatin1Char('0')));
+        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Tbreak));
+        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
+
+
+    }
+
+    // 数据刷新完毕后自适应列宽
+    ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+
+void BMSView::flushBmuTemp(){
+    // 一定要固定宽度，否则刷新很慢
+    ui->tableTemp->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableTemp->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    for (int i = 0; i < config.bmu_num; i++) {
         for (int j = 0; j < (config.T_num + config.Tp_num); j++) {
             QTableWidgetItem* item = new QTableWidgetItem();
             double val = this->mycmu->bmu_data[i].Tcell[j] / 10.0;
@@ -1099,36 +1354,55 @@ void BMSView::flushBmu() {
             }
             item->setFont(font);
             item->setToolTip(tr("Strikethrough indicates disconnection"));
-            ui->tableBMU->setItem(i, j + cloumn_offset, item);
+            ui->tableTemp->setItem(i, j, item);
         }
+    }
 
-        cloumn_offset += (config.T_num + config.Tp_num);
+    // 数据刷新完毕后自适应列宽
+    ui->tableTemp->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
 
-        // 电压断线，温度断线，运行状态，故障状态
-        //        item = new QTableWidgetItem();
-        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Ubreak, 4, 16, QLatin1Char('0')));
-        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Ubreak));
-        //        //        if (0 == i) qDebug() << GetBitStatus(mycmu->bmu_data[i].Ubreak);
-        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
 
-        //        item = new QTableWidgetItem();
-        //        item->setText(QString("0x%1").arg(mycmu->bmu_data[i].Tbreak, 4, 16, QLatin1Char('0')));
-        //        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        //        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].Tbreak));
-        //        ui->tableBMU->setItem(i, cloumn_offset++, item);
+void BMSView::flushBmuVer(){
+    // 一定要固定宽度，否则刷新很慢
+    ui->tableVer->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableVer->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    int cloumn_offset = 0;
+    QTableWidgetItem* item;
+
+    for (int i = 0; i < config.bmu_num; i++) {
+        cloumn_offset = 0;
+        // 版本号
+        item = new QTableWidgetItem();
+        item->setText(myHelper::IntegerToHexString(mycmu->bmu_data[i].Version));
+        QFont font = item->font();
+        if (this->bmu_comm >> i & 0x01) {
+            item->setTextColor(QColor(Qt::darkGreen));
+            font.setStrikeOut(false);
+            font.setBold(false);
+        } else {
+            item->setTextColor(QColor(Qt::red));
+            font.setStrikeOut(true);
+            //font.setBold(true);
+        }
+        item->setFont(font);
+        item->setToolTip(tr("Strikethrough indicates disconnection"));
+        //        item->setToolTip("删除线表示断线");
+        item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        ui->tableVer->setItem(i, cloumn_offset++, item);
 
         item = new QTableWidgetItem();
         item->setText(QString("0x%1").arg(mycmu->bmu_data[i].RunStat, 4, 16, QLatin1Char('0')));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         item->setToolTip(getBmuInfo2(mycmu->bmu_data[i].RunStat));
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
+        ui->tableVer->setItem(i, cloumn_offset++, item);
 
         item = new QTableWidgetItem();
         item->setText(QString("0x%1").arg(mycmu->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0')));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
         item->setToolTip(GetBitStatus(mycmu->bmu_data[i].ErrStat));
-        ui->tableBMU->setItem(i, cloumn_offset++, item);
+        ui->tableVer->setItem(i, cloumn_offset++, item);
 
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
 
@@ -1136,7 +1410,7 @@ void BMSView::flushBmu() {
                 item = new QTableWidgetItem();
                 item->setText(QString("%1").arg(mycmu->bmu_data[i].FanSpeed));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
 
             }else {
@@ -1144,21 +1418,21 @@ void BMSView::flushBmu() {
                 QString fanStatus = GET_BIT(mycmu->bmu_data[i].RunStat, 3) ? tr("ON") : tr("OFF");
                 item->setText(fanStatus);
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             }
 
 
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(mycmu->bmu_data[i].BalU24 / 1000.0));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            ui->tableVer->setItem(i, cloumn_offset++, item);
 
 
             if (this->mycmu->GetProtocalVer() == CMUV4_6) {
                 item = new QTableWidgetItem();
                 item->setText(QString("%1").arg((float)mycmu->bmu_data[i].BalI48 / 1000));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             } else if (is_parallel_balanced(this->mycmu->cmu_ver)) {
                 item = new QTableWidgetItem();
                 double max_bal_current = 0;
@@ -1167,7 +1441,7 @@ void BMSView::flushBmu() {
                 }
                 item->setText(QString("%1").arg(max_bal_current));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             } else if(this->mycmu->GetProtocalVer() == CMUV4_10){
                 QStringList strl = mycmu->GetBalanceValue(mycmu->bmu_data[i].U64BalStat,
                                                           mycmu->bmu_data[i].BalIdc).split("|");
@@ -1176,62 +1450,68 @@ void BMSView::flushBmu() {
                         item = new QTableWidgetItem();
                         item->setText("");
                         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                        ui->tableBMU->setItem(i, cloumn_offset++, item);
+                        ui->tableVer->setItem(i, cloumn_offset++, item);
                     }
                 }else{
                     for (int j = 0; j < 4; ++j) {
                         item = new QTableWidgetItem();
                         item->setText(strl[j]);
                         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                        ui->tableBMU->setItem(i, cloumn_offset++, item);
+                        ui->tableVer->setItem(i, cloumn_offset++, item);
                     }
                 }
             }else {
                 item = new QTableWidgetItem();
                 item->setText(QString("%1").arg(mycmu->bmu_data[i].BalIdc[0] / 1000.0));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             }
 
             if(this->mycmu->GetProtocalVer() != CMUV4_10){
                 item = new QTableWidgetItem();
                 item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
 
                 item = new QTableWidgetItem();
                 item->setText(GetBitStatus(mycmu->bmu_data[i].BalStat));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
 
                 item = new QTableWidgetItem();
                 item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             }else{
                 item = new QTableWidgetItem();
                 item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode,mycmu->bmu_data[i].BalCur));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-                ui->tableBMU->setItem(i, cloumn_offset++, item);
+                ui->tableVer->setItem(i, cloumn_offset++, item);
             }
 
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            ui->tableVer->setItem(i, cloumn_offset++, item);
         } else if (mycmu->GetProtocalVer() > CMUV2) {
             // CAN通信错误计数
             item = new QTableWidgetItem();
             item->setText(QString("%1").arg(this->mycmu->bmu_data[i].CanErr));
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-            ui->tableBMU->setItem(i, cloumn_offset++, item);
+            ui->tableVer->setItem(i, cloumn_offset++, item);
         }
     }
-    // 数据刷新完毕后自适应列宽
-    ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    //ui->tableBMU->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+    // 数据刷新完毕后自适应列宽
+    ui->tableVer->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+
+void BMSView::flushBmuEx(){
+    // 一定要固定宽度，否则刷新很慢
+    ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableExtView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     if (ui->tabBalance->isEnabled()) {
         QTableWidgetItem* item;
         int offset = 0;
@@ -1337,6 +1617,23 @@ void BMSView::flushBmu() {
         ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         ui->tableExtView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     }
+
+    // 数据刷新完毕后自适应列宽
+    ui->tableExtView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+
+void BMSView::flushBmu() {
+    if (!mycmu) return;
+    if (config.bmu_num > ui->tableBMU->rowCount()) return;
+
+
+
+    flushBmuVolt();
+    flushBmuTemp();
+    flushBmuVer();
+    flushBmuEx();
+
 }
 struct mb_cmd {
     uint16_t type;
@@ -1375,8 +1672,8 @@ static map<QString, mb_cmd> btnMap = {
     {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
     {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
     {"btnClrSysLock", {CTRL_AO_ADDR, ADDR_CLEAR_SYSLOCK, MB_CLR_SYSLOCK}},
-    //                                      {"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
-    //                                      {"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+    //{"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
+    //{"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
     {"AutoFindAddr", {CTRL_AO_ADDR, ADDR_CTRL_FINDADDR, MB_CTRL_ON}},
     {"btnHeRongON", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_ON}},
     {"btnHeRongOFF", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_OFF}},
@@ -1385,7 +1682,8 @@ static map<QString, mb_cmd> btnMap = {
     {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
     {"btnResOFF", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_OFF}},
     {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
-    {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}}};
+    {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}},
+    {"btnCan485SelfDetectOn", {CTRL_AO_ADDR, ADDR_CTRL_COMM_SELF_DETECTE, MB_CTRL_ON}}};
 
 void BMSView::sendCommand() {
     TMsgData MsgCmd;
@@ -1605,6 +1903,44 @@ void BMSView::sendCommand() {
         }
     } else if (name == "btnRebootBMUs") {
         rebootbmus->show();
+    }else if (name == "btnResetParaCali"){
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        uint16_t value[2] = {0xFF0A, 0xAA55};
+        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+
+    }else if (name == "btnResetParaCfg"){
+
+    }else if(name.startsWith("btnDebugRelayCtrl")){
+        bool ctrl = false;
+        QString str = "";
+        QString strBit = name;
+        strBit.remove("btnDebugRelayCtrl").remove("On").remove("Off").remove("ON").remove("OFF");
+        uint16_t bit = strBit.toUInt();
+        qDebug() << "<<<<<<<<<<" << strBit << bit << ctrl;
+        if(bit > 15){
+            return;
+        }
+
+        if(name.endsWith("On")||name.endsWith("ON")){
+            ctrl = true;
+            str = tr("测试继电器-bit%1-开启确认").arg(bit);
+        }else{
+            str = tr("测试继电器-bit%1-关闭确认").arg(bit);
+        }
+        if (myHelper::ShowMessageBoxQuesion(str) == QDialog::Accepted) {
+
+
+            uint16_t value[2] = {0};
+            value[0] = bit+1;
+            value[1] = ctrl;
+
+            TMsgData MsgCmd;
+            MsgCmd.msg_type = CTRL_DO;
+            MsgCmd.data.append((char*)&value, 2 * sizeof(uint16_t));
+            emit send_msg(MsgCmd);
+        }
     }else
         qDebug() << "don`t define :" << name ;
 }
@@ -1612,19 +1948,37 @@ void BMSView::stateChanged() {
     QCheckBox* b = (QCheckBox*)sender();
     QList<QCheckBox*> CheckBoxList;
     uint16_t value[2] = {0};
-    CheckBoxList << ui->bFunc0 << ui->bFunc1 << ui->bFunc2 << ui->bFunc3 << ui->bFunc4 << ui->bFunc5 << ui->bFunc6
-                 << ui->bFunc7 << ui->bFunc8 << ui->bFunc9 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12 << ui->bFunc13
-                 << ui->bFunc14 << ui->bFunc15;
+    TMsgData MsgCmd;
+    NodeReg node;
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+
+
+    if(b->objectName().startsWith("bFuncEx")){
+        CheckBoxList << ui->bFuncEx00 << ui->bFuncEx01 << ui->bFuncEx02 << ui->bFuncEx03 << ui->bFuncEx04 << ui->bFuncEx05 << ui->bFuncEx06
+                     << ui->bFuncEx07 << ui->bFuncEx08 << ui->bFuncEx09 << ui->bFuncEx10 << ui->bFuncEx11 << ui->bFuncEx12 << ui->bFuncEx13
+                     << ui->bFuncEx14 << ui->bFuncEx15;
+        node = mycmu->GetNodeAddr("FuncMask2");
+
+    }else if(b->objectName().startsWith("bFunc")){
+        CheckBoxList << ui->bFunc00 << ui->bFunc01 << ui->bFunc02 << ui->bFunc03 << ui->bFunc04 << ui->bFunc05 << ui->bFunc06
+                     << ui->bFunc07 << ui->bFunc08 << ui->bFunc09 << ui->bFunc10 << ui->bFunc11 << ui->bFunc12 << ui->bFunc13
+                     << ui->bFunc14 << ui->bFunc15;
+        node = mycmu->GetNodeAddr("FuncMask");
+
+    }else{
+        return;
+    }
+
+
     foreach (QCheckBox* cb, CheckBoxList) {
         value[1] |= (cb->isChecked() << CheckBoxList.indexOf(cb));
     }
+
     if (myHelper::ShowMessageBoxQuesion(
                 QString(tr("确定%2\"%1\"吗").arg(b->text()).arg(b->isChecked() > 0 ? tr("开启") : tr("关闭")))) !=
             QDialog::Accepted)
         return;
-    TMsgData MsgCmd;
-    MsgCmd.msg_type = CTRL_AO_ADDR;
-    NodeReg node = mycmu->GetNodeAddr("FuncMask");
+
     if (node.reg_type > 0) {
         value[0] = node.reg_addr;
         MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
@@ -1635,8 +1989,8 @@ void BMSView::checkChanged() {
     QCheckBox* b = (QCheckBox*)sender();
     QList<QCheckBox*> RadioList;
     uint16_t value[2] = {0};
-    RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
-              << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+//    RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+//              << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
     value[0] = RadioList.indexOf(b) + 1;
 #if 0
     value[1] = b->isChecked();
@@ -1856,6 +2210,12 @@ void BMSView::uiInit() {
     update_menu->actions().constLast()->setObjectName("upgradeBMUBoot");
     update_menu->addAction(tr("下载升级绝缘板"), this, &BMSView::onUpdateBtnMenu);
     update_menu->actions().constLast()->setObjectName("upgradeINS");
+
+    foreach(InputBox* ib, ui->groupBoxCMU->findChildren<InputBox*>())
+    {
+        ib->setFontAndSize(6);
+    }
+
     ui->btnVer->setMenu(update_menu);
     {
         connect(ui->connectIP, &QLineEdit::editingFinished, this, &BMSView::IpChange, Qt::UniqueConnection);
@@ -1904,70 +2264,170 @@ void BMSView::uiInit() {
             myMenu.exec(globalPos);
         });
 
-        connect(ui->SwitchONACPower,
-                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
-                [=](const QPoint& pos) {  // Handle global position
-            QPoint globalPos = ui->SwitchONACPower->mapToGlobal(pos);
-            // Create menu and insert some actions
-            QMenu myMenu;
-            myMenu.addAction(tr("修改"), this, [=]() {
-                SwitchPowerConfig spc;
-                spc.setMessage(tr("合闸有交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
-                spc.setValue(ui->SwitchONACPower->value());
-                if (spc.exec() == QDialog::Accepted) {
-                    TMsgData MsgCmd;
-                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                    uint16_t value[2] = {5450, 0};
-                    value[1] = spc.getValue();
-                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                }
-            });
-            // Show context menu at handling position
-            myMenu.exec(globalPos);
-        });
+//        connect(ui->SwitchONACPower,
+//                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+//                [=](const QPoint& pos) {  // Handle global position
+//            QPoint globalPos = ui->SwitchONACPower->mapToGlobal(pos);
+//            // Create menu and insert some actions
+//            QMenu myMenu;
+//            myMenu.addAction(tr("修改"), this, [=]() {
+//                SwitchPowerConfig spc;
+//                spc.setMessage(tr("合闸有交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
+//                spc.setValue(ui->SwitchONACPower->value());
+//                if (spc.exec() == QDialog::Accepted) {
+//                    TMsgData MsgCmd;
+//                    MsgCmd.msg_type = CTRL_AO_ADDR;
+//                    uint16_t value[2] = {5450, 0};
+//                    value[1] = spc.getValue();
+//                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+//                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+//                }
+//            });
+//            // Show context menu at handling position
+//            myMenu.exec(globalPos);
+//        });
 
-        connect(ui->SwitchPower,
-                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
-                [=](const QPoint& pos) {  // Handle global position
-            QPoint globalPos = ui->SwitchPower->mapToGlobal(pos);
-            // Create menu and insert some actions
-            QMenu myMenu;
-            myMenu.addAction(tr("修改"), this, [=]() {
-                SwitchPowerConfig spc;
-                spc.setMessage(tr("合闸无交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
-                spc.setValue(ui->SwitchPower->value());
-                if (spc.exec() == QDialog::Accepted) {
-                    TMsgData MsgCmd;
-                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                    uint16_t value[2] = {5451, 0};
-                    value[1] = spc.getValue();
-                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                }
-            });
-            // Show context menu at handling position
-            myMenu.exec(globalPos);
-        });
+//        connect(ui->SwitchPower,
+//                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+//                [=](const QPoint& pos) {  // Handle global position
+//            QPoint globalPos = ui->SwitchPower->mapToGlobal(pos);
+//            // Create menu and insert some actions
+//            QMenu myMenu;
+//            myMenu.addAction(tr("修改"), this, [=]() {
+//                SwitchPowerConfig spc;
+//                spc.setMessage(tr("合闸无交流功耗配置"),tr("关机功耗"),tr("开机功耗"));
+//                spc.setValue(ui->SwitchPower->value());
+//                if (spc.exec() == QDialog::Accepted) {
+//                    TMsgData MsgCmd;
+//                    MsgCmd.msg_type = CTRL_AO_ADDR;
+//                    uint16_t value[2] = {5451, 0};
+//                    value[1] = spc.getValue();
+//                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+//                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+//                }
+//            });
+//            // Show context menu at handling position
+//            myMenu.exec(globalPos);
+//        });
 
-        connect(ui->SwitchOFFPower,
+//        connect(ui->SwitchOFFPower,
+//                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+//                [=](const QPoint& pos) {  // Handle global position
+//            QPoint globalPos = ui->SwitchOFFPower->mapToGlobal(pos);
+//            // Create menu and insert some actions
+//            QMenu myMenu;
+//            myMenu.addAction(tr("修改"), this, [=]() {
+//                SwitchPowerConfig spc;
+//                spc.setMessage(tr("分闸功耗配置"),tr("有交流功耗"),tr("无交流功耗"));
+//                spc.setValue(ui->SwitchOFFPower->value());
+//                if (spc.exec() == QDialog::Accepted) {
+//                    TMsgData MsgCmd;
+//                    MsgCmd.msg_type = CTRL_AO_ADDR;
+//                    uint16_t value[2] = {5452, 0};
+//                    value[1] = spc.getValue();
+//                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+//                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+//                }
+//            });
+//            // Show context menu at handling position
+//            myMenu.exec(globalPos);
+//        });
+
+//        connect(ui->NoAcPCSOnPower,
+//                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+//                [=](const QPoint& pos) {  // Handle global position
+//            QPoint globalPos = ui->BMUPower->mapToGlobal(pos);
+//            // Create menu and insert some actions
+//            QMenu myMenu;
+//            myMenu.addAction(tr("修改"), this, [=]() {
+//                SwitchPowerConfig spc;
+//                spc.setMessage(tr("PCS无AC功耗配置"),tr("高压箱有AC功耗"),tr("高压箱无AC功耗"));
+//                spc.setValue(ui->BMUPower->value());
+//                if (spc.exec() == QDialog::Accepted) {
+//                    TMsgData MsgCmd;
+//                    MsgCmd.msg_type = CTRL_AO_ADDR;
+//                    uint16_t value[2] = {5454, 0};
+//                    value[1] = spc.getValue();
+//                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+//                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+//                }
+//            });
+//            // Show context menu at handling position
+//            myMenu.exec(globalPos);
+//        });
+
+//        connect(ui->NoAcPCSOffPower,
+//                static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
+//                [=](const QPoint& pos) {  // Handle global position
+//            QPoint globalPos = ui->BMUPower->mapToGlobal(pos);
+//            // Create menu and insert some actions
+//            QMenu myMenu;
+//            myMenu.addAction(tr("修改"), this, [=]() {
+//                SwitchPowerConfig spc;
+//                spc.setMessage(tr("PCS无AC功耗配置"),tr("高压箱有AC功耗"),tr("高压箱无AC功耗"));
+//                spc.setValue(ui->BMUPower->value());
+//                if (spc.exec() == QDialog::Accepted) {
+//                    TMsgData MsgCmd;
+//                    MsgCmd.msg_type = CTRL_AO_ADDR;
+//                    uint16_t value[2] = {5455, 0};
+//                    value[1] = spc.getValue();
+//                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+//                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+//                }
+//            });
+//            // Show context menu at handling position
+//            myMenu.exec(globalPos);
+//        });
+
+        connect(ui->AllOnOffPower,
                 static_cast<void (QWidget::*)(const QPoint& pos)>(&QWidget::customContextMenuRequested), this,
                 [=](const QPoint& pos) {  // Handle global position
-            QPoint globalPos = ui->SwitchOFFPower->mapToGlobal(pos);
+            QPoint globalPos = ui->BMUPower->mapToGlobal(pos);
             // Create menu and insert some actions
             QMenu myMenu;
             myMenu.addAction(tr("修改"), this, [=]() {
-                SwitchPowerConfig spc;
-                spc.setMessage(tr("分闸功耗配置"),tr("有交流功耗"),tr("无交流功耗"));
-                spc.setValue(ui->SwitchOFFPower->value());
-                if (spc.exec() == QDialog::Accepted) {
-                    TMsgData MsgCmd;
-                    MsgCmd.msg_type = CTRL_AO_ADDR;
-                    uint16_t value[2] = {5452, 0};
-                    value[1] = spc.getValue();
-                    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                SwitchPowerConfig spc(NULL, PCS_POWER_SET);
+                QVector<uint16_t> data;
+                uint16_t read;
+
+                if(pcsPowerMapDataCache.contains("SwitchONACPower")){
+                    uint16_t read = pcsPowerMapDataCache.value("SwitchONACPower");
+                    data<< 5450 << read;
                 }
+                if(pcsPowerMapDataCache.contains("SwitchPower")){
+                    uint16_t read = pcsPowerMapDataCache.value("SwitchPower");
+                    data<< 5451 << read;
+                }
+                if(pcsPowerMapDataCache.contains("SwitchOFFPower")){
+                    uint16_t read = pcsPowerMapDataCache.value("SwitchOFFPower");
+                    data<< 5452 << read;
+                }
+                if(pcsPowerMapDataCache.contains("NoAcPCSOnPower")){
+                    uint16_t read = pcsPowerMapDataCache.value("NoAcPCSOnPower");
+                    data<< 5454 << read;
+                }
+                if(pcsPowerMapDataCache.contains("NoAcPCSOffPower")){
+                    uint16_t read = pcsPowerMapDataCache.value("NoAcPCSOffPower");
+                    data<< 5455 << read;
+                }
+
+                spc.setValue(data);
+                if (spc.exec() == QDialog::Accepted) {
+                    data = spc.getValuePcs();
+                    qDebug()<<"<<<"<<data;
+
+                    for(int i = 0; i < data.count()/2; i++){
+                        uint16_t value[2];
+                        value[0] = data[i*2];
+                        value[1] = data[i*2+1];
+                        TMsgData MsgCmd;
+
+                        MsgCmd.msg_type = CTRL_AO_ADDR;
+                        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+                        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                    }
+                }
+
             });
             // Show context menu at handling position
             myMenu.exec(globalPos);
@@ -1980,14 +2440,14 @@ void BMSView::uiInit() {
             // Create menu and insert some actions
             QMenu myMenu;
             myMenu.addAction(tr("修改"), this, [=]() {
-                SwitchPowerConfig spc;
+                SwitchPowerConfig spc(NULL, BMU_POWER_SET);
                 spc.setMessage(tr("BMU功耗配置"),tr("BMU功耗"),tr("保留"));
                 spc.setValue(ui->BMUPower->value());
                 if (spc.exec() == QDialog::Accepted) {
                     TMsgData MsgCmd;
                     MsgCmd.msg_type = CTRL_AO_ADDR;
                     uint16_t value[2] = {5453, 0};
-                    value[1] = spc.getValue();
+                    value[1] = spc.getValueBmu();
                     MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
                     if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
                 }
@@ -2005,12 +2465,12 @@ void BMSView::uiInit() {
         foreach (QCheckBox* chkbox, chkboxs) {
             connect(chkbox, &QCheckBox::stateChanged, this, &BMSView::stateChanged, Qt::UniqueConnection);
         }
-        QList<QCheckBox*> RadioList;
-        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
-                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
-        foreach (QCheckBox* rb, RadioList) {
-            connect(rb, &QCheckBox::stateChanged, this, &BMSView::checkChanged, Qt::UniqueConnection);
-        }  //
+//        QList<QCheckBox*> RadioList;
+//        RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
+//                  << ui->bDO8 << ui->bDO9 << ui->bDO10 << ui->bDO11 << ui->bDO12 << ui->bDO13 << ui->bDO14 << ui->bDO15;
+//        foreach (QCheckBox* rb, RadioList) {
+//            connect(rb, &QCheckBox::stateChanged, this, &BMSView::checkChanged, Qt::UniqueConnection);
+//        }  //
         connect(ui->btnReadSOE, &QPushButton::released, this, &BMSView::btn_contrl, Qt::UniqueConnection);
         connect(ui->btnClearSOE, &QPushButton::released, this, &BMSView::btn_contrl, Qt::UniqueConnection);
 
@@ -2420,6 +2880,31 @@ void BMSView::changeEvent(QEvent* event) {
 void BMSView::on_btn_debugLog_clicked()
 {
     savelog.show();
+
+    if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
+    {
+        if(timeCache.elapsed() > 1000)
+        {
+            bmsDebugModeCnt = 0;
+        }
+        bmsDebugModeCnt++;
+
+        qDebug()<<"debug mode cnt" << bmsDebugModeCnt;
+
+        if(bmsDebugModeCnt >= 10 && (!ui->groupBoxDebugReg->isVisible()))
+        {
+            qDebug()<<"debug mode enable";
+            ui->groupBoxDebugReg->setVisible(true);
+            ui->groupBoxDebugReg->show();
+            this->repaint();
+        }
+
+
+
+        timeCache.start();
+    }
+
+
 }
 
 
@@ -2491,4 +2976,6 @@ void BMSView::radioBtnToggledChanged(bool arg)
     }
     MsgCmd.data.clear();
 }
+
+
 

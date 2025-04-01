@@ -82,7 +82,10 @@ MainUI::~MainUI() {
 }
 void MainUI::initForm() {
     this->setWindowFlags(Qt::FramelessWindowHint);
-    IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
+//    IconHelper::Instance()->setIcon(ui->labIco, QChar(0xf073), 40);
+    QPixmap *pm = new QPixmap(":/cubeLOGO.png");
+    pm->scaled(ui->labIco->size()-QSize(6,6), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->labIco->setPixmap(*pm);
     IconHelper::Instance()->setIcon(ui->btnMenu, QChar(0xf00b));
     IconHelper::Instance()->setIcon(ui->btnMenu_Min, QChar(0xf068));
     IconHelper::Instance()->setIcon(ui->btnMenu_Max, QChar(0xf2d0));
@@ -122,10 +125,10 @@ void MainUI::initForm() {
     this->setWidget(this);
     ui->widgetTop->setProperty("nav", "top");
 #endif
-    ui->labTitle->setText(tr("库博BMS监控软件"));
+    ui->labTitle->setText(tr("BMS监控软件"));
     ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
-    ui->labVersion->setText(QString("battery management system v") + VER_PRODUCTVERSION_STR);
+    ui->labVersion->setText(QString("BMS Tool V") + VER_PRODUCTVERSION_STR);
     // 测试版本提示
     const int time_tip = 31 * 24 * 60 * 60;
     //    const int time_tip = 0;
@@ -174,12 +177,13 @@ void MainUI::initForm() {
     title_menu->addMenu(langue_menu);
     //    title_menu->addMenu(theme_menu);
     if (db_manager::isUserLevelValid()) {
-        title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
-        title_menu->actions().constLast()->setObjectName("Maintenance Tool");
+
         title_menu->addAction(tr("新增BMS页面"), this, &MainUI::menuClick);
         title_menu->actions().constLast()->setObjectName("BmsView");
 
         if(db_manager::Instance()->userLevel() > db_manager::LEVEL_GUEST){
+            title_menu->addAction(tr("维护工具"), this, &MainUI::menuClick);
+            title_menu->actions().constLast()->setObjectName("Maintenance Tool");
             title_menu->addAction(tr("Rec转换"), this, &MainUI::menuClick);
             title_menu->actions().constLast()->setObjectName("Rec Convert");
             title_menu->addAction(tr("故障录波解析"), this, &MainUI::menuClick);
@@ -231,21 +235,18 @@ void MainUI::initUserLevelForm()
 {
     if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
     {
-        ui->lb_userMode->setText(tr("  -访客模式"));
-        ui->labUser->setText("guest");
-        ui->lb_userMode->setStyleSheet("color:darkGreen");
+        ui->lb_userMode->setText(tr(" - Guest"));
+        ui->labUser->setText("Guest");
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
     {
-        ui->lb_userMode->setText(tr("  -超级用户"));
-        ui->labUser->setText("super user");
-        ui->lb_userMode->setStyleSheet("color:darkRed");
+        ui->lb_userMode->setText(tr(" - Export"));
+        ui->labUser->setText("Export");
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
     {
-        ui->lb_userMode->setText(tr("  -内部调试模式-开发人员专用"));
-        ui->labUser->setText("debug mode");
-        ui->lb_userMode->setStyleSheet("color:darkRed");
+        ui->lb_userMode->setText(tr(" - Engineer"));
+        ui->labUser->setText("Engineer");
     }
 
 }

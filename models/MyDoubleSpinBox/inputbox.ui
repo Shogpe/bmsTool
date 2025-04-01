@@ -16,6 +16,11 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::NoContextMenu</enum>
   </property>
@@ -40,7 +45,7 @@
   <property name="type" stdset="0">
    <UInt>0</UInt>
   </property>
-  <layout class="QHBoxLayout" name="hLayout">
+  <layout class="QHBoxLayout" name="hLayout" stretch="2,1">
    <property name="spacing">
     <number>2</number>
    </property>
@@ -59,7 +64,7 @@
    <item>
     <widget class="QLabel" name="prefix">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -85,6 +90,17 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
      </property>
      <property name="mouseTracking">
       <bool>false</bool>

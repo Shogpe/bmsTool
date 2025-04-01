@@ -1,4 +1,8 @@
 ﻿#include "node_conf.h"
+
+
+
+#if CONFIG_METHOD_USE == CONFIG_METHOD_1
 MB_NODE cmu_v4_6config[] = {
     {59 ,	 "充电开始时间"       ,	3	,	1059	,	17410	,	129	,	 1}	,
     {60 ,	 "充电停止时间"       ,	3	,	1061	,	17410	,	129	,	 1}	,
@@ -14,8 +18,8 @@ MB_NODE cmu_v4_6config[] = {
     {70	,	 "EvmDfT"           ,	3	,	5365	,	513     ,	129	,	 0.1},
     {71	,	 "TEvmH"            ,	3	,	5366	,	513     ,	129	,	 0.1},
     {72	,	 "TEvmL"            ,	3	,	5367	,	513     ,	129	,	 0.1},
-    {73	,	 "SocL"             ,   3	,	5368	,	514     ,	129	,	 0.1},
-    {74	,	 "SocLL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
+    {73	,	 "SocH"             ,   3	,	5368	,	514     ,	129	,	 0.1},
+    {74	,	 "SocL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
     {75	,	 "CPoleTH"          ,	3	,	5370	,	513     ,	129	,	 0.1},
     {76	,	 "CPoleTHH"         ,	3	,	5371	,	513     ,	129	,	 0.1},
     {77	,	 "ClusterRInsH"     ,	3	,	5372	,	514     ,	129	,	 1},
@@ -95,8 +99,8 @@ MB_NODE cmu_v4_config[] = {
     {70	,	 "EvmDfT"           ,	3	,	5365	,	513     ,	129	,	 0.1},
     {71	,	 "TEvmH"            ,	3	,	5366	,	513     ,	129	,	 0.1},
     {72	,	 "TEvmL"            ,	3	,	5367	,	513     ,	129	,	 0.1},
-    {73	,	 "SocL"             ,   3	,	5368	,	514     ,	129	,	 0.1},
-    {74	,	 "SocLL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
+    {73	,	 "SocH"             ,   3	,	5368	,	514     ,	129	,	 0.1},
+    {74	,	 "SocL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
     {75	,	 "CPoleTH"          ,	3	,	5370	,	513     ,	129	,	 0.1},
     {76	,	 "CPoleTHH"         ,	3	,	5371	,	513     ,	129	,	 0.1},
     {77	,	 "ClusterRInsH"     ,	3	,	5372	,	514     ,	129	,	 1},
@@ -175,8 +179,8 @@ MB_NODE cmu_v4_10config[] = {
     {70	,	 "EvmDfT"           ,	3	,	5365	,	513     ,	129	,	 0.1},
     {71	,	 "TEvmH"            ,	3	,	5366	,	513     ,	129	,	 0.1},
     {72	,	 "TEvmL"            ,	3	,	5367	,	513     ,	129	,	 0.1},
-    {73	,	 "SocL"             ,   3	,	5368	,	514     ,	129	,	 0.1},
-    {74	,	 "SocLL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
+    {73	,	 "SocH"             ,   3	,	5368	,	514     ,	129	,	 0.1},
+    {74	,	 "SocL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
     {75	,	 "CPoleTH"          ,	3	,	5370	,	513     ,	129	,	 0.1},
     {76	,	 "CPoleTHH"         ,	3	,	5371	,	513     ,	129	,	 0.1},
     {77	,	 "ClusterRInsH"     ,	3	,	5372	,	514     ,	129	,	 1},
@@ -261,8 +265,8 @@ MB_NODE cmu_v5_0config[] = {
     {75	,	 "EvmDfT"           ,	3	,	5365	,	513     ,	129	,	 0.1},
     {76	,	 "TEvmH"            ,	3	,	5366	,	513     ,	129	,	 0.1},
     {77	,	 "TEvmL"            ,	3	,	5367	,	513     ,	129	,	 0.1},
-    {78	,	 "SocL"             ,   3	,	5368	,	514     ,	129	,	 0.1},
-    {79	,	 "SocLL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
+    {78	,	 "SocH"             ,   3	,	5368	,	514     ,	129	,	 0.1},
+    {79	,	 "SocL"            ,	3	,	5369	,	514     ,	129	,	 0.1},
     {80	,	 "CPoleTH"          ,	3	,	5370	,	513     ,	129	,	 0.1},
     {81	,	 "CPoleTHH"         ,	3	,	5371	,	513     ,	129	,	 0.1},
     {82	,	 "ClusterRInsH"     ,	3	,	5372	,	514     ,	129	,	 1},
@@ -283,7 +287,7 @@ MB_NODE cmu_v5_0config[] = {
     {97	,	 "PackTrHH"         ,	3	,	5387	,	513     ,	129	,	 0.1},
     {98	,	 "PoleTH"           ,	3	,	5388	,	513     ,	129	,	 0.1},
     {99	,	 "PoleTHH"          ,	3	,	5389	,	513     ,	129	,	 0.1},
-    {100	,	 "ClusterCurH"      ,	3	,	5390	,	514     ,	129	,	 1},
+    {100,	 "ClusterCurH"      ,	3	,	5390	,	514     ,	129	,	 1},
     {101,	 "ClusterCurHH"     ,	3	,	5391	,	514     ,	129	,	 1},
     {102,	 "ClusterCurShort"	,	3	,	5392	,	514     ,	129	,	 1},
     {103,	 "ClusterVolH"      ,	3	,	5393	,	514     ,	129	,	 0.1},
@@ -345,8 +349,12 @@ MB_NODE cmu_v5_0config[] = {
     {159,	 "SwitchPower"       ,	3   ,	5451    ,	514     ,	129 ,	1},
     {160,	 "SwitchOFFPower"    ,	3   ,	5452    ,	514     ,	129 ,	1},
     {161,	 "BMUPower"          ,	3   ,	5453    ,	514     ,	129 ,	1},
+    {172,	 "NoAcPCSOnPower"    ,	3   ,	5453    ,	514     ,	129 ,	1},
+    {173,	 "NoAcPCSOffPower"   ,	3   ,	5453    ,	514     ,	129 ,	1},
 
 };
+
+
 
 int GetCMUConfigArrayLen(MB_NODE *arg){
     if(arg==cmu_v4_6config){
@@ -361,3 +369,120 @@ int GetCMUConfigArrayLen(MB_NODE *arg){
         return 0;
     }
 }
+#endif
+#if CONFIG_METHOD_USE == CONFIG_METHOD_2
+QString cmu_config_name[]={
+    "充电开始时间",
+    "充电停止时间",
+    "放电开始时间",
+    "放电停止时间",
+
+    "ClusterBmuNum",
+    "BmuCellNum",
+    "BmuPackTNum",
+    "BmuPoleTNum",
+    "RateAH",
+    "ClusterE",
+    "ClusterEAdj",
+    "ClusterEremain",
+    "ClusterIe",
+    "ClusterCurRange",
+    "ClusterILeakRg",
+    "ClusterVolRange",
+    "PreSensorRg",
+    "BalnceMask",
+    "BalnceEndVol",
+    "BalnceStartDiff",
+    "BalnceStart",
+
+    "ClusterTAlm",
+    "ClusterTErr",
+    "CellUdHH",
+    "CellUdH",
+    "PreChgT",
+    "PreChgI",
+    "IStaTH",
+    "VFulDF",
+    "VEmpDF",
+    "CVFulDF",
+
+    "CellVolH",
+    "CellVolHH",
+    "CellVolL",
+    "CellVolLL",
+    "PackTH",
+    "PackTHH",
+    "PackTL",
+    "PackTLL",
+    "ModuleDisCOTLevel1",
+    "ModuleDisCOTLevel2",
+    "ModuleDisCUTLevel1",
+    "ModuleDisCUTLevel2",
+    "PackTdH",
+    "PackTdHH",
+    "PackTrH",
+    "PackTrHH",
+
+    "PoleTH",
+    "PoleTHH",
+    "CPoleTH",
+    "CPoleTHH",
+    "ClusterCurH",
+    "ClusterCurHH",
+    "ClusterCurShort",
+    "ClusterVolH",
+    "ClusterVolHH",
+    "ClusterVolL",
+    "ClusterVolLL",
+    "ClusterRInsH",
+    "ClusterRIns",
+    "ClusterCurLeakH",
+    "ClusterCurLeak",
+
+    "UBlock",
+    "UBlock2",
+    "UBlock3",
+    "UBlock4",
+    "DataBlock1",
+    "DataBlock2",
+    "DataBlock3",
+    "DataBlock4",
+    "TBlock",
+    "TBlock2",
+    "TBlock3",
+    "TBlock4",
+    "WarnBlock1",
+    "WarnBlock2",
+    "ErrBlock1",
+    "ErrBlock2",
+    "FuncMask",
+    "FuncMask2",
+    "ClusterErrMask",
+    "ClusterAlmMask",
+
+    "CellOVLevel3",
+    "CellOCP",
+    "CellUVLevel3",
+    "CellODisCP",
+    "ModuleCOTLevel3",
+    "ModuleCUTLevel3",
+    "ModuleDisCOTLevel3",
+    "ModuleDisCUTLevel3",
+    "PackPoleOTLevel3",
+    "ModulePoleOTLevel3",
+    "CurLevel3",
+    "TEvmH",
+    "SocH",
+    "SocL",
+    "EvmDfT",
+    "TEvmL",
+
+    "IP",
+    "ServerIP",
+};
+
+int GetCMUConfigArrayLen(void){
+    return ARRAY_SIZE(cmu_config_name);
+}
+
+#endif

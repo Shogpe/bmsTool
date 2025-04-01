@@ -1,4 +1,4 @@
-#ifndef INPUTBOX_H
+﻿#ifndef INPUTBOX_H
 #define INPUTBOX_H
 #include <QDoubleSpinBox>
 #include <QEvent>
@@ -54,6 +54,7 @@ class InputBox : public QWidget {
     void uiInit();
     bool eventFilter(QObject *watched, QEvent *event);
     void setText(QString str);
+    void setFontAndSize(int s);
 
    public slots:
     void editingFinished();

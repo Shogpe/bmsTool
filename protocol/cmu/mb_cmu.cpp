@@ -1365,6 +1365,7 @@ int mb_cmu::ReadAI() {
     for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
         res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
         if (res == iter->reg_num) {
+
             for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
                  data_iter++) {
                 if (this->nodes_table.size() > data_iter->index) {
@@ -1383,6 +1384,10 @@ int mb_cmu::ReadAI() {
                     mapData[this->nodes_table.at(data_iter->index).node_name] = value;
                 }
             }
+        }
+        else
+        {
+            qDebug() << "<<<<<<< reg_num not right" << res << iter->reg_num;
         }
     }
 

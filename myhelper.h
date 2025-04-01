@@ -210,11 +210,10 @@ class myHelper : public QObject {
     }
     static QString IntegerToHexString(uint32_t ip) {
         return QString("%1.%2.%3.%4")
-            .arg((ip >> 24) & 0xFF, 0, 16)
-            .arg((ip >> 16) & 0xFF, 0, 16)
-            .arg((ip >> 8) & 0xFF, 0, 16)
-            .arg(ip & 0xFF, 0, 16)
-            .toUpper();
+            .arg((ip >> 24) & 0xFF, 0, 10)
+            .arg((ip >> 16) & 0xFF, 0, 10)
+            .arg((ip >> 8)  & 0xFF, 0, 10)
+            .arg((ip >> 0)  & 0xFF, 0, 10);
     }
     static void SetAppValue(const QString &key, const QVariant &value) {
         QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)

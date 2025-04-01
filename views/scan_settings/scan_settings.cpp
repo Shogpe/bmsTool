@@ -616,14 +616,16 @@ void scan_settings::loadXml() {
     vector<MB_NODE> tab_config;
     tab_config.clear();
 
-    MB_NODE* node_table;
-    int node_table_size;
-
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
     uint protocal_ver = 3;
     if (g_proto_map.contains(protocol)) {
         protocal_ver = g_proto_map.value(protocol);
     }
+
+#if CONFIG_METHOD_USE == CONFIG_METHOD_1
+    MB_NODE* node_table;
+    int node_table_size;
+
 
     if(protocal_ver == CMUV4_6){
         node_table = cmu_v4_6config;
@@ -644,6 +646,36 @@ void scan_settings::loadXml() {
         if (!data_map.contains(node_table[i].name)) continue;
         plist.append(data_map.value(node_table[i].name));
     }
+
+#endif
+#if CONFIG_METHOD_USE == CONFIG_METHOD_2
+    QList<MB_NODE> node_table;
+    int node_table_size = GetCMUConfigArrayLen();
+    QList<db_manager::ST_DB_NODE> nodes_table;
+
+    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+
+    for (int i = 0; i < node_table_size; i++) {
+
+        if (!data_map.contains(cmu_config_name[i]/*.toUtf8().data()*/)) continue;
+
+        foreach(auto val, nodes_table)
+        {
+            if(val.node_name == cmu_config_name[i])
+            {
+                if(val.val_type == 129)
+                {
+                    plist.append(data_map.value(cmu_config_name[i]));
+                }
+                else
+                {
+                    qDebug() << i << "<<<<<name " << cmu_config_name[i] << val.val_type;
+                }
+            }
+        }
+    }
+
+#endif
 
     ui->stdSetting->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->stdSetting->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);

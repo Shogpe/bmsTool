@@ -1,10 +1,12 @@
-#include "inputbox.h"
+﻿#include "inputbox.h"
 #include <QDebug>
 #include <QInputDialog>
 #include <QMouseEvent>
 #include "PropertyHelper.h"
 #include "myhelper.h"
 #include "ui_inputbox.h"
+#include "QHBoxLayout"
+
 InputBox::InputBox(QWidget *parent) : QWidget(parent), ui(new Ui::InputBox) {
     ui->setupUi(this);
     m_value = 0;
@@ -45,7 +47,14 @@ void InputBox::uiInit() {
             default:
                 ui->text->setMaxLength(12);
                 QFontMetrics fm(ui->text->font());
-                ui->text->setMaximumWidth(fm.width("12345.67 kWh"));
+                if(this->suffix().startsWith("kWh")||this->suffix().startsWith(" kWh"))
+                {
+                    ui->text->setMaximumWidth(fm.width("12345.67 kWh"));
+                }
+                else
+                {
+                    ui->text->setMaximumWidth(fm.width("123456"));
+                }
                 break;
         }
     });
@@ -54,6 +63,8 @@ void InputBox::uiInit() {
     //    this->startTimer(1000);
     //    setText(QString::number(value()));
     this->setValueDirect(value());
+
+
 }
 
 void InputBox::editingFinished() {
@@ -87,6 +98,8 @@ void InputBox::editingFinished() {
 }
 void InputBox::setValueDirect(qreal val) {
     m_value = val;
+    int ivalue = 0;
+    uint uvalue = 0;
     //    qDebug() << prefix() << type() << objectName() << "valchg" << val;
     switch (this->type()) {
         case CT_COMBO:
@@ -96,15 +109,22 @@ void InputBox::setValueDirect(qreal val) {
 
             break;
         case CT_HEX_VER:
-            setText(myHelper::IntegerToHexString(val));
+
+//            setText(myHelper::IntegerToHexString(val));
+            uvalue = val;
+            setText(QString("%1.%2.%3.%4")
+                        .arg((uvalue >> 24) & 0xFF, 2, 16, QChar('0'))
+                        .arg((uvalue >> 16) & 0xFF, 2, 16, QChar('0'))
+                        .arg((uvalue >> 8)  & 0xFF, 2, 16, QChar('0'))
+                        .arg((uvalue >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper());
             break;
         case CT_BIT_ARR: {
-            int ivalue = val;
+            ivalue = val;
             setText(QString("%1,%2,%3,%4")
                         .arg(ivalue >> 24 & 0xFF, 8, 2, QChar('0'))
                         .arg(ivalue >> 16 & 0xFF, 8, 2, QChar('0'))
-                        .arg(ivalue >> 8 & 0xFF, 8, 2, QChar('0'))
-                        .arg(ivalue & 0xFF, 8, 2, QChar('0')));
+                        .arg(ivalue >> 8  & 0xFF, 8, 2, QChar('0'))
+                        .arg(ivalue >> 0  & 0xFF, 8, 2, QChar('0')));
         } break;
         case CT_VALUE:
         default:
@@ -133,3 +153,25 @@ void InputBox::setText(QString str) {
     }
     if (ui->text->text() != allText) ui->text->setText(allText);
 }
+
+void InputBox::setFontAndSize(int s){
+
+    if(s > 5 && s < 10){
+        QFont f;
+        f.setFamily(QFontInfo(ui->text->font()).family()); // 保持原字体族
+        f.setPointSize(s);
+        f.setWeight(QFont::Normal);
+
+        // 应用字体
+        ui->prefix->setFont(f);
+        ui->text->setFont(f);
+        this->setFont(f);
+
+        // 计算合适的高度
+        QFontMetrics fm(f);
+        ui->text->setMinimumHeight(fm.height() + 2); // 基础高度 + 边距
+        ui->text->setMaximumHeight(fm.height() * 2 + 4);
+//        qDebug()<<f;
+    }
+}
+

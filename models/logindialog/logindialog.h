@@ -23,10 +23,6 @@ private slots:
 
     void on_pushButton_exit_clicked();
 
-    void on_chk_guest_stateChanged(int arg1);
-
-    void on_pushButton_clicked();
-
     void on_lineEdit_pwd_returnPressed();
 
 private:

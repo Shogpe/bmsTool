@@ -240,8 +240,8 @@ void MainUI::initUserLevelForm()
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
     {
-        ui->lb_userMode->setText(tr(" - Export"));
-        ui->labUser->setText("Export");
+        ui->lb_userMode->setText(tr(" - Expert"));
+        ui->labUser->setText("Expert");
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
     {

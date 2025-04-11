@@ -638,13 +638,13 @@ QTabWidget::pane:right{left:-1px;}
 
 *:disabled{
 background:#EAF7FF;
-border-color:#DEF0FE;
+border-color:#CEE0EE;
 color:#607C99;
 }
 
-/*TextColor:#386487*/
+/*TextColor:#2B577A*/
 /*PanelColor:#EAF7FF*/
-/*BorderColor:#C0DCF2*/
+/*BorderColor:#B0CCE2*/
 /*NormalColorStart:#DEF0FE*/
 /*NormalColorEnd:#C0DEF6*/
 /*DarkColorStart:#F2F9FF*/

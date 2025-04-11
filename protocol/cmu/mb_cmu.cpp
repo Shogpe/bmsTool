@@ -22,7 +22,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     stopDumpErrLog = true;
     drv_status = 0;
     stop = false;
-    mb_ip = "192.168.1.120";
+    mb_ip = "192.168.1.0";
     mb_port = 502;
     m_interval = 500;
     protocal_ver = ver;
@@ -1366,10 +1366,12 @@ int mb_cmu::ReadAI() {
         res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
         if (res == iter->reg_num) {
 
+//            qDebug()<< "<<<<<<<<<<<<<<<<<<" <<iter->reg_start << iter->reg_num;
             for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
                  data_iter++) {
                 if (this->nodes_table.size() > data_iter->index) {
                     qreal value = 0;
+//                    qDebug() << iter->reg_start + data_iter->offset << tab_buf[data_iter->offset];
                     if (data_iter->data_type == 514) { // 0x202
                         value = tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 513) { // 0x201
@@ -1383,11 +1385,12 @@ int mb_cmu::ReadAI() {
                     }
                     mapData[this->nodes_table.at(data_iter->index).node_name] = value;
                 }
+
             }
         }
         else
         {
-            qDebug() << "<<<<<<< reg_num not right" << res << iter->reg_num;
+//            qDebug() << "<<<<<<< reg_num not right" << res << iter->reg_num;
         }
     }
 

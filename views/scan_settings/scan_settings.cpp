@@ -351,19 +351,19 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
             switch (result) {
                 case 1:
                     ui->srvStatus->setText(tr("远程服务在线"));
-                    ui->srvStatus->setStyleSheet("color:green;");
+                    ui->srvStatus->setStyleSheet("color:darkGreen;");
                     ui->srvStatus->setToolTip(tr("可以上传固件至远程服务器"));
                     ui->btnUpload->setDisabled(false);
                     break;
                 case 2:
                     ui->srvStatus->setText(tr("本机服务在线"));
-                    ui->srvStatus->setStyleSheet("color:green;");
+                    ui->srvStatus->setStyleSheet("color:darkGreen;");
                     ui->srvStatus->setToolTip(tr("请查看下方状态栏，检查服务器是否启动成功"));
                     ui->btnUpload->setDisabled(true);
                     break;
                 default:
                     ui->srvStatus->setText(tr("远程服务离线"));
-                    ui->srvStatus->setStyleSheet("color:red;text-decoration:underline;");
+                    ui->srvStatus->setStyleSheet("color:darkRed;text-decoration:underline;");
                     ui->srvStatus->setToolTip(tr("可以修改IP以启用本地服务器"));
                     ui->btnUpload->setDisabled(true);
                     break;

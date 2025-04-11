@@ -12,6 +12,8 @@
 #define SUPER_PW    "1a2jgPAG93tAg1V39CaH1f83c3H5"
 #endif
 
+#define GUEST_PW    "cubenergy"
+
 #define PW_URL      "https://manage.cubenergy.com.cn/customer/#/bmsVersion"
 
 #define PW_LEN      6
@@ -80,27 +82,25 @@ void logindialog::on_pushButton_login_clicked() {
 
     int level = 0;
 
-    //访客模式
-    if(ui->chk_guest->isChecked() == true)
-    {
-        level = 1;
-        db_manager::Instance()->setUserLevel(level);
-        accept();
-    }
-
-    if (ui->chk_guest->isChecked() == false && ui->lineEdit_pwd->text() == "")
+    if (ui->lineEdit_pwd->text() == "")
     {
         myHelper::ShowMessageBoxError(tr("动态密码不能为空!"));
         return;
     }
 
-    if(ui->chk_guest->isChecked() == false && ui->lineEdit_pwd->text() != "")
+    if(ui->lineEdit_pwd->text() != "")
     {
         getPw();
 
         if(ui->lineEdit_pwd->text() == SUPER_PW)
         {
             level = db_manager::LEVEL_DEBUG;
+            db_manager::Instance()->setUserLevel(level);
+            accept();
+        }
+        else if(ui->lineEdit_pwd->text() == GUEST_PW)
+        {
+            level = db_manager::LEVEL_GUEST;
             db_manager::Instance()->setUserLevel(level);
             accept();
         }
@@ -129,27 +129,6 @@ void logindialog::on_pushButton_login_clicked() {
 
 void logindialog::on_pushButton_exit_clicked() { close(); }
 
-void logindialog::on_chk_guest_stateChanged(int arg1)
-{
-    if(ui->chk_guest->isChecked())
-    {
-        ui->lineEdit_pwd->setEnabled(false);
-    }
-    else
-    {
-        ui->lineEdit_pwd->setEnabled(true);
-    }
-}
-
-
-void logindialog::on_pushButton_clicked()
-{
-    QDesktopServices::openUrl(QUrl(PW_URL));
-    QString tips = tr("如果没有网络，请复制下方链接用手机打开，或使用访客模式登陆\n");
-    tips += PW_URL;
-    tips += tr("\n在BMS版本一栏获取6位动态验证码");
-    ui->lb_Tips->setText(tips);
-}
 
 
 void logindialog::on_lineEdit_pwd_returnPressed()

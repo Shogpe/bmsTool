@@ -18,5 +18,6 @@
         <file>main.ico</file>
         <file>image/widgets.qm</file>
         <file>cubeLOGO.png</file>
+        <file>CMUver.txt</file>
     </qresource>
 </RCC>

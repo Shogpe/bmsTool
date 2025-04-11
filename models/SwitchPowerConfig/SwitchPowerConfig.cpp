@@ -39,6 +39,7 @@ SwitchPowerConfig::SwitchPowerConfig(QWidget *parent, uint16_t m) : QDialog(pare
         ui->lable_name2->hide();
         ui->sbox_cfg_1->hide();
         ui->sbox_cfg_2->hide();
+        ui->widget_spacer->hide();
         ui->tableWidget->show();
 
 
@@ -77,6 +78,7 @@ SwitchPowerConfig::SwitchPowerConfig(QWidget *parent, uint16_t m) : QDialog(pare
         ui->lable_name2->show();
         ui->sbox_cfg_1->show();
         ui->sbox_cfg_2->show();
+        ui->widget_spacer->show();
         ui->tableWidget->hide();
     }
     //    myHelper::moveFormToCenter(this);

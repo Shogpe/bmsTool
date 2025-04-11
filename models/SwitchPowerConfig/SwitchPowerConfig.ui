@@ -166,7 +166,7 @@
              </item>
              <item row="0" column="5">
               <property name="text">
-               <string>功耗配置(最大254)</string>
+               <string>功耗配置(mA,最大254)</string>
               </property>
              </item>
              <item row="1" column="0">
@@ -336,12 +336,12 @@
              </item>
              <item row="6" column="3">
               <property name="text">
-               <string/>
+               <string>PCS开机</string>
               </property>
              </item>
              <item row="6" column="4">
               <property name="text">
-               <string/>
+               <string>PCS有AC</string>
               </property>
              </item>
              <item row="6" column="5">
@@ -371,7 +371,7 @@
              </item>
              <item row="7" column="4">
               <property name="text">
-               <string>PCS有AC</string>
+               <string>PCS无AC</string>
               </property>
              </item>
              <item row="7" column="5">
@@ -396,12 +396,12 @@
              </item>
              <item row="8" column="3">
               <property name="text">
-               <string>PCS开机</string>
+               <string>PCS关机</string>
               </property>
              </item>
              <item row="8" column="4">
               <property name="text">
-               <string>PCS无AC</string>
+               <string>PCS有AC</string>
               </property>
              </item>
              <item row="8" column="5">
@@ -431,7 +431,7 @@
              </item>
              <item row="9" column="4">
               <property name="text">
-               <string>PCS有AC</string>
+               <string>PCS无AC</string>
               </property>
              </item>
              <item row="9" column="5">
@@ -456,12 +456,12 @@
              </item>
              <item row="10" column="3">
               <property name="text">
-               <string>PCS关机</string>
+               <string/>
               </property>
              </item>
              <item row="10" column="4">
               <property name="text">
-               <string>PCS无AC</string>
+               <string/>
               </property>
              </item>
              <item row="10" column="5">
@@ -548,6 +548,31 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_spacer" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>10</height>
+              </size>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>

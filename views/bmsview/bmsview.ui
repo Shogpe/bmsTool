@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1382</width>
+    <width>1454</width>
     <height>790</height>
    </rect>
   </property>
@@ -42,16 +42,16 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_3" native="true">
@@ -91,9 +91,41 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="refreashIp">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>刷新可用CMU ip</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>连接</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbConnectIP">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -157,6 +189,13 @@
           <string>CMU4.0</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPreferrVer">
+        <property name="text">
+         <string>--------</string>
+        </property>
        </widget>
       </item>
       <item>
@@ -302,19 +341,19 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_18">
        <property name="spacing">
-        <number>2</number>
+        <number>1</number>
        </property>
        <property name="leftMargin">
         <number>4</number>
        </property>
        <property name="topMargin">
-        <number>4</number>
+        <number>2</number>
        </property>
        <property name="rightMargin">
         <number>4</number>
        </property>
        <property name="bottomMargin">
-        <number>4</number>
+        <number>2</number>
        </property>
        <item>
         <widget class="QScrollArea" name="scrollArea">
@@ -338,8 +377,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1362</width>
-            <height>358</height>
+            <width>1438</width>
+            <height>363</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -348,9 +387,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="2,1,2,2,1">
+          <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="2,1,1,2,2,1">
            <property name="spacing">
-            <number>2</number>
+            <number>8</number>
            </property>
            <property name="leftMargin">
             <number>0</number>
@@ -377,19 +416,19 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <property name="spacing">
-               <number>3</number>
+               <number>4</number>
               </property>
               <property name="leftMargin">
                <number>3</number>
               </property>
               <property name="topMargin">
-               <number>5</number>
+               <number>4</number>
               </property>
               <property name="rightMargin">
                <number>3</number>
               </property>
               <property name="bottomMargin">
-               <number>3</number>
+               <number>2</number>
               </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -401,11 +440,17 @@
                 </property>
                 <item>
                  <widget class="QLabel" name="bSysErr">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>总故障</string>
+                   <string>CMU总故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -417,11 +462,17 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysAlm">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>总告警</string>
+                   <string>CMU总告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -433,6 +484,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysFull">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -449,6 +506,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysEmpty">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -465,6 +528,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysInit">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -490,6 +559,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysCommErr">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -506,6 +581,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysBalance">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -522,6 +603,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysCharge">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -538,6 +625,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysDischarge">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -557,6 +650,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysStop">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -573,6 +672,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys10">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -589,6 +694,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys11">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -605,6 +716,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys12">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -621,6 +738,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys13">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -637,6 +760,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys14">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -653,6 +782,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys15">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -682,6 +817,12 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -700,6 +841,12 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
@@ -720,6 +867,12 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -738,6 +891,12 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
@@ -758,6 +917,12 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -776,6 +941,12 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
@@ -805,6 +976,12 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -824,6 +1001,12 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -837,6 +1020,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysDischarge_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -853,6 +1042,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSysStop_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -866,6 +1061,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys10_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -879,6 +1080,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys11_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -892,6 +1099,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys12_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -905,6 +1118,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys13_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -918,6 +1137,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys14_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -931,6 +1156,12 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bSys15_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -966,13 +1197,13 @@
                <number>3</number>
               </property>
               <property name="topMargin">
-               <number>5</number>
+               <number>4</number>
               </property>
               <property name="rightMargin">
                <number>3</number>
               </property>
               <property name="bottomMargin">
-               <number>3</number>
+               <number>2</number>
               </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1193,6 +1424,251 @@
             </widget>
            </item>
            <item>
+            <widget class="QGroupBox" name="G_DOStatus">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="title">
+              <string>DO状态</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>4</number>
+              </property>
+              <property name="rightMargin">
+               <number>3</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_36">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="bDO0">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO1</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO1">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO2</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO2">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO3</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO3">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO4</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO4">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO5</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO5">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO6</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO6">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO7</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO7">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO8</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO8">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO9</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO9">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO10</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO10">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO11</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO11">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO12</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO12">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO13</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO13">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO14</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO14">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO15</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="bDO15">
+                  <property name="frameShape">
+                   <enum>QFrame::Box</enum>
+                  </property>
+                  <property name="text">
+                   <string>DO16</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
             <widget class="QGroupBox" name="G_ErrStatus">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -1205,19 +1681,19 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <property name="spacing">
-               <number>3</number>
+               <number>4</number>
               </property>
               <property name="leftMargin">
                <number>3</number>
               </property>
               <property name="topMargin">
-               <number>5</number>
+               <number>4</number>
               </property>
               <property name="rightMargin">
                <number>3</number>
               </property>
               <property name="bottomMargin">
-               <number>3</number>
+               <number>2</number>
               </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1262,7 +1738,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电芯过温故障</string>
+                   <string>电芯高温故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1294,7 +1770,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>单体温升故障</string>
+                   <string>电芯温升故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1326,7 +1802,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>Pack极柱过温故障</string>
+                   <string>Pack极柱高温故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1338,6 +1814,9 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bErr7">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -1454,7 +1933,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>SOC过低</string>
+                   <string>SOC过低故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1470,7 +1949,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>压差过大</string>
+                   <string>压差过大故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1509,7 +1988,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>水浸保护</string>
+                   <string>水浸故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1525,7 +2004,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>消防保护</string>
+                   <string>消防故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1541,7 +2020,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>急停保护</string>
+                   <string>急停故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1557,7 +2036,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>单体高压锁定</string>
+                   <string>电芯高压锁定</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1573,7 +2052,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>单体低压锁定</string>
+                   <string>电芯低压锁定</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1585,6 +2064,9 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bErr6_2">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -1767,19 +2249,19 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <property name="spacing">
-               <number>3</number>
+               <number>4</number>
               </property>
               <property name="leftMargin">
                <number>3</number>
               </property>
               <property name="topMargin">
-               <number>5</number>
+               <number>4</number>
               </property>
               <property name="rightMargin">
                <number>3</number>
               </property>
               <property name="bottomMargin">
-               <number>3</number>
+               <number>2</number>
               </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1891,7 +2373,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>PACK极柱过温告警</string>
+                   <string>Pack极柱高温告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2019,7 +2501,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>SOC过低</string>
+                   <string>SOC过低告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2035,7 +2517,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>压差过大</string>
+                   <string>压差过大告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2073,11 +2555,14 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bAlm1_2">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电压线束断线</string>
+                   <string>电压线束断线告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2089,11 +2574,14 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bAlm2_2">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>温度线束断线</string>
+                   <string>温度线束断线告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2105,11 +2593,14 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bAlm3_2">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>簇极柱温度断线</string>
+                   <string>簇极柱温度断线告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2121,11 +2612,14 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="bAlm4_2">
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电压传感器断线</string>
+                   <string>电压传感器断线告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2587,8 +3081,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1362</width>
-            <height>358</height>
+            <width>1438</width>
+            <height>362</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -2632,13 +3126,13 @@
                <number>3</number>
               </property>
               <property name="topMargin">
-               <number>2</number>
+               <number>4</number>
               </property>
               <property name="rightMargin">
                <number>3</number>
               </property>
               <property name="bottomMargin">
-               <number>3</number>
+               <number>1</number>
               </property>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -3026,7 +3520,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -3890,7 +4384,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -4482,7 +4976,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -5126,7 +5620,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -5254,7 +5748,7 @@
                    <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="toolTip">
-                   <string>累计充放电循环次数</string>
+                   <string/>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -5309,7 +5803,7 @@
                    <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="toolTip">
-                   <string>深度放电次数</string>
+                   <string/>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -5624,7 +6118,7 @@
                    <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="toolTip">
-                   <string>自放电率</string>
+                   <string/>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -5675,7 +6169,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -5697,6 +6191,9 @@
                   </property>
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="toolTip">
+                   <string>-充电均衡通道数</string>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -5749,6 +6246,9 @@
                   </property>
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="toolTip">
+                   <string>-放电均衡通道数</string>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -5803,7 +6303,7 @@
                    <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="toolTip">
-                   <string>系统保护次数</string>
+                   <string/>
                   </property>
                   <property name="wrapping">
                    <bool>false</bool>
@@ -6271,6 +6771,134 @@
                  </widget>
                 </item>
                 <item>
+                 <widget class="InputBox" name="func1Bit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="inputMethodHints">
+                   <set>Qt::ImhNone</set>
+                  </property>
+                  <property name="wrapping">
+                   <bool>false</bool>
+                  </property>
+                  <property name="frame">
+                   <bool>false</bool>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="specialValueText">
+                   <string>???</string>
+                  </property>
+                  <property name="accelerated">
+                   <bool>false</bool>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>false</bool>
+                  </property>
+                  <property name="prefix">
+                   <string>功能使能状态1</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="decimals">
+                   <number>0</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000000000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="type" stdset="0">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="InputBox" name="func2Bit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="inputMethodHints">
+                   <set>Qt::ImhNone</set>
+                  </property>
+                  <property name="wrapping">
+                   <bool>false</bool>
+                  </property>
+                  <property name="frame">
+                   <bool>false</bool>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="specialValueText">
+                   <string>???</string>
+                  </property>
+                  <property name="accelerated">
+                   <bool>false</bool>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>false</bool>
+                  </property>
+                  <property name="prefix">
+                   <string>功能使能状态2</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="decimals">
+                   <number>0</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000000000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="type" stdset="0">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <spacer name="verticalSpacer_7">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
@@ -6278,7 +6906,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -6295,6 +6923,12 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>16777215</height>
+              </size>
              </property>
              <property name="title">
               <string>调试数据</string>
@@ -6964,7 +7598,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>40</height>
+                    <height>1</height>
                    </size>
                   </property>
                  </spacer>
@@ -7202,7 +7836,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇单元数量</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇Pack个数</string>
@@ -7224,7 +7858,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压数</string>
+               <string/>
               </property>
               <property name="readOnly">
                <bool>false</bool>
@@ -7246,7 +7880,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温度数</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>Pack温度个数</string>
@@ -7265,7 +7899,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>极柱温度数量</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>Pack极柱温度个数</string>
@@ -7284,7 +7918,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇额定Ah数</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇电池额定容量</string>
@@ -7312,7 +7946,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇容量</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇电池额定电量</string>
@@ -7340,7 +7974,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇校正容量</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇电池校正电量</string>
@@ -7368,7 +8002,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇剩余电量</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇电池剩余电量</string>
@@ -7396,7 +8030,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>额定电流</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充放电额定电流</string>
@@ -7424,7 +8058,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电流量程</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电流传感器量程</string>
@@ -7452,7 +8086,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>漏电流量程</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>漏电流传感器量程</string>
@@ -7480,7 +8114,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电压量程</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电压传感器量程</string>
@@ -7508,7 +8142,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>预留传感器量程</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>预留传感器量程</string>
@@ -7539,7 +8173,7 @@
                <enum>Qt::CustomContextMenu</enum>
               </property>
               <property name="toolTip">
-               <string>均衡模式</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电池均衡控制模式</string>
@@ -7567,7 +8201,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>均衡目标电压</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>均衡目标电压</string>
@@ -7601,7 +8235,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>均衡启动差值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>均衡启动差值</string>
@@ -7632,7 +8266,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>均衡启动阈值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>均衡启动阈值</string>
@@ -7713,7 +8347,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>告警和保护延时</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>告警延时值</string>
@@ -7744,7 +8378,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>保护动作延时</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>保护延时值</string>
@@ -7772,7 +8406,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体压差上上限</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -7806,7 +8440,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体压差上限</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -7840,7 +8474,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>预充结束时间</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>预充结束时间定值</string>
@@ -7868,7 +8502,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>预充结束电流</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>预充结束电流定值</string>
@@ -7896,7 +8530,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>充放检测阈值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充放电电流检测死区值</string>
@@ -7924,7 +8558,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压放空充满回差</string>
+               <string>-簇电压放空充满回差</string>
               </property>
               <property name="prefix">
                <string>簇电池充满回差值</string>
@@ -7952,7 +8586,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>放空回差</string>
+               <string>-簇电压放空充满回差</string>
               </property>
               <property name="prefix">
                <string>簇电池放空回差值</string>
@@ -7980,7 +8614,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压充满放空回差</string>
+               <string>-簇电压放空充满回差</string>
               </property>
               <property name="prefix">
                <string>簇电压放空充满回差</string>
@@ -8051,13 +8685,13 @@
                <enum>Qt::CustomContextMenu</enum>
               </property>
               <property name="toolTip">
-               <string>开关机功耗汇总，右键查看详情和修改</string>
+               <string>静态功耗汇总，右键查看详情和修改</string>
               </property>
               <property name="readOnly">
                <bool>true</bool>
               </property>
               <property name="prefix">
-               <string>开关机功耗</string>
+               <string>系统静态功耗</string>
               </property>
               <property name="suffix">
                <string/>
@@ -8131,7 +8765,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压上限</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -8165,7 +8799,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯过压保护值</string>
@@ -8193,7 +8827,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯欠压告警值</string>
@@ -8221,7 +8855,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压下下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯欠压保护值</string>
@@ -8249,7 +8883,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温度上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电高温告警值</string>
@@ -8277,7 +8911,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温度上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电高温保护值</string>
@@ -8305,7 +8939,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温度下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电低温告警值</string>
@@ -8333,7 +8967,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温度下下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电低温保护值</string>
@@ -8361,7 +8995,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电高温一级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电高温告警值</string>
@@ -8389,7 +9023,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电高温二级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电高温保护值</string>
@@ -8417,7 +9051,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电低温一级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电低温告警值</string>
@@ -8445,7 +9079,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电低温二级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电低温保护值</string>
@@ -8473,7 +9107,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温差上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯温差告警值</string>
@@ -8501,7 +9135,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温差上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯温差保护值</string>
@@ -8529,10 +9163,10 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温升上限</string>
+               <string/>
               </property>
               <property name="prefix">
-               <string>电芯温升上限值</string>
+               <string>电芯温升告警值</string>
               </property>
               <property name="suffix">
                <string>℃</string>
@@ -8557,7 +9191,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体温升上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电芯温升保护值</string>
@@ -8628,7 +9262,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>极柱温度上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>HVU极柱高温告警值</string>
@@ -8656,7 +9290,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>极柱温度上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>HVU极柱高温保护值</string>
@@ -8684,7 +9318,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇极柱温度上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>Pack极柱高温告警值</string>
@@ -8712,7 +9346,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇极柱温度上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>Pack极柱高温保护值</string>
@@ -8740,7 +9374,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电流上限</string>
+               <string>-充放电过流告警值</string>
               </property>
               <property name="prefix">
                <string>充放电过流告警值</string>
@@ -8768,7 +9402,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电流上上限</string>
+               <string>-充放电过流告警值</string>
               </property>
               <property name="prefix">
                <string>充放电过流保护值</string>
@@ -8796,7 +9430,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>短路电流限值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>短路电流保护值</string>
@@ -8824,7 +9458,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇过压告警值</string>
@@ -8852,7 +9486,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压上上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇过压保护值</string>
@@ -8880,7 +9514,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇欠压告警值</string>
@@ -8908,7 +9542,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇电压下下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>簇欠压保护值</string>
@@ -8936,7 +9570,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>绝缘电阻告警值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>绝缘电阻告警值</string>
@@ -8964,7 +9598,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>绝缘电阻保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>绝缘电阻保护值</string>
@@ -8992,7 +9626,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>漏电流告警值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>漏电流告警值</string>
@@ -9020,7 +9654,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>漏电流保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>漏电流保护值</string>
@@ -9091,7 +9725,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压数据屏蔽位A</string>
+               <string/>
               </property>
               <property name="wrapping">
                <bool>false</bool>
@@ -9122,7 +9756,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压数据屏蔽位B</string>
+               <string/>
               </property>
               <property name="wrapping">
                <bool>false</bool>
@@ -9153,7 +9787,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压数据屏蔽位C</string>
+               <string/>
               </property>
               <property name="wrapping">
                <bool>false</bool>
@@ -9184,7 +9818,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电压数据屏蔽位D</string>
+               <string/>
               </property>
               <property name="wrapping">
                <bool>false</bool>
@@ -9215,7 +9849,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>数据屏蔽位1</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>BMU数据屏蔽位1</string>
@@ -9243,7 +9877,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>数据屏蔽位2</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>BMU数据屏蔽位2</string>
@@ -9271,7 +9905,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>数据屏蔽位3</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>BMU数据屏蔽位3</string>
@@ -9299,7 +9933,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>数据屏蔽位4</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>BMU数据屏蔽位4</string>
@@ -9327,7 +9961,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>温度屏蔽位A</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>温度屏蔽位1</string>
@@ -9355,7 +9989,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>温度屏蔽位B</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>温度屏蔽位2</string>
@@ -9383,7 +10017,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>温度屏蔽位C</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>温度屏蔽位3</string>
@@ -9411,7 +10045,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>温度屏蔽位D</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>温度屏蔽位4</string>
@@ -9439,7 +10073,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>告警屏蔽位1</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>系统告警屏蔽寄存器1</string>
@@ -9467,7 +10101,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>保护屏蔽位1</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>系统故障屏蔽寄存器1</string>
@@ -9495,7 +10129,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>告警屏蔽位2</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>系统告警屏蔽寄存器2</string>
@@ -9523,7 +10157,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>保护屏蔽位2</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>系统故障屏蔽寄存器2</string>
@@ -9551,7 +10185,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>功能使能位</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>功能使能位</string>
@@ -9576,7 +10210,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>功能使能位2</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>功能使能位2</string>
@@ -9604,7 +10238,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>保护屏蔽</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>nBC故障屏蔽位</string>
@@ -9632,7 +10266,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电池包温度断线屏蔽</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>电池包温度断线屏蔽</string>
@@ -9703,7 +10337,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电池电压过压三级保护值</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -9737,7 +10371,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电池电压过充保护值</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -9771,7 +10405,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电池电压低压三级保护值</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -9805,7 +10439,7 @@
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="toolTip">
-               <string>单体电池电压过放保护值</string>
+               <string/>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -9839,7 +10473,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度充电高温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电高温锁定值</string>
@@ -9867,7 +10501,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电高温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电高温锁定值</string>
@@ -9895,7 +10529,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度充电低温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充电低温锁定值</string>
@@ -9923,7 +10557,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>模组温度放电低温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>放电低温锁定值</string>
@@ -9951,7 +10585,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>PACK极柱温度高温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>Pack极柱高温锁定值</string>
@@ -9979,7 +10613,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>簇极柱温度高温三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>HVU极柱高温锁定值</string>
@@ -10007,7 +10641,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>电流三级保护值</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>充放电过流锁定值</string>
@@ -10041,7 +10675,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>环控温度上限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>环控温度上限</string>
@@ -10069,7 +10703,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>SOC下下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>SOC上限</string>
@@ -10097,7 +10731,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>SOC下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>SOC下限</string>
@@ -10125,7 +10759,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>环控温度回差</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>环控温度回差</string>
@@ -10153,7 +10787,7 @@
                <enum>Qt::WheelFocus</enum>
               </property>
               <property name="toolTip">
-               <string>环控温度下限</string>
+               <string/>
               </property>
               <property name="prefix">
                <string>环控温度下限</string>
@@ -10316,256 +10950,485 @@
       <attribute name="title">
        <string>系统控制</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
+      <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="6,4,4,4,4,0">
        <item>
         <widget class="QGroupBox" name="G_FuncMask">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>650</width>
            <height>16777215</height>
           </size>
          </property>
          <property name="title">
           <string>使能位</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <layout class="QGridLayout" name="gridLayout_8" rowstretch="0,0" columnstretch="6,8">
           <property name="leftMargin">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>1</number>
+           <number>2</number>
           </property>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_32">
-            <item>
-             <widget class="QCheckBox" name="bFunc00">
-              <property name="text">
-               <string>使能CAN电流传感器</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc01">
-              <property name="text">
-               <string>使能绝缘板测总电压</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc02">
-              <property name="text">
-               <string>使能电压传感器</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc03">
-              <property name="text">
-               <string>使能漏电流传感器</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc04">
-              <property name="text">
-               <string>使能绝缘检测</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc05">
-              <property name="text">
-               <string>开启MODBUS写保护</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc06">
-              <property name="text">
-               <string>使能故障录波功能</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc07">
-              <property name="text">
-               <string>关闭参数设置限值</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc08">
-              <property name="text">
-               <string>使能本地环控</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc09">
-              <property name="text">
-               <string>关闭接触器远程控制</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc10">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc11">
-              <property name="text">
-               <string>使能调试信息输出</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc12">
-              <property name="text">
-               <string>使能SOC校准</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc13">
-              <property name="text">
-               <string>并/解列模式</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc14">
-              <property name="text">
-               <string>禁用预充逻辑</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFunc15">
-              <property name="text">
-               <string>禁用安防保护</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="0" column="1">
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_21">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_30">
+               <item>
+                <widget class="QCheckBox" name="bFuncEx00">
+                 <property name="text">
+                  <string>使能全程投入绝缘检测</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx01">
+                 <property name="text">
+                  <string>使能常规均衡策略</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx02">
+                 <property name="text">
+                  <string>开启恒压充电模式</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx03">
+                 <property name="text">
+                  <string>使能SOC均衡调整模式</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx04">
+                 <property name="text">
+                  <string>使能SOC计算阈值0.2A</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx05">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx06">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx07">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx08">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx09">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx10">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFuncEx11">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_23">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_37">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QCheckBox" name="bFuncEx12">
+                     <property name="text">
+                      <string>SOC选择L</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="bFuncEx13">
+                     <property name="text">
+                      <string>SOC选择H</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_7">
+                   <property name="font">
+                    <font>
+                     <pointsize>22</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>}</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="cB_Func2_1213">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>0-Mode1</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>1-Mode2</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2-Mode3</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>3-预留</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_24">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_35">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QCheckBox" name="bFuncEx14">
+                     <property name="text">
+                      <string>电池选择L</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="bFuncEx15">
+                     <property name="text">
+                      <string>电池选择H</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_11">
+                   <property name="font">
+                    <font>
+                     <pointsize>22</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>}</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="cB_Func2_1415">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>0-90Ah</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>1-280Ah</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>2-306Ah</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>3-预留</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_20">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_30">
-            <item>
-             <widget class="QCheckBox" name="bFuncEx00">
-              <property name="text">
-               <string>使能全程投入绝缘检测</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx01">
-              <property name="text">
-               <string>使能激进均衡策略</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx02">
-              <property name="text">
-               <string>开启恒压充电模式</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx03">
-              <property name="text">
-               <string>使能SOC均衡调整模式</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx04">
-              <property name="text">
-               <string>使能SOC计算阈值0.2A</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx05">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx06">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx07">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx08">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx09">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx10">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx11">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx12">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx13">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx14">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="bFuncEx15">
-              <property name="text">
-               <string>预留</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_32">
+               <item>
+                <widget class="QCheckBox" name="bFunc00">
+                 <property name="autoFillBackground">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>使能CAN电流传感器</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc01">
+                 <property name="text">
+                  <string>使能绝缘板测总电压</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc02">
+                 <property name="text">
+                  <string>使能电压传感器</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc03">
+                 <property name="text">
+                  <string>使能漏电流传感器</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc04">
+                 <property name="text">
+                  <string>使能绝缘检测</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc05">
+                 <property name="text">
+                  <string>开启MODBUS写保护</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc06">
+                 <property name="text">
+                  <string>使能故障录波功能</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc07">
+                 <property name="text">
+                  <string>关闭参数设置限值</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc08">
+                 <property name="text">
+                  <string>使能本地环控</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc09">
+                 <property name="text">
+                  <string>关闭接触器远程控制</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc10">
+                 <property name="text">
+                  <string>预留</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc11">
+                 <property name="text">
+                  <string>使能调试信息输出</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc12">
+                 <property name="text">
+                  <string>使能SOC校准</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc13">
+                 <property name="text">
+                  <string>并/解列模式</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc14">
+                 <property name="text">
+                  <string>禁用旧版预充策略</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="bFunc15">
+                 <property name="text">
+                  <string>使能外部安防控制</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_19">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <spacer name="verticalSpacer_18">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -10574,7 +11437,7 @@
         <widget class="QGroupBox" name="G_sysCtrl">
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>650</width>
            <height>16777215</height>
           </size>
          </property>
@@ -10591,8 +11454,8 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="6" column="2">
-           <widget class="QPushButton" name="btnAdjSOC">
+          <item row="10" column="1">
+           <widget class="QPushButton" name="btnHeRongON">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -10600,70 +11463,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>触发SOC自动校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="label_8">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QLabel" name="label_9">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QPushButton" name="AutoFindAddr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU自动寻址</string>
+             <string>开启核容功能</string>
             </property>
            </widget>
           </item>
@@ -10710,8 +11510,8 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="btnIOlock">
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btnIOunlock">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -10719,12 +11519,64 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>IO锁定</string>
+             <string>IO解锁</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QPushButton" name="btnSetSOH">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SOH手动标定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QPushButton" name="btnResetParaCali">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复默认校准参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="2">
+           <widget class="QPushButton" name="btnResetParaCfg">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复默认配置参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QPushButton" name="btnHeRongOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>关闭核容功能</string>
             </property>
            </widget>
           </item>
           <item row="16" column="1">
-           <widget class="QPushButton" name="btnImportSOC">
+           <widget class="QPushButton" name="btnUploadTrig">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -10732,11 +11584,197 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>导入OCV-SOC表</string>
+             <string>上送故障录波文件</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QPushButton" name="btnBMULock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU拨码锁定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="btnReboot">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>重启</string>
+            </property>
+            <property name="popupMode">
+             <enum>QToolButton::InstantPopup</enum>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextOnly</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QPushButton" name="AutoFindAddr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU自动寻址</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QLabel" name="label_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QPushButton" name="btnBMUUnlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU拨码解锁</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnTimeAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>校时</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="2">
+           <widget class="QPushButton" name="btnBalClrErr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除均衡故障</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="2">
+           <widget class="QPushButton" name="btnRClrErr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除绝缘检测故障</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QPushButton" name="btnSetSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SOC手动标定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="btnClearEng">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除电量统计</string>
             </property>
            </widget>
           </item>
           <item row="15" column="1">
+           <widget class="QPushButton" name="btnResetDef">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复出厂设置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
            <widget class="QLabel" name="label_10">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -10760,6 +11798,45 @@
              <string/>
             </property>
            </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="btnIOlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>IO锁定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QPushButton" name="btnBalance">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>均衡控制</string>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="1">
+           <spacer name="verticalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_1">
@@ -10804,143 +11881,7 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="2">
-           <widget class="QPushButton" name="btnHeRongOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>关闭核容功能</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="2">
-           <widget class="QPushButton" name="btnBalClrErr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除均衡故障</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="2">
-           <widget class="QPushButton" name="btnResetParaCfg">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>恢复默认配置参数(暂无)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QPushButton" name="btnBMULock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU拨码锁定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QPushButton" name="btnHeRongON">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>开启核容功能</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QPushButton" name="btnBMUUnlock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU拨码解锁</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1">
-           <widget class="QPushButton" name="btnResetDef">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>恢复出厂设置</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="2">
-           <widget class="QPushButton" name="btnResetParaCali">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>恢复默认校准参数</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QToolButton" name="btnReboot">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>重启</string>
-            </property>
-            <property name="popupMode">
-             <enum>QToolButton::InstantPopup</enum>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextOnly</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QPushButton" name="btnIOunlock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>IO解锁</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
+          <item row="12" column="1">
            <widget class="QPushButton" name="btnRCtrl">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -10953,46 +11894,33 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
-           <widget class="QPushButton" name="btnSetSOH">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>SOH手动标定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QPushButton" name="btnSetSOC">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>SOC手动标定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QPushButton" name="btnBalance">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>均衡控制</string>
-            </property>
-           </widget>
-          </item>
           <item row="18" column="1">
+           <widget class="QPushButton" name="btnImportSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>导入OCV-SOC表</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="btnAdjSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>触发SOC自动校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1">
            <widget class="QPushButton" name="btnClrSysLock">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -11008,68 +11936,22 @@
             </property>
            </widget>
           </item>
-          <item row="19" column="1">
-           <spacer name="verticalSpacer_13">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
+          <item row="7" column="1">
+           <widget class="QLabel" name="label_4">
+            <property name="minimumSize">
              <size>
-              <width>20</width>
-              <height>40</height>
+              <width>0</width>
+              <height>24</height>
              </size>
             </property>
-           </spacer>
-          </item>
-          <item row="10" column="2">
-           <widget class="QPushButton" name="btnRClrErr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
             </property>
             <property name="text">
-             <string>清除绝缘检测故障</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnTimeAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>校时</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <widget class="QPushButton" name="btnClearEng">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除电量统计</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
-           <widget class="QPushButton" name="btnUploadTrig">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>上送故障录波文件</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -11080,7 +11962,7 @@
         <widget class="QGroupBox" name="G_SensorCali">
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>650</width>
            <height>16777215</height>
           </size>
          </property>
@@ -11097,202 +11979,7 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnIleakBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>漏电流零点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="btnRUAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>绝缘母线电压校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="btnIBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电流零点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="btnRZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>预留传感器低点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="btnUBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电压零点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QPushButton" name="btnRFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>预留传感器高点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QPushButton" name="btnRnAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>负对地绝缘电阻校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="btnUFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电压高点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="btnIFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电流高点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnUZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电压低点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="btnIZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>簇电流低点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="btnRBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>预留传感器零点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="btnIleakZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>漏电流低点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QPushButton" name="btnRpAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>正对地绝缘电阻校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="btnIleakFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>漏电流高点校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
+          <item row="14" column="0">
            <spacer name="verticalSpacer_14">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -11305,6 +11992,372 @@
             </property>
            </spacer>
           </item>
+          <item row="10" column="0">
+           <widget class="QPushButton" name="btnRZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="2">
+           <widget class="QPushButton" name="btnRnAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>负对地绝缘电阻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QPushButton" name="btnIleakFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="btnUFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QPushButton" name="btnRFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QPushButton" name="btnRpAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>正对地绝缘电阻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_17">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnIZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btnIleakBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QLabel" name="label_19">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="btnUZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnIBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QPushButton" name="btnRBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="0">
+           <widget class="QPushButton" name="btnRUAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>母线电压</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btnIFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="btnUBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="btnIleakZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>簇电流校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QLabel" name="label_14">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>漏电流校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" colspan="3">
+           <widget class="QLabel" name="label_15">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>簇电压校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0" colspan="3">
+           <widget class="QLabel" name="label_18">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>预留传感器校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" colspan="3">
+           <widget class="QLabel" name="label_20">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>绝缘母线电压校准</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -11312,7 +12365,7 @@
         <widget class="QGroupBox" name="G_DeviceCtrl">
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>650</width>
            <height>16777215</height>
           </size>
          </property>
@@ -11329,8 +12382,8 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="btnAutoKMOFF">
+          <item row="4" column="0">
+           <widget class="QPushButton" name="btnQFON">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -11338,72 +12391,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>综合命令分闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="btnKMPON">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>KM+控制合闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QPushButton" name="btnFanOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>关闭风扇</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="btnKMNOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>KM-控制分闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnKMPOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>KM+控制分闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="btnKMROFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>KMR控制分闸</string>
+             <string>QF控制合闸</string>
             </property>
            </widget>
           </item>
@@ -11420,8 +12408,21 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnKMNON">
+          <item row="6" column="0">
+           <spacer name="verticalSpacer_15">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="btnKMNOFF">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -11429,7 +12430,20 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>KM-控制合闸</string>
+             <string>KM-控制分闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnKMPON">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>KM+控制合闸</string>
             </property>
            </widget>
           </item>
@@ -11446,6 +12460,19 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="btnAutoKMOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>综合命令分闸</string>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="1">
            <widget class="QPushButton" name="btnQFOFF">
             <property name="sizePolicy">
@@ -11456,6 +12483,58 @@
             </property>
             <property name="text">
              <string>QF控制分闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnKMPOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>KM+控制分闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="btnFanOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>关闭风扇</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="btnKMNON">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>KM-控制合闸</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="btnKMROFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>KMR控制分闸</string>
             </property>
            </widget>
           </item>
@@ -11472,32 +12551,6 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="btnQFON">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>QF控制合闸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <spacer name="verticalSpacer_15">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
          </layout>
         </widget>
        </item>
@@ -11505,7 +12558,7 @@
         <widget class="QGroupBox" name="G_DeviceDebug">
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>650</width>
            <height>16777215</height>
           </size>
          </property>
@@ -11522,101 +12575,178 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="7" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl11On">
-            <property name="text">
-             <string>预留继电器1开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl12On">
-            <property name="text">
-             <string>预留继电器2开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl6On">
-            <property name="text">
-             <string>放电状态继电器开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl10Off">
-            <property name="text">
-             <string>风扇控制继电器关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl13Off">
-            <property name="text">
-             <string>预留继电器3关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl7On">
-            <property name="text">
-             <string>运行状态继电器开</string>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="1">
            <widget class="QPushButton" name="btnDebugRelayCtrl7Off">
             <property name="text">
-             <string>运行状态继电器关</string>
+             <string>运行状态继电器断开</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl13On">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl4On">
             <property name="text">
-             <string>预留继电器3开</string>
+             <string>簇总故障继电器闭合</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl5On">
+          <item row="6" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl10On">
             <property name="text">
-             <string>充电状态继电器开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl14Off">
-            <property name="text">
-             <string>预留继电器4关</string>
+             <string>风扇控制继电器闭合</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
            <widget class="QPushButton" name="btnDebugRelayCtrl5Off">
             <property name="text">
-             <string>充电状态继电器关</string>
+             <string>充电状态继电器断开</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl14On">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl4Off">
             <property name="text">
-             <string>预留继电器4开</string>
+             <string>簇总故障继电器断开</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl12Off">
+          <item row="8" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl12On">
             <property name="text">
-             <string>预留继电器2关</string>
+             <string>预留继电器2闭合</string>
             </property>
            </widget>
           </item>
           <item row="11" column="0">
            <widget class="QPushButton" name="btnDebugRelayCtrl15On">
             <property name="text">
-             <string>预留继电器5开</string>
+             <string>预留继电器5闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl12Off">
+            <property name="text">
+             <string>预留继电器2断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl14Off">
+            <property name="text">
+             <string>预留继电器4断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl13On">
+            <property name="text">
+             <string>预留继电器3闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl8On">
+            <property name="text">
+             <string>BMU供电MOS闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl14On">
+            <property name="text">
+             <string>预留继电器4闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl10Off">
+            <property name="text">
+             <string>风扇控制继电器断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl11Off">
+            <property name="text">
+             <string>预留继电器1断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl6Off">
+            <property name="text">
+             <string>放电状态继电器断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl9On">
+            <property name="text">
+             <string>簇总告警继电器闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QPushButton" name="btnCan485SelfDetectOn">
+            <property name="text">
+             <string>CAN RS485自检</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl7On">
+            <property name="text">
+             <string>运行状态继电器闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl6On">
+            <property name="text">
+             <string>放电状态继电器闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl11On">
+            <property name="text">
+             <string>预留继电器1闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl13Off">
+            <property name="text">
+             <string>预留继电器3断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl8Off">
+            <property name="text">
+             <string>BMU供电MOS断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnDebugRelayCtrl5On">
+            <property name="text">
+             <string>充电状态继电器闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl9Off">
+            <property name="text">
+             <string>簇总告警继电器断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl15Off">
+            <property name="text">
+             <string>预留继电器5断开</string>
             </property>
            </widget>
           </item>
@@ -11632,83 +12762,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl4Off">
-            <property name="text">
-             <string>簇总故障继电器关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl8On">
-            <property name="text">
-             <string>BMU供电MOS开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl10On">
-            <property name="text">
-             <string>风扇控制继电器开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl8Off">
-            <property name="text">
-             <string>BMU供电MOS关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl9On">
-            <property name="text">
-             <string>簇总告警继电器开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl11Off">
-            <property name="text">
-             <string>预留继电器1关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl6Off">
-            <property name="text">
-             <string>放电状态继电器关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl15Off">
-            <property name="text">
-             <string>预留继电器5关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl9Off">
-            <property name="text">
-             <string>簇总告警继电器关</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl4On">
-            <property name="text">
-             <string>簇总故障继电器开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QPushButton" name="btnCan485SelfDetectOn">
-            <property name="text">
-             <string>CAN RS485自检</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>

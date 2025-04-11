@@ -156,7 +156,7 @@ void InputBox::setText(QString str) {
 
 void InputBox::setFontAndSize(int s){
 
-    if(s > 5 && s < 10){
+    if((s > 5) && (s < 10)){
         QFont f;
         f.setFamily(QFontInfo(ui->text->font()).family()); // 保持原字体族
         f.setPointSize(s);
@@ -170,7 +170,7 @@ void InputBox::setFontAndSize(int s){
         // 计算合适的高度
         QFontMetrics fm(f);
         ui->text->setMinimumHeight(fm.height() + 2); // 基础高度 + 边距
-        ui->text->setMaximumHeight(fm.height() * 2 + 4);
+        ui->text->setMaximumHeight(fm.height() + 4);
 //        qDebug()<<f;
     }
 }

@@ -102,15 +102,25 @@ class BMSView : public QWidget {
 
     void on_le_ErrLog_StdValue_editingFinished();
 
+    void on_cB_Func2_1213_currentIndexChanged(int index);
+
+    void on_cB_Func2_1415_currentIndexChanged(int index);
+
+    void on_refreashIp_clicked();
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
     frmSaveLog savelog;
+
+    uint32_t verCache;
+    void findPreVer(void);
 
 public slots:
     void rebootBmus();
 signals:
     void send_msg(TMsgData MsgCmd);
 };
+
 
 #endif

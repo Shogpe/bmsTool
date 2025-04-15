@@ -1,4 +1,4 @@
-#include "bms_datalog.h"
+﻿#include "bms_datalog.h"
 #include <QDateTime>
 #include <QLineEdit>
 #include <QMessageBox>
@@ -19,7 +19,7 @@ QString BmsDataLog::getStatusString(uint16_t status) {
     if (GET_BIT(status, 2)) statusList << "充满";
     if (GET_BIT(status, 3)) statusList << "放空";
     if (GET_BIT(status, 4)) statusList << "未初始化";
-    if (GET_BIT(status, 5)) statusList << "通信故障";
+    if (GET_BIT(status, 5)) statusList << "BMU通信故障";
     if (GET_BIT(status, 6)) statusList << "均衡";
     if (GET_BIT(status, 7)) statusList << "充电";
     if (GET_BIT(status, 8)) statusList << "放电";

@@ -704,22 +704,22 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }else{
             textList << tr("IO解锁") << tr("绝缘使能") << tr("RTU风扇使能") << tr("RTU核容使能") << tr("PCS运行状态") << tr("SOC需要校准")
-                     << tr("CMU故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
+                     << tr("CMU总故障锁定") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("") << tr("");
         }
         foreach (QLabel* Label, SysStatus) {
             QString color = ((value >> SysStatus.indexOf(Label)) & 0x01) > 0
@@ -863,27 +863,27 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << tr("预留") << tr("HVU极柱高温告警") << tr("预留") << tr("预留");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
             textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯高温告警") << tr("电芯低温告警")
-                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("Pack极柱高温告警") << tr("过负荷告警")
+                     << tr("电芯温升告警") << tr("温差过大告警")<< tr("Pack极柱高温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱高温") << tr("SOC过低告警") << tr("压差过大告警");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_8){
             textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯高温告警") << tr("电芯低温告警")
-                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("Pack极柱高温告警") << tr("过负荷告警")
+                     << tr("电芯温升告警") << tr("温差过大告警")<< tr("Pack极柱高温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱高温") << tr("SOC过低告警") << tr("压差过大告警");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_9){
             textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯高温告警") << tr("电芯低温告警")
-                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("Pack极柱高温告警") << tr("过负荷告警")
+                     << tr("电芯温升告警") << tr("温差过大告警")<< tr("Pack极柱高温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱高温") << tr("SOC过低告警") << tr("压差过大告警");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_10){
             textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯高温告警") << tr("电芯低温告警")
-                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("Pack极柱高温告警") << tr("过负荷告警")
+                     << tr("电芯温升告警") << tr("温差过大告警")<< tr("Pack极柱高温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱高温") << tr("SOC过低告警") << tr("压差过大告警");
         }else{
             textList << tr("电芯过压告警") << tr("电芯欠压告警") << tr("电芯高温告警") << tr("电芯低温告警")
-                     << tr("电芯温升告警") << tr("温差过大告警 ")<< tr("Pack极柱高温告警") << tr("过负荷告警")
+                     << tr("电芯温升告警") << tr("温差过大告警")<< tr("Pack极柱高温告警") << tr("过负荷告警")
                      << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("绝缘下降告警")
                      << tr("漏电流告警") << tr("簇极柱高温") << tr("SOC过低告警") << tr("压差过大告警");
         }
@@ -912,7 +912,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
             textList << tr("预留") << tr("预留") << tr("预留") << tr("预留")
-                     << tr("预留") << tr("电流采集告警")<< tr("断路器拒动告警") << tr("接触器拒动告警")
+                     << tr("预留") << tr("电流采样告警")<< tr("断路器拒动告警") << tr("接触器拒动告警")
                      << tr("Pack气溶胶动作告警") << tr("预留") << tr("预留") << tr("预留")
                      << tr("预留") << tr("预留") << tr("预留") << tr("预留");
         }else if(this->mycmu->GetProtocalVer() == CMUV4_6){
@@ -938,7 +938,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         }else{
             textList << tr("BMU拨码异常告警") << tr("电压线束断线告警") << tr("温度线束断线告警") << tr("簇极柱温度断线告警")
                      << tr("电压传感器断线告警") << tr("电流传感器断线告警")<< tr("断路器拒动告警") << tr("过负荷告警")
-                     << tr("BMU异常告警") << tr("簇过压告警告警") << tr("簇欠压告警") << tr("接触器拒动告警")
+                     << tr("BMU异常告警") << tr("簇过压告警") << tr("簇欠压告警") << tr("接触器拒动告警")
                      << tr("绝缘板采样压差过大告警") << tr("预留") << tr("预留") << tr("预留");
         }
         foreach (QLabel* Label, StatusList) {
@@ -969,9 +969,9 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            textList << tr("电芯电压采集异常") << tr("电芯温度采集异常") << tr("Pack极柱温度采集异常") << tr("HVU极柱温度采样异常")
-                     << tr("簇总压采集异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
-                     << tr("均衡功能异常") << tr("CMU-BMU通讯异常") << tr("CMU-绝缘检测板通讯异常") << tr("CAN霍尔信号异常")
+            textList << tr("电芯电压采样异常") << tr("电芯温度采样异常") << tr("Pack极柱温度采样异常") << tr("HVU极柱温度采样异常")
+                     << tr("簇总压采样异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
+                     << tr("均衡功能异常") << tr("CMU-BMU通信异常") << tr("CMU-INS通信异常") << tr("CAN霍尔信号异常")
                      << tr("AI霍尔信号异常") << tr("预留") << tr("预留") << tr("预留");
         }else{
             textList << tr("预留") << tr("预留") << tr("预留") << tr("预留")
@@ -1000,22 +1000,21 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         ui->G_DIStatus->setTitle(QString("%1: (0x%2)")
                                   .arg(tr("DI状态"))
                                   .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
-        //ui->G_DIStatus->setTitle(QString("%1(%2)").arg(tr("DI状态")).arg(value));
         QList<QLabel*> StatusList;
         StatusList << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3 << ui->bDI4 << ui->bDI5 << ui->bDI6 << ui->bDI7
                    << ui->bDI8 << ui->bDI9 << ui->bDI10 << ui->bDI11 << ui->bDI12 << ui->bDI13 << ui->bDI14
                    << ui->bDI15;
         QStringList textList;
         if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("预留状态输入1") << tr("预留状态输入2")
-                     << tr("预留状态输入3") << tr("交流有压状态") << tr("黑启动控制状态") << tr("外部硬线跳QF状态")
+            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("交流有压状态") << tr("黑启动控制状态") << tr("外部硬线跳QF状态")
                      << tr("总故障继电器状态") << tr("BMU风扇继电器状态") << tr("HVU风扇继电器状态")
-                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("预留状态输入4");
+                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("预留");
         }else{
             textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("故障输入") << tr("主从状态")
-                     << tr("预留DIN1(水浸)") << tr("交流有压状态") << tr("急停故障") << tr("QF继电器状态")
-                     << tr("故障输出继电器状态") << tr("BMU风扇继电器状态") << tr("高压箱风扇继电器状态")
-                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("备用16");
+                     << tr("预留(水浸)") << tr("交流有压状态") << tr("急停故障") << tr("QF继电器状态")
+                     << tr("总故障继电器状态") << tr("BMU风扇继电器状态") << tr("HVU风扇继电器状态")
+                     << tr("充满继电器状态") << tr("放空继电器状态") << tr("预留");
         }
 
         foreach (QLabel* Label, StatusList) {
@@ -1028,7 +1027,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
     if (mapData.contains("sysDOStatus")) {
         uint16_t value = mapData.value("sysDOStatus");
-        ui->G_DOStatus->setTitle(QString("%1(%2)").arg(tr("DO状态")).arg(value,4,16,QChar('0')));
+        ui->G_DOStatus->setTitle(QString("%1: (0x%2)").arg(tr("DO状态")).arg(value,4,16,QChar('0')));
 
         QList<QLabel*> RadioList;
         RadioList << ui->bDO0 << ui->bDO1 << ui->bDO2 << ui->bDO3 << ui->bDO4 << ui->bDO5 << ui->bDO6 << ui->bDO7
@@ -1036,7 +1035,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         QStringList textList;
         textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
                  << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
-                 << tr("备用12") << tr("充满输出") << tr("放空输出") << tr("备用15") << tr("备用16");
+                 << tr("预留") << tr("充满输出") << tr("放空输出") << tr("预留") << tr("预留");
         foreach (QLabel* rb, RadioList) {
             bool bit = ((value >> RadioList.indexOf(rb)) & 0x01) > 0;
             QString color = bit ? "color:darkRed;text-decoration:underline;font:bold;" : "color:darkGreen;";
@@ -1044,6 +1043,17 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             rb->blockSignals(true);
             rb->blockSignals(false);
             rb->setText(textList.at(RadioList.indexOf(rb)));
+//            if((!rb->text().startsWith("Reserved"))&&(!rb->text().startsWith("预留")))
+//            {
+//                if(bit)
+//                {
+//                    rb->setText(rb->text() + tr("开"));
+//                }
+//                else
+//                {
+//                    rb->setText(rb->text() + tr("关"));
+//                }
+//            }
         }
     }
     if (mapData.contains("FuncMask")) {
@@ -1067,20 +1077,20 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             if(this->mycmu->GetProtocalVer() == CMUV5_0){
                 textList << tr("使能CAN电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
-                         << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限制") << tr("使能本地环控")
+                         << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限值") << tr("使能本地环控")
                          << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("使能SOC校准")
-                         << tr("并/解列模式") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
+                         << tr("并列/解列") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
             }else{
-                textList << tr("使能预留传感器") << tr("使能绝缘板采样电压") << tr("使能电压传感器") << tr("使能漏电流传感器")
-                         << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
-                         << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                textList << tr("使能CAN电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
+                         << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限值") << tr("使能本地环控")
+                         << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("单簇/多簇")
                          << tr("并列/解列") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
             }
         }else
         {
             textList << tr("使能双CAN") << tr("使能电流传感器") << tr("使能电压传感器") << tr("使能漏电流传感器")
-                     << tr("使能绝缘检测") << tr("使能写保护") << tr("使能故障录波") << tr("禁用定值限制") << tr("使能环控")
-                     << tr("禁用远控接触器") << tr("网络输出使能") << tr("调试输出使能") << tr("单簇/多簇")
+                     << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限值") << tr("使能本地环控")
+                     << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("单簇/多簇")
                      << tr("并列/解列") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
         }
         foreach (QCheckBox* cb, CheckBoxList) {
@@ -1101,7 +1111,6 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                                   .arg(valueApend,4,16,QChar('0'))
                                   .arg(value,4,16,QChar('0')));//布局不一定是按照点表来的，不一定有意义
 
-//        ui->G_FuncMask->setTitle(QString("%1(%2)").arg(tr("使能位")).arg(value));
         QList<QCheckBox*> CheckBoxList;
         CheckBoxList << ui->bFuncEx00 << ui->bFuncEx01 << ui->bFuncEx02 << ui->bFuncEx03 << ui->bFuncEx04 << ui->bFuncEx05 << ui->bFuncEx06
                      << ui->bFuncEx07 << ui->bFuncEx08 << ui->bFuncEx09 << ui->bFuncEx10 << ui->bFuncEx11 << ui->bFuncEx12
@@ -1226,9 +1235,9 @@ QString getBmuInfo2(uint16_t status) {
     statusList << (GET_BIT(status, 2) ? QObject::tr("干结点开路") : QObject::tr("干结点闭合"));
     statusList << (GET_BIT(status, 3) ? QObject::tr("风机开") : QObject::tr("风机关"));
     if (!GET_BIT(status, 4)) statusList << QObject::tr("辅源异常");
-    if (GET_BIT(status, 5)) statusList << QObject::tr("备用5");
-    if (GET_BIT(status, 6)) statusList << QObject::tr("备用6");
-    if (GET_BIT(status, 7)) statusList << QObject::tr("备用7");
+    if (GET_BIT(status, 5)) statusList << QObject::tr("预留");
+    if (GET_BIT(status, 6)) statusList << QObject::tr("预留");
+    if (GET_BIT(status, 7)) statusList << QObject::tr("预留");
     if (GET_BIT(status, 8)) statusList << QObject::tr("1.25V错误");
     if (GET_BIT(status, 9)) statusList << QObject::tr("均衡母线错误");
     if (GET_BIT(status, 10)) statusList << QObject::tr("均衡电流异常");

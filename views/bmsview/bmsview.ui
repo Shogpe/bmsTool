@@ -86,7 +86,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>debug</string>
+         <string>Debug</string>
         </property>
        </widget>
       </item>
@@ -324,7 +324,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -569,7 +569,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>通信故障</string>
+                   <string>BMU通信故障</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -704,7 +704,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>绝缘通信(11)</string>
+                   <string>绝缘通信</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -726,7 +726,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>自检(12)</string>
+                   <string>自检</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1216,7 +1216,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>断路器QF状态(0)</string>
+                   <string>断路器QF状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1229,7 +1229,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>接触器KM+状态(1)</string>
+                   <string>接触器KM+状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1242,7 +1242,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>接触器KM-状态(2)</string>
+                   <string>接触器KM-状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1255,7 +1255,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>接触器KMR状态(3)</string>
+                   <string>接触器KMR状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1268,7 +1268,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>CCU告警(4)</string>
+                   <string>CCU告警</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1281,7 +1281,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>主从状态(5)</string>
+                   <string>主从状态</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1411,7 +1411,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(15)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2036,7 +2036,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电芯高压锁定</string>
+                   <string>电芯过压锁定</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2052,7 +2052,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电芯低压锁定</string>
+                   <string>电芯欠压锁定</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2696,7 +2696,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(9)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2709,7 +2709,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(10)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2722,7 +2722,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(11)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2735,7 +2735,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(12)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2748,7 +2748,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(13)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2761,7 +2761,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(14)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2774,7 +2774,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>备用(15)</string>
+                   <string>预留</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2923,7 +2923,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>电芯温度异常</string>
+                   <string>电芯温差异常</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -11304,7 +11304,7 @@
                <item>
                 <widget class="QCheckBox" name="bFunc02">
                  <property name="text">
-                  <string>使能电压传感器</string>
+                  <string>使能电压传感器(预留)</string>
                  </property>
                 </widget>
                </item>
@@ -11381,7 +11381,7 @@
                <item>
                 <widget class="QCheckBox" name="bFunc13">
                  <property name="text">
-                  <string>并/解列模式</string>
+                  <string>并列/解列</string>
                  </property>
                 </widget>
                </item>

@@ -301,7 +301,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     ui->tableBMU->setRowCount(config.bmu_num);
 
     for (int i = 0; i < config.vol_num; i++) {
-        hdr_list.append(("Vol" + QString::number(i + 1)));
+        hdr_list.append(("Cell" + QString::number(i + 1)));
     }
 
 
@@ -317,13 +317,13 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     hdr_list.clear();
     for (int i = 0; i < config.T_num; i++) {
         if(i>=24){
-            hdr_list.append(("Tpack" + QString::number(i + 1) + tr("铜排")));
+            hdr_list.append((tr("铜排") + " T" + QString::number(i + 1)));
         }else{
-            hdr_list.append(("Tpack" + QString::number(i + 1)));
+            hdr_list.append(("T" + QString::number(i + 1)));
         }
     }
     for (int i = 0; i < config.Tp_num; i++) {
-        hdr_list.append(("Tp" + QString::number(i + 1)));
+        hdr_list.append((tr("极柱") + " T" + QString::number(i + 1)));
     }
     ui->tableTemp->setColumnCount(hdr_list.size());
     ui->tableTemp->setHorizontalHeaderLabels(hdr_list);

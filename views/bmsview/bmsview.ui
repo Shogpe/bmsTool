@@ -105,7 +105,7 @@
          </size>
         </property>
         <property name="text">
-         <string>刷新可用CMU ip</string>
+         <string>刷新本地可用CMU ip</string>
         </property>
        </widget>
       </item>
@@ -324,7 +324,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">

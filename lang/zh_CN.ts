@@ -3125,6 +3125,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <source>极柱</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.cpp" line="354"/>
         <source>风机转速</source>
         <translation type="unfinished"></translation>
@@ -5440,6 +5445,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../models/logindialog/logindialog.ui" line="125"/>
+        <source>1a2jgPAG93tAg1V39CaH1f83c3H5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../models/logindialog/logindialog.ui" line="183"/>
         <source>登录</source>
         <translation type="unfinished"></translation>
@@ -5469,7 +5479,7 @@
     <name>mb_cmu</name>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="138"/>
-        <source>CH:%1 Cur:</source>
+        <source>CH:%1 Curr:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

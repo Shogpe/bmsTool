@@ -1946,12 +1946,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="4048"/>
         <source>最高Pack铜排温度</source>
-        <translation>Pack Copper Bar Temp Max</translation>
+        <translation>Pack Bus Bar Temp Max</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="4100"/>
         <source>最低Pack铜排温度</source>
-        <translation>Pack Copper Bar Temp Min</translation>
+        <translation>Pack Bus Bar Temp Min</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="4152"/>
@@ -2271,7 +2271,7 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8320"/>
         <source>系统参数2</source>
-        <translation>Sys Parameters 2</translation>
+        <translation>System Parameters 2</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8353"/>
@@ -3141,7 +3141,7 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="338"/>
         <source>运行状态</source>
-        <translation>Operating status</translation>
+        <translation>Running Status</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="1680"/>
@@ -3166,7 +3166,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="320"/>
         <source>铜排</source>
-        <translation>Copper bar</translation>
+        <translation>Bus Bar</translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <source>极柱</source>
+        <translation>Pole</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="358"/>
@@ -3181,7 +3186,7 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="363"/>
         <source>均衡电流(A)</source>
-        <translation>Balancing current (A)</translation>
+        <translation>Balancing Current (A)</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="364"/>
@@ -3191,13 +3196,13 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="365"/>
         <source>通道状态</source>
-        <translation>Channel status</translation>
+        <translation>Channel Status</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="377"/>
         <location filename="../views/bmsview/bmsview.cpp" line="380"/>
         <source>均衡配置</source>
-        <translation>Balancing configuration</translation>
+        <translation>Balancing Configuration</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="409"/>
@@ -3319,7 +3324,7 @@ Version number:</translation>
         <location filename="../views/bmsview/bmsview.cpp" line="403"/>
         <location filename="../views/bmsview/bmsview.cpp" line="405"/>
         <source>BOOT版本</source>
-        <translation>BOOT version</translation>
+        <translation>BOOT Version</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="399"/>
@@ -3329,12 +3334,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="400"/>
         <source>模块温度1</source>
-        <translation>Module temperature 1</translation>
+        <translation>Module Temp 1</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="401"/>
         <source>模块温度2</source>
-        <translation>Module temperature 2</translation>
+        <translation>Module Temp 2</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="590"/>
@@ -3559,25 +3564,25 @@ Version number:</translation>
         <location filename="../views/bmsview/bmsview.cpp" line="1177"/>
         <location filename="../views/bmsview/bmsview.cpp" line="1200"/>
         <source>禁止均衡</source>
-        <translation>Disable balancing</translation>
+        <translation>Disable Balancing</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1180"/>
         <location filename="../views/bmsview/bmsview.cpp" line="1203"/>
         <source>强制均衡</source>
-        <translation>Force balancing</translation>
+        <translation>Force Balancing</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1183"/>
         <location filename="../views/bmsview/bmsview.cpp" line="1206"/>
         <source>自动均衡</source>
-        <translation>Auto balancing</translation>
+        <translation>Auto Balancing</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1186"/>
         <location filename="../views/bmsview/bmsview.cpp" line="1209"/>
         <source>手动均衡</source>
-        <translation>Manual balancing</translation>
+        <translation>Manual Balancing</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1189"/>
@@ -3608,22 +3613,22 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="367"/>
         <source>模组A均衡信息</source>
-        <translation>Module A balance information</translation>
+        <translation>Module A Balance Information</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="368"/>
         <source>模组B均衡信息</source>
-        <translation>Module B balance information</translation>
+        <translation>Module B Balance Information</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="369"/>
         <source>模组C均衡信息</source>
-        <translation>Module C balance information</translation>
+        <translation>Module C Balance Information</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="370"/>
         <source>模组D均衡信息</source>
-        <translation>Module D balance information</translation>
+        <translation>Module D Balance Information</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.ui" line="8207"/>
@@ -3691,7 +3696,7 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1896"/>
         <source>是否清除均衡故障？</source>
-        <translation>Clear balancing Faults?</translation>
+        <translation>Clear Balancing Faults?</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1907"/>
@@ -3842,7 +3847,7 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="2292"/>
         <source>修改均衡配置</source>
-        <translation>Modify balancing configuration</translation>
+        <translation>Modify Balancing Configuration</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="2489"/>
@@ -4383,12 +4388,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1242"/>
         <source>均衡母线错误</source>
-        <translation>Balancing bus error</translation>
+        <translation>Balancing Bus Error</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1243"/>
         <source>均衡电流异常</source>
-        <translation>Balancing current Abnormal</translation>
+        <translation>Balancing Current Abnormal</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1244"/>
@@ -4398,12 +4403,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1245"/>
         <source>电芯电压异常</source>
-        <translation>Abnormal cell Volt</translation>
+        <translation>Abnormal Cell Volt</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1246"/>
         <source>均衡参数错误</source>
-        <translation>Balancing parameter error</translation>
+        <translation>Balancing Parameter Error</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1247"/>
@@ -4413,12 +4418,12 @@ Version number:</translation>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1248"/>
         <source>副边电压异常</source>
-        <translation>Abnormal secondary Volt</translation>
+        <translation>Abnormal Secondary Volt</translation>
     </message>
     <message>
         <location filename="../socImporter.cpp" line="28"/>
         <source>选择工作簿...</source>
-        <translation>Select workbook...</translation>
+        <translation>Select Workbook...</translation>
     </message>
     <message>
         <location filename="../socImporter.cpp" line="29"/>
@@ -4526,7 +4531,7 @@ Version number:</translation>
         <location filename="../models/SOEModel/SOEModel.h" line="58"/>
         <location filename="../models/SOEModel/SOEModel.h" line="69"/>
         <source>系统状态</source>
-        <translation>Sys Status</translation>
+        <translation>System Status</translation>
     </message>
     <message>
         <location filename="../models/SOEModel/SOEModel.h" line="61"/>
@@ -5442,6 +5447,11 @@ Version number:</translation>
         <translation>Verification Code</translation>
     </message>
     <message>
+        <location filename="../models/logindialog/logindialog.ui" line="125"/>
+        <source>1a2jgPAG93tAg1V39CaH1f83c3H5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../models/logindialog/logindialog.ui" line="183"/>
         <source>登录</source>
         <translation>Login</translation>
@@ -5471,13 +5481,13 @@ Version number:</translation>
     <name>mb_cmu</name>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="138"/>
-        <source>CH:%1 Cur:</source>
-        <translation></translation>
+        <source>CH:%1 Curr:</source>
+        <translation>CH:%1 Curr:</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="170"/>
         <source>BMU%1_模块温度1,</source>
-        <translation>BMU%1_ Module temperature 1,</translation>
+        <translation>BMU%1_ Module Temperature 1,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="171"/>
@@ -5487,17 +5497,17 @@ Version number:</translation>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="180"/>
         <source>BMU%1_Tp%2,</source>
-        <translation></translation>
+        <translation>BMU%1_Tp%2,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="182"/>
         <source>BMU%1_电压断线,</source>
-        <translation>BMU%1_ Voltage break,</translation>
+        <translation>BMU%1_ Voltage Open Wire,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="183"/>
         <source>BMU%1_温度断线,</source>
-        <translation>BMU%1_ Temperature break,</translation>
+        <translation>BMU%1_ Temperature Open Wire,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="184"/>
@@ -5512,47 +5522,47 @@ Version number:</translation>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="187"/>
         <source>BMU%1_风机转速,</source>
-        <translation>BMU%1 Fan speed,</translation>
+        <translation>BMU%1 Fan Speed,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="190"/>
         <source>BMU%1_CAN错误,</source>
-        <translation>BMU%1_CAN error,</translation>
+        <translation>BMU%1_CAN Error,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="193"/>
         <source>BMU%1_母线电压,</source>
-        <translation>BMU%1_ Bus voltage,</translation>
+        <translation>BMU%1_ Bus Voltage,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="195"/>
         <source>BMU%1_均衡电流,</source>
-        <translation>BMU%1_ Balanced current,</translation>
+        <translation>BMU%1_ Balanced Current,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="197"/>
         <source>BMU%1_模组A均衡电流,</source>
-        <translation>BMU%1_ Module A equalizes current,</translation>
+        <translation>BMU%1_ Module A Equalizes Current,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="198"/>
         <source>BMU%1_模组B均衡电流,</source>
-        <translation>BMU%1_ Module B equalizes current,</translation>
+        <translation>BMU%1_ Module B Equalizes Current,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="199"/>
         <source>BMU%1_模组C均衡电流,</source>
-        <translation>BMU%1_ Module C equalizes current,</translation>
+        <translation>BMU%1_ Module C Equalizes Current,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="200"/>
         <source>BMU%1_模组D均衡电流,</source>
-        <translation>BMU%1_ Module D equalizes current,</translation>
+        <translation>BMU%1_ Module D Equalizes Current,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="202"/>
         <source>BMU%1_均衡故障,</source>
-        <translation>BMU%1_ Balancing fault,</translation>
+        <translation>BMU%1_ Balancing Fault,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="203"/>
@@ -5562,7 +5572,7 @@ Version number:</translation>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="204"/>
         <source>BMU%1_均衡模式,</source>
-        <translation>BMU%1_ Balanced mode,</translation>
+        <translation>BMU%1_ Balanced Mode,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="206"/>
@@ -5582,34 +5592,34 @@ Version number:</translation>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="418"/>
         <source>运行状态,</source>
-        <translation>Running state,</translation>
+        <translation>Running State,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="419"/>
         <source>故障状态,</source>
-        <translation>Fault state,</translation>
+        <translation>Fault State,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="420"/>
         <source>电压采集异常通道及对应电压,</source>
-        <translation>Voltage acquisition abnormal channel and corresponding voltage,</translation>
+        <translation>Voltage Acquisition Abnormal Channel And Corresponding Voltage,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="421"/>
         <source>电池温度异常通道及对应温度,</source>
-        <translation>Abnormal battery temperature channels and corresponding temperatures,</translation>
+        <translation>Abnormal Battery Temperature Channels And Corresponding Temperatures,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="1258"/>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="1259"/>
         <source>操作失败</source>
-        <translation>Operation failed</translation>
+        <translation>Operation Failed</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="1261"/>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="1262"/>
         <source>操作成功</source>
-        <translation>Operation succeeded</translation>
+        <translation>Operation Succeeded</translation>
     </message>
 </context>
 <context>

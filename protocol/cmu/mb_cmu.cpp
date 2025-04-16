@@ -131,11 +131,11 @@ QString mb_cmu::GetBalanceValue(uint64_t status, int16_t *cur)
     QString str;
     double Cur;
 
-    for (int i = 0; i < 64; ++i) {              
+    for (int i = 0; i < config.vol_num; ++i) {
         if((status>>i)&0x01){
             int index = i/(config.vol_num/4);
             Cur = cur[index] * 0.001;
-            str = tr("CH:%1 Cur:").arg(i+1) + QString::number(Cur,'f',1) + "A";
+            str = tr("CH:%1 Curr:").arg(i+1) + QString::number(Cur,'f',1) + "A";
             statusList[index] = str;
         }
     }

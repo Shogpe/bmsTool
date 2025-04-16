@@ -3096,6 +3096,16 @@
         <translation>初始化完成</translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="320"/>
+        <source>铜排</source>
+        <translation>銅排</translation>
+    </message>
+    <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="326"/>
+        <source>极柱</source>
+        <translation>極柱</translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.cpp" line="337"/>
         <location filename="../views/bmsview/bmsview.cpp" line="488"/>
         <source>版本号</source>
@@ -3549,11 +3559,6 @@
         <location filename="../views/bmsview/bmsview.cpp" line="1929"/>
         <source>invalid value:%1!</source>
         <translation>無效的值：%1！</translation>
-    </message>
-    <message>
-        <location filename="../views/bmsview/bmsview.cpp" line="320"/>
-        <source>铜排</source>
-        <translation>銅排</translation>
     </message>
     <message>
         <location filename="../views/bmsview/bmsview.cpp" line="590"/>
@@ -5442,6 +5447,11 @@
         <translation>動態驗證碼</translation>
     </message>
     <message>
+        <location filename="../models/logindialog/logindialog.ui" line="125"/>
+        <source>1a2jgPAG93tAg1V39CaH1f83c3H5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../models/logindialog/logindialog.ui" line="183"/>
         <source>登录</source>
         <translation>登錄</translation>
@@ -5471,8 +5481,8 @@
     <name>mb_cmu</name>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="138"/>
-        <source>CH:%1 Cur:</source>
-        <translation>CH:%1 Cur:</translation>
+        <source>CH:%1 Curr:</source>
+        <translation>CH:%1 Curr:</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="170"/>
@@ -5487,7 +5497,7 @@
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="180"/>
         <source>BMU%1_Tp%2,</source>
-        <translation></translation>
+        <translation>BMU%1_Tp%2,</translation>
     </message>
     <message>
         <location filename="../protocol/cmu/mb_cmu.cpp" line="182"/>

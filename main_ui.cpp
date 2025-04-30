@@ -248,7 +248,6 @@ void MainUI::initUserLevelForm()
         ui->lb_userMode->setText(tr(" - Engineer"));
         ui->labUser->setText("Engineer");
     }
-
 }
 
 

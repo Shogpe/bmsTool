@@ -361,22 +361,8 @@ void mb_cmu::Dump2Csv() {
             object.insert((QString("BMU%1_Run,").arg(i + 1)), val);
             val = this->bmu_data[i].ErrStat;
             object.insert((QString("BMU%1_Err,").arg(i + 1)), val);
-            //            if (protocal_ver > CMUV3) {
-            //                val = this->bmu_data[i].BalU24;
-            //                object.insert((QString("BMU%1_BalU24,").arg(i + 1)), val);
-            //                val = this->bmu_data[i].BalIdc / 1000.0;
-            //                object.insert((QString("BMU%1_BalIdc,").arg(i + 1)), val);
-            //                object.insert((QString("BMU%1_BalErr,").arg(i + 1)),
-            //                GetBalanceStatus(this->bmu_data[i].BalErr));
-            //                object.insert((QString("BMU%1_BalStat,").arg(i + 1)),
-            //                GetBalanceStatus(this->bmu_data[i].BalStat));
-            //                object.insert((QString("BMU%1_BalMode,").arg(i + 1)),
-            //                GetBalanceValue(this->bmu_data[i].BalMode));
-            //            }
-            //            object.insert((QString("BMU%1_Ver").arg(i + 1)),
-            //            myHelper::IntegerToHexString(this->bmu_data[i].Version));
+
         }
-        //        object.insert(QString("CMU_Ver"), myHelper::IntegerToHexString(cmu_ver));
 
         // 以读写方式打开主目录下的1.json文件，若该文件不存在则会自动创建
         QFile file(recPath + "/" + QDateTime::currentDateTime().toString("yyyyMMddThhmmss") + ".rec");
@@ -1411,7 +1397,9 @@ int mb_cmu::ReadSOE() {
     cmu_soe.list_soe.clear();
     if (((is_gender_balanced(protocal_ver)) && (this->cmu_ver >= 0x00000402)) ||
         ((is_main_line(protocal_ver)) && (this->cmu_ver >= 0x00000407))) {
-        if(protocal_ver == CMUV4_6){
+        if(protocal_ver == CMUV5_0){
+            cmu_soe.type = db_manager::SOE_BMS4;
+        }else if(protocal_ver == CMUV4_6){
             cmu_soe.type = db_manager::SOE_BMS3;
         }else{
             cmu_soe.type = db_manager::SOE_BMS2;

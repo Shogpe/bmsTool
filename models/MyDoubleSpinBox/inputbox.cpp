@@ -110,13 +110,13 @@ void InputBox::setValueDirect(qreal val) {
             break;
         case CT_HEX_VER:
 
-//            setText(myHelper::IntegerToHexString(val));
-            uvalue = val;
-            setText(QString("%1.%2.%3.%4")
-                        .arg((uvalue >> 24) & 0xFF, 2, 16, QChar('0'))
-                        .arg((uvalue >> 16) & 0xFF, 2, 16, QChar('0'))
-                        .arg((uvalue >> 8)  & 0xFF, 2, 16, QChar('0'))
-                        .arg((uvalue >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper());
+            setText(myHelper::IntegerToHexString(val));
+//            uvalue = val;
+//            setText(QString("%1.%2.%3.%4(Hex)")
+//                        .arg((uvalue >> 24) & 0xFF, 2, 16, QChar('0'))
+//                        .arg((uvalue >> 16) & 0xFF, 2, 16, QChar('0'))
+//                        .arg((uvalue >> 8)  & 0xFF, 2, 16, QChar('0'))
+//                        .arg((uvalue >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper());
             break;
         case CT_BIT_ARR: {
             ivalue = val;

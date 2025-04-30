@@ -208,12 +208,12 @@ class myHelper : public QObject {
     static QString IDToString(uint16_t id, uint16_t num) {
         return (num > 0) ? QString("%1-%2").arg(id / num + 1).arg(id % num + 1) : QString("%1-%2").arg(id).arg(num);
     }
-    static QString IntegerToHexString(uint32_t ip) {
-        return QString("%1.%2.%3.%4")
-            .arg((ip >> 24) & 0xFF, 0, 10)
-            .arg((ip >> 16) & 0xFF, 0, 10)
-            .arg((ip >> 8)  & 0xFF, 0, 10)
-            .arg((ip >> 0)  & 0xFF, 0, 10);
+    static QString IntegerToHexString(uint32_t uvalue) {
+        return QString("%1.%2.%3.%4(H)")
+                .arg((uvalue >> 24) & 0xFF, 2, 16, QChar('0'))
+                .arg((uvalue >> 16) & 0xFF, 2, 16, QChar('0'))
+                .arg((uvalue >> 8)  & 0xFF, 2, 16, QChar('0'))
+                .arg((uvalue >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper();
     }
     static void SetAppValue(const QString &key, const QVariant &value) {
         QSettings(QSettings::IniFormat, QSettings::UserScope, VER_COMPANYNAME_STR, VER_FILEDESCRIPTION_STR)

@@ -27,7 +27,9 @@ class db_manager {
         SOE_BMS1 = 1,
         SOE_BMS2 = 2,
         SOE_BMS3 = 3,
-        SOE_RTU1 = 4,
+//        SOE_RTU1 = 4,
+        SOE_BMS4 = 4,
+        SOE_RTU1 = 5,
     };
     enum USER_LEVEL{
         LEVEL_ERROR_L = 0,

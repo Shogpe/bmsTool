@@ -105,7 +105,7 @@
          </size>
         </property>
         <property name="text">
-         <string>刷新本地可用CMU ip</string>
+         <string>刷新本地可用CMU IP</string>
         </property>
        </widget>
       </item>
@@ -324,7 +324,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -6411,7 +6411,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="InputBox" name="commSelfDetectStat">
+                 <widget class="InputBox" name="can485Stat">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -6767,134 +6767,6 @@
                   </property>
                   <property name="type" stdset="0">
                    <number>3</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="InputBox" name="func1Bit">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="inputMethodHints">
-                   <set>Qt::ImhNone</set>
-                  </property>
-                  <property name="wrapping">
-                   <bool>false</bool>
-                  </property>
-                  <property name="frame">
-                   <bool>false</bool>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="specialValueText">
-                   <string>???</string>
-                  </property>
-                  <property name="accelerated">
-                   <bool>false</bool>
-                  </property>
-                  <property name="keyboardTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="prefix">
-                   <string>功能使能状态1</string>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="decimals">
-                   <number>0</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-2.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5000000000.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="type" stdset="0">
-                   <number>4</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="InputBox" name="func2Bit">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="inputMethodHints">
-                   <set>Qt::ImhNone</set>
-                  </property>
-                  <property name="wrapping">
-                   <bool>false</bool>
-                  </property>
-                  <property name="frame">
-                   <bool>false</bool>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="specialValueText">
-                   <string>???</string>
-                  </property>
-                  <property name="accelerated">
-                   <bool>false</bool>
-                  </property>
-                  <property name="keyboardTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="prefix">
-                   <string>功能使能状态2</string>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="decimals">
-                   <number>0</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-2.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5000000000.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="type" stdset="0">
-                   <number>4</number>
                   </property>
                  </widget>
                 </item>
@@ -7587,6 +7459,134 @@
                   </property>
                   <property name="singleStep">
                    <double>0.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="InputBox" name="func1Bit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="inputMethodHints">
+                   <set>Qt::ImhNone</set>
+                  </property>
+                  <property name="wrapping">
+                   <bool>false</bool>
+                  </property>
+                  <property name="frame">
+                   <bool>false</bool>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="specialValueText">
+                   <string>???</string>
+                  </property>
+                  <property name="accelerated">
+                   <bool>false</bool>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>false</bool>
+                  </property>
+                  <property name="prefix">
+                   <string>功能使能状态1</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="decimals">
+                   <number>0</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000000000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="type" stdset="0">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="InputBox" name="func2Bit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="inputMethodHints">
+                   <set>Qt::ImhNone</set>
+                  </property>
+                  <property name="wrapping">
+                   <bool>false</bool>
+                  </property>
+                  <property name="frame">
+                   <bool>false</bool>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="specialValueText">
+                   <string>???</string>
+                  </property>
+                  <property name="accelerated">
+                   <bool>false</bool>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>false</bool>
+                  </property>
+                  <property name="prefix">
+                   <string>功能使能状态2</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="decimals">
+                   <number>0</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000000000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="type" stdset="0">
+                   <number>4</number>
                   </property>
                  </widget>
                 </item>
@@ -9251,62 +9251,6 @@
              <number>2</number>
             </property>
             <item>
-             <widget class="InputBox" name="PoleTH">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>HVU极柱高温告警值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="PoleTHH">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>HVU极柱高温保护值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="InputBox" name="CPoleTH">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -9321,7 +9265,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>Pack极柱高温告警值</string>
+               <string>HVU极柱高温告警值</string>
               </property>
               <property name="suffix">
                <string>℃</string>
@@ -9349,7 +9293,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>Pack极柱高温保护值</string>
+               <string>HVU极柱高温保护值</string>
               </property>
               <property name="suffix">
                <string>℃</string>
@@ -9359,6 +9303,62 @@
               </property>
               <property name="maximum">
                <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="PoleTH">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>Pack极柱高温告警值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="PoleTHH">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>Pack极柱高温保护值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -9436,7 +9436,7 @@
                <string>短路电流保护值</string>
               </property>
               <property name="suffix">
-               <string>A</string>
+               <string>%</string>
               </property>
               <property name="minimum">
                <double>0.000000000000000</double>
@@ -10819,6 +10819,49 @@
            </layout>
           </widget>
          </item>
+         <item>
+          <widget class="QWidget" name="wd_fillLimit" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="hs_Limit">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -11287,7 +11330,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="text">
-                  <string>使能CAN电流传感器</string>
+                  <string>使能预留电流传感器</string>
                  </property>
                  <property name="tristate">
                   <bool>false</bool>
@@ -12767,7 +12810,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="wd_fill" native="true">
+        <widget class="QWidget" name="wd_fillCtrl" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_19">
           <property name="spacing">
            <number>0</number>
@@ -12790,7 +12833,7 @@
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>

@@ -49,7 +49,15 @@ void BMSView::initUserLevelForm()
 
         ui->groupBoxDebugReg->setVisible(false);
 
+        ui->gp_sysPara1->setVisible(true);
+        ui->gp_sysPara2->setVisible(false);
+        ui->gp_alarmValue1->setVisible(false);
+        ui->gp_alarmValue2->setVisible(false);
         ui->gp_sysPara3->setVisible(false);
+        ui->gp_muskBlock->setVisible(false);
+        ui->gp_filePort->setVisible(false);
+        ui->wd_fillLimit->setVisible(true);
+
         ui->gp_filePort->setVisible(false);
         foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
         {
@@ -67,8 +75,16 @@ void BMSView::initUserLevelForm()
 
         ui->groupBoxDebugReg->setVisible(false);
 
+        ui->gp_sysPara1->setVisible(true);
+        ui->gp_sysPara2->setVisible(false);
+        ui->gp_alarmValue1->setVisible(true);
+        ui->gp_alarmValue2->setVisible(true);
         ui->gp_sysPara3->setVisible(false);
+        ui->gp_muskBlock->setVisible(false);
         ui->gp_filePort->setVisible(true);
+        ui->wd_fillLimit->setVisible(true);
+
+
         foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
         {
             obj->setEnabled(true);
@@ -84,12 +100,12 @@ void BMSView::initUserLevelForm()
 
         ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
 
-        ui->G_FuncMask->setVisible(true);
+        ui->G_FuncMask->setVisible(false);
         ui->G_sysCtrl->setVisible(true);
         ui->G_SensorCali->setVisible(true);
         ui->G_DeviceCtrl->setVisible(true);
         ui->G_DeviceDebug->setVisible(false);
-        ui->wd_fill->setVisible(false);
+        ui->wd_fillCtrl->setVisible(true);
 
         ui->G_FuncMask->setEnabled(true);
         ui->G_sysCtrl->setEnabled(true);
@@ -102,10 +118,17 @@ void BMSView::initUserLevelForm()
         ui->btn_debugLog->setVisible(true);
         ui->btnImportSOC->setVisible(true);
 
-        ui->groupBoxDebugReg->setVisible(false);
+        ui->groupBoxDebugReg->setVisible(true);
 
+        ui->gp_sysPara1->setVisible(true);
+        ui->gp_sysPara2->setVisible(true);
+        ui->gp_alarmValue1->setVisible(true);
+        ui->gp_alarmValue2->setVisible(true);
         ui->gp_sysPara3->setVisible(true);
+        ui->gp_muskBlock->setVisible(true);
         ui->gp_filePort->setVisible(true);
+        ui->wd_fillLimit->setVisible(false);
+
         foreach(InputBox* obj, ui->tabSet->findChildren<InputBox*>())
         {
             obj->setEnabled(true);
@@ -116,13 +139,16 @@ void BMSView::initUserLevelForm()
         ui->G_SensorCali->setVisible(true);
         ui->G_DeviceCtrl->setVisible(true);
         ui->G_DeviceDebug->setVisible(true);
-        ui->wd_fill->setVisible(false);
+        ui->wd_fillCtrl->setVisible(false);
+
 
         ui->G_FuncMask->setEnabled(true);
         ui->G_sysCtrl->setEnabled(true);
         ui->G_SensorCali->setEnabled(true);
         ui->G_DeviceCtrl->setEnabled(true);
         ui->G_DeviceDebug->setEnabled(true);
+
+        ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
     }
 
 }
@@ -484,12 +510,12 @@ void BMSView::timerUpDate() {
         ui->labelStatus->setText(tr("已连接"));
         if (this->mycmu->drv_status >> CMU_OUTOFDATE) ui->labelStatus->setText(tr("软件过期，请更新！"));
         uint32_t val = this->mycmu->cmu_ver;
-//        ui->btnVer->setText(QString("%1:%2").arg(tr("版本号"), myHelper::IntegerToHexString(val)));
-        ui->btnVer->setText(QString("%1:%2").arg(tr("版本号"), QString("%1.%2.%3.%4")
-                                                 .arg((val >> 24) & 0xFF, 2, 16, QChar('0'))
-                                                 .arg((val >> 16) & 0xFF, 2, 16, QChar('0'))
-                                                 .arg((val >> 8)  & 0xFF, 2, 16, QChar('0'))
-                                                 .arg((val >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper()));
+        ui->btnVer->setText(QString("%1:%2").arg(tr("版本号"), myHelper::IntegerToHexString(val)));
+//        ui->btnVer->setText(QString("%1:%2").arg(tr("版本号"), QString("%1.%2.%3.%4")
+//                                                 .arg((val >> 24) & 0xFF, 2, 16, QChar('0'))
+//                                                 .arg((val >> 16) & 0xFF, 2, 16, QChar('0'))
+//                                                 .arg((val >> 8)  & 0xFF, 2, 16, QChar('0'))
+//                                                 .arg((val >> 0)  & 0xFF, 2, 16, QChar('0')).toUpper()));
         findPreVer();
         ui->tbtnConnect->setText(tr("重连"));
         ui->tbtnConnect->setObjectName("reconnect");
@@ -509,14 +535,15 @@ QString BMSView::GetBitStatus(uint16_t value, QString tips) {
     if (tips.contains(',')) {
         tipList = tips.split(",");
     } else {
-        if(this->mycmu->GetProtocalVer() == CMUV5_0){
-            tipList = QStringList({"采样芯片处于配置状态", "BMU 处于均衡状态", "采样芯片时钟异常", "温度低温异常",
-                                   "温度高温异常", "电芯过压故障", "电芯欠压故障", "电芯断线故障",
-                                   "采样线总正断线故障", "采样线总负断线故障", "采样芯片寄存器校验异常", "采样芯片参考电压异常",
-                                   "采样芯片校准电压异常", "采样芯片复用采样通道异常", "采样芯片故障", "采样芯片故障"});
-        }else{
-            tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
-        }
+//        if(this->mycmu->GetProtocalVer() == CMUV5_0){
+//            tipList = QStringList({"采样芯片处于配置状态", "BMU 处于均衡状态", "采样芯片时钟异常", "温度低温异常",
+//                                   "温度高温异常", "电芯过压故障", "电芯欠压故障", "电芯断线故障",
+//                                   "采样线总正断线故障", "采样线总负断线故障", "采样芯片寄存器校验异常", "采样芯片参考电压异常",
+//                                   "采样芯片校准电压异常", "采样芯片复用采样通道异常", "采样芯片故障", "采样芯片故障"});
+//        }else{
+//            tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
+//        }
+    tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
     }
     for (int i = 0; i < tipList.size(); i++) {
         if ((((value >> i) & 0x01) > 0)) statusList << tipList.at(i);
@@ -593,6 +620,10 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         {
             ui->CommStatus->setToolTip(offLineId);
         }
+    }
+    if(mapData.contains("can485Stat")){
+        uint32_t commStStat = mapData.value("can485Stat", 0);
+        ui->can485Stat->setText(QString("0x%1").arg(commStStat,4,16,QChar('0')));
     }
     if (mapData.contains("sysTime")) {
         ui->sysTime->setValue(mapData.value("sysTime"));
@@ -1076,12 +1107,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
         if (is_gender_balanced(this->mycmu->GetProtocalVer())) {
             if(this->mycmu->GetProtocalVer() == CMUV5_0){
-                textList << tr("使能CAN电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
+                textList << tr("使能预留电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
                          << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限值") << tr("使能本地环控")
                          << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("使能SOC校准")
                          << tr("并列/解列") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
             }else{
-                textList << tr("使能CAN电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
+                textList << tr("使能预留电流传感器") << tr("使能绝缘板测总电压") << tr("使能电压传感器(预留)") << tr("使能漏电流传感器")
                          << tr("使能绝缘检测") << tr("开启MODBUS写保护") << tr("使能故障录波功能") << tr("关闭参数设置限值") << tr("使能本地环控")
                          << tr("关闭接触器远程控制") << tr("调试信息UDP输出") << tr("使能调试信息输出") << tr("单簇/多簇")
                          << tr("并列/解列") << tr("禁用旧版预充策略") << tr("使能外部安防控制");
@@ -1154,6 +1185,11 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                 ui->cB_Func2_1415->setItemText(2,tr("2-306Ah"));
                 ui->cB_Func2_1415->setItemText(3,tr("3-预留"));
             }
+        }else{
+            textList << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("预留") << tr("预留")
+                     << tr("预留") << tr("预留") << tr("预留") << tr("SOC选择L")
+                     << tr("预留") << tr("预留") << tr("预留");
         }
         foreach (QCheckBox* cb, CheckBoxList) {
             cb->blockSignals(true);
@@ -1254,6 +1290,8 @@ void BMSView::flushSoe(const ST_SOE& soe) {
         ui->ViewSOE->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         if(this->mycmu->GetProtocalVer() == CMUV4_6){
             m_model.setData(soe.list_soe, db_manager::SOE_BMS3);
+        }else if(this->mycmu->GetProtocalVer() == CMUV5_0){
+            m_model.setData(soe.list_soe, db_manager::SOE_BMS4);
         }else{
             m_model.setData(soe.list_soe, db_manager::SOE_BMS2);
         }
@@ -2949,28 +2987,28 @@ void BMSView::on_btn_debugLog_clicked()
 {
     savelog.show();
 
-    if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
-    {
-        if(timeCache.elapsed() > 1000)
-        {
-            bmsDebugModeCnt = 0;
-        }
-        bmsDebugModeCnt++;
+//    if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
+//    {
+//        if(timeCache.elapsed() > 1000)
+//        {
+//            bmsDebugModeCnt = 0;
+//        }
+//        bmsDebugModeCnt++;
 
-        qDebug()<<"debug mode cnt" << bmsDebugModeCnt;
+//        qDebug()<<"debug mode cnt" << bmsDebugModeCnt;
 
-        if(bmsDebugModeCnt >= 10 && (!ui->groupBoxDebugReg->isVisible()))
-        {
-            qDebug()<<"debug mode enable";
-            ui->groupBoxDebugReg->setVisible(true);
-            ui->groupBoxDebugReg->show();
-            this->repaint();
-        }
+//        if(bmsDebugModeCnt >= 10 && (!ui->groupBoxDebugReg->isVisible()))
+//        {
+//            qDebug()<<"debug mode enable";
+//            ui->groupBoxDebugReg->setVisible(true);
+//            ui->groupBoxDebugReg->show();
+//            this->repaint();
+//        }
 
 
 
-        timeCache.start();
-    }
+//        timeCache.start();
+//    }
 
 
 }
@@ -3094,7 +3132,7 @@ void BMSView::on_refreashIp_clicked()
 
 
     QString ip123 = "192.168.1.";
-    for(int ip4 = 120; ip4 <= 128; ip4++ ){
+    for(int ip4 = 120; ip4 <= 140; ip4++ ){
         QString ip = ip123 + QString::number(ip4);
         QTcpSocket tcpClient;
         tcpClient.abort();

@@ -191,7 +191,7 @@ void mb_cmu::Dump2CsvTitle() {
         }
         if (protocal_ver > CMUV3) {
             data_buf << (tr("BMU%1_母线电压,").arg(i + 1));
-            if(protocal_ver != CMUV4_10){
+            if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                 data_buf << (tr("BMU%1_均衡电流,").arg(i + 1));
             }else{
                 data_buf << (tr("BMU%1_模组A均衡电流,").arg(i + 1));
@@ -251,7 +251,7 @@ void mb_cmu::Dump2Csv() {
             double val = 0;
             uint64_t u64val = 0;
             // 状态量个数，电压断线+温度断线+运行状态+故障状态
-            if (protocal_ver != CMUV4_10){
+            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                 val = this->bmu_data[i].Ubreak;
             }else{
                 val = this->bmu_data[i].U64break;
@@ -260,7 +260,7 @@ void mb_cmu::Dump2Csv() {
             data_buf << (QString("0x%1,").arg(u64val,0,16));
 
 
-            if (protocal_ver != CMUV4_10){
+            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                 val = this->bmu_data[i].Tbreak;
             }else{
                 val = this->bmu_data[i].T64break;
@@ -281,7 +281,7 @@ void mb_cmu::Dump2Csv() {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }
             if (is_gender_balanced(protocal_ver)) {
-                if(protocal_ver != CMUV4_10){
+                if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                     val = this->bmu_data[i].BalU24 / 1000.0;
                     data_buf << (QString("%1,").arg(val));
                     val = this->bmu_data[i].BalIdc[0] / 1000.0;
@@ -345,13 +345,13 @@ void mb_cmu::Dump2Csv() {
                     object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
                 }
             }
-            if (protocal_ver != CMUV4_10){
+            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                 val = this->bmu_data[i].Ubreak;
             }else{
                 val = this->bmu_data[i].U64break;
             }
             object.insert((QString("BMU%1_Ubreak,").arg(i + 1)), val);
-            if (protocal_ver != CMUV4_10){
+            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
                 val = this->bmu_data[i].Tbreak;
             }else{
                 val = this->bmu_data[i].T64break;
@@ -727,7 +727,7 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].BMUBootVersion  = (*(pt + i*2));
                 bmu_data[i].BMUBootVersion |= *(pt + i*2+1)<<16;
             }
-        }else if(protocal_ver == CMUV4_10){
+        }else if(protocal_ver == CMUV4_10 || protocal_ver == CMUV5_1){
             uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
             uint16_t *pt;
             reg_num = config.bmu_num * 3;
@@ -793,7 +793,7 @@ int mb_cmu::ReadALL() {
         bms_data.MaxTbmuId = maxBmuId;
         bms_data.MinTbmuId = minBmuId;
         // 状态
-        if(protocal_ver != CMUV4_10 ){
+        if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1 ){
             reg_num = config.bmu_num * 4;
             status += ReadData(0x03, 0x100, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
@@ -850,7 +850,7 @@ int mb_cmu::ReadALL() {
                     bmu_data[i].BalMode = *(p++);
                 }
             }
-            else if (protocal_ver == CMUV4_10){
+            else if (protocal_ver == CMUV4_10 || protocal_ver == CMUV5_1 ){
                 // 液冷项目
                 reg_num = config.bmu_num * 15;  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
@@ -1397,7 +1397,7 @@ int mb_cmu::ReadSOE() {
     cmu_soe.list_soe.clear();
     if (((is_gender_balanced(protocal_ver)) && (this->cmu_ver >= 0x00000402)) ||
         ((is_main_line(protocal_ver)) && (this->cmu_ver >= 0x00000407))) {
-        if(protocal_ver == CMUV5_0){
+        if(protocal_ver >= CMUV5_0){
             cmu_soe.type = db_manager::SOE_BMS4;
         }else if(protocal_ver == CMUV4_6){
             cmu_soe.type = db_manager::SOE_BMS3;

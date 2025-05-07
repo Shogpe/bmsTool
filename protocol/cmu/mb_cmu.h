@@ -240,6 +240,7 @@ typedef enum {
     CMUV4_9,
     CMUV4_10,// 主动均衡-液冷
     CMUV5_0, // 主动均衡-风机-增加三级告警
+    CMUV5_1, // 主动均衡-液冷-增加三级告警
 } BMS_PROTOCOL;
 typedef enum {
     ERRLOG_ONCE = 0,  // 一次
@@ -251,7 +252,7 @@ typedef struct {
     uint16_t cnt;
 } ERRLOG_Data_t;
 #define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10)|| (x == CMUV5_0))
+#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10)|| (x == CMUV5_0) || (x == CMUV5_1))
 #define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
 
 #define WR_LOCK_BIT 5

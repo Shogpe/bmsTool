@@ -1,4 +1,4 @@
-#include "frmbalanceConfig.h"
+﻿#include "frmbalanceConfig.h"
 #include "iconhelper.h"
 #include "myhelper.h"
 #include "ui_frmbalanceConfig.h"
@@ -25,7 +25,7 @@ void frmbalanceConfig::initStyle() {
 }
 bool frmbalanceConfig::setValue(uint16_t value) {
     this->m_value = value;
-    if(protocal_ver != CMUV4_10){
+    if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
         ui->nChannel->setValue(m_value >> 12 & 0x0F);
         ui->iBalance->setValue(m_value >> 8 & 0x0F);
         ui->tBalance->setValue(m_value & 0xFF);
@@ -52,7 +52,7 @@ void frmbalanceConfig::on_btnManually_clicked() {
 }
 
 uint16_t frmbalanceConfig::loadValue() {
-    if(protocal_ver != CMUV4_10){
+    if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
         this->m_value = ((uint16_t)ui->nChannel->value() & 0xF) << 12 | ((uint16_t)ui->iBalance->value() & 0xF) << 8 |
                         ((uint16_t)(ui->tBalance->value()) & 0xFF);
     }else{

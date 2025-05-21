@@ -581,6 +581,10 @@ void BMSView::timerUpDate() {
         ui->tbtnConnect->setText(tr("重连"));
         ui->tbtnConnect->setObjectName("reconnect");
     } else {
+        if(ui->labelStatus->text() == tr("已连接"))
+        {
+            ui->sp_netErrCnt->setValue(ui->sp_netErrCnt->value()+1);
+        }
         ui->labelStatus->setStyleSheet("color:;text-decoration:underline;font:bold;");
         ui->labelStatus->setText(tr("未连接"));
         ui->tbtnConnect->setText(tr("连接"));
@@ -3590,4 +3594,10 @@ void BMSView::findPreVer(void){
 
 }
 
+
+
+void BMSView::on_pb_clearNetErrCnt_clicked()
+{
+    ui->sp_netErrCnt->setValue(0);
+}
 

@@ -294,6 +294,32 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QSpinBox" name="sp_netErrCnt">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="prefix">
+         <string>CMU网口断连计数：</string>
+        </property>
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pb_clearNetErrCnt">
+        <property name="text">
+         <string>清除网口断连计数</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

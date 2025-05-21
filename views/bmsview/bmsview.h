@@ -115,6 +115,8 @@ class BMSView : public QWidget {
     void on_refreashIp_clicked();
 
 
+    void on_pb_clearNetErrCnt_clicked();
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");

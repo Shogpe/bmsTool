@@ -324,7 +324,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -387,7 +387,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="2,1,1,2,2,1">
+          <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="2,1,1,2,2,1,0">
            <property name="spacing">
             <number>8</number>
            </property>
@@ -1294,7 +1294,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1411,7 +1411,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2125,7 +2125,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2141,7 +2141,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2157,7 +2157,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2173,7 +2173,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2189,7 +2189,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2205,7 +2205,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2221,7 +2221,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2696,7 +2696,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2709,7 +2709,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2722,7 +2722,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2735,7 +2735,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2748,7 +2748,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2761,7 +2761,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2774,7 +2774,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -3020,7 +3020,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -3033,7 +3033,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -3046,7 +3046,7 @@
                    <enum>QFrame::Box</enum>
                   </property>
                   <property name="text">
-                   <string>预留</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -3054,6 +3054,33 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gp_GuestSysStat">
+             <property name="title">
+              <string>系统状态</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_25">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="SysStatWd" name="sysStatWd" native="true"/>
               </item>
              </layout>
             </widget>
@@ -8727,6 +8754,527 @@
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="gp_sysPara3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>系统参数3</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_28">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="InputBox" name="CellOVLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhFormattedNumbersOnly</set>
+              </property>
+              <property name="prefix">
+               <string>电芯过压锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>V</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>6.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="CellOCP">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhFormattedNumbersOnly</set>
+              </property>
+              <property name="prefix">
+               <string>电芯过压跳QF值</string>
+              </property>
+              <property name="suffix">
+               <string>V</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>6.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="CellUVLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhFormattedNumbersOnly</set>
+              </property>
+              <property name="prefix">
+               <string>电芯低压锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>V</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>6.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="CellODisCP">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhFormattedNumbersOnly</set>
+              </property>
+              <property name="prefix">
+               <string>电芯低压跳QF值</string>
+              </property>
+              <property name="suffix">
+               <string>V</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>6.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="ModuleCOTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>充电高温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="ModuleDisCOTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>放电高温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="ModuleCUTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>充电低温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>-50.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="ModuleDisCUTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>放电低温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>-50.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="PackPoleOTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>Pack极柱高温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="ModulePoleOTLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>HVU极柱高温锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="CurLevel3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>充放电过流锁定值</string>
+              </property>
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>2000.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>1.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="TEvmH">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>环控温度上限</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>-65536.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="SocH">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>SOC上限</string>
+              </property>
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="minimum">
+               <double>-65536.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="SocL">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>SOC下限</string>
+              </property>
+              <property name="suffix">
+               <string>%</string>
+              </property>
+              <property name="minimum">
+               <double>-65536.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="EvmDfT">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>环控温度回差</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>-65536.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="InputBox" name="TEvmL">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string>环控温度下限</string>
+              </property>
+              <property name="suffix">
+               <string>℃</string>
+              </property>
+              <property name="minimum">
+               <double>-65536.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>65536.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="gp_alarmValue1">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -9695,7 +10243,7 @@
             </sizepolicy>
            </property>
            <property name="title">
-            <string>屏蔽位</string>
+            <string>调试寄存器</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -9731,7 +10279,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>BMU电芯电压屏蔽位1</string>
+               <string>REG5432</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9762,7 +10310,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>BMU电芯电压屏蔽位2</string>
+               <string>REG5433</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9793,7 +10341,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>BMU电芯电压屏蔽位3</string>
+               <string>REG5434</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9824,7 +10372,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>BMU电芯电压屏蔽位4</string>
+               <string>REG5435</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9852,7 +10400,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>BMU数据屏蔽位1</string>
+               <string>REG5436</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9880,7 +10428,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>BMU数据屏蔽位2</string>
+               <string>REG5437</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9908,7 +10456,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>BMU数据屏蔽位3</string>
+               <string>REG5434</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9936,7 +10484,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>BMU数据屏蔽位4</string>
+               <string>REG5435</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9964,7 +10512,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>温度屏蔽位1</string>
+               <string>REG5436</string>
               </property>
               <property name="suffix">
                <string/>
@@ -9992,7 +10540,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>温度屏蔽位2</string>
+               <string>REG5437</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10020,7 +10568,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>温度屏蔽位3</string>
+               <string>REG5438</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10048,7 +10596,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>温度屏蔽位4</string>
+               <string>REG5439</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10076,7 +10624,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>系统告警屏蔽寄存器1</string>
+               <string>REG5426</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10104,7 +10652,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>系统故障屏蔽寄存器1</string>
+               <string>REG5427</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10132,7 +10680,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>系统告警屏蔽寄存器2</string>
+               <string>REG5428</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10160,7 +10708,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>系统故障屏蔽寄存器2</string>
+               <string>REG5429</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10188,7 +10736,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>功能使能位</string>
+               <string>REG5417</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10213,7 +10761,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>功能使能位2</string>
+               <string>REG5430</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10241,7 +10789,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>nBC故障屏蔽位</string>
+               <string>REG5416</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10269,7 +10817,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>电池包温度断线屏蔽</string>
+               <string>REG5415</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10284,527 +10832,6 @@
             </item>
             <item>
              <spacer name="verticalSpacer_12">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="gp_sysPara3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="title">
-            <string>系统参数3</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_28">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <property name="leftMargin">
-             <number>2</number>
-            </property>
-            <property name="rightMargin">
-             <number>2</number>
-            </property>
-            <property name="bottomMargin">
-             <number>2</number>
-            </property>
-            <item>
-             <widget class="InputBox" name="CellOVLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhFormattedNumbersOnly</set>
-              </property>
-              <property name="prefix">
-               <string>电芯过压锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>V</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>6.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="CellOCP">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhFormattedNumbersOnly</set>
-              </property>
-              <property name="prefix">
-               <string>电芯过压跳QF值</string>
-              </property>
-              <property name="suffix">
-               <string>V</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>6.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="CellUVLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhFormattedNumbersOnly</set>
-              </property>
-              <property name="prefix">
-               <string>电芯低压锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>V</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>6.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="CellODisCP">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhFormattedNumbersOnly</set>
-              </property>
-              <property name="prefix">
-               <string>电芯低压跳QF值</string>
-              </property>
-              <property name="suffix">
-               <string>V</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>6.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="ModuleCOTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>充电高温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="ModuleDisCOTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>放电高温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="ModuleCUTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>充电低温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>-50.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="ModuleDisCUTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>放电低温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>-50.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="PackPoleOTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>Pack极柱高温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="ModulePoleOTLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>HVU极柱高温锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>100.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="CurLevel3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>充放电过流锁定值</string>
-              </property>
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>2000.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="TEvmH">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>环控温度上限</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>-65536.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>65536.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="SocH">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>SOC上限</string>
-              </property>
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <double>-65536.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>65536.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="SocL">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>SOC下限</string>
-              </property>
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <double>-65536.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>65536.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="EvmDfT">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>环控温度回差</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>-65536.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>65536.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="InputBox" name="TEvmL">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>环控温度下限</string>
-              </property>
-              <property name="suffix">
-               <string>℃</string>
-              </property>
-              <property name="minimum">
-               <double>-65536.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>65536.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -11330,7 +11357,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="text">
-                  <string>使能预留电流传感器</string>
+                  <string>使能Ain电流传感器</string>
                  </property>
                  <property name="tristate">
                   <bool>false</bool>
@@ -11347,7 +11374,7 @@
                <item>
                 <widget class="QCheckBox" name="bFunc02">
                  <property name="text">
-                  <string>使能电压传感器(预留)</string>
+                  <string>禁用预留电流传感器</string>
                  </property>
                 </widget>
                </item>
@@ -11588,7 +11615,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>恢复默认校准参数</string>
+             <string>清除传感器校准参数</string>
             </property>
            </widget>
           </item>
@@ -11998,6 +12025,19 @@
             </property>
            </widget>
           </item>
+          <item row="16" column="2">
+           <widget class="QPushButton" name="btnResetInsVCali">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除绝缘母线校准参数</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -12022,6 +12062,57 @@
           <property name="spacing">
            <number>1</number>
           </property>
+          <item row="14" column="3">
+           <widget class="QPushButton" name="btnIleakFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="25" column="1">
+           <spacer name="verticalSpacer_14">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1" colspan="3">
+           <widget class="QLabel" name="label_19">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
           <item row="22" column="2">
            <widget class="QPushButton" name="btnIZeroAdj">
             <property name="sizePolicy">
@@ -12046,8 +12137,8 @@
             </property>
            </widget>
           </item>
-          <item row="16" column="1" colspan="4">
-           <widget class="QLabel" name="label_20">
+          <item row="19" column="1" colspan="3">
+           <widget class="QLabel" name="label_13">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -12061,26 +12152,7 @@
              </size>
             </property>
             <property name="text">
-             <string>绝缘母线电压校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="1" colspan="4">
-           <widget class="QLabel" name="label_12">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>CAN电流传感器校准(预留)</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -12103,235 +12175,8 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1" colspan="4">
-           <widget class="QLabel" name="label_15">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>预留电流传感器校准(SEN-1)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="1">
-           <widget class="QPushButton" name="btnRUAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>母线电压</string>
-            </property>
-           </widget>
-          </item>
-          <item row="23" column="1">
-           <spacer name="verticalSpacer_14">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="17" column="2">
-           <widget class="QPushButton" name="btnRpAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <strikeout>false</strikeout>
-             </font>
-            </property>
-            <property name="text">
-             <string>正对地绝缘电阻</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnRBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>零点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="btnRZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>低点</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="3">
            <widget class="QPushButton" name="btnRFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>高点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPushButton" name="btnUBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>零点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QPushButton" name="btnUZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>低点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="3">
-           <widget class="QPushButton" name="btnUFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>高点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
-           <widget class="QPushButton" name="btnIleakBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>零点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="2">
-           <widget class="QPushButton" name="btnIleakZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>低点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="3">
-           <widget class="QPushButton" name="btnIleakFullAdj">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -12373,6 +12218,252 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btnRZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="4">
+           <widget class="QLabel" name="label_18">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Ain电流传感器校准(CURRENT-1)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="1" colspan="3">
+           <widget class="QLabel" name="label_17">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="2">
+           <widget class="QPushButton" name="btnRpAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="text">
+             <string>正对地绝缘电阻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <widget class="QPushButton" name="btnRUAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>母线电压</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="btnIleakBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnRBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1" colspan="4">
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>CAN电流传感器校准(预留)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1" colspan="3">
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QPushButton" name="btnIleakZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="1">
+           <widget class="QLabel" name="label_21">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1" colspan="4">
+           <widget class="QLabel" name="label_15">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>预留电流传感器校准(SEN-1)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QPushButton" name="btnUFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
           <item row="17" column="3">
            <widget class="QPushButton" name="btnRnAdj">
             <property name="sizePolicy">
@@ -12397,25 +12488,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="4">
-           <widget class="QLabel" name="label_18">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Ain电流传感器校准(CURRENT-1)</string>
-            </property>
-           </widget>
-          </item>
           <item row="13" column="1" colspan="4">
            <widget class="QLabel" name="label_14">
             <property name="minimumSize">
@@ -12435,46 +12507,46 @@
             </property>
            </widget>
           </item>
-          <item row="19" column="1" colspan="3">
-           <widget class="QLabel" name="label_13">
+          <item row="7" column="1">
+           <widget class="QPushButton" name="btnUBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
+              <width>80</width>
+              <height>0</height>
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>零点</string>
             </property>
            </widget>
           </item>
-          <item row="15" column="1" colspan="3">
-           <widget class="QLabel" name="label_17">
+          <item row="7" column="2">
+           <widget class="QPushButton" name="btnUZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
+              <width>80</width>
+              <height>0</height>
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>低点</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1" colspan="3">
-           <widget class="QLabel" name="label_16">
+          <item row="16" column="1" colspan="4">
+           <widget class="QLabel" name="label_20">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -12488,26 +12560,28 @@
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>绝缘母线电压校准</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" colspan="3">
-           <widget class="QLabel" name="label_19">
+          <item row="24" column="1" colspan="3">
+           <widget class="QLabel" name="label_22">
             <property name="minimumSize">
              <size>
               <width>0</width>
               <height>24</height>
              </size>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
             </property>
             <property name="text">
-             <string/>
+             <string>注：Ain电流传感器、预留电流传感器、漏电流校准需要按照零点-&gt;低点-&gt;高点的顺序进行，仅有完成了该传感器的三个校准步骤校准才完成。</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -13221,6 +13295,12 @@
    <class>InputBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>inputbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SysStatWd</class>
+   <extends>QWidget</extends>
+   <header>sysstatwd.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

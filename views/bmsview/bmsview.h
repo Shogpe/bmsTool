@@ -12,6 +12,10 @@
 #include "mb_cmu.h"
 #include "models/MyDoubleSpinBox/MyDoubleSpinBox.h"
 #include "models/SOEModel/SOEModel.h"
+#include "inputbox.h"
+
+
+
 using namespace std;
 
 namespace Ui {
@@ -81,6 +85,8 @@ class BMSView : public QWidget {
     void on_btnSaveDefault_released();
     void on_btnLoadDefault_released();
     //
+
+    void statGroupAutoHide(QHash<QString, qreal> mapData);
     void flushData(int type, QHash<QString, qreal> mapData);
     void flushBmu();
     void flushBmuVolt();
@@ -108,6 +114,7 @@ class BMSView : public QWidget {
 
     void on_refreashIp_clicked();
 
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
@@ -115,6 +122,8 @@ private:
 
     uint32_t verCache;
     void findPreVer(void);
+
+    QList<InputBox*> guestHideInputBoxList;
 
 public slots:
     void rebootBmus();

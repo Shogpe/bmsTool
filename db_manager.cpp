@@ -53,9 +53,8 @@ bool db_manager::getOriginNode(QList<ST_DB_NODE> &list, int proto_id) {
             "SELECT node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,[offset],unit FROM protocols "
             "WHERE (proto_id=%1 and ex_ver=0)")
             .arg(proto_id);
-//    qDebug() << "-----TEST protocol query-----";
     qDebug() << "-----加载基础点表-----";
-    qDebug() << str;
+    qInfo() << str;
     if (!query.exec(str)) {
         qDebug() << "exec failed: " << query.lastError().text();
         return false;
@@ -73,7 +72,6 @@ bool db_manager::getOriginNode(QList<ST_DB_NODE> &list, int proto_id) {
         node.unit = query.value(8).toString().trimmed();
         list.append(node);
     }
-//    qDebug() << list.size();
     return true;
 }
 
@@ -98,9 +96,8 @@ bool db_manager::getExternNode(QList<ST_DB_NODE> &list,int proto_id, int ex_ver)
             "SELECT node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,[offset],unit FROM protocols "
             "WHERE (proto_id=%1 and (ex_ver=%2 or ex_ver=0))")
             .arg(proto_id).arg(ex_ver);
-//    qDebug() << "-----TEST protocol query-----";
     qDebug() << "-----加载扩展点表-----";
-    qDebug() << str;
+    qInfo() << str;
     if (!query.exec(str)) {
         qDebug() << "exec failed: " << query.lastError().text();
         return false;
@@ -118,7 +115,6 @@ bool db_manager::getExternNode(QList<ST_DB_NODE> &list,int proto_id, int ex_ver)
         node.unit = query.value(8).toString().trimmed();
         list.append(node);
     }
-//    qDebug() << list.size();
     return true;
 }
 bool db_manager::getUser(QString name, QString password, int &level) {

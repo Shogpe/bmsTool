@@ -115,11 +115,7 @@ class BMSView : public QWidget {
 
     void on_refreashIp_clicked();
 
-
     void on_pb_clearNetErrCnt_clicked();
-
-
-
 
     void on_pb_modBusHelp_clicked();
 
@@ -142,12 +138,14 @@ private:
     QList<QLabel*> lbErrStat2List;
     QList<QLabel*> lbAlmStatList;
     QList<QLabel*> lbAlmStat2List;
-    QList<QLabel*> lbWarmStatList;
+    QList<QLabel*> lbWarmStatList;//preAlm
     void lbListInit();
-
+    void fillStatLabel(QList<QLabel*> &ll, uint16_t value, QStringList sl);
+    void clearStatLabel(QList<QLabel*> &ll);
 
 public slots:
     void rebootBmus();
+
 signals:
     void send_msg(TMsgData MsgCmd);
 };

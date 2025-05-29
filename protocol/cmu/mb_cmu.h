@@ -256,6 +256,8 @@ typedef enum {
 #define CMU_A_LIQ_MOS_V3_0_01   3002U  //CMU液冷最新的基线，旧板BMStool里没有对应的版本
 #define CMU_A_LIQ_MOS_V3_3_00   3300U  //CMU5.1
 
+#define CMU_ILIGAL_EXVER        000U//999U
+
 typedef enum {
     ERRLOG_ONCE = 0,  // 一次
     ERRLOG_ALWAYS,    // 总是
@@ -327,7 +329,7 @@ class mb_cmu : public QObject {
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
     int GetExProtocalVer() {return ex_ver;}
     NodeReg GetNodeAddr(QString name);
-    void clearExVer() {ex_ver = 0;}
+    void clearExVer() {ex_ver = CMU_ILIGAL_EXVER;}
 
     int compound_protocol_ver() { return int(protocal_ver)*1000 + ex_ver; }//用于协议判断的复合协议版本
     bool is_cpVer_match(int ver) {return (ver == compound_protocol_ver());}
@@ -353,7 +355,14 @@ class mb_cmu : public QObject {
                 && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_01)));
     }
 
-    void setCompoundProtocolVer(int ver) {protocal_ver = BMS_PROTOCOL(ver/1000); ex_ver = ver - uint(protocal_ver*1000);exVerChangedFlag = true;}
+    void setCompoundProtocolVer(int ver) {
+        protocal_ver = BMS_PROTOCOL(ver/1000);
+        ex_ver = ver - uint(protocal_ver*1000);
+        exVerChangedFlag = true;
+        emit cpVerChanged(ver);
+    }
+    QList<int> getCPVerList() {return cproVerList;}
+
     public slots:
     void msg_deal(TMsgData msg);
 
@@ -403,6 +412,8 @@ class mb_cmu : public QObject {
     void bmsDataReady(int type, QHash<QString, qreal> mapData);
     void bmsSOEReady(ST_SOE soe);
     void connectChanged(const QString &conn);
+
+    void cpVerChanged(int cpVer);
 private:
     bool IsErrCanWrite(int id, QString err_type, uint val);
 };

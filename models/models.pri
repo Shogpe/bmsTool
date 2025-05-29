@@ -11,3 +11,5 @@ include($$PWD/MyDoubleSpinBox/MyDoubleSpinBox.pri)
 include($$PWD/SaveLog/savelog.pri)
 include($$PWD/rebootbmus/rebootbmus.pri)
 include($$PWD/easySysStatWidget/easySysStatWidget.pri)
+include($$PWD/protocolsetframe/protocolsetframe.pri)
+

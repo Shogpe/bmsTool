@@ -1029,7 +1029,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                 modbus_set_slave(cmu, 1);
                 modbus_set_response_timeout(cmu, 3, 0);
                 if (cmu) rc = modbus_connect(this->cmu);
-                qWarning() << rc << this->mb_ip.c_str() << ":"<< this->mb_port;
+                if (rc < 0) qWarning() << "can not connect" << rc << this->mb_ip.c_str() << ":"<< this->mb_port;
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
                 counter = 0;
@@ -1214,18 +1214,18 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
         case CTRL_SET_PRO: {
             uint16_t nb = Msg.data.size();
             if (nb >= 1) {
-                protocal_ver = BMS_PROTOCOL(Msg.data.toInt());
-                qDebug() << "set CMU Base Ver:" << protocal_ver + 1;
-                Init();
-                Dump2CsvTitle();
-                DumpErrLog2CsvTitle();
+                int pVer = BMS_PROTOCOL(Msg.data.toInt());
+                setCompoundProtocolVer(pVer*1000 + CMU_ILIGAL_EXVER);
+//                Init();
+//                Dump2CsvTitle();
+//                DumpErrLog2CsvTitle();
             }
             ret = 0;
         } break;
         case CTRL_SET_EXPRO: {
             uint16_t nb = Msg.data.size();
             if (nb >= 1) {
-                setCompoundProtocolVer(Msg.data.toUInt());
+//                setCompoundProtocolVer(Msg.data.toUInt());
                 qDebug() << "set CMU Ex Ver:" << compound_protocol_ver();
                 Init();
                 Dump2CsvTitle();
@@ -1408,7 +1408,10 @@ int mb_cmu::ReadAI() {
     uint16_t tab_buf[128];
     for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
         res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
-        qInfo()<< "==================" << iter->reg_type << iter->reg_start << iter->reg_num << res;
+        qInfo()<< "==<try to recv:" << "regType:" << iter->reg_type
+                                     << "startAddr:" << iter->reg_start
+                                     << "regNum:" << iter->reg_num
+                                     << "recvNum:" << res;
         if (res == iter->reg_num) {
 
 //            qWarning()<< "<<<<<<<<<<<<<<<<<<" <<iter->reg_start << iter->reg_num;
@@ -1504,3 +1507,4 @@ int mb_cmu::ReadSOE() {
     emit bmsSOEReady(cmu_soe);
     return res;
 }
+

@@ -19,5 +19,6 @@
         <file>image/widgets.qm</file>
         <file>cubeLOGO.png</file>
         <file>CMUver.txt</file>
+        <file>verHelp.txt</file>
     </qresource>
 </RCC>

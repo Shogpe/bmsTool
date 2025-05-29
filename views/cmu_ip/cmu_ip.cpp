@@ -20,18 +20,33 @@ CmuIpView::CmuIpView(QWidget* parent) : QTabWidget(parent), ui(new Ui::CmuIpView
       QString target_ip = settings->value("global/target_ip", "192.168.1.120").toString();
       ui->lineStaIP->setText(target_ip);
       QString protocol = settings->value("global/protocol", "CMU").toString();
-      ui->cbProtocol->setCurrentText(protocol);
-      if (protocol == "CMU") {
-        this->mycmu = new mb_cmu(CMUV1);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV1);
-        ui->cbProtocol->blockSignals(false);
-      } else {
-        this->mycmu = new mb_cmu(CMUV2);
-        ui->cbProtocol->blockSignals(true);
-        ui->cbProtocol->setCurrentIndex(CMUV2);
-        ui->cbProtocol->blockSignals(false);
+//      ui->cbProtocol->setCurrentText(protocol);
+//      if (protocol == "CMU") {
+//        this->mycmu = new mb_cmu(CMU_V0);
+//        ui->cbProtocol->blockSignals(true);
+//        ui->cbProtocol->setCurrentIndex(CMU_V0);
+//        ui->cbProtocol->blockSignals(false);
+//      } else {
+//        this->mycmu = new mb_cmu(CMU_V0);
+//        ui->cbProtocol->blockSignals(true);
+//        ui->cbProtocol->setCurrentIndex(CMU_V0);
+//        ui->cbProtocol->blockSignals(false);
+//      }
+      if(protocol == "CMU_V0"
+      || protocol == "CMU_V1"
+      || protocol == "CMU_V2"
+      || protocol == "CMU_V3" )
+      {
+          ui->cbProtocol->setCurrentText(protocol);
       }
+      else
+      {
+          this->mycmu = new mb_cmu(CMU_V0);
+          ui->cbProtocol->blockSignals(true);
+          ui->cbProtocol->setCurrentIndex(CMU_V0);
+          ui->cbProtocol->blockSignals(false);
+      }
+
       delete settings;
     }
     pmq = MessageQueue::getInstance();
@@ -170,10 +185,10 @@ void CmuIpView::on_cbProtocol_currentIndexChanged(const QString &arg1)
   TMsgData MsgCmd;
   if (arg1 == "CMU") {
     MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(CMUV1);
+    MsgCmd.data.setNum(CMU_V0);
   } else {
     MsgCmd.msg_type = CTRL_SET_PRO;
-    MsgCmd.data.setNum(CMUV1);
+    MsgCmd.data.setNum(CMU_V0);
   }
   pmq->sendMsg(0, MsgCmd);
   MsgCmd.data.clear();

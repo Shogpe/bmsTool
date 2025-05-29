@@ -55,6 +55,7 @@ typedef enum {
     CTRL_SET_ERRLOG_TLIMIT,  // 设置故障日志温度故障阈值
     CTRL_SET_ERRLOG_STDVAL,  // 设置故障日志标准差阈值
     CTRL_SET_ERRLOG_METHOD,  // 设置故障日志记录方式
+    CTRL_SET_EXPRO,  // 设置扩展协议版本
 } MSG_TYPE;
 #define CMU_ONLINE    0
 #define CMU_OUTOFDATE 31
@@ -229,19 +230,32 @@ typedef enum {
     SM_INIT,     //
 } STATE_MACHINE;
 typedef enum {
-    CMUV1 = 0,
-    CMUV2,    //
-    CMUV3,    //
-    CMUV4,    // 主动均衡
-    CMUV4_1,  // 主动均衡-对外
-    CMUV4_8,  // 主动均衡-绝缘
-    CMUV3_1,
-    CMUV4_6,
-    CMUV4_9,
-    CMUV4_10,// 主动均衡-液冷
-    CMUV5_0, // 主动均衡-风机-增加三级告警
-    CMUV5_1, // 主动均衡-液冷-增加三级告警
-} BMS_PROTOCOL;
+    CMU_V0 = 0,//被动均衡
+    CMU_V1 = 1,//主动均衡风冷MOS矩阵
+    CMU_V2 = 2,//主动均衡风冷并充
+    CMU_V3 = 3,//主动均衡液冷MOS矩阵
+} BMS_PROTOCOL;//协议大版本--基线点表
+
+//当前存在的所有复合版本
+#define CMU_P_V0_0_00           0000U  //无法归类的版本
+#define CMU_P_V0_0_01           0001U  //CMU1.0
+#define CMU_P_V1_0_02           0002U  //CMU2.0
+#define CMU_P_V2_0_03           0003U  //CMU3.0
+#define CMU_P_V3_0_04           0004U  //CMU3.1
+
+#define CMU_A_FAN_MOS_V1_0_00   1000U  //CMU4.1
+#define CMU_A_FAN_MOS_V1_0_01   1001U  //CMU4.0
+#define CMU_A_FAN_MOS_V1_0_02   1002U  //CMU4.8
+#define CMU_A_FAN_MOS_V1_0_03   1003U  //CMU4.9
+#define CMU_A_FAN_MOS_V1_0_04   1004U  //CMU风冷最新的基线，旧板BMStool里没有对应的版本
+#define CMU_A_FAN_MOS_V1_3_00   1300U  //CMU5.0 风冷三级告警
+
+#define CMU_A_FAN_PAL_V2_0_00   2000U  //并充
+
+#define CMU_A_LIQ_MOS_V3_0_00   3001U  //CMU4.10
+#define CMU_A_LIQ_MOS_V3_0_01   3002U  //CMU液冷最新的基线，旧板BMStool里没有对应的版本
+#define CMU_A_LIQ_MOS_V3_3_00   3300U  //CMU5.1
+
 typedef enum {
     ERRLOG_ONCE = 0,  // 一次
     ERRLOG_ALWAYS,    // 总是
@@ -251,12 +265,10 @@ typedef struct {
     uint16_t value;
     uint16_t cnt;
 } ERRLOG_Data_t;
-#define is_main_line(x)         ((x == CMUV1) || (x == CMUV2) || (x == CMUV3) || (x == CMUV3_1))
-#define is_gender_balanced(x)   ((x == CMUV4) || (x == CMUV4_1) || (x == CMUV4_8) || (x == CMUV4_6) || (x == CMUV4_9) || (x == CMUV4_10)|| (x == CMUV5_0) || (x == CMUV5_1))
-#define is_parallel_balanced(x) ((x & 0xFF000000) == 0x03000000)
+
 
 #define WR_LOCK_BIT 5
-extern QHash<QString, uint> g_proto_map;
+//extern QHash<QString, uint> g_proto_map;
 typedef std::function<void(TMsgData &Msg)> fp_msg;
 class mb_cmu : public QObject {
     Q_OBJECT
@@ -313,8 +325,36 @@ class mb_cmu : public QObject {
     QString GetBalanceValue(uint64_t status,int16_t *cur);
 
     BMS_PROTOCOL GetProtocalVer() { return protocal_ver; }
+    int GetExProtocalVer() {return ex_ver;}
     NodeReg GetNodeAddr(QString name);
-   public slots:
+    void clearExVer() {ex_ver = 0;}
+
+    int compound_protocol_ver() { return int(protocal_ver)*1000 + ex_ver; }//用于协议判断的复合协议版本
+    bool is_cpVer_match(int ver) {return (ver == compound_protocol_ver());}
+    bool is_cpVer_Higher_than(int ver) {return (ver < compound_protocol_ver());}
+    bool is_exVer_3levels_alarm() {return (ex_ver >=300);}
+    bool is_pVer_passive() {return (protocal_ver == CMU_V0);}   //主版本为被动均衡
+    bool is_pVer_active() {return (protocal_ver != CMU_V0);}    //主版本为主动均衡
+    bool is_pVer_a_fan_mos() {return (protocal_ver == CMU_V1);}//主版本是风冷mos矩阵
+    bool is_pVer_a_fan_pal() {return (protocal_ver == CMU_V2);}//主版本是风冷并充
+    bool is_pVer_a_liq_mos() {return (protocal_ver == CMU_V3);}//主版本是液冷mos矩阵
+    bool is_cpVer_with_fan_rate()
+    {
+        return (is_pVer_a_fan_pal()
+                ||(is_pVer_a_fan_mos()
+                && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_00))
+                && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_01))
+                && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_02))));
+    }
+    bool is_cpVer_a_fan_mos_with_boot_ver()
+    {
+        return (is_pVer_a_fan_mos()
+                && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_00))
+                && (!is_cpVer_match(CMU_A_FAN_MOS_V1_0_01)));
+    }
+
+    void setCompoundProtocolVer(int ver) {protocal_ver = BMS_PROTOCOL(ver/1000); ex_ver = ver - uint(protocal_ver*1000);exVerChangedFlag = true;}
+    public slots:
     void msg_deal(TMsgData msg);
 
    protected:
@@ -335,6 +375,10 @@ class mb_cmu : public QObject {
     int mb_port;
     // 配置表
     BMS_PROTOCOL protocal_ver;
+    int ex_ver;
+    bool exVerChangedFlag = false;
+    QList<int> cproVerList;
+
     bool stop;
     bool stopDump;              // 停止保存数据
     bool stopDumpErrLog;        // 停止保存故障数据

@@ -105,7 +105,7 @@ void SysStatWd::initAllStatUI()
         stat->statName = itor.value();
         stat->flg = false;
 
-        if(isExcepted(protocol, stat->objName))
+        if(isExcepted(stat->objName))
         {
             //该协议需要排除掉这个ui
             continue;
@@ -150,9 +150,9 @@ void SysStatWd::initAllStatUI()
 
 
 
-bool SysStatWd::isExcepted(BMS_PROTOCOL, QString objName)
+bool SysStatWd::isExcepted(QString objName)
 {
-    foreach(QString var, exceptList[protocol])
+    foreach(QString var, exceptList[com_ver])
     {
         if(var == objName)
         {

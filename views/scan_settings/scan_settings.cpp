@@ -34,10 +34,10 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
     QList<db_manager::ST_DB_NODE> nodes_table;
     uint protocal_ver = 3;
-    if (g_proto_map.contains(protocol)) {
-        protocal_ver = g_proto_map.value(protocol);
-    }
-    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+//    if (g_proto_map.contains(protocol)) {
+//        protocal_ver = g_proto_map.value(protocol);
+//    }
+    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
     vector<MB_NODE> tab_config;
     tab_config.clear();
 
@@ -133,10 +133,10 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
     QList<db_manager::ST_DB_NODE> nodes_table;
     uint protocal_ver = 3;
-    if (g_proto_map.contains(protocol)) {
-        protocal_ver = g_proto_map.value(protocol);
-    }
-    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+//    if (g_proto_map.contains(protocol)) {
+//        protocal_ver = g_proto_map.value(protocol);
+//    }
+    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
     vector<db_manager::ST_DB_NODE> tab_config;
     tab_config.clear();
 
@@ -618,9 +618,9 @@ void scan_settings::loadXml() {
 
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
     uint protocal_ver = 3;
-    if (g_proto_map.contains(protocol)) {
-        protocal_ver = g_proto_map.value(protocol);
-    }
+//    if (g_proto_map.contains(protocol)) {
+//        protocal_ver = g_proto_map.value(protocol);
+//    }
 
 #if CONFIG_METHOD_USE == CONFIG_METHOD_1
     MB_NODE* node_table;
@@ -653,7 +653,7 @@ void scan_settings::loadXml() {
     int node_table_size = GetCMUConfigArrayLen();
     QList<db_manager::ST_DB_NODE> nodes_table;
 
-    db_manager::Instance()->getNode(nodes_table, protocal_ver);
+    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
 
     for (int i = 0; i < node_table_size; i++) {
 

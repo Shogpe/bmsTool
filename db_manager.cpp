@@ -1,4 +1,4 @@
-#include "db_manager.h"
+﻿#include "db_manager.h"
 #include <QThread>
 #include "myhelper.h"
 QMutex mutex;
@@ -32,7 +32,7 @@ bool db_manager::start() {
     }
     return true;
 }
-bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
+bool db_manager::getOriginNode(QList<ST_DB_NODE> &list, int proto_id) {
     list.clear();
     QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
     if (!QSqlDatabase::contains(connect_name)) {
@@ -51,9 +51,10 @@ bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
     QString str =
         QString(
             "SELECT node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,[offset],unit FROM protocols "
-            "WHERE proto_id=%1")
+            "WHERE (proto_id=%1 and ex_ver=0)")
             .arg(proto_id);
-    qDebug() << "-----TEST protocol query-----";
+//    qDebug() << "-----TEST protocol query-----";
+    qDebug() << "-----加载基础点表-----";
     qDebug() << str;
     if (!query.exec(str)) {
         qDebug() << "exec failed: " << query.lastError().text();
@@ -72,7 +73,52 @@ bool db_manager::getNode(QList<ST_DB_NODE> &list, int proto_id) {
         node.unit = query.value(8).toString().trimmed();
         list.append(node);
     }
-    qDebug() << list.size();
+//    qDebug() << list.size();
+    return true;
+}
+
+bool db_manager::getExternNode(QList<ST_DB_NODE> &list,int proto_id, int ex_ver) {
+    list.clear();
+    QString connect_name = QString("conn_%1").arg(int(QThread::currentThreadId()));
+    if (!QSqlDatabase::contains(connect_name)) {
+        QString file = "data.db3";
+        QSqlDatabase dbconn = QSqlDatabase::addDatabase("SQLITECIPHER", connect_name);
+        dbconn.setDatabaseName(file);
+        dbconn.setPassword("994cd7f3625ca0083e80200e4b3f32de");
+        dbconn.setConnectOptions("QSQLITE_USE_CIPHER=sqlcipher; QSQLITE_ENABLE_REGEXP");
+        if (!dbconn.open()) {
+            qDebug() << "Can not open connection: " << dbconn.lastError().driverText();
+            return false;
+        }
+    }
+    QSqlDatabase db = QSqlDatabase::database(connect_name, false);
+    QSqlQuery query(db);
+    QString str =
+        QString(
+            "SELECT node_id,node_name,reg_type,reg_addr,data_type,val_type,factor,[offset],unit FROM protocols "
+            "WHERE (proto_id=%1 and (ex_ver=%2 or ex_ver=0))")
+            .arg(proto_id).arg(ex_ver);
+//    qDebug() << "-----TEST protocol query-----";
+    qDebug() << "-----加载扩展点表-----";
+    qDebug() << str;
+    if (!query.exec(str)) {
+        qDebug() << "exec failed: " << query.lastError().text();
+        return false;
+    }
+    ST_DB_NODE node;
+    while (query.next()) {
+        node.node_id = query.value(0).toInt();
+        node.node_name = query.value(1).toString().trimmed();
+        node.reg_type = query.value(2).toUInt();
+        node.reg_addr = query.value(3).toUInt();
+        node.data_type = query.value(4).toUInt();
+        node.val_type = query.value(5).toUInt();
+        node.factor = query.value(6).toDouble();
+        node.offset = query.value(7).toDouble();
+        node.unit = query.value(8).toString().trimmed();
+        list.append(node);
+    }
+//    qDebug() << list.size();
     return true;
 }
 bool db_manager::getUser(QString name, QString password, int &level) {

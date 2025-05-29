@@ -21,6 +21,7 @@ typedef struct
 }statLabel_T;
 
 #define RESERVED_TEXT_RES   tr(" ")
+#define EMPTY_TEXT tr(" ")
 #define TEXT_RED   ("color:darkRed;text-decoration:underline;font:bold;")
 #define TEXT_GREEN ("color:darkGreen;")
 
@@ -74,43 +75,55 @@ public:
     };
 
     //对应版本需要排除的项
-    const QList<QString> exceptList[12] =
+    QMap<int, QList<QString>> exceptList
     {
-        //0-CMUV1
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //被动-匹配失败
+        {0001U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //1-CMUV2
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //被动-CMUV1.0
+        {0001U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //2-CMUV3
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //被动-CMUV2.0
+        {0002U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //3-CMUV4
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //被动-CMUV3.0
+        {0003U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //4-CMUV4_1
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //被动-CMUV3.1
+        {0004U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //5-CMUV4_8
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //主动-匹配失败
+        {1000U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //6-CMUV3_1
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //主动-CMUV4.0
+        {1001U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //7-CMUV4_6
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //主动-CMUV4.8
+        {1002U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //8-CMUV4_9
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //主动-CMUV4.9
+        {1003U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //9-CMUV4_10
-        {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"},
+        //主动-新基线
+        {1004U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
 
-        //10-CMUV5_0
-        {"BMUComm","INSComm"},
+        //主动-三级告警
+        {1300U, {"BMUComm","INSComm"}},
 
-        //11-CMUV5_1
-        {"BMUComm","INSComm"},
+        //并充
+        {2000U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
+
+        //液冷-匹配失败
+        {3000U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
+
+        //液冷-CMU4.10
+        {3001U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
+
+        //液冷-新基线
+        {3002U, {"cmuTotalWarn","CellOVLock","CellUVLock","CellOTLock","CellUTLock","BMUCommAb","INSCommAb"}},
+
+        //液冷-三级告警
+        {3300U, {"BMUComm","INSComm"}},
     };
 
     SysStatWd(QWidget *parent = nullptr);
@@ -118,9 +131,9 @@ public:
 
     void clear();
     void setVerList(QList<verLabel_T> list);
-    void setProtocol(BMS_PROTOCOL p) {protocol = p; initAllStatUI();}
+    void setProtocol(int ver) {com_ver = ver; protocol = BMS_PROTOCOL(com_ver/1000); ex_ver = com_ver%1000;  initAllStatUI();}
     void initAllStatUI();
-    bool isExcepted(BMS_PROTOCOL, QString objName);
+    bool isExcepted(QString objName);
     void refreashAllStat();
 
     void debugShowAllTrue();
@@ -129,8 +142,10 @@ public:
 private:
     Ui::SysStatWd *ui;
 
-    BMS_PROTOCOL protocol = CMUV3;
-//    QList<verLabel_T> verList;
+    BMS_PROTOCOL protocol = CMU_V1;
+    int ex_ver = 0;
+    int com_ver = 0;
+
     QList<statLabel_T* > statList;
     QList<QLabel* > labelUIList;
 };

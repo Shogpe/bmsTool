@@ -73,6 +73,7 @@ class BMSView : public QWidget {
     void on_lineEditServIP_editingFinished();
     //
     void on_cbProtocol_currentIndexChanged(const QString& arg1);
+    void on_cbProtocol_activated(int index);
     void btnClick();
 
     void on_checkBox_stateChanged(int arg1);
@@ -117,6 +118,11 @@ class BMSView : public QWidget {
 
     void on_pb_clearNetErrCnt_clicked();
 
+
+
+
+    void on_pb_modBusHelp_clicked();
+
 private:
     void changeEvent(QEvent* event);
     QString GetBitStatus(uint16_t value, QString tips = "");
@@ -125,7 +131,20 @@ private:
     uint32_t verCache;
     void findPreVer(void);
 
+
     QList<InputBox*> guestHideInputBoxList;
+
+    QList<QLabel*> lbSysStatList;
+    QList<QLabel*> lbSysStat2List;
+    QList<QLabel*> lbDIStatList;
+    QList<QLabel*> lbDOStatList;
+    QList<QLabel*> lbErrStatList;
+    QList<QLabel*> lbErrStat2List;
+    QList<QLabel*> lbAlmStatList;
+    QList<QLabel*> lbAlmStat2List;
+    QList<QLabel*> lbWarmStatList;
+    void lbListInit();
+
 
 public slots:
     void rebootBmus();

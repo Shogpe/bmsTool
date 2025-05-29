@@ -9,11 +9,13 @@ static uint16_t sec_cmd[10] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 
 const QString recPath = "Rec";
 const QString dataPath = "Data";
 const QString errLogDataPath = "ErrLog";
-QHash<QString, uint> g_proto_map = {
-    {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
-    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
-    {"CMU5.0", CMUV5_0}
-};
+//QHash<QString, uint> g_proto_map = {
+//    {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
+//    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
+//    {"CMU5.0", CMUV5_0}
+//};
+
+#define REG_DIFF_REFUSE_TO_INSERT       (10U)
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     cmu = nullptr;
     csvfile = nullptr;
@@ -31,6 +33,13 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     isDirExist(errLogDataPath);
     //    pMq = MessageQueue::getInstance();
     //    pMq->registMsgQueue(0);
+    cproVerList.clear();
+    cproVerList << CMU_P_V0_0_01 << CMU_P_V1_0_02 << CMU_P_V2_0_03 << CMU_P_V3_0_04
+                << CMU_A_FAN_MOS_V1_0_00 << CMU_A_FAN_MOS_V1_0_01 << CMU_A_FAN_MOS_V1_0_02
+                << CMU_A_FAN_MOS_V1_0_03 << CMU_A_FAN_MOS_V1_0_04 << CMU_A_FAN_MOS_V1_3_00
+                << CMU_A_FAN_PAL_V2_0_00
+                << CMU_A_LIQ_MOS_V3_0_00 << CMU_A_LIQ_MOS_V3_0_01 << CMU_A_LIQ_MOS_V3_3_00;
+
     qRegisterMetaType<ST_SOE>("ST_SOE");
     qRegisterMetaType<TMsgData>("TMsgData");
     m_thread = new QThread();
@@ -166,7 +175,7 @@ void mb_cmu::Dump2CsvTitle() {
         }
     }
     for (int i = 0; i < config.bmu_num; i++) {
-        if(protocal_ver == CMUV4_6){
+        if(is_pVer_a_fan_pal()){
             data_buf << (tr("BMU%1_模块温度1,").arg(i + 1));
             data_buf << (tr("BMU%1_模块温度2,").arg(i + 1));
         }
@@ -183,21 +192,21 @@ void mb_cmu::Dump2CsvTitle() {
         data_buf << (tr("BMU%1_温度断线,").arg(i + 1));
         data_buf << (tr("BMU%1_运行状态,").arg(i + 1));
         data_buf << (tr("BMU%1_故障状态,").arg(i + 1));
-        if(protocal_ver == CMUV4_9) {
+        if(is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
             data_buf << (tr("BMU%1_风机转速,").arg(i + 1));
         }
-        if (protocal_ver > CMUV2) {
+        if (is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
             data_buf << (tr("BMU%1_CAN错误,").arg(i + 1));
         }
-        if (protocal_ver > CMUV3) {
+        if (is_cpVer_Higher_than(CMU_P_V2_0_03)) {
             data_buf << (tr("BMU%1_母线电压,").arg(i + 1));
-            if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
-                data_buf << (tr("BMU%1_均衡电流,").arg(i + 1));
-            }else{
+            if(is_pVer_a_liq_mos()){
                 data_buf << (tr("BMU%1_模组A均衡电流,").arg(i + 1));
                 data_buf << (tr("BMU%1_模组B均衡电流,").arg(i + 1));
                 data_buf << (tr("BMU%1_模组C均衡电流,").arg(i + 1));
                 data_buf << (tr("BMU%1_模组D均衡电流,").arg(i + 1));
+            }else{
+                data_buf << (tr("BMU%1_均衡电流,").arg(i + 1));
             }
             data_buf << (tr("BMU%1_均衡故障,").arg(i + 1));
             data_buf << (tr("BMU%1_通道状态,").arg(i + 1));
@@ -231,7 +240,7 @@ void mb_cmu::Dump2Csv() {
             }
         }
         for (int i = 0; i < config.bmu_num; i++) {
-            if(protocal_ver == CMUV4_6){
+            if(is_pVer_a_fan_pal()){
                 double val = this->bmu_data[i].ModT1 / 10.0;
                 data_buf << (QString("%1,").arg(val));
                 val = this->bmu_data[i].ModT2 / 10.0;
@@ -251,7 +260,7 @@ void mb_cmu::Dump2Csv() {
             double val = 0;
             uint64_t u64val = 0;
             // 状态量个数，电压断线+温度断线+运行状态+故障状态
-            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
+            if (is_pVer_a_fan_pal()){
                 val = this->bmu_data[i].Ubreak;
             }else{
                 val = this->bmu_data[i].U64break;
@@ -260,7 +269,7 @@ void mb_cmu::Dump2Csv() {
             data_buf << (QString("0x%1,").arg(u64val,0,16));
 
 
-            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
+            if (is_pVer_a_fan_pal()){
                 val = this->bmu_data[i].Tbreak;
             }else{
                 val = this->bmu_data[i].T64break;
@@ -274,27 +283,15 @@ void mb_cmu::Dump2Csv() {
             val = this->bmu_data[i].ErrStat;
             u64val = val;
             data_buf << (QString("0x%1,").arg(u64val,4,16,QChar('0')));
-            if(protocal_ver == CMUV4_9) {
+            if(is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
                 data_buf << (this->bmu_data[i].FanSpeed) << ",";
             }
-            if (protocal_ver > CMUV2) {
+            if (is_cpVer_Higher_than(CMU_P_V1_0_02)) {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }
-            if (is_gender_balanced(protocal_ver)) {
-                if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
-                    val = this->bmu_data[i].BalU24 / 1000.0;
-                    data_buf << (QString("%1,").arg(val));
-                    val = this->bmu_data[i].BalIdc[0] / 1000.0;
-                    data_buf << (QString("%1,").arg(val));
-                    data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
-                    data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
-                    data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
-                    for (int j = 0; j < config.vol_num; j++) {
-                        data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
-                        data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
-                    }
-                }
-                else {
+            if (is_pVer_active()) {
+                if(is_pVer_a_liq_mos())
+                {
                     val = this->bmu_data[i].BalU24 / 1000.0;
                     data_buf << (QString("%1,").arg(val));
 
@@ -310,6 +307,20 @@ void mb_cmu::Dump2Csv() {
                     data_buf << GetBitStatus(this->bmu_data[i].U64BalErr) << ",";
                     data_buf << GetBitStatus(this->bmu_data[i].U64BalStat) << ",";
                     data_buf << GetBalanceValue(this->bmu_data[i].BalMode,this->bmu_data[i].BalCur) << ",";
+                    for (int j = 0; j < config.vol_num; j++) {
+                        data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
+                        data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
+                    }
+                }
+                else
+                {
+                    val = this->bmu_data[i].BalU24 / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    val = this->bmu_data[i].BalIdc[0] / 1000.0;
+                    data_buf << (QString("%1,").arg(val));
+                    data_buf << GetBitStatus(this->bmu_data[i].BalErr) << ",";
+                    data_buf << GetBitStatus(this->bmu_data[i].BalStat) << ",";
+                    data_buf << GetBalanceValue(this->bmu_data[i].BalMode) << ",";
                     for (int j = 0; j < config.vol_num; j++) {
                         data_buf << (this->bmu_data[i].BalChgAh[j]) << ",";
                         data_buf << (this->bmu_data[i].BalDischgAh[j]) << ",";
@@ -345,16 +356,16 @@ void mb_cmu::Dump2Csv() {
                     object.insert((QString("BMU%1_Tp%2").arg(i + 1).arg(j + 1)), val);
                 }
             }
-            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
-                val = this->bmu_data[i].Ubreak;
-            }else{
+            if (is_pVer_a_liq_mos()){
                 val = this->bmu_data[i].U64break;
+            }else{
+                val = this->bmu_data[i].Ubreak;
             }
             object.insert((QString("BMU%1_Ubreak,").arg(i + 1)), val);
-            if (protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1){
-                val = this->bmu_data[i].Tbreak;
-            }else{
+            if (is_pVer_a_liq_mos()){
                 val = this->bmu_data[i].T64break;
+            }else{
+                val = this->bmu_data[i].Tbreak;
             }
             object.insert((QString("BMU%1_Tbreak,").arg(i + 1)), val);
             val = this->bmu_data[i].RunStat;
@@ -560,7 +571,17 @@ int mb_cmu::Init() {
     int index = -1;
     config = {0, 0, 0, 0, 0};
     memset(&sys_para, 0, sizeof(sys_para));
-    db_manager::Instance()->getNode(this->nodes_table, protocal_ver);
+    if(cproVerList.contains(compound_protocol_ver())&&exVerChangedFlag)
+    {
+        db_manager::Instance()->getExternNode(this->nodes_table, protocal_ver, ex_ver);
+    }
+    else
+    {
+        clearExVer();
+        db_manager::Instance()->getOriginNode(this->nodes_table, protocal_ver);
+    }
+    exVerChangedFlag = false;
+
     qDebug()<<"nodes_table.size:"<< this->nodes_table.size();
     mapData.clear();
     mapConfig.clear();
@@ -586,6 +607,7 @@ int mb_cmu::Init() {
     return 0;
 }
 
+
 #define MAX_LEN 120
 /*
  * 读取数据
@@ -603,8 +625,9 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 rc = modbus_read_registers(this->cmu, start_addr, read_len, dest);
                 if (rc > 0) {
                     status += rc;
+//                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "√";
                 } else {
-                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
+                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -617,8 +640,9 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                 rc = modbus_read_input_registers(this->cmu, start_addr, read_len, dest);
                 if (rc > 0) {
                     status += rc;
+//                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "√";
                 } else {
-                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc;
+                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -645,7 +669,7 @@ int mb_cmu::ReadCapData() {
     int status = 0;
     if (config.bmu_num > 0) {
         // BMU 均衡电量
-        if (is_parallel_balanced(this->cmu_ver)) {
+        if (is_pVer_a_fan_pal()) {
             reg_num = config.bmu_num * 2 * config.vol_num;
             status += ReadData(0x04, 0xA00 + config.bmu_num * 1, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
@@ -686,7 +710,7 @@ int mb_cmu::ReadALL() {
     }
     //
     if (config.bmu_num > 0) {
-        if(protocal_ver == CMUV4_6)
+        if(is_pVer_a_fan_pal())
         {
             uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
             uint16_t *pt;
@@ -713,7 +737,7 @@ int mb_cmu::ReadALL() {
                 // 读模块2温度
                 bmu_data[i].ModT2 = *(p + i*2 + 1);
             }
-        }else if(protocal_ver == CMUV4_8 ||protocal_ver == CMUV5_0){
+        }else if(is_cpVer_a_fan_mos_with_boot_ver()){
             uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
             uint16_t *pt;
             reg_num = config.bmu_num * 3;
@@ -727,7 +751,7 @@ int mb_cmu::ReadALL() {
                 bmu_data[i].BMUBootVersion  = (*(pt + i*2));
                 bmu_data[i].BMUBootVersion |= *(pt + i*2+1)<<16;
             }
-        }else if(protocal_ver == CMUV4_10 || protocal_ver == CMUV5_1){
+        }else if(is_pVer_a_liq_mos()){
             uint16_t *starAddr = (uint16_t *)(0x500 + 2 + config.bmu_num * 2);
             uint16_t *pt;
             reg_num = config.bmu_num * 3;
@@ -793,16 +817,7 @@ int mb_cmu::ReadALL() {
         bms_data.MaxTbmuId = maxBmuId;
         bms_data.MinTbmuId = minBmuId;
         // 状态
-        if(protocal_ver != CMUV4_10 && protocal_ver != CMUV5_1 ){
-            reg_num = config.bmu_num * 4;
-            status += ReadData(0x03, 0x100, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {
-                bmu_data[i].Ubreak =  *(p + i);
-                bmu_data[i].Tbreak =  *(p + 1 * config.bmu_num + i);
-                bmu_data[i].RunStat = *(p + 2 * config.bmu_num + i);
-                bmu_data[i].ErrStat = *(p + 3 * config.bmu_num + i);
-            }
-        }else{            
+        if(is_pVer_a_liq_mos()){
             uint16_t *pt;
             reg_num = config.bmu_num * 10;
             status += ReadData(0x03, 0x100, reg_num, p);
@@ -833,10 +848,19 @@ int mb_cmu::ReadALL() {
                 //qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
                 //qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
             }
+        }else{            
+            reg_num = config.bmu_num * 4;
+            status += ReadData(0x03, 0x100, reg_num, p);
+            for (int i = 0; i < config.bmu_num; i++) {
+                bmu_data[i].Ubreak =  *(p + i);
+                bmu_data[i].Tbreak =  *(p + 1 * config.bmu_num + i);
+                bmu_data[i].RunStat = *(p + 2 * config.bmu_num + i);
+                bmu_data[i].ErrStat = *(p + 3 * config.bmu_num + i);
+            }
         }
 
-        if (is_gender_balanced(protocal_ver)) {
-            if (is_parallel_balanced(this->cmu_ver)) {
+        if (is_pVer_active()) {
+            if (is_pVer_a_fan_pal()) {
                 // 并充项目
                 reg_num = config.bmu_num * (4 + config.vol_num);  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
@@ -850,7 +874,7 @@ int mb_cmu::ReadALL() {
                     bmu_data[i].BalMode = *(p++);
                 }
             }
-            else if (protocal_ver == CMUV4_10 || protocal_ver == CMUV5_1 ){
+            else if (is_pVer_a_liq_mos()){
                 // 液冷项目
                 reg_num = config.bmu_num * 15;  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
@@ -897,14 +921,14 @@ int mb_cmu::ReadALL() {
                 }
             }
 
-            if (protocal_ver == CMUV4_6) {
+            if (is_pVer_a_fan_pal()) {
                 reg_num = config.bmu_num;  // 均衡母线电流
                 status += ReadData(0x03, 0xBB8, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
                     bmu_data[i].BalI48 = *(p + i);
                 }
             }
-            if (protocal_ver == CMUV4_6 || protocal_ver == CMUV4_9) {
+            if (is_pVer_a_fan_pal()||is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
                 reg_num = config.bmu_num / 2 + config.bmu_num % 2;
                 status += ReadData(0x04, 0x156A, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
@@ -920,15 +944,15 @@ int mb_cmu::ReadALL() {
             }
         }
 
-        if (protocal_ver == CMUV3) {
+        if (is_cpVer_match(CMU_P_V2_0_03)) {
             reg_num = config.bmu_num * 2;
             status += ReadData(0x03, 0x900, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
                 bmu_data[i].CanErr = *(p + i * 2 + 1);
             }
-        } else if (protocal_ver > CMUV3) {
+        } else if (is_cpVer_Higher_than(CMU_P_V2_0_03)) {
             // 通信计数
-            if (is_parallel_balanced(this->cmu_ver)) {
+            if (is_pVer_a_fan_pal()) {
                 reg_num = config.bmu_num * 1;
                 status += ReadData(0x04, 0xA00, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
@@ -987,7 +1011,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
         switch (state) {
             case SM_READ:
                 if (ReadALL()) {
-                    if (is_gender_balanced(protocal_ver)) {
+                    if (is_pVer_active()) {
                         if (counter % (60 * 5) == 0) {
                             ReadCapData();
                         }
@@ -1005,7 +1029,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                 modbus_set_slave(cmu, 1);
                 modbus_set_response_timeout(cmu, 3, 0);
                 if (cmu) rc = modbus_connect(this->cmu);
-                qWarning() << rc;
+                qWarning() << rc << this->mb_ip.c_str() << ":"<< this->mb_port;
                 if (rc == 0) state = SM_INIT;
                 memset(tab_reg, 0, sizeof(tab_reg));
                 counter = 0;
@@ -1191,13 +1215,25 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             uint16_t nb = Msg.data.size();
             if (nb >= 1) {
                 protocal_ver = BMS_PROTOCOL(Msg.data.toInt());
-                qDebug() << "new cmu version:" << protocal_ver + 1;
+                qDebug() << "set CMU Base Ver:" << protocal_ver + 1;
                 Init();
                 Dump2CsvTitle();
                 DumpErrLog2CsvTitle();
             }
             ret = 0;
-        } break;        
+        } break;
+        case CTRL_SET_EXPRO: {
+            uint16_t nb = Msg.data.size();
+            if (nb >= 1) {
+                setCompoundProtocolVer(Msg.data.toUInt());
+                qDebug() << "set CMU Ex Ver:" << compound_protocol_ver();
+                Init();
+                Dump2CsvTitle();
+                DumpErrLog2CsvTitle();
+            }
+            ret = 0;
+        } break;
+
         case CTRL_SET_ERRLOG_ULIMIT: {
             uint16_t nb = Msg.data.size();
             if (nb != 0) {
@@ -1297,16 +1333,38 @@ int mb_cmu::JudgeReg(NodeReg& node_reg) {
     int reg_len = GET_RAWDATALEN(node_reg.data_type) / 2;
     reg_len = (reg_len) > 1 ? reg_len : 1;
     uint8_t reg_type = node_reg.reg_type;
+
+    //超过一定范围无相邻的寄存器不能形成批量读列表
+    bool refuseToInsert = true;
+    foreach(db_manager::ST_DB_NODE nodeTemp, this->nodes_table)
+    {
+        if(nodeTemp.data_type == node_reg.data_type
+                &&nodeTemp.reg_addr != node_reg.reg_addr)
+        {
+            int diff = int(nodeTemp.reg_addr) - node_reg.reg_addr;
+            if(fabs(diff) < REG_DIFF_REFUSE_TO_INSERT)
+            {
+                refuseToInsert = false;
+                break;
+            }
+        }
+    }
+    if(refuseToInsert)
+    {
+        return -1;
+    }
+
     while (index--) {
         DataReg data_reg = reg_list_.at(index);
         if (reg_type == DO_REG || reg_type == DI_REG) {
-            if ((uint16_t)(node_reg.reg_addr - data_reg.reg_start) < bitnum && data_reg.reg_type == reg_type) {
+            if ((uint16_t)(node_reg.reg_addr - data_reg.reg_start) < bitnum
+                    && data_reg.reg_type == reg_type) {
                 return index;
             }
         }
         if (reg_type == AO_REG || reg_type == AI_REG) {
-            if ((uint16_t)(node_reg.reg_addr + reg_len - data_reg.reg_start) < shortnum &&
-                data_reg.reg_type == reg_type) {
+            if ((uint16_t)(node_reg.reg_addr + reg_len - data_reg.reg_start) < shortnum
+                    && data_reg.reg_type == reg_type) {
                 return index;
             }
         }
@@ -1350,14 +1408,15 @@ int mb_cmu::ReadAI() {
     uint16_t tab_buf[128];
     for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
         res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
+        qInfo()<< "==================" << iter->reg_type << iter->reg_start << iter->reg_num << res;
         if (res == iter->reg_num) {
 
-//            qDebug()<< "<<<<<<<<<<<<<<<<<<" <<iter->reg_start << iter->reg_num;
+//            qWarning()<< "<<<<<<<<<<<<<<<<<<" <<iter->reg_start << iter->reg_num;
             for (vector<DatabaseIO>::iterator data_iter = iter->data_io.begin(); data_iter != iter->data_io.end();
                  data_iter++) {
                 if (this->nodes_table.size() > data_iter->index) {
                     qreal value = 0;
-//                    qDebug() << iter->reg_start + data_iter->offset << tab_buf[data_iter->offset];
+//                    qWarning() << iter->reg_start + data_iter->offset << tab_buf[data_iter->offset];
                     if (data_iter->data_type == 514) { // 0x202
                         value = tab_buf[data_iter->offset] * data_iter->factor;
                     } else if (data_iter->data_type == 513) { // 0x201
@@ -1395,11 +1454,11 @@ int mb_cmu::ReadSOE() {
     res = ReadData(0x03, 0x2000, 2, tab_buf);
     if (res != 2) return -1;
     cmu_soe.list_soe.clear();
-    if (((is_gender_balanced(protocal_ver)) && (this->cmu_ver >= 0x00000402)) ||
-        ((is_main_line(protocal_ver)) && (this->cmu_ver >= 0x00000407))) {
-        if(protocal_ver >= CMUV5_0){
+    if (((is_pVer_active()) && (this->cmu_ver >= 0x00000402)) ||
+        ((is_pVer_passive()) && (this->cmu_ver >= 0x00000407))) {
+        if(is_exVer_3levels_alarm()){
             cmu_soe.type = db_manager::SOE_BMS4;
-        }else if(protocal_ver == CMUV4_6){
+        }else if(is_pVer_a_fan_pal()){
             cmu_soe.type = db_manager::SOE_BMS3;
         }else{
             cmu_soe.type = db_manager::SOE_BMS2;

@@ -167,34 +167,36 @@
       <item>
        <widget class="QComboBox" name="cbProtocol">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;请按硬件功能手动选择CMU协议版本；&lt;/p&gt;&lt;p&gt;1. CMU1.0-CMU3.0 适配软件版本0.0.1.x 至 0.0.3.x；CMU3.1新增绝缘数据点&lt;/p&gt;&lt;p&gt;2. CMU4.0 新增适配主动均衡；&lt;/p&gt;&lt;p&gt;3. CMU4.6 并充；&lt;/p&gt;&lt;p&gt;4. CMU4.8 主动均衡；&lt;/p&gt;&lt;p&gt;5. CMU4.9 在4.8基础上新增风扇转速获取与设置；&lt;/p&gt;&lt;p&gt;6. CMU4.10 适用主动均衡液冷CMU通信；&lt;/p&gt;&lt;p&gt;7. CMU5.0 基于CMU4.8的主动均衡新增三级告警；&lt;/p&gt;&lt;p&gt;8.CMU5.1 基于CMU4.10的液冷主动均衡新增三级告警；&lt;/p&gt;&lt;p&gt;如出现通信断连情况或无所需数据点，请尝试更换协议版本。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;协议版本绑定CMU版本号和MODBUS协议版本，无需手动选择，连接后程序会自动选择最合适的版本。&lt;/p&gt;&lt;p&gt;如非记录的程序版本，无法找到详细协议，程序会自动分配最接近的协议大类以满足最基础的功能需求。以下是4种协议大类：&lt;/p&gt;&lt;p&gt;1、CMU_V0：被动均衡。&lt;/p&gt;&lt;p&gt;2、CMU_V1：主动均衡风冷MOS矩阵。&lt;/p&gt;&lt;p&gt;3、CMU_V2：主动均衡风冷并充。&lt;/p&gt;&lt;p&gt;4、CMU_V3：主动均衡液冷MOS矩阵。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>CMU1.0</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CMU2.0</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CMU3.0</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CMU4.0</string>
-         </property>
-        </item>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="labelPreferrVer">
         <property name="text">
          <string>--------</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pb_modBusHelp">
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>?</string>
         </property>
        </widget>
       </item>
@@ -350,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -404,7 +406,7 @@
             <x>0</x>
             <y>0</y>
             <width>1434</width>
-            <height>359</height>
+            <height>358</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -11205,7 +11207,7 @@
                   </layout>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_7">
+                  <widget class="QLabel" name="label_bark1">
                    <property name="font">
                     <font>
                      <pointsize>22</pointsize>
@@ -11284,7 +11286,7 @@
                   </layout>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_11">
+                  <widget class="QLabel" name="label_bark2">
                    <property name="font">
                     <font>
                      <pointsize>22</pointsize>

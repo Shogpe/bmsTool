@@ -55,7 +55,8 @@ class db_manager {
         QString unit;
     } ST_DB_NODE;
     bool start();
-    bool getNode(QList<ST_DB_NODE>& list, int proto_id);
+    bool getOriginNode(QList<ST_DB_NODE>& list, int proto_id);  //获取基础版本的点表公共部分
+    bool getExternNode(QList<ST_DB_NODE>& list, int proto_id, int ex_ver);  //获取细分版本的点表额外部分
     bool getSOE(QMap<int, ST_DB_SOE>& soe_map, SOE_TAG tag);
     bool getUser(QString name, QString password, int&);
     void closed();

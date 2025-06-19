@@ -31,13 +31,12 @@ void testWorker::doTest(QString ip, const QMap<QString, double> setMap) {
         return;
     }
     // 查询当前版本定制单
-    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU_V0").toString();
+    uint protocal_ver = protocol.replace("CMU_V","").toUInt();
+    uint ex_ver = QSettings("config.ini", QSettings::IniFormat).value("global/ex_Ver", 0).toUInt();
     QList<db_manager::ST_DB_NODE> nodes_table;
-    uint protocal_ver = 3;
-//    if (g_proto_map.contains(protocol)) {
-//        protocal_ver = g_proto_map.value(protocol);
-//    }
-    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
+
+    db_manager::Instance()->getExternNode(nodes_table, protocal_ver, ex_ver);
     vector<MB_NODE> tab_config;
     tab_config.clear();
 
@@ -130,13 +129,13 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
         return;
     }
     // 查询当前版本定制单
-    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU_V0").toString();
+    uint protocal_ver = protocol.replace("CMU_V","").toUInt();
+    uint ex_ver = QSettings("config.ini", QSettings::IniFormat).value("global/ex_Ver", 0).toUInt();
+
     QList<db_manager::ST_DB_NODE> nodes_table;
-    uint protocal_ver = 3;
-//    if (g_proto_map.contains(protocol)) {
-//        protocal_ver = g_proto_map.value(protocol);
-//    }
-    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
+\
+    db_manager::Instance()->getExternNode(nodes_table, protocal_ver, ex_ver);
     vector<db_manager::ST_DB_NODE> tab_config;
     tab_config.clear();
 
@@ -331,6 +330,10 @@ scan_settings::scan_settings(QWidget* parent) : QWidget(parent), ui(new Ui::scan
     m_mbtcp = nullptr;
     m_timer = new QTimer();
     //
+    QString cmuProver = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU_V0").toString();
+    uint cmuExver = QSettings("config.ini", QSettings::IniFormat).value("global/ex_Ver", 0).toUInt();
+    QString strCmuExver  = QString("_%1").arg(cmuExver,3,10,QChar('0'));
+    ui->proVer->setText(cmuProver + strCmuExver);
     connect(ui->btnLoadXml, &QPushButton::released, this, &scan_settings::loadXml);
     connect(&qtftp, &Qtftp::fileSent, this, [this](int ret, QString file) {
         qDebug() << tr("文件:") << file << ((ret == 0) ? tr("传输成功") : tr("传输失败"));
@@ -616,11 +619,9 @@ void scan_settings::loadXml() {
     vector<MB_NODE> tab_config;
     tab_config.clear();
 
-    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU1.0").toString();
-    uint protocal_ver = 3;
-//    if (g_proto_map.contains(protocol)) {
-//        protocal_ver = g_proto_map.value(protocol);
-//    }
+    QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU_V0").toString();
+    uint protocal_ver = protocol.replace("CMU_V","").toUInt();
+    uint ex_ver = QSettings("config.ini", QSettings::IniFormat).value("global/ex_Ver", 0).toUInt();
 
 #if CONFIG_METHOD_USE == CONFIG_METHOD_1
     MB_NODE* node_table;
@@ -653,7 +654,7 @@ void scan_settings::loadXml() {
     int node_table_size = GetCMUConfigArrayLen();
     QList<db_manager::ST_DB_NODE> nodes_table;
 
-    db_manager::Instance()->getOriginNode(nodes_table, protocal_ver);
+    db_manager::Instance()->getExternNode(nodes_table, protocal_ver, ex_ver);
 
     for (int i = 0; i < node_table_size; i++) {
 

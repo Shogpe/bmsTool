@@ -25,6 +25,15 @@ typedef struct
 #define TEXT_RED   ("color:darkRed;text-decoration:underline;font:bold;")
 #define TEXT_GREEN ("color:darkGreen;")
 
+#define BTN_RED   ("QPushButton{background-color:red;color: white;  border-radius: 4px;  border: 1px groove white;border-style: outset;}"\
+                   "QPushButton:hover{background-color:red; color: black;}"\
+                   "QPushButton:pressed{background-color:red;border-style: inset; }")
+
+
+#define BTN_GREEN ("QPushButton{background-color:green;color: white;  border-radius: 4px;  border: 1px groove white;border-style: outset;}"\
+                    "QPushButton:hover{background-color:green; color: black;}"\
+                    "QPushButton:pressed{background-color:green;border-style: inset; }")
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class SysStatWd; }
 QT_END_NAMESPACE

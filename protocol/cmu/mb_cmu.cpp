@@ -5,15 +5,15 @@
 #include "myhelper.h"
 #include "node_conf.h"
 #include "utils.h"
+#include <QElapsedTimer>
+
 static uint16_t sec_cmd[10] = {0x1223, 0x3445, 0x5667, 0x7889, 0x9000U, 0x1122, 0x3344, 0x5566, 0x7788};
 const QString recPath = "Rec";
 const QString dataPath = "Data";
 const QString errLogDataPath = "ErrLog";
-//QHash<QString, uint> g_proto_map = {
-//    {"CMU1.0", CMUV1}, {"CMU2.0", CMUV2}, {"CMU3.0", CMUV3}, {"CMU3.1", CMUV3_1}, {"CMU4.0", CMUV4},
-//    {"CMU4.1", CMUV4_1}, {"CMU4.8", CMUV4_8}, {"CMU4.6", CMUV4_6}, {"CMU4.9", CMUV4_9},{"CMU4.10", CMUV4_10},
-//    {"CMU5.0", CMUV5_0}
-//};
+
+
+#define EN_TRY_RECV_INFO        0
 
 #define REG_DIFF_REFUSE_TO_INSERT       (10U)
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
@@ -38,13 +38,15 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
                 << CMU_A_FAN_MOS_V1_0_00 << CMU_A_FAN_MOS_V1_0_01 << CMU_A_FAN_MOS_V1_0_02
                 << CMU_A_FAN_MOS_V1_0_03 << CMU_A_FAN_MOS_V1_0_04 << CMU_A_FAN_MOS_V1_3_00
                 << CMU_A_FAN_PAL_V2_0_00
-                << CMU_A_LIQ_MOS_V3_0_00 << CMU_A_LIQ_MOS_V3_0_01 << CMU_A_LIQ_MOS_V3_3_00;
+                << CMU_A_LIQ_MOS_V3_0_01 << CMU_A_LIQ_MOS_V3_0_02 << CMU_A_LIQ_MOS_V3_3_00;
 
     qRegisterMetaType<ST_SOE>("ST_SOE");
     qRegisterMetaType<TMsgData>("TMsgData");
     m_thread = new QThread();
     moveToThread(m_thread);
     m_thread->start();
+
+    statusTimeInMs.start();//测试用
     Init();
 }
 QString mb_cmu::GetBitStatus(uint16_t status) {
@@ -195,7 +197,7 @@ void mb_cmu::Dump2CsvTitle() {
         if(is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
             data_buf << (tr("BMU%1_风机转速,").arg(i + 1));
         }
-        if (is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
+        if (is_cpVer_Higher_than(CMU_P_V1_0_02)) {
             data_buf << (tr("BMU%1_CAN错误,").arg(i + 1));
         }
         if (is_cpVer_Higher_than(CMU_P_V2_0_03)) {
@@ -615,7 +617,13 @@ int mb_cmu::Init() {
 int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) {
     int status = 0;
     int read_len = 0;
+    int test_start_addr = start_addr;
+    int test_reg_num = reg_num;
     int rc = 0;
+#if EN_TRY_RECV_INFO
+    QElapsedTimer readOneTimeCostMs;
+    readOneTimeCostMs.start();
+#endif
     memset(dest, 0, reg_num * sizeof(uint16_t));
     if (!reg_num) return status;
     switch (type) {
@@ -627,7 +635,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                     status += rc;
 //                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "√";
                 } else {
-                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
+                    //qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -642,7 +650,7 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
                     status += rc;
 //                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "√";
                 } else {
-                    qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
+                    //qWarning() << type << ",start:" << start_addr << ",len:" << read_len << ",rc:" << rc << "X";
                 }
                 reg_num -= read_len;
                 dest += read_len;
@@ -660,6 +668,20 @@ int mb_cmu::ReadData(uint8_t type, int start_addr, int reg_num, uint16_t* dest) 
         drv_status |= (0x01 << CMU_ONLINE);
     }
 
+#if EN_TRY_RECV_INFO
+    QString res = "";
+    if(status == test_reg_num){
+        res = "-√-";
+    }else{
+        res = "-X-";
+    }
+    qInfo()<< "==<try to recv:"  << res
+                                 << "Type:" << type
+                                 << "Addr:" << test_start_addr
+                                 << "Num:" << test_reg_num
+                                 << "recv:" << status
+                                 << "cost:" << readOneTimeCostMs.elapsed() << "ms";
+#endif
     return status;
 }
 int mb_cmu::ReadCapData() {
@@ -695,12 +717,31 @@ int mb_cmu::ReadCapData() {
 #define STAT_NUM    4
 #define BALANCE_NUM 5
 int mb_cmu::ReadALL() {
-    /* Read 5 registers from the address 0 */
+    int status = 0;
+    status += ReadCmuData();
+    status += ReadBmuData();
+    return status;
+}
+
+
+int mb_cmu::ReadCmuData() {
+
     unsigned int reg_num = 0;
     uint16_t* p = this->tab_reg;
     int status = 0;
     status += ReadAI();
+
     if (status > 0) emit bmsDataReady(0, mapData);
+
+    return status;
+}
+
+int mb_cmu::ReadBmuData() {
+
+    unsigned int reg_num = 0;
+    uint16_t* p = this->tab_reg;
+    int status = 0;
+
     // 版本号,优先读取,下文根据版本号采集不同地址
     reg_num = config.bmu_num * 2 + 2;
     status += ReadData(0x03, 0x500, reg_num, p);
@@ -708,7 +749,7 @@ int mb_cmu::ReadALL() {
     for (int i = 0; i < config.bmu_num; i++) {
         bmu_data[i].Version = *(uint32_t*)(p + 2 + i * 2);
     }
-    //
+
     if (config.bmu_num > 0) {
         if(is_pVer_a_fan_pal())
         {
@@ -716,7 +757,7 @@ int mb_cmu::ReadALL() {
             uint16_t *pt;
             reg_num = config.bmu_num * 4;
             status += ReadData(0x03, (int)starAddr, reg_num, p);
-            for (int i = 0; i < config.bmu_num; i++) {                
+            for (int i = 0; i < config.bmu_num; i++) {
                 // 读硬件版本号
                 pt = p;
                 bmu_data[i].HVersion = *(pt + i);
@@ -727,7 +768,7 @@ int mb_cmu::ReadALL() {
                 // 读bmu生产流水号
                 pt = p + config.bmu_num*3;
                 bmu_data[i].BMUSN = *(pt + i);
-            }            
+            }
 
             reg_num = config.bmu_num * 2;
             status += ReadData(0x04, 0x157C, reg_num, p);
@@ -776,7 +817,7 @@ int mb_cmu::ReadALL() {
         int minBmuId = 0;
         ChlCellMap.clear();
 
-        for (int i = 0; i < config.bmu_num; i++) {            
+        for (int i = 0; i < config.bmu_num; i++) {
             for (int j = 0; j < config.vol_num; j++) {
                 bmu_data[i].Ucell[j] = *(p + i * config.vol_num + j);
                 ChlCellMap[j]<<bmu_data[i].Ucell[j];
@@ -848,7 +889,7 @@ int mb_cmu::ReadALL() {
                 //qDebug()<<tr("BMU%1UU64break = 0x%2:").arg(i).arg(bmu_data[i].U64break,16,16,QChar('0'));
                 //qDebug()<<tr("BMU%1UT64break = 0x%2:").arg(i).arg(bmu_data[i].T64break,16,16,QChar('0'));
             }
-        }else{            
+        }else{
             reg_num = config.bmu_num * 4;
             status += ReadData(0x03, 0x100, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
@@ -884,7 +925,7 @@ int mb_cmu::ReadALL() {
                     }
                     bmu_data[i].BalU24 = *(p++);
 
-                    bmu_data[i].U64BalErr = *(p++);                    
+                    bmu_data[i].U64BalErr = *(p++);
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<16;
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<32;
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<48;
@@ -902,11 +943,6 @@ int mb_cmu::ReadALL() {
 
                     bmu_data[i].BalMode = *(p++);
                     bmu_data[i].BalCur = (int16_t)(*(p++));
-                    //qDebug()<<tr("BMU%1BalU24 = %2:").arg(i).arg(bmu_data[i].BalU24);
-                    //qDebug()<<tr("BMU%1U64BalErr = 0x%2:").arg(i).arg(bmu_data[i].U64BalErr,16,16,QChar('0'));
-                    //qDebug()<<tr("BMU%1U64BalStat = 0x%2:").arg(i).arg(bmu_data[i].U64BalStat,16,16,QChar('0'));
-                    //qDebug()<<tr("BMU%1BalMode = %2:").arg(i).arg(bmu_data[i].BalMode);
-                    //qDebug()<<tr("BMU%1BalCur = %2:").arg(i).arg(bmu_data[i].BalCur);
                 }
             }
             else {
@@ -977,7 +1013,7 @@ void mb_cmu::msg_deal(TMsgData MsgCmd) {
         str += QString("0x%1 ").arg((uint8_t)MsgCmd.data[i],2,16,QLatin1Char('0'));
     }
 
-    qDebug() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size()<<str;
+    qInfo() << "deal msg:" << MsgCmd.msg_type << ",len:" << MsgCmd.data.size()<<str;
 
     DealCMD(MsgCmd);
 }
@@ -1008,8 +1044,17 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
             state = SM_CONNECT;
         }
         m_interval = 500;
+        QElapsedTimer readTimeCostMs;
+        //测每次进入离上次进入的时间差
+#if EN_TRY_RECV_INFO
+        qDebug() << ">>>>>" << state << currentReadGroup << "time in" << statusTimeInMs.elapsed() <<"ms";
+        statusTimeInMs.start();
+#endif
         switch (state) {
             case SM_READ:
+
+                readTimeCostMs.start();
+#if 0
                 if (ReadALL()) {
                     if (is_pVer_active()) {
                         if (counter % (60 * 5) == 0) {
@@ -1021,6 +1066,40 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                     Dump2Csv();
                     DumpErrLog2Csv();
                 }
+#else
+
+                if(currentReadGroup == RD_GROUP1)
+                {
+                    if(ReadCmuData())
+                    {
+                        currentReadGroup = RD_GROUP2;
+                    }
+                }
+                else if(currentReadGroup == RD_GROUP2)
+                {
+                    if(ReadBmuData())
+                    {
+                        if (is_pVer_active()) {
+                            if (counter % (60 * 5) == 0) {
+                                ReadCapData();
+                            }
+                            counter++;
+                        }
+                        state = SM_INIT;
+                        Dump2Csv();
+                        DumpErrLog2Csv();
+                    }
+
+                }
+                else
+                {
+                    state = SM_INIT;
+                }
+
+#endif
+#if EN_TRY_RECV_INFO
+                qDebug() << "<><><><>read all cost time" << readTimeCostMs.elapsed() << "ms";
+#endif
                 break;
             case SM_CONNECT: {
                 drv_status &= ~(0x01U << CMU_ONLINE);
@@ -1040,6 +1119,7 @@ void mb_cmu::timerEvent(QTimerEvent* event) {
                 rc = ReadData(0x03, 5411, sizeof(sys_para) / 2, sys_para.array);
                 if (rc == sizeof(sys_para) / 2) {
                     state = SM_READ;
+                    currentReadGroup = RD_GROUP1;
                     mapData["LocalIP"] = bswap_32(sys_para.Name.u32LocalIP);
                     mapData["ServIP"] = bswap_32(sys_para.Name.u32TftpServIP);
                     isWrLocked = (sys_para.Name.uFunCtrReg & (0x01 << WR_LOCK_BIT)) > 0 ? true : false;
@@ -1227,6 +1307,9 @@ void mb_cmu::DealCMD(TMsgData& Msg) {
             if (nb >= 1) {
 //                setCompoundProtocolVer(Msg.data.toUInt());
                 qDebug() << "set CMU Ex Ver:" << compound_protocol_ver();
+                QSettings* settings = new QSettings("config.ini", QSettings::IniFormat);
+                settings->setValue("global/protocol", QString("CMU_V%1").arg(GetProtocalVer()));
+                settings->setValue("global/ex_Ver", GetExProtocalVer());
                 Init();
                 Dump2CsvTitle();
                 DumpErrLog2CsvTitle();
@@ -1338,11 +1421,11 @@ int mb_cmu::JudgeReg(NodeReg& node_reg) {
     bool refuseToInsert = true;
     foreach(db_manager::ST_DB_NODE nodeTemp, this->nodes_table)
     {
-        if(nodeTemp.data_type == node_reg.data_type
+        if(nodeTemp.reg_type == node_reg.reg_type
                 &&nodeTemp.reg_addr != node_reg.reg_addr)
         {
-            int diff = int(nodeTemp.reg_addr) - node_reg.reg_addr;
-            if(fabs(diff) < REG_DIFF_REFUSE_TO_INSERT)
+            int diff = int(node_reg.reg_addr) - int(nodeTemp.reg_addr);
+            if(diff < REG_DIFF_REFUSE_TO_INSERT && diff > 0)
             {
                 refuseToInsert = false;
                 break;
@@ -1406,12 +1489,10 @@ void mb_cmu::InsertReg(NodeReg& node_reg, int index) {
 int mb_cmu::ReadAI() {
     int res = -1;
     uint16_t tab_buf[128];
+
     for (vector<DataReg>::iterator iter = reg_list_.begin(); iter != reg_list_.end(); iter++) {
         res = ReadData(iter->reg_type, iter->reg_start, iter->reg_num, tab_buf);
-        qInfo()<< "==<try to recv:" << "regType:" << iter->reg_type
-                                     << "startAddr:" << iter->reg_start
-                                     << "regNum:" << iter->reg_num
-                                     << "recvNum:" << res;
+
         if (res == iter->reg_num) {
 
 //            qWarning()<< "<<<<<<<<<<<<<<<<<<" <<iter->reg_start << iter->reg_num;

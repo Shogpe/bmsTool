@@ -111,6 +111,7 @@ typedef enum {
 
 #define ADDR_CLEAR_ENG 0xFFF2
 #define MB_CLEAR_ENG   0x1EC6
+#define MB_CLEAR_ENG2  0xA5A5
 #define MB_UPLOAD_Trig 0x1D32
 
 #define ADDR_REBOOT   0xFFF3
@@ -229,6 +230,12 @@ typedef enum {
     SM_CTRL,     //
     SM_INIT,     //
 } STATE_MACHINE;
+
+typedef enum {
+    RD_GROUP1 = 1,
+    RD_GROUP2 = 2,
+} READ_GROUP;//将read all分组，不然太慢了，别的进不来
+
 typedef enum {
     CMU_V0 = 0,//被动均衡
     CMU_V1 = 1,//主动均衡风冷MOS矩阵
@@ -252,8 +259,8 @@ typedef enum {
 
 #define CMU_A_FAN_PAL_V2_0_00   2000U  //并充
 
-#define CMU_A_LIQ_MOS_V3_0_00   3001U  //CMU4.10
-#define CMU_A_LIQ_MOS_V3_0_01   3002U  //CMU液冷最新的基线，旧板BMStool里没有对应的版本
+#define CMU_A_LIQ_MOS_V3_0_01   3001U  //CMU4.10
+#define CMU_A_LIQ_MOS_V3_0_02   3002U  //CMU液冷最新的基线，旧板BMStool里没有对应的版本
 #define CMU_A_LIQ_MOS_V3_3_00   3300U  //CMU5.1
 
 #define CMU_ILIGAL_EXVER        000U//999U
@@ -282,6 +289,8 @@ class mb_cmu : public QObject {
     ~mb_cmu();
     virtual int Init();  // 初始化
     int ReadALL();       //
+    int ReadCmuData();   //ReadALL cmu部分
+    int ReadBmuData();   //ReadALL bmu部分
     int ReadCapData();   // 读容量数据
     int Close();         // 释放资源
    public:
@@ -370,6 +379,7 @@ class mb_cmu : public QObject {
     modbus_t *cmu;
     QThread *m_thread;
     int m_interval;
+    QElapsedTimer statusTimeInMs;//测试用
     QMutex mutex;
     int err_counter = 0;
     enum FILE_FORMAT {
@@ -380,6 +390,8 @@ class mb_cmu : public QObject {
 
     int rec = 1;  // 存储格式，1:csv格式，0x02:bin格式（json+zip压缩）
     STATE_MACHINE state = SM_NONE;
+    READ_GROUP    currentReadGroup = RD_GROUP1;
+
     string mb_ip;
     int mb_port;
     // 配置表

@@ -18,7 +18,7 @@ CMU_A_FAN_MOS_V1_003   1003U   CMU4.9 新增风机转速和Boot版本等
 CMU_A_FAN_MOS_V1_004   1004U   风冷最新的基线，旧板BMStool里没有对应的版本
 CMU_A_FAN_MOS_V1_300   1300U   CMU5.0 风冷三级告警
 CMU_A_FAN_PAL_V2_000   2000U   并充基版
-CMU_A_LIQ_MOS_V3_000   3001U   CMU4.10 旧版液冷
-CMU_A_LIQ_MOS_V3_001   3002U   液冷最新的基线，旧板BMStool里没有对应的版本
+CMU_A_LIQ_MOS_V3_001   3001U   CMU4.10 旧版液冷
+CMU_A_LIQ_MOS_V3_002   3002U   液冷最新的基线，旧板BMStool里没有对应的版本
 CMU_A_LIQ_MOS_V3_300   3300U   CMU5.1 液冷三级告警
 在以上的小类别版本中，分别对应的CMU版本如下（如有交叉，按照点表版本更高适配）：

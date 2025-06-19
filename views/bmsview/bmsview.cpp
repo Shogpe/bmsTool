@@ -221,8 +221,8 @@ void BMSView::initUserLevelForm()
 
         ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
 
-        ui->pb_clearNetErrCnt->setVisible(false);
-        ui->sp_netErrCnt->setVisible(false);
+        ui->pb_clearNetErrCnt->setVisible(true);
+        ui->sp_netErrCnt->setVisible(true);
     }
 
 }
@@ -241,6 +241,7 @@ BMSView::BMSView(QWidget* parent) : QWidget(parent), ui(new Ui::BMSView) {
     config = {0, 0, 0, 0, 0};
     //
     QString protocol = QSettings("config.ini", QSettings::IniFormat).value("global/protocol", "CMU_V0").toString();
+
 
     ui->cbProtocol->blockSignals(true);
     ui->cbProtocol->clear();
@@ -553,9 +554,19 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     ui->btnClrSysLock->hide();
     if(this->mycmu->is_cpVer_match(CMU_A_FAN_MOS_V1_0_02)
             || this->mycmu->is_cpVer_match(CMU_A_FAN_MOS_V1_0_04)
-            || this->mycmu->is_exVer_3levels_alarm()){
+            || this->mycmu->is_exVer_3levels_alarm()
+            || this->mycmu->is_pVer_a_liq_mos()){
         ui->btnClrSysLock->show();
     }
+
+//    if(this->mycmu->is_pVer_a_liq_mos()){
+
+//    }else{
+
+//    }
+
+
+
 }
 int BMSView::setValue(QString name, double dval) {
     NodeReg node = mycmu->GetNodeAddr(name);
@@ -711,8 +722,68 @@ void BMSView::statGroupAutoHide(QHash<QString, qreal> mapData)
     }
 }
 
+void BMSView::setDoButtonText(uint16_t value, QList<QString> textList)
+{
+    foreach(QPushButton * btn, ui->G_DeviceDebug->findChildren<QPushButton*>())
+    {
+        QString objName = btn->objectName();
+        if(objName.startsWith("btnDebugRelayCtrl"))
+        {
+            objName.replace("btnDebugRelayCtrl","");
+            QString ctrl = "";
+
+            if(objName.endsWith("On"))
+            {
+                ctrl = tr("闭合");
+            }
+            else if(objName.endsWith("Off"))
+            {
+                ctrl = tr("断开");
+            }
+
+            objName.replace("On","").replace("Off","");
+
+            int idx = objName.toInt();
+            if(idx >= 0 || idx < 16)
+            {
+                if(ctrl == tr("闭合") || ctrl == tr("断开"))
+                {
+                    QString str = textList.at(idx);
+
+                    if(str == RESERVED_TEXT_RES)
+                    {
+                        str = "DO-" + QString::number(idx);
+                    }
+
+                    str += ctrl;
+                    btn->setText(str);
+                }
+            }
+
+        }
+        else if(objName.startsWith("btnDoStat"))
+        {
+            objName.replace("btnDoStat","");
+            int idx = objName.toInt();
+            if(idx >= 0 || idx < 16)
+            {
+                bool flag = ((value >> idx) & 0x01) > 0;
+                QString color = flag ? BTN_RED : BTN_GREEN;
+                btn->setStyleSheet(QString("%1").arg(color));
+            }
+
+        }
+
+    }
+
+
+}
+
+
 void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
+    QElapsedTimer flushDataTimeCostMs;
+    flushDataTimeCostMs.start();
 
     if (type == 1) {
         config.bmu_num = mapData.value("bmu_num", 0);
@@ -952,9 +1023,9 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                      << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
         }else if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
             textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
-                     << tr("铜排高温保护") << tr("铜排低温保护")<< tr("电芯过压锁定") << tr("电芯欠压锁定")
-                     << tr("充放电过流锁定") << tr("电芯高温锁定") << tr("电芯低温锁定") << tr("Pack极柱高温锁定")
-                     << tr("HVU极柱高温锁定") << tr("铜排高温锁定") << tr("铜排低温锁定") << RESERVED_TEXT_RES;
+                     << tr("电芯过压锁定") << tr("电芯欠压锁定")<< tr("充放电过流锁定") << tr("电芯高温锁定")
+                     << tr("电芯低温锁定") << tr("Pack极柱高温故障") << tr("HVU极柱高温故障") << tr("铜排高温保护")
+                     << tr("铜排低温保护") << tr("铜排高温锁定") << tr("铜排低温锁定") << RESERVED_TEXT_RES;
         }else{
             textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
                      << RESERVED_TEXT_RES << RESERVED_TEXT_RES<< RESERVED_TEXT_RES << RESERVED_TEXT_RES
@@ -1085,10 +1156,18 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         ui->G_DOStatus->setTitle(QString("%1: (0x%2)").arg(tr("DO状态")).arg(value,4,16,QChar('0')));
 
         QStringList textList;
-        textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
-                 << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
-                 << RESERVED_TEXT_RES << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+        if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
+            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
+                     << tr("放电指示") << tr("系统运行") << tr("自动寻址信号") << tr("告警输出") << tr("Pack风扇电源")
+                     << tr("Hvu风扇电源") << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+        }else{
+            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
+                     << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
+                     << RESERVED_TEXT_RES << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+        }
+
         fillStatLabel(lbDOStatList, value, textList);
+        setDoButtonText(value, textList);
     }
 
     if (mapData.contains("FuncMask")) {
@@ -1227,6 +1306,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         }
     }
 
+
+
     statGroupAutoHide(mapData);
 
     if (mapData.contains("BalnceMask") && mapData.contains("BalanceConfig")) {
@@ -1290,12 +1371,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     }
 
     //没有用到的校准按钮
-    ui->btnRpAdj->setVisible(false);
-    ui->btnRnAdj->setVisible(false);
     ui->btnIZeroAdj->setVisible(false);
     ui->btnIFullAdj->setVisible(false);
 
     ui->sysStatWd->refreashAllStat();
+
+    //qDebug() << "<><><><>flush data type " << type << "cost time" << flushDataTimeCostMs.elapsed() << "ms";
 }
 QString getBmuInfo2(uint16_t status) {
     QStringList statusList;
@@ -1789,8 +1870,8 @@ struct mb_cmd {
     uint16_t value;
 };
 static map<QString, mb_cmd> btnMap = {
-    {"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
-    {"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
+    //{"btnBMULock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_LOCK}},
+    //{"btnBMUUnlock", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_BMU_UNLOCK}},
     {"btnClearEng", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_CLEAR_ENG}},
     {"btnUploadTrig", {CTRL_AO_ADDR, ADDR_CLEAR_ENG, MB_UPLOAD_Trig}},
     {"btnIFullAdj", {CTRL_SEC_AO, ADDR_ADJ, MB_Adj_IFull}},
@@ -1830,15 +1911,41 @@ static map<QString, mb_cmd> btnMap = {
     {"btnResON", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_ON}},
     {"btnResOFF", {CTRL_AO_ADDR, ADDR_CTRL_RES, MB_CTRL_OFF}},
     {"btnTimeAdj", {CERT_CMD_TIME_ADJ, 0, 0}},
-    {"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}},
+    //{"btnResetDef", {CTRL_AO_ADDR, ADDR_RESET_FACTORY, MB_FACTORY}},
     {"btnCan485SelfDetectOn", {CTRL_AO_ADDR, ADDR_CTRL_COMM_SELF_DETECTE, MB_CTRL_ON}}};
 
+
+void BMSView::AOCtrlEmit(uint16_t v1, uint16_t v2, QString info)
+{
+    if (myHelper::ShowMessageBoxQuesion(info) == QDialog::Accepted) {
+        TMsgData MsgCmd;
+        MsgCmd.msg_type = CTRL_AO_ADDR;
+        uint16_t value[2];
+        value[0] = v1;
+        value[1] = v2;
+        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+    }
+}
+void BMSView::AOCtrlEmit(uint16_t v1, uint16_t v2)
+{
+    TMsgData MsgCmd;
+    MsgCmd.msg_type = CTRL_AO_ADDR;
+    uint16_t value[2];
+    value[0] = v1;
+    value[1] = v2;
+    MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
+    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+}
+
 void BMSView::sendCommand() {
+
     TMsgData MsgCmd;
     uint16_t val[3];
     QString text = "";
     QString name = "";
     QPushButton* btn = qobject_cast<QPushButton*>(QObject::sender());
+
     if (btn) {
         text = btn->text();
         name = btn->objectName();
@@ -1860,6 +1967,8 @@ void BMSView::sendCommand() {
             MsgCmd.msg_type = cmd.type;
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.addr), sizeof(uint16_t));
             MsgCmd.data.append(reinterpret_cast<char*>(&cmd.value), sizeof(uint16_t));
+
+            qInfo() << "btnInfo>>>>>>>>>>>>>>" << "btn Accepted" << name;
             if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
         }
     }else if (name == "btnRZeroAdj") {
@@ -2081,36 +2190,12 @@ void BMSView::sendCommand() {
             } else if (text == tr("远程断开")) {
                 mode = 0x55AA;
             }
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {65287, mode};
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            AOCtrlEmit(65287, mode);
         }
     } else if (name == "btnRClrErr") {
-        if (myHelper::ShowMessageBoxQuesion(tr("是否清除绝缘检测故障？")) == QDialog::Accepted) {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {65288, 0xAA55};
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-        }
+        AOCtrlEmit(65288, 0xAA55, ui->btnRClrErr->text() + "?");
     }  else if (name == "btnResetInsVCali") {
-        if (myHelper::ShowMessageBoxQuesion(tr("是否清除绝缘母线电压校准参数？")) == QDialog::Accepted) {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {65288, 0xBB66};
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-        }
-    }else if (name == "btnBalClrErr") {
-        if (myHelper::ShowMessageBoxQuesion(tr("是否清除均衡故障？")) == QDialog::Accepted) {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {65289, 0xAA55};  // 0xFF09
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-        }
+        AOCtrlEmit(65288, 0xBB66, ui->btnResetInsVCali->text() + "?");
     } else if (name == "btnSetSOC") {
         MsgCmd.msg_type = CTRL_AO_ADDR;
         val[0] = 0xFFF6;
@@ -2142,31 +2227,42 @@ void BMSView::sendCommand() {
         }
         if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
     } else if (name == "btnAdjSOC") {
-        if (myHelper::ShowMessageBoxQuesion(tr("是否校准SOC？")) == QDialog::Accepted) {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t value[2] = {65525, 0x1EA5};
-            MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-        }
+        AOCtrlEmit(65525, 0x1EA5, tr("是否校准SOC？"));
     } else if (name == "btnRebootBMUs") {
         rebootbmus->show();
-    }else if (name == "btnResetParaCali"){
-        TMsgData MsgCmd;
-        MsgCmd.msg_type = CTRL_AO_ADDR;
-        uint16_t value[2] = {0xFF0A, 0xAA55};
-        MsgCmd.data.append(reinterpret_cast<char*>(&value), 2 * sizeof(uint16_t));
-        if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-
-    }else if (name == "btnResetParaCfg"){
-
-    }else if(name.startsWith("btnDebugRelayCtrl")){
+    } else if (name == "btnBalClrErr") {
+        AOCtrlEmit(65289, 0xAA55, ui->btnBalClrErr->text() + "?");
+    } else if (name == "btnBmuResetCaliCfg"){
+        AOCtrlEmit(0xFF0A, 0xAA55, ui->btnBmuResetCaliCfg->text() + "?");
+    } else if (name == "btnBmuResetRunCfg"){
+        AOCtrlEmit(0xFF0A, 0xBB66, ui->btnBmuResetRunCfg->text() + "?");
+    } else if (name == "btnBmuResetParaCfg"){
+        AOCtrlEmit(0xFF0A, 0xCC77, ui->btnBmuResetParaCfg->text() + "?");
+    } else if (name == "btnBmuResetBalCfg"){
+        AOCtrlEmit(0xFF0A, 0xDD88, ui->btnBmuResetBalCfg->text() + "?");
+    } else if (name == "btnBmuResetDef"){
+        AOCtrlEmit(0xFF0A, 0x1D32, ui->btnBmuResetDef->text() + "?");
+    } else if (name == "btnBMUUnlock"){
+        AOCtrlEmit(0xFFF1, 0xAA55, ui->btnBMUUnlock->text() + "?");
+    } else if (name == "btnBMULock"){
+        AOCtrlEmit(0xFFF1, 0xAA55, ui->btnBMULock->text() + "?");
+    } else if (name == "btnCmuResetCaliCfg"){
+        AOCtrlEmit(0xFFF1, 0xA555, ui->btnCmuResetCaliCfg->text() + "?");
+    } else if (name == "btnCmuResetRunCfg"){
+        AOCtrlEmit(0xFFF1, 0xB666, ui->btnCmuResetRunCfg->text() + "?");
+    } else if (name == "btnCmuResetParaCfg"){
+        AOCtrlEmit(0xFFF1, 0xC777, ui->btnCmuResetParaCfg->text() + "?");
+    } else if (name == "btnCmuResetBalCfg"){
+        AOCtrlEmit(0xFFF1, 0xD888, ui->btnCmuResetBalCfg->text() + "?");
+    } else if (name == "btnCmuResetDef"){
+        AOCtrlEmit(0xFFF1, 0x1D32, ui->btnCmuResetDef->text() + "?");
+    } else if(name.startsWith("btnDebugRelayCtrl")){
         bool ctrl = false;
         QString str = "";
         QString strBit = name;
         strBit.remove("btnDebugRelayCtrl").remove("On").remove("Off").remove("ON").remove("OFF");
         uint16_t bit = strBit.toUInt();
-        qDebug() << "<<<<<<<<<<" << strBit << bit << ctrl;
+
         if(bit > 15){
             return;
         }
@@ -2179,7 +2275,7 @@ void BMSView::sendCommand() {
         }
         if (myHelper::ShowMessageBoxQuesion(str) == QDialog::Accepted) {
 
-
+            qInfo() << "btnInfo>>>>>>>>>>>>>>" << "btnIOCtrl"+strBit << bit << ctrl;
             uint16_t value[2] = {0};
             value[0] = bit+1;
             value[1] = ctrl;
@@ -2282,7 +2378,7 @@ void BMSView::btn_contrl() {
     } else if (name == "btnClearSOE") {
         if (myHelper::ShowMessageBoxQuesion("Sure to clear All SOE ?") == QDialog::Accepted) {
             MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t val[2] = {0xFFF8, 0xBB66};
+            uint16_t val[2] = {0xFFFB, 0xBB66};
             MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
             emit send_msg(MsgCmd);
             MsgCmd.data.clear();
@@ -2664,8 +2760,8 @@ void BMSView::uiInit() {
             myMenu.exec(globalPos);
         });
         //
-        ui->tableBMU->setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(ui->tableBMU,
+        ui->tableVer->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui->tableVer,
                 static_cast<void (QTableWidget::*)(const QPoint& pos)>(&QTableWidget::customContextMenuRequested), this,
                 &BMSView::pop_bmuTable_menu);
         ui->tableExtView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -2866,110 +2962,48 @@ void BMSView::on_btnLoadDefault_released() {
 }
 void BMSView::pop_bmuTable_menu(const QPoint& pos) {
     {  // Handle global position
-        QTableWidget* table = ui->tableBMU;
+        if((!this->mycmu->is_pVer_a_fan_mos()) || (!this->mycmu->is_pVer_a_fan_pal()) )
+        {
+            return;
+        }
+
+        QTableWidget* table = ui->tableVer;
         //        QPoint globalPos = table->mapToGlobal(pos);
         QModelIndex index = table->indexAt(pos);        
         //qDebug() << index.row();
         // Create menu and insert some actions
         QMenu* myMenu = new QMenu(table);
-        myMenu->addAction(tr("导出当前数据"), this, [=]() {
-            QString fileName = QFileDialog::getSaveFileName(
-                        this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
-                        tr("csv File(*.csv)"));
-            if (fileName.isNull()) {
-                return;
-            }
-            exportExecl(table, fileName);
-        });
+//        myMenu->addAction(tr("导出当前数据"), this, [=]() {
+//            QString fileName = QFileDialog::getSaveFileName(
+//                        this, tr("Save File"), tr("BMU数据") + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss"),
+//                        tr("csv File(*.csv)"));
+//            if (fileName.isNull()) {
+//                return;
+//            }
+//            exportExecl(table, fileName);
+//        });
         myMenu->addAction(QString("%1:BMU%2").arg(tr("开启风扇")).arg(index.row() + 1), this, [this, index]() {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t val[2] = {0xFF0B, index.row() | 0xA500};
-            MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            AOCtrlEmit(0xFF0B, index.row() | 0xA500);
         });
         myMenu->addAction(QString("%1:BMU%2").arg(tr("关闭风扇")).arg(index.row() + 1), this, [this, index]() {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t val[2] = {0xFF0B, index.row() | 0x5A00};
-            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            AOCtrlEmit(0xFF0B, index.row() | 0x5A00);
         });
         myMenu->addAction(tr("开启全部风扇"), this, [this]() {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t val[2] = {0xFF0B, 0xA5FE};
-            MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            AOCtrlEmit(0xFF0B, 0xA5FE);
         });
         myMenu->addAction(tr("关闭全部风扇"), this, [this, index]() {
-            TMsgData MsgCmd;
-            MsgCmd.msg_type = CTRL_AO_ADDR;
-            uint16_t val[2] = {0xFF0B, 0x5AFF};
-            MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-            if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+            AOCtrlEmit(0xFF0B, 0x5AFF);
         });
         if (this->mycmu->is_cpVer_with_fan_rate()) {
             myMenu->addAction(tr("使能RTU风扇控制"), this, [this, index]() {
-                TMsgData MsgCmd;
-                MsgCmd.msg_type = CTRL_AO_ADDR;
-                uint16_t val[2] = {0xFF0D, 0xAA55};
-                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                AOCtrlEmit(0xFF0D, 0xAA55);
                 rtu_enable = true;
             });
             myMenu->addAction(tr("禁用RTU风扇控制"), this, [this, index]() {
-                TMsgData MsgCmd;
-                MsgCmd.msg_type = CTRL_AO_ADDR;
-                uint16_t val[2] = {0xFF0D, 0x55AA};
-                MsgCmd.data.append(reinterpret_cast<char*>(&val), 2 * sizeof(val[0]));
-                if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
+                AOCtrlEmit(0xFF0D, 0x55AA);
                 rtu_enable = false;
             });
             myMenu->addAction(QString("%1:BMU%2").arg(tr("设置转速")).arg(index.row() + 1), this, [this, index]() {
-
-#if 0
-                TMsgData MsgCmd;
-                MsgCmd.msg_type = CTRL_AO_ADDR;
-                int bmuNum = index.row() + 1;
-                uint8_t speed;
-                bool block = true;
-
-                speed = myHelper::showInputBox(tr("风扇转速(0-100)"), block).toUInt();
-                if (0 <= speed && speed <= 100) {
-                    uint16_t temp = 0;
-                    // 修改奇数号bmu风扇转速
-                    if ((bmuNum % 2) == 1) {
-                        temp = speed << 8;
-                        // 判断偶数号bmu风扇转速是否有修改记录
-                        if (fan_Speed_map.contains(bmuNum + 1)) {
-                            temp |= fan_Speed_map[bmuNum + 1];
-                        }
-                    } else {
-                        temp = speed;
-                        // 判断奇数号bmu风扇转速是否有修改记录
-                        if (fan_Speed_map.contains(bmuNum - 1)) {
-                            temp |= fan_Speed_map[bmuNum - 1] << 8;
-                        }
-                    }
-
-                    fan_Speed_map[bmuNum] = speed;
-
-                    uint16_t val[2] = {0, 0};
-                    if ((bmuNum % 2) == 1) {
-                        val[0] = 0xFF0E + (bmuNum + 1) / 2 - 1;
-                    } else {
-                        val[0] = 0xFF0E + bmuNum / 2 - 1;
-                    }
-
-                    val[1] = temp;
-                    MsgCmd.data.append(reinterpret_cast<char*>(&val), sizeof(val));
-                    if (MsgCmd.data.size() > 0) emit send_msg(MsgCmd);
-                } else {
-                    myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
-                }
-#endif
-#if 1
 
                 int bmu_nums = ui->tableBMU->rowCount();
                 int bmuNum = 0;
@@ -3016,7 +3050,6 @@ void BMSView::pop_bmuTable_menu(const QPoint& pos) {
                 }else{
                     myHelper::ShowMessageBoxError(tr("转速不在区间[0,100]内"));
                 }
-#endif
             });
         }
 
@@ -3469,5 +3502,6 @@ void BMSView::clearStatLabel(QList<QLabel *> &ll)
         Label->setText(EMPTY_TEXT);
     }
 }
+
 
 

@@ -55,6 +55,9 @@ class BMSView : public QWidget {
     bool exportExecl(QTableWidget* tableWidget, QString dirFile);
     void StartBalanceForm(void);
     void initUserLevelForm();
+    void AOCtrlEmit(uint16_t v1, uint16_t v2, QString info);
+    void AOCtrlEmit(uint16_t v1, uint16_t v2);
+
     Rebootbmus* rebootbmus=NULL;
 
     QHash<QString, qreal> pcsPowerMapDataCache;
@@ -96,6 +99,7 @@ class BMSView : public QWidget {
     void flushBmuEx();
     void flushSoe(const ST_SOE &soe);
     void pop_bmuTable_menu(const QPoint& pos);
+    void setDoButtonText(uint16_t value, QList<QString> textList);
 
     void on_btn_debugLog_clicked();
 

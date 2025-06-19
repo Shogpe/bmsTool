@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>SysStatWd</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,0,1">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1">
    <property name="spacing">
     <number>2</number>
    </property>
@@ -30,9 +30,26 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QWidget" name="statWd" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2"/>
-    </widget>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QWidget" name="statWd" native="true">
+       <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line">

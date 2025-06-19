@@ -4,7 +4,8 @@
 #include <QLabel>
 
 #define WIDTH_OTHER     20
-#define UI_NUM_OF_ROW   7
+#define UI_NUM_OF_ROW   8
+#define LB_HIEGHT       30
 SysStatWd::SysStatWd(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SysStatWd)
@@ -130,6 +131,7 @@ void SysStatWd::initAllStatUI()
         lb->setAlignment(Qt::AlignCenter);
         lb->setFrameShape(QFrame::Box);
         lb->setLineWidth(1);
+        lb->setFixedHeight(LB_HIEGHT);
         QSizePolicy sp(QSizePolicy::Minimum, QSizePolicy::Expanding);
         lb->setSizePolicy(sp);
 
@@ -166,6 +168,10 @@ bool SysStatWd::isExcepted(QString objName)
 
 void SysStatWd::setLabel(QString text, bool flag)
 {
+    if(!this->isVisible())
+    {
+        return;
+    }
     foreach(statLabel_T* stat, statList)
     {
 
@@ -195,6 +201,10 @@ void SysStatWd::debugShowAllTrue()
 
 void SysStatWd::refreashAllStat()
 {
+    if(!this->isVisible())
+    {
+        return;
+    }
     foreach(QLabel* lb, labelUIList)
     {
         foreach(statLabel_T* stat, statList)

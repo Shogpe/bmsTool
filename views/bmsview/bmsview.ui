@@ -352,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -11552,6 +11552,391 @@
           <property name="spacing">
            <number>1</number>
           </property>
+          <item row="15" column="2">
+           <widget class="QPushButton" name="btnResetInsVCali">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复绝缘板默认校准系数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QPushButton" name="btnHeRongOFF">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>关闭核容功能</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <widget class="QPushButton" name="btnBalClrErr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除BMU均衡故障</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="1">
+           <widget class="QPushButton" name="btnRClrErr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>清除绝缘检测故障</string>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="2">
+           <widget class="QPushButton" name="btnBmuResetBalCfg">
+            <property name="text">
+             <string>恢复BMU默认均衡参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="label_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="2">
+           <widget class="QPushButton" name="btnBmuResetRunCfg">
+            <property name="text">
+             <string>恢复BMU默认运行参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QPushButton" name="btnSetSOH">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SOH手动标定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QPushButton" name="AutoFindAddr">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU自动寻址</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QPushButton" name="btnSetSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>SOC手动标定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="1">
+           <widget class="QPushButton" name="btnBmuResetCaliCfg">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复BMU默认校准参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="btnIOlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>IO锁定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnTimeAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>校时</string>
+            </property>
+           </widget>
+          </item>
+          <item row="35" column="1">
+           <spacer name="verticalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="11" column="2">
+           <widget class="QPushButton" name="btnAdjSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>触发SOC自动校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="25" column="2">
+           <widget class="QPushButton" name="btnCmuResetDef">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>CMU恢复出厂设置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btnIOunlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>IO解锁</string>
+            </property>
+           </widget>
+          </item>
+          <item row="26" column="1">
+           <widget class="QPushButton" name="btnCmuResetCaliCfg">
+            <property name="text">
+             <string>恢复CMU默认校准参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="btnReboot">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>重启</string>
+            </property>
+            <property name="popupMode">
+             <enum>QToolButton::InstantPopup</enum>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextOnly</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="27" column="1">
+           <widget class="QPushButton" name="btnCmuResetParaCfg">
+            <property name="text">
+             <string>恢复CMU默认配置参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="32" column="1">
+           <widget class="QPushButton" name="btnImportSOC">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>导入OCV-SOC表</string>
+            </property>
+           </widget>
+          </item>
+          <item row="27" column="2">
+           <widget class="QPushButton" name="btnCmuResetBalCfg">
+            <property name="text">
+             <string>恢复CMU默认均衡参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QPushButton" name="btnBMUUnlock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>BMU拨码解锁/重置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="32" column="2">
+           <widget class="QPushButton" name="btnClrSysLock">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>清除系统锁定状态</string>
+            </property>
+            <property name="text">
+             <string>清除系统锁定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QLabel" name="label_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="30" column="1">
+           <widget class="QLabel" name="label_10">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QPushButton" name="btnBalance">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>均衡控制</string>
+            </property>
+           </widget>
+          </item>
           <item row="10" column="1">
            <widget class="QPushButton" name="btnHeRongON">
             <property name="sizePolicy">
@@ -11562,6 +11947,108 @@
             </property>
             <property name="text">
              <string>开启核容功能</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QPushButton" name="btnRCtrl">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>绝缘检测控制</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="text">
+             <string>时钟:</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="2">
+           <widget class="QPushButton" name="btnBmuResetDef">
+            <property name="text">
+             <string>BMU恢复出厂设置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="1">
+           <widget class="QLabel" name="label_7">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="1">
+           <widget class="QPushButton" name="btnBmuResetParaCfg">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>恢复BMU默认配置参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="26" column="2">
+           <widget class="QPushButton" name="btnCmuResetRunCfg">
+            <property name="text">
+             <string>恢复CMU默认运行参数</string>
             </property>
            </widget>
           </item>
@@ -11608,8 +12095,8 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QPushButton" name="btnIOunlock">
+          <item row="3" column="2">
+           <widget class="QPushButton" name="btnBMULock">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -11617,63 +12104,11 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>IO解锁</string>
+             <string>BMU拨码锁定/保存</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
-           <widget class="QPushButton" name="btnSetSOH">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>SOH手动标定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="2">
-           <widget class="QPushButton" name="btnResetParaCali">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除传感器校准参数</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="2">
-           <widget class="QPushButton" name="btnResetParaCfg">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>恢复默认配置参数</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="2">
-           <widget class="QPushButton" name="btnHeRongOFF">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>关闭核容功能</string>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
+          <item row="31" column="1">
            <widget class="QPushButton" name="btnUploadTrig">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -11686,167 +12121,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
-           <widget class="QPushButton" name="btnBMULock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU拨码锁定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QToolButton" name="btnReboot">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>重启</string>
-            </property>
-            <property name="popupMode">
-             <enum>QToolButton::InstantPopup</enum>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextOnly</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QPushButton" name="AutoFindAddr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU自动寻址</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1">
-           <widget class="QLabel" name="label_9">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QPushButton" name="btnBMUUnlock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>BMU拨码解锁</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnTimeAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>校时</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="2">
-           <widget class="QPushButton" name="btnBalClrErr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除均衡故障</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="2">
-           <widget class="QPushButton" name="btnRClrErr">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除绝缘检测故障</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="label_8">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="2">
-           <widget class="QPushButton" name="btnSetSOC">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>SOC手动标定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
+          <item row="25" column="1">
            <widget class="QPushButton" name="btnClearEng">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -11856,213 +12131,6 @@
             </property>
             <property name="text">
              <string>清除电量统计</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1">
-           <widget class="QPushButton" name="btnResetDef">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>恢复出厂设置</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="1">
-           <widget class="QLabel" name="label_10">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="btnIOlock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>IO锁定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QPushButton" name="btnBalance">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>均衡控制</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="1">
-           <spacer name="verticalSpacer_13">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_1">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="text">
-             <string>时钟:</string>
-            </property>
-            <property name="textFormat">
-             <enum>Qt::PlainText</enum>
-            </property>
-            <property name="scaledContents">
-             <bool>false</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <widget class="QPushButton" name="btnRCtrl">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>绝缘检测控制</string>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="1">
-           <widget class="QPushButton" name="btnImportSOC">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>导入OCV-SOC表</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QPushButton" name="btnAdjSOC">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>触发SOC自动校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="1">
-           <widget class="QPushButton" name="btnClrSysLock">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>清除系统锁定状态</string>
-            </property>
-            <property name="text">
-             <string>清除系统锁定</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QLabel" name="label_4">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="2">
-           <widget class="QPushButton" name="btnResetInsVCali">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>清除绝缘母线校准参数</string>
             </property>
            </widget>
           </item>
@@ -12323,7 +12391,7 @@
              </font>
             </property>
             <property name="text">
-             <string>正对地绝缘电阻</string>
+             <string>正对地绝缘</string>
             </property>
            </widget>
           </item>
@@ -12512,7 +12580,7 @@
              </font>
             </property>
             <property name="text">
-             <string>负对地绝缘电阻</string>
+             <string>负对地绝缘</string>
             </property>
            </widget>
           </item>
@@ -12830,182 +12898,126 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl7Off">
-            <property name="text">
-             <string>运行状态继电器断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl4On">
-            <property name="text">
-             <string>簇总故障继电器闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl10On">
-            <property name="text">
-             <string>风扇控制继电器闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl5Off">
-            <property name="text">
-             <string>充电状态继电器断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
+          <item row="4" column="2">
            <widget class="QPushButton" name="btnDebugRelayCtrl4Off">
             <property name="text">
-             <string>簇总故障继电器断开</string>
+             <string>DO-5断开</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl12On">
+          <item row="9" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl9Off">
             <property name="text">
-             <string>预留继电器2闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl15On">
-            <property name="text">
-             <string>预留继电器5闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl12Off">
-            <property name="text">
-             <string>预留继电器2断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl14Off">
-            <property name="text">
-             <string>预留继电器4断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl13On">
-            <property name="text">
-             <string>预留继电器3闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl8On">
-            <property name="text">
-             <string>BMU供电MOS闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl14On">
-            <property name="text">
-             <string>预留继电器4闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl10Off">
-            <property name="text">
-             <string>风扇控制继电器断开</string>
+             <string>DO-10断开</string>
             </property>
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl11Off">
-            <property name="text">
-             <string>预留继电器1断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl6Off">
-            <property name="text">
-             <string>放电状态继电器断开</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl9On">
-            <property name="text">
-             <string>簇总告警继电器闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QPushButton" name="btnCan485SelfDetectOn">
-            <property name="text">
-             <string>CAN RS485自检</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
            <widget class="QPushButton" name="btnDebugRelayCtrl7On">
             <property name="text">
-             <string>运行状态继电器闭合</string>
+             <string>DO-8闭合</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl6On">
+          <item row="8" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl8On">
             <property name="text">
-             <string>放电状态继电器闭合</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl11On">
-            <property name="text">
-             <string>预留继电器1闭合</string>
+             <string>DO-9闭合</string>
             </property>
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl13Off">
+           <widget class="QPushButton" name="btnDebugRelayCtrl9On">
             <property name="text">
-             <string>预留继电器3断开</string>
+             <string>DO-10闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl12Off">
+            <property name="text">
+             <string>DO-13断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl7Off">
+            <property name="text">
+             <string>DO-8断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl0Off">
+            <property name="text">
+             <string>DO-1断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl0On">
+            <property name="text">
+             <string>DO-1闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl1On">
+            <property name="text">
+             <string>DO-2闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl12On">
+            <property name="text">
+             <string>DO-13闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl6On">
+            <property name="text">
+             <string>DO-7闭合</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl8Off">
+           <widget class="QPushButton" name="btnDebugRelayCtrl4On">
             <property name="text">
-             <string>BMU供电MOS断开</string>
+             <string>DO-5闭合</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="btnDebugRelayCtrl5On">
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl1Off">
             <property name="text">
-             <string>充电状态继电器闭合</string>
+             <string>DO-2断开</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl9Off">
+           <widget class="QPushButton" name="btnDebugRelayCtrl5On">
             <property name="text">
-             <string>簇总告警继电器断开</string>
+             <string>DO-6闭合</string>
             </property>
            </widget>
           </item>
           <item row="11" column="1">
-           <widget class="QPushButton" name="btnDebugRelayCtrl15Off">
+           <widget class="QPushButton" name="btnDebugRelayCtrl11On">
             <property name="text">
-             <string>预留继电器5断开</string>
+             <string>DO-12闭合</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="0">
+          <item row="8" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl8Off">
+            <property name="text">
+             <string>DO-9断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
            <spacer name="verticalSpacer_16">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -13017,6 +13029,422 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="15" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl15Off">
+            <property name="text">
+             <string>DO-16断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl3Off">
+            <property name="text">
+             <string>DO-4断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl14On">
+            <property name="text">
+             <string>DO-15闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl14Off">
+            <property name="text">
+             <string>DO-15断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl6Off">
+            <property name="text">
+             <string>DO-7断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl3On">
+            <property name="text">
+             <string>DO-4闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl2On">
+            <property name="text">
+             <string>DO-3闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl11Off">
+            <property name="text">
+             <string>DO-12断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl13Off">
+            <property name="text">
+             <string>DO-14断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl2Off">
+            <property name="text">
+             <string>DO-3断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl10On">
+            <property name="text">
+             <string>DO-11闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl15On">
+            <property name="text">
+             <string>DO-16闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl10Off">
+            <property name="text">
+             <string>DO-11断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QPushButton" name="btnCan485SelfDetectOn">
+            <property name="text">
+             <string>CAN RS485自检</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QPushButton" name="btnDebugRelayCtrl13On">
+            <property name="text">
+             <string>DO-14闭合</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QPushButton" name="btnDebugRelayCtrl5Off">
+            <property name="text">
+             <string>DO-6断开</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="btnDoStat0">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnDoStat1">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="btnDoStat2">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="btnDoStat3">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="btnDoStat4">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QPushButton" name="btnDoStat5">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="btnDoStat6">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="btnDoStat7">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QPushButton" name="btnDoStat8">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QPushButton" name="btnDoStat9">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QPushButton" name="btnDoStat10">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QPushButton" name="btnDoStat11">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QPushButton" name="btnDoStat12">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="0">
+           <widget class="QPushButton" name="btnDoStat13">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0">
+           <widget class="QPushButton" name="btnDoStat14">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="0">
+           <widget class="QPushButton" name="btnDoStat15">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

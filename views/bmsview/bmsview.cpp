@@ -3440,10 +3440,10 @@ void BMSView::lbListInit()
                   << ui->bSysDischarge << ui->bSysStop << ui->bSys10 << ui->bSys11
                   << ui->bSys12 << ui->bSys13 << ui->bSys14 << ui->bSys15;
 
-    lbSysStat2List<< ui->bSysErr_2 << ui->bSysAlm_2 << ui->bSysFull_2 << ui->bSysEmpty_2
-                  << ui->bSysInit_2 << ui->bSysCommErr_2 << ui->bSysBalance_2 << ui->bSysCharge_2
-                  << ui->bSysDischarge_2 << ui->bSysStop_2<< ui->bSys10_2 << ui->bSys11_2
-                  << ui->bSys12_2 << ui->bSys13_2 << ui->bSys14_2 << ui->bSys15_2;
+    lbSysStat2List<< ui->bSysStat2_1 << ui->bSysStat2_2 << ui->bSysStat2_3 << ui->bSysStat2_4
+                  << ui->bSysStat2_5 << ui->bSysStat2_6 << ui->bSysStat2_7 << ui->bSysStat2_8
+                  << ui->bSysStat2_9 << ui->bSysStat2_10<< ui->bSysStat2_11 << ui->bSysStat2_12
+                  << ui->bSysStat2_13 << ui->bSysStat2_14 << ui->bSysStat2_15 << ui->bSysStat2_16;
 
     lbDIStatList  << ui->bDI0 << ui->bDI1 << ui->bDI2 << ui->bDI3
                   << ui->bDI4 << ui->bDI5 << ui->bDI6 << ui->bDI7

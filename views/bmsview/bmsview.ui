@@ -352,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -838,7 +838,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="bSysErr_2">
+                 <widget class="QLabel" name="bSysStat2_1">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -863,7 +863,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysAlm_2">
+                 <widget class="QLabel" name="bSysStat2_2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -888,7 +888,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysFull_2">
+                 <widget class="QLabel" name="bSysStat2_3">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -913,7 +913,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysEmpty_2">
+                 <widget class="QLabel" name="bSysStat2_4">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -938,7 +938,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysCommErr_2">
+                 <widget class="QLabel" name="bSysStat2_5">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -963,7 +963,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysInit_2">
+                 <widget class="QLabel" name="bSysStat2_6">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -997,7 +997,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysBalance_2">
+                 <widget class="QLabel" name="bSysStat2_7">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -1022,7 +1022,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysCharge_2">
+                 <widget class="QLabel" name="bSysStat2_8">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -1047,7 +1047,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysDischarge_2">
+                 <widget class="QLabel" name="bSysStat2_9">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1069,7 +1069,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSysStop_2">
+                 <widget class="QLabel" name="bSysStat2_10">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1088,7 +1088,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys10_2">
+                 <widget class="QLabel" name="bSysStat2_11">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1107,7 +1107,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys11_2">
+                 <widget class="QLabel" name="bSysStat2_12">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1126,7 +1126,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys12_2">
+                 <widget class="QLabel" name="bSysStat2_13">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1145,7 +1145,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys13_2">
+                 <widget class="QLabel" name="bSysStat2_14">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1164,7 +1164,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys14_2">
+                 <widget class="QLabel" name="bSysStat2_15">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -1183,7 +1183,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="bSys15_2">
+                 <widget class="QLabel" name="bSysStat2_16">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -11048,7 +11048,7 @@
       <attribute name="title">
        <string>系统控制</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="6,4,4,4,4,0">
+      <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="6,4,4,4,4,8">
        <item>
         <widget class="QGroupBox" name="G_FuncMask">
          <property name="minimumSize">
@@ -13451,6 +13451,18 @@
        </item>
        <item>
         <widget class="QWidget" name="wd_fillCtrl" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_19">
           <property name="spacing">
            <number>0</number>

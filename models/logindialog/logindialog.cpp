@@ -4,6 +4,8 @@
 #include "myhelper.h"
 #include "ui_logindialog.h"
 #include <QDateTime>
+#include <QProcess>
+#include <QCryptographicHash>
 
 #define PW_DEBUG 0
 #if PW_DEBUG
@@ -31,6 +33,8 @@ QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
     }
     return src;
 }
+
+
 
 void logindialog::getPw()
 {
@@ -62,16 +66,12 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
     setWindowTitle(QString("%1 %2").arg(tr("BMS 上位机"),tr("系统登录")));
     setWindowFlags(Qt::WindowCloseButtonHint);
 
+
     this->setWindowFlags(windowFlags()& ~Qt::WindowMaximizeButtonHint);
     setFixedSize(this->width(), this->height());
 
     this->activateWindow();
-    QString qstrpasswd = myHelper::GetAppValue("user/password", "").toString();
-//    if (qstrpasswd.length() > 0) {
-//        QByteArray ba = QByteArray::fromBase64(qstrpasswd.toLocal8Bit());
-//        qstrpasswd = toXOREncryptUncrypt(ba, '$');
-//        ui->lineEdit_pwd->setText(qstrpasswd);
-//    }
+
     this->adjustSize();
 }
 

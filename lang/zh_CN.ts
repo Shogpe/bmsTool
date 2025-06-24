@@ -2848,6 +2848,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/bmsview/bmsview.cpp" line="1115"/>
+        <location filename="../views/bmsview/bmsview.cpp" line="1120"/>
+        <source>寻址IO异常</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/bmsview/bmsview.cpp" line="1120"/>
         <source>电芯电压更新异常</source>
         <translation type="unfinished"></translation>
@@ -5518,13 +5524,18 @@
     <message>
         <location filename="../models/logindialog/logindialog.ui" line="26"/>
         <location filename="../models/logindialog/logindialog.ui" line="65"/>
-        <location filename="../models/logindialog/logindialog.cpp" line="62"/>
+        <location filename="../models/logindialog/logindialog.cpp" line="66"/>
         <source>系统登录</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../models/logindialog/logindialog.ui" line="115"/>
         <source>动态验证码</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../models/logindialog/logindialog.ui" line="125"/>
+        <source>1a2jgPAG93tAg1V39CaH1f83c3H5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5538,7 +5549,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../models/logindialog/logindialog.cpp" line="62"/>
+        <location filename="../models/logindialog/logindialog.cpp" line="66"/>
         <source>BMS 上位机</source>
         <translation type="unfinished"></translation>
     </message>

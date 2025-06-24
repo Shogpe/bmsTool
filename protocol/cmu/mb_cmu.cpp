@@ -13,7 +13,7 @@ const QString dataPath = "Data";
 const QString errLogDataPath = "ErrLog";
 
 
-#define EN_TRY_RECV_INFO        0
+#define EN_TRY_RECV_INFO        1
 
 #define REG_DIFF_REFUSE_TO_INSERT       (10U)
 mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {

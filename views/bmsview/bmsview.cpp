@@ -588,7 +588,7 @@ int BMSView::setValue(QString name, double dval) {
 void BMSView::valueChange(double dval) {
     InputBox* b = qobject_cast<InputBox*>(sender());
     if (!b) return;
-    if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->toolTip()).arg(dval)) !=
+    if (myHelper::ShowMessageBoxQuesion(QString(tr("要修改\"%1\"为 %2 ?")).arg(b->prefix()).arg(dval)) !=
             QDialog::Accepted) {
         return;
     }
@@ -993,12 +993,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         QStringList textList;
         if(this->mycmu->is_exVer_3levels_alarm()){
             textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
-                     << RESERVED_TEXT_RES << RESERVED_TEXT_RES<< tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << RESERVED_TEXT_RES << RESERVED_TEXT_RES<< tr("Pack极柱高温故障") << tr("充放电过流故障")
                      << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
                      << tr("簇漏电故障") << tr("HVU极柱高温故障") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
         }else{
             textList << tr("电芯过压故障") << tr("电芯欠压故障") << tr("电芯高温故障") << tr("电芯低温故障")
-                     << tr("电芯温升故障") << tr("温差过大故障") << tr("pack极柱高温故障") << tr("充放电过流故障")
+                     << tr("电芯温升故障") << tr("温差过大故障") << tr("Pack极柱高温故障") << tr("充放电过流故障")
                      << tr("簇短路故障") << tr("簇过压故障") << tr("簇欠压故障") << tr("簇绝缘故障")
                      << tr("簇漏电故障")<< tr("HVU极柱高温故障") << tr("SOC过低故障") << tr("压差过大故障");
         }
@@ -1019,12 +1019,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         if(this->mycmu->is_cpVer_match(CMU_A_FAN_MOS_V1_3_00)){
             textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
                      << tr("电芯过压锁定") << tr("电芯欠压锁定")<< tr("充放电过流锁定") << tr("电芯高温锁定")
-                     << tr("电芯低温锁定") << tr("Pack极柱高温故障") << tr("HVU极柱高温故障") << RESERVED_TEXT_RES
+                     << tr("电芯低温锁定") << tr("Pack极柱高温锁定") << tr("HVU极柱高温锁定") << RESERVED_TEXT_RES
                      << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
         }else if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
             textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
                      << tr("电芯过压锁定") << tr("电芯欠压锁定")<< tr("充放电过流锁定") << tr("电芯高温锁定")
-                     << tr("电芯低温锁定") << tr("Pack极柱高温故障") << tr("HVU极柱高温故障") << tr("铜排高温保护")
+                     << tr("电芯低温锁定") << tr("Pack极柱高温锁定") << tr("HVU极柱高温锁定") << tr("铜排高温保护")
                      << tr("铜排低温保护") << tr("铜排高温锁定") << tr("铜排低温锁定") << RESERVED_TEXT_RES;
         }else{
             textList << tr("烟感故障") << tr("水浸故障") << tr("消防故障") << tr("急停故障")
@@ -1112,12 +1112,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             textList << tr("电芯电压采样异常") << tr("电芯温度采样异常") << tr("Pack极柱温度采样异常") << tr("HVU极柱温度采样异常")
                      << tr("簇总压采样异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
                      << tr("均衡功能异常") << tr("CMU-BMU通信异常") << tr("CMU-INS通信异常") << tr("CAN霍尔信号异常")
-                     << tr("AI霍尔信号异常") << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+                     << tr("AI霍尔信号异常") << RESERVED_TEXT_RES << tr("寻址IO异常") << RESERVED_TEXT_RES;
         }else if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
             textList << tr("电芯电压采样异常") << tr("电芯温度采样异常") << tr("Pack极柱温度采样异常") << tr("HVU极柱温度采样异常")
                      << tr("簇总压采样异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
                      << tr("均衡功能异常") << tr("CMU-BMU通信异常") << tr("CMU-INS通信异常") << tr("CAN霍尔信号异常")
-                     << tr("AI霍尔信号异常") << tr("电芯电压更新异常") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+                     << tr("AI霍尔信号异常") << tr("电芯电压更新异常") << tr("寻址IO异常") << RESERVED_TEXT_RES;
         }else{
             textList << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES
                      << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES
@@ -1137,15 +1137,15 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
         QStringList textList;
         if(this->mycmu->is_exVer_3levels_alarm()){
-            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << RESERVED_TEXT_RES << RESERVED_TEXT_RES
-                     << RESERVED_TEXT_RES << tr("交流有压状态") << tr("黑启动控制状态") << tr("外部硬线跳QF状态")
-                     << tr("总故障继电器状态") << tr("BMU风扇继电器状态") << tr("HVU风扇继电器状态")
-                     << tr("充满继电器状态") << tr("放空继电器状态") << RESERVED_TEXT_RES;
+            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态")
+                     << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << tr("交流有压状态")
+                     << tr("黑启动控制状态") << tr("外部硬线跳QF状态") << tr("总故障继电器状态") << tr("BMU风扇继电器状态")
+                     << tr("HVU风扇继电器状态") << tr("充满继电器状态") << tr("放空继电器状态") << RESERVED_TEXT_RES;
         }else{
-            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态") << tr("故障输入") << tr("主从状态")
-                     << tr("预留(水浸)") << tr("交流有压状态") << tr("急停故障") << tr("QF继电器状态")
-                     << tr("总故障继电器状态") << tr("BMU风扇继电器状态") << tr("HVU风扇继电器状态")
-                     << tr("充满继电器状态") << tr("放空继电器状态") << RESERVED_TEXT_RES;
+            textList << tr("断路器QF状态") << tr("接触器KM+状态") << tr("接触器KM-状态") << tr("接触器KMR状态")
+                     << tr("故障输入") << tr("主从状态") << tr("预留(水浸)") << tr("交流有压状态")
+                     << tr("急停故障") << tr("QF继电器状态") << tr("总故障继电器状态") << tr("BMU风扇继电器状态")
+                     << tr("HVU风扇继电器状态") << tr("充满继电器状态") << tr("放空继电器状态") << RESERVED_TEXT_RES;
         }
 
         fillStatLabel(lbDIStatList, value, textList);
@@ -1157,13 +1157,15 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
         QStringList textList;
         if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
-            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
-                     << tr("放电指示") << tr("系统运行") << tr("自动寻址信号") << tr("告警输出") << tr("Pack风扇电源")
-                     << tr("Hvu风扇电源") << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出")
+                     << tr("故障输出") << tr("充电指示") << tr("放电指示") << tr("系统运行")
+                     << tr("自动寻址信号") << tr("告警输出") << tr("Pack风扇电源") << tr("Hvu风扇电源")
+                     << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
         }else{
-            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出") << tr("故障输出") << tr("充电指示")
-                     << tr("放电指示") << tr("系统运行") << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出")
-                     << RESERVED_TEXT_RES << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
+            textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出")
+                     << tr("故障输出") << tr("充电指示") << tr("放电指示") << tr("系统运行")
+                     << tr("BMU供电") << tr("告警输出") << tr("风扇电源输出") << RESERVED_TEXT_RES
+                     << tr("充满输出") << tr("放空输出") << RESERVED_TEXT_RES << RESERVED_TEXT_RES;
         }
 
         fillStatLabel(lbDOStatList, value, textList);

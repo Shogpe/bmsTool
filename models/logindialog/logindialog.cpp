@@ -7,6 +7,8 @@
 #include <QProcess>
 #include <QCryptographicHash>
 
+#define AUTO_FILL_DEBUG_MODE   0
+
 #define PW_DEBUG 0
 #if PW_DEBUG
 #define SUPER_PW    "1234"
@@ -73,6 +75,10 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
     this->activateWindow();
 
     this->adjustSize();
+
+#if AUTO_FILL_DEBUG_MODE
+    ui->lineEdit_pwd->setText(SUPER_PW);
+#endif
 }
 
 // cubenergy

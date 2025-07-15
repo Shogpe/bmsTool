@@ -100,6 +100,7 @@ class BMSView : public QWidget {
     void flushSoe(const ST_SOE &soe);
     void pop_bmuTable_menu(const QPoint& pos);
     void setDoButtonText(uint16_t value, QList<QString> textList);
+    void setRegText();
 
     void on_btn_debugLog_clicked();
 

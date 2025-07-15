@@ -7,7 +7,7 @@
 #include <QProcess>
 #include <QCryptographicHash>
 
-#define AUTO_FILL_DEBUG_MODE   0
+#define AUTO_FILL_DEBUG_MODE   1
 
 #define PW_DEBUG 0
 #if PW_DEBUG

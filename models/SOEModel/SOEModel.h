@@ -28,7 +28,7 @@ class SOEModel : public QAbstractTableModel {
     QList<CMU_SOE> m_data;
 
    private:
-    int tag = 1;
+    db_manager::SOE_TAG soe_tag = db_manager::SOE_BMS1;
     QMap<int, db_manager::ST_DB_SOE> soe_map;
 
    public:
@@ -50,13 +50,28 @@ class SOEModel : public QAbstractTableModel {
                 case 2: {
                     auto iter = soe_map.find(index_soe.soe_type);
                     if (iter != soe_map.end()) {
-                        return QString("%1, %2%3%4%5:[%6]")
-                            .arg(iter->evt_txt)
-                            .arg(getFormatData(index_soe.soe_id, iter->evt_id, "evt_id", iter->code))
-                            .arg(getFormatData(index_soe.soe_val, iter->evt_dt, "evt_dt", iter->code))
-                            .arg(getFormatData(index_soe.soe_limit, iter->evt_threshold, "evt_threshold", iter->code))
-                            .arg(tr("系统状态"))
-                            .arg(getStatusString(index_soe.soe_stat));
+//                        qDebug()  << "SOE_TAG:" << soe_tag;
+                        if(soe_tag == db_manager::SOE_BMS4)
+                        {
+                            return QString("%1, %2%3%4%5:[%6]")
+                                .arg(iter->evt_txt)
+                                .arg(getFormatData(index_soe.soe_id, iter->evt_id, "evt_id", iter->code))
+                                .arg(getFormatData(index_soe.soe_val, iter->evt_dt, "evt_dt", iter->code))
+                                .arg(getFormatData(index_soe.soe_limit, iter->evt_threshold, "evt_threshold", iter->code))
+                                .arg(tr("系统状态"))
+                                .arg(getStatusStringLevel3(index_soe.soe_stat));
+                        }
+                        else
+                        {
+                            return QString("%1, %2%3%4%5:[%6]")
+                                .arg(iter->evt_txt)
+                                .arg(getFormatData(index_soe.soe_id, iter->evt_id, "evt_id", iter->code))
+                                .arg(getFormatData(index_soe.soe_val, iter->evt_dt, "evt_dt", iter->code))
+                                .arg(getFormatData(index_soe.soe_limit, iter->evt_threshold, "evt_threshold", iter->code))
+                                .arg(tr("系统状态"))
+                                .arg(getStatusString(index_soe.soe_stat));
+                        }
+
                     } else {
                         return QString(tr("%1(%2):ID=%3,%4=%5,%6=%7,%8:[%9]"))
                             .arg(tr("未知类型"))
@@ -96,6 +111,8 @@ class SOEModel : public QAbstractTableModel {
     }
     bool setData(const QList<CMU_SOE>& soe, db_manager::SOE_TAG tag) {
         beginResetModel();
+        qDebug()  << "set SOE_TAG outside " << tag;
+        soe_tag = tag;
         m_data.clear();
         db_manager::Instance()->getSOE(soe_map, tag);
         m_data = soe;
@@ -128,6 +145,27 @@ class SOEModel : public QAbstractTableModel {
         if (GET_BIT(status, 12)) statusList << tr("自检故障");
         if (GET_BIT(status, 13)) statusList << tr("拨码故障");
         if (GET_BIT(status, 14)) statusList << tr("BMU故障");
+        if (GET_BIT(status, 15)) statusList << tr("并网");
+        // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+        return statusList.join("|");
+    }
+    QString getStatusStringLevel3(uint16_t status) const {
+        QStringList statusList;
+        if (GET_BIT(status, 0)) statusList << tr("总故障");
+        if (GET_BIT(status, 1)) statusList << tr("总告警");
+        if (GET_BIT(status, 2)) statusList << tr("充满");
+        if (GET_BIT(status, 3)) statusList << tr("放空");
+        if (GET_BIT(status, 4)) statusList << tr("未初始化");
+        if (GET_BIT(status, 5)) statusList << tr("");
+        if (GET_BIT(status, 6)) statusList << tr("均衡");
+        if (GET_BIT(status, 7)) statusList << tr("充电");
+        if (GET_BIT(status, 8)) statusList << tr("放电");
+        if (GET_BIT(status, 9)) statusList << tr("停机");
+        if (GET_BIT(status, 10)) statusList << tr("升级");
+        if (GET_BIT(status, 11)) statusList << tr("");
+        if (GET_BIT(status, 12)) statusList << tr("");
+        if (GET_BIT(status, 13)) statusList << tr("拨码故障");
+        if (GET_BIT(status, 14)) statusList << tr("总预警");
         if (GET_BIT(status, 15)) statusList << tr("并网");
         // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
         return statusList.join("|");

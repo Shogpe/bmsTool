@@ -352,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -10307,7 +10307,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>REG5432</string>
+               <string>UBlock</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10338,7 +10338,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>REG5433</string>
+               <string>UBlock2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10369,7 +10369,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>REG5434</string>
+               <string>UBlock3</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10400,7 +10400,7 @@
                <bool>false</bool>
               </property>
               <property name="prefix">
-               <string>REG5435</string>
+               <string>UBlock4</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10428,7 +10428,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5436</string>
+               <string>DataBlock1</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10456,7 +10456,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5437</string>
+               <string>DataBlock2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10484,7 +10484,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5434</string>
+               <string>DataBlock3</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10512,7 +10512,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5435</string>
+               <string>DataBlock4</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10540,7 +10540,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5436</string>
+               <string>TBlock</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10568,7 +10568,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5437</string>
+               <string>TBlock2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10596,7 +10596,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5438</string>
+               <string>TBlock3</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10624,7 +10624,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5439</string>
+               <string>TBlock4</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10652,7 +10652,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5426</string>
+               <string>WarnBlock1</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10680,7 +10680,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5427</string>
+               <string>ErrBlock1</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10708,7 +10708,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5428</string>
+               <string>WarnBlock2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10736,7 +10736,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5429</string>
+               <string>ErrBlock2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10764,7 +10764,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5417</string>
+               <string>FuncMask</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10789,7 +10789,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5430</string>
+               <string>FuncMask2</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10817,7 +10817,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5416</string>
+               <string>ClusterErrMask</string>
               </property>
               <property name="suffix">
                <string/>
@@ -10845,7 +10845,7 @@
                <string/>
               </property>
               <property name="prefix">
-               <string>REG5415</string>
+               <string>ClusterAlmMask</string>
               </property>
               <property name="suffix">
                <string/>

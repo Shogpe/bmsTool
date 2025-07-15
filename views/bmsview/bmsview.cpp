@@ -559,6 +559,8 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
         ui->btnClrSysLock->show();
     }
 
+
+    setRegText();
 //    if(this->mycmu->is_pVer_a_liq_mos()){
 
 //    }else{
@@ -724,6 +726,7 @@ void BMSView::statGroupAutoHide(QHash<QString, qreal> mapData)
 
 void BMSView::setDoButtonText(uint16_t value, QList<QString> textList)
 {
+    ui->btnDebugRelayCtrl0On->setVisible(false);
     foreach(QPushButton * btn, ui->G_DeviceDebug->findChildren<QPushButton*>())
     {
         QString objName = btn->objectName();
@@ -779,6 +782,42 @@ void BMSView::setDoButtonText(uint16_t value, QList<QString> textList)
 
 }
 
+void BMSView::setRegText()
+{
+    ui->DataBlock1->setPrefix("REG5422");
+    ui->DataBlock2->setPrefix("REG5423");
+    ui->DataBlock3->setPrefix("REG5424");
+    ui->DataBlock4->setPrefix("REG5425");
+
+    ui->FuncMask->setPrefix("REG5417");
+    ui->FuncMask2->setPrefix("REG5430");
+    ui->ClusterAlmMask->setPrefix("REG5415");
+    ui->ClusterErrMask->setPrefix("REG5416");
+
+    ui->ErrBlock1->setPrefix("REG5426");
+    ui->ErrBlock2->setPrefix("REG5427");
+    ui->WarnBlock1->setPrefix("REG5428");
+    ui->WarnBlock2->setPrefix("REG5429");
+
+    if(this->mycmu->is_pVer_a_liq_mos())
+    {
+        ui->UBlock->setPrefix("REG5432");
+        ui->UBlock2->setPrefix("REG5433");
+        ui->UBlock3->setPrefix("REG5434");
+        ui->UBlock4->setPrefix("REG5435");
+        ui->TBlock->setPrefix("REG5436");
+        ui->TBlock2->setPrefix("REG5437");
+        ui->TBlock3->setPrefix("REG5438");
+        ui->TBlock4->setPrefix("REG5439");
+        qDebug() << "change ui reg name ----> liq cool tab form";
+    }
+    else
+    {
+        ui->UBlock->setPrefix("REG5432");
+        ui->TBlock->setPrefix("REG5433");
+        qDebug() << "change ui reg name ----> fan cool tab form";
+    }
+}
 
 void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
@@ -1112,12 +1151,12 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             textList << tr("电芯电压采样异常") << tr("电芯温度采样异常") << tr("Pack极柱温度采样异常") << tr("HVU极柱温度采样异常")
                      << tr("簇总压采样异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
                      << tr("均衡功能异常") << tr("CMU-BMU通信异常") << tr("CMU-INS通信异常") << tr("CAN霍尔信号异常")
-                     << tr("AI霍尔信号异常") << RESERVED_TEXT_RES << tr("寻址IO异常") << RESERVED_TEXT_RES;
+                     << tr("AI霍尔信号异常") << "电芯电压更新异常" << tr("自动寻址异常") << "BMU均衡采样异常";
         }else if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
             textList << tr("电芯电压采样异常") << tr("电芯温度采样异常") << tr("Pack极柱温度采样异常") << tr("HVU极柱温度采样异常")
                      << tr("簇总压采样异常") << tr("电芯压差异常")<< tr("电芯温差异常") << tr("簇总压压差异常")
                      << tr("均衡功能异常") << tr("CMU-BMU通信异常") << tr("CMU-INS通信异常") << tr("CAN霍尔信号异常")
-                     << tr("AI霍尔信号异常") << tr("电芯电压更新异常") << tr("寻址IO异常") << RESERVED_TEXT_RES;
+                     << tr("AI霍尔信号异常") << tr("电芯电压更新异常") << tr("自动寻址异常") << "BMU均衡采样异常";
         }else{
             textList << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES
                      << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES << RESERVED_TEXT_RES

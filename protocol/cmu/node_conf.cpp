@@ -394,6 +394,7 @@ QString cmu_config_name[]={
     "BalnceEndVol",
     "BalnceStartDiff",
     "BalnceStart",
+    "BalanceConfig",
 
     "ClusterTAlm",
     "ClusterTErr",

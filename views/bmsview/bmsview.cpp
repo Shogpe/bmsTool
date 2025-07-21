@@ -858,7 +858,6 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
             {
                 if (mapData.contains(dspbox->objectName()))
                 {
-
                     dspbox->show();
                     if(dspbox->objectName().endsWith("ID"))
                     {
@@ -868,7 +867,6 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
                     {
                         dspbox->setValue(mapData.value(dspbox->objectName()));
                     }
-
                 }
                 else
                 {

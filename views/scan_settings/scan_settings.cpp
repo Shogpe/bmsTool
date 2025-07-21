@@ -166,7 +166,7 @@ void testWorker::doSetData(QString ip, const QMap<QString, double> setMap) {
     if (ok_count == setMap.size()) {
         emit workFinished(1, tr("Set OK"));
     } else {
-        emit workFinished(0, tr("Set FAIL"));
+        emit workFinished(0, tr("Set FAIL") + QString(" target:%1 set:%2").arg(setMap.size()).arg(ok_count));
     }
     m_mbtcp->close();
     m_mbtcp->deleteLater();

@@ -6,15 +6,12 @@
 #include <QDateTime>
 #include <QProcess>
 #include <QCryptographicHash>
+#include <QSettings>
 
 #define AUTO_FILL_DEBUG_MODE   1
 
-#define PW_DEBUG 0
-#if PW_DEBUG
-#define SUPER_PW    "1234"
-#else
+
 #define SUPER_PW    "1a2jgPAG93tAg1V39CaH1f83c3H5"
-#endif
 
 #define GUEST_PW    "cubenergy"
 
@@ -28,12 +25,14 @@
 #define PW_TIME_MESS_NUM    10
 #define LIST_NUM    (2*PW_TIME_MESS_NUM +1)
 
-// 加解密都用此方法
-QByteArray toXOREncryptUncrypt(QByteArray src, const QChar key) {
-    for (int i = 0; i < src.count(); i++) {
-        src[i] = src.at(i) ^ key.toLatin1();
-    }
-    return src;
+QString getUUID()
+{
+    QProcess process;
+    process.start("wmic csproduct get uuid");
+    process.waitForFinished();
+    QString result = QString::fromLocal8Bit(process.readAllStandardOutput());
+    result = result.split("\n")[1].trimmed();
+    return result;
 }
 
 
@@ -77,7 +76,18 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
     this->adjustSize();
 
 #if AUTO_FILL_DEBUG_MODE
-    ui->lineEdit_pwd->setText(SUPER_PW);
+    QString uuid = getUUID();
+
+    QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);
+    QString uuidSettings = settings->value("pcUUID", "XXXX").toString();
+
+    qDebug() << "uuid:" << uuid << uuidSettings;
+    if(uuid == uuidSettings)
+    {
+        ui->lineEdit_pwd->setText(SUPER_PW);
+    }
+
+    delete settings;
 #endif
 }
 
@@ -102,6 +112,11 @@ void logindialog::on_pushButton_login_clicked() {
         {
             level = db_manager::LEVEL_DEBUG;
             db_manager::Instance()->setUserLevel(level);
+
+            QString uuid = getUUID();
+            QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);
+            settings->setValue("pcUUID",uuid);
+
             accept();
         }
         else if(ui->lineEdit_pwd->text() == GUEST_PW)

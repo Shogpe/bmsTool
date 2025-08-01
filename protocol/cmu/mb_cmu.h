@@ -11,7 +11,12 @@
 #include "modbus-tcp.h"
 #include "modbus-version.h"
 #include "node_conf.h"
+#include <QObject>
+
 using namespace std;
+
+
+
 
 typedef struct {
     uint16_t bmu_num;     // bmu个数
@@ -428,5 +433,48 @@ class mb_cmu : public QObject {
     void cpVerChanged(int cpVer);
 private:
     bool IsErrCanWrite(int id, QString err_type, uint val);
+
+public:
+    //主动均衡
+    const QList<QString> BmuStateStr_a = {tr("存储地址与拨码地址不一致"),tr("地址锁定/使用自动地址"),tr("干接点开路"),tr("风机开机"),
+                                 tr("+5V 辅源状态正常"),tr(""),tr(""),tr(""),
+                                 tr("自动寻址完成"),tr("地址未锁定/使用拨码地址"),tr("干接点闭合"),tr("风机关机"),
+                                 tr("+5V 辅源状态异常"),tr(""),tr(""),tr("")};
+
+    const QList<QString> BmuBalErrStr_a = {tr("1.25V 参考电压错误"),tr("均衡前正母线电压错误"),tr("均衡电流异常"),tr("24V母线电压超范围"),
+                                 tr("单体电压超范围"),tr("均衡参数错误"),tr("极性Mos故障"),tr("均衡前副边电压错误")};
+
+    const QList<QString> BmuErrStr_a = {tr("采样芯片处于配置状态"),tr("BMU处于均衡状态"),tr("采样芯片时钟异常"),tr("温度低温异常"),
+                               tr("温度过温异常"),tr("单体过压故障汇总"),tr("单体欠压故障汇总"),tr("单体断线故障汇总(B1-,B1+~B16+)"),
+                               tr("采样线总正断线故障"),tr("采样线总负断线故障"),tr("采样芯片寄存器校验异常"),tr("采样芯片参考电压异常"),
+                               tr("采样芯片校准电压异常"),tr("采样芯片复用采样通道异常"),tr("采样芯片故障1"),tr("采样芯片故障2")};
+
+    //并充
+    const QList<QString> BmuStateStr_m = {tr("自动寻址过程中"),tr("地址锁定"),tr("干接点开路"),tr("风机开机"),
+                                 tr("均衡母线关闭"),tr(""),tr(""),tr(""),
+                                 tr("自动寻址完成"),tr("地址未锁定"),tr("干接点闭合"),tr("风机关机"),
+                                 tr("均衡母线打开"),tr(""),tr(""),tr("")};
+
+    const QList<QString> BmuBalErrStr_m = {tr("均衡设置参数错误"),tr("均衡母线零点电流异常"),tr("均衡母线均衡电流异常"),tr("通道均衡电流异常"),
+                                 tr("均衡母线电压异常"),tr("均衡通道DCDC模块开启失败"),tr("均衡通道DCDC模块关闭失败"),tr("均衡通道DCDC输出电压异常")};
+
+    const QList<QString> BmuErrStr_m = {tr("采样芯片故障"),tr("采样芯片参考电压异常(VREF)"),tr("采样芯片参数配置异常"),tr("单体电压断线故障汇总(B1+~B56+)"),
+                               tr("电池温度断线故障汇总"),tr("采样线总正断线故障"),tr("采样线总负断线故障"),tr("采样芯片电压采样通道异常"),
+                               tr("采样芯片温度采样通道异常"),tr("PCB板温度异常"),tr("EEPROM故障"),tr("G03离线告警"),
+                               tr(""),tr(""),tr(""),tr("")};
+
+    //液冷
+    const QList<QString> BmuStateStr_w = {tr("自动寻址过程中"),tr("地址锁定"),tr("干接点开路"),tr("地址输入状态H"),
+                                 tr("AFE_A_5V辅源有效"),tr("AFE_B_5V辅源有效"),tr("AFE_C_5V辅源有效"),tr("AFE_D_5V辅源有效"),
+                                 tr("自动寻址完成"),tr("地址未锁定"),tr("干接点闭合"),tr("地址输入状态L"),
+                                 tr("AFE_A_5V辅源无效"),tr("AFE_B_5V辅源无效"),tr("AFE_C_5V辅源无效"),tr("AFE_D_5V辅源无效")};
+
+    const QList<QString> BmuBalErrStr_w = {tr("24V母线电流过流"),tr("均衡前1.25V参考电压故障"),tr("均衡前总线正对地电压故障"),tr("均衡中电流与目标电流差值过大"),
+                                 tr("均衡前24V母线电压故障"),tr("均衡前单体电压越界"),tr("均衡中VP,VB,IP异常"),tr("均衡前副边电压检测异常")};
+
+    const QList<QString> BmuErrStr_w = {tr("采样芯片故障"),tr("采样芯片参考电压异常(VREF)"),tr("采样芯片参数配置异常"),tr("单体电压断线故障汇总(B1+~B56+)"),
+                               tr("电池温度断线故障汇总"),tr("采样线总正断线故障"),tr("采样线总负断线故障"),tr("采样芯片电压采样通道异常"),
+                               tr("采样芯片温度采样通道异常"),tr("PCB板温度异常"),tr("EEPROM故障"),tr("G03离线告警"),
+                               tr(""),tr(""),tr(""),tr("")};
 };
 #endif  // MB_CMU_H

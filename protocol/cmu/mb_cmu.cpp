@@ -13,6 +13,7 @@ const QString dataPath = "Data";
 const QString errLogDataPath = "ErrLog";
 
 
+
 #define EN_TRY_RECV_INFO        1
 
 #define REG_DIFF_REFUSE_TO_INSERT       (10U)
@@ -220,6 +221,11 @@ void mb_cmu::Dump2CsvTitle() {
         }
     }
 
+    //--------------簇总压测试---------------
+//    data_buf << tr("绝缘板簇总压") << ",";
+//    data_buf << tr("累加和簇总压") << ",";
+    //--------------簇总压测试---------------
+
     data_buf << endl;
 }
 #define FILE_ROTATE_TIME 60 * 60 * 12
@@ -330,6 +336,10 @@ void mb_cmu::Dump2Csv() {
                 }
             }
         }
+        //--------------簇总压测试---------------
+//        data_buf <<  (QString("%1,").arg(this->mapData.value("debugReg5609")));
+//        data_buf <<  (QString("%1,").arg(this->mapData.value("debugReg5610")));
+        //--------------簇总压测试---------------
         data_buf << endl;
         csvfile->flush();
     }
@@ -920,29 +930,33 @@ int mb_cmu::ReadBmuData() {
                 reg_num = config.bmu_num * 15;  // 均衡状态等
                 status += ReadData(0x03, 0x900, reg_num, p);
                 for (int i = 0; i < config.bmu_num; i++) {
+
+                    //0-3
                     for (int j = 0; j < 4; j++) {
                         bmu_data[i].BalIdc[j] = *(p++);
                     }
+
+                    //4
                     bmu_data[i].BalU24 = *(p++);
 
+                    //5-8
                     bmu_data[i].U64BalErr = *(p++);
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<16;
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<32;
                     bmu_data[i].U64BalErr |= (uint64_t)(*(p++))<<48;
 
-
-
-                    //bmu_data[i].U64BalErr = 0x0001000100010001;
-
+                    //9-12
                     bmu_data[i].U64BalStat = *(p++);
                     bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<16;
                     bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<32;
                     bmu_data[i].U64BalStat |= (uint64_t)(*(p++))<<48;
 
-                    //bmu_data[i].U64BalStat = 0x0001000100010001;
-
+                    //13
                     bmu_data[i].BalMode = *(p++);
+
+                    //14
                     bmu_data[i].BalCur = (int16_t)(*(p++));
+//                    qDebug() << i << bmu_data[i].BalU24 << bmu_data[i].BalMode << bmu_data[i].BalCur;
                 }
             }
             else {

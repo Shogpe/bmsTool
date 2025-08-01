@@ -44,8 +44,6 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     ui->setupUi(this);
     this->initForm();
 
-    //this->qtftp = new Qtftp();
-    this->tftpd = new TFTPServer();
     // 可建立全局实例
     manager = new NotifyManager(this);
     // 可选修改默认参数
@@ -61,14 +59,57 @@ MainUI::MainUI(QWidget* parent) : QWidget(parent), ui(new Ui::MainUI) {
     //    添加自定义主题样式表，默认样式主题名为default
     // 基本用法
     //    manager->notify("消息标题", "消息主体");
+    initTftp("192.168.1.230");
+
+}
+
+bool MainUI::initTftp(const QString ip)
+{
+    if(tftpd)
+    {
+        delete tftpd;
+    }
+
+    this->tftpd = new TFTPServer();
+
     connect(tftpd, &TFTPServer::statusUpdate, this,
             [this](QString status) { ui->lTftpStatus->setText(QString("%1:%2").arg(tr("升级服务"), status)); });
 
     connect(tftpd, &TFTPServer::fileTransferFinished, this, [this](int ret, QString msg) {
         manager->notify("TFTP", QString("%1:%2").arg(msg, ret == 0 ? tr("成功") : tr("失败")));
     });
-    tftpd->init("192.168.1.230", 69, "firmware", "uploadfile");
-    //qtftp->startServer();
+    tftpServerIp = ip;
+    ui->lTftpIP->setText(QString("tftp server host:%1").arg(ip));
+    if(tftpd->init(ip, 69, "firmware", "uploadfile"))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void MainUI::changeTftpServerIp(const QString ip)
+{
+    qInfo()<< "recv tftp Server ip:" << ip;
+    if(myHelper::IsIP(ip))
+    {
+        if(tftpServerIp == ip)
+        {
+            return;
+        }
+        qInfo()<< "change tftpServerIp from:" << tftpServerIp << " to " << ip;
+
+        if(initTftp(ip))
+        {
+            manager->notify("tftp server host changed", QString("%1 %2").arg(ip).arg("successed"));
+        }
+        else
+        {
+            manager->notify("tftp server host changed", QString("%1 %2").arg(ip).arg("failed"));
+        }
+    }
 }
 
 MainUI::~MainUI() {
@@ -204,16 +245,20 @@ void MainUI::initForm() {
     QString user = db_manager::Instance()->userName();  // settings->value("global/user", "").toString();
 //    if (db_manager::Instance()->userLevel() < 16) ui->btnMenu->hide();
     if (db_manager::isUserLevelValid()) {
-        int index = ui->stackedWidget->addWidget(new BMSView(this));
+        BMSView* bv = new BMSView(this);
+        int index = ui->stackedWidget->addWidget(bv);
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
+        connect(bv, &BMSView::tftpServerIpChanged, this, &MainUI::changeTftpServerIp);
     } else if (db_manager::Instance()->userLevel() == db_manager::LEVEL_ERROR_L) {
         int index = ui->stackedWidget->addWidget(new CmuIpView(this));
         ui->stackedWidget->setCurrentIndex(index);
         this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     } else if (db_manager::Instance()->userLevel() == db_manager::LEVEL_ERROR_H) {  // Widget,RTUView
-        int index = ui->stackedWidget->addWidget(new BMSView(this));
+        BMSView* bv = new BMSView(this);
+        int index = ui->stackedWidget->addWidget(bv);
         ui->stackedWidget->setCurrentIndex(index);
+        connect(bv,&BMSView::tftpServerIpChanged, this, &MainUI::changeTftpServerIp);
         //        this->setMaximumSize(ui->stackedWidget->currentWidget()->maximumSize());
     }
 

@@ -50,6 +50,7 @@ class MainUI : public QWidget {
     void initUserLevelForm();
     ~MainUI();
 
+    QString tftpServerIp = "";
    protected:
     void closeEvent(QCloseEvent *event);
     void changeEvent(QEvent *event);
@@ -66,11 +67,13 @@ class MainUI : public QWidget {
     QSettings *settings;
     LogAppender appender;
 
+    bool initTftp(const QString ip);
 
    private slots:
     void initForm();
     void buttonClick();
     void menuClick();
+    void changeTftpServerIp(const QString ip);
 };
 
 #endif  // UIDEMO08_H

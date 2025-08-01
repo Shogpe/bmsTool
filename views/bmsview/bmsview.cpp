@@ -824,6 +824,8 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
     QElapsedTimer flushDataTimeCostMs;
     flushDataTimeCostMs.start();
 
+
+
     if (type == 1) {
         config.bmu_num = mapData.value("bmu_num", 0);
         config.vol_num = mapData.value("vol_num", 0);
@@ -846,6 +848,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         } else {
         }
     }
+
     QList<InputBox*> dspboxs = ui->tabCMU->findChildren<InputBox*>();
     foreach (InputBox* dspbox, dspboxs) {
         if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
@@ -1193,7 +1196,7 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         ui->G_DOStatus->setTitle(QString("%1: (0x%2)").arg(tr("DO状态")).arg(value,4,16,QChar('0')));
 
         QStringList textList;
-        if(this->mycmu->is_cpVer_match(CMU_A_LIQ_MOS_V3_3_00)){
+        if(this->mycmu->is_pVer_a_liq_mos()){
             textList << tr("QF输出") << tr("KM+输出") << tr("KM-输出") << tr("KMR输出")
                      << tr("故障输出") << tr("充电指示") << tr("放电指示") << tr("系统运行")
                      << tr("自动寻址信号") << tr("告警输出") << tr("Pack风扇电源") << tr("Hvu风扇电源")
@@ -1353,7 +1356,16 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
         ui->balanceStr->show();
         uint16_t mode = mapData.value("BalnceMask");
         uint16_t value = mapData.value("BalanceConfig");
-        QString str = QString(tr("%1对,%2A,%3秒")).arg(value >> 12).arg((value >> 8) & 0xF).arg(value & 0xFF);
+        QString str;
+        if(this->mycmu->is_pVer_a_liq_mos())
+        {
+            str = QString(tr("%1对,%2A,%3秒")).arg(value >> 11).arg((value >> 8) & 0x7).arg(value & 0xFF);
+        }
+        else
+        {
+            str = QString(tr("%1对,%2A,%3秒")).arg(value >> 12).arg((value >> 8) & 0xF).arg(value & 0xFF);
+        }
+
         switch (mode) {
         case 0x00:
             str = QString("%1:%2").arg(tr("禁止均衡"), str);
@@ -1402,12 +1414,24 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
     if (!ui->lineEditServIP->hasFocus()) {
         if (mapData.contains("ServIP"))
-            ui->lineEditServIP->setText(myHelper::IPV4IntegerToString(mapData.value("ServIP")));
+        {
+            QString tftpServerIp = myHelper::IPV4IntegerToString(mapData.value("ServIP"));
+            ui->lineEditServIP->setText(tftpServerIp);
+            //tftp server ip change
+            if(myHelper::IsIP(tftpServerIp) && (tftpServerIp != "0.0.0.0"))
+            {
+                qInfo() << "send new tftp server ip:" << tftpServerIp;
+                emit tftpServerIpChanged(tftpServerIp);
+            }
+
+        }
     }
     if (!ui->lineEditIP->hasFocus()) {
         if (mapData.contains("LocalIP"))
             ui->lineEditIP->setText(myHelper::IPV4IntegerToString(mapData.value("LocalIP")));
     }
+
+
 
     //没有用到的校准按钮
     ui->btnIZeroAdj->setVisible(false);
@@ -1417,25 +1441,95 @@ void BMSView::flushData(int type, QHash<QString, qreal> mapData) {
 
     //qDebug() << "<><><><>flush data type " << type << "cost time" << flushDataTimeCostMs.elapsed() << "ms";
 }
-QString getBmuInfo2(uint16_t status) {
+
+QString BMSView::getBmuInfo(uint16_t status) {
     QStringList statusList;
-    if (GET_BIT(status, 0)) statusList << QObject::tr("拨码异常");
-    if (GET_BIT(status, 1)) statusList << QObject::tr("拨码锁定");
-    statusList << (GET_BIT(status, 2) ? QObject::tr("干结点开路") : QObject::tr("干结点闭合"));
-    statusList << (GET_BIT(status, 3) ? QObject::tr("风机开") : QObject::tr("风机关"));
-    if (!GET_BIT(status, 4)) statusList << QObject::tr("辅源异常");
-    if (GET_BIT(status, 5)) statusList << QObject::RESERVED_TEXT_RES;
-    if (GET_BIT(status, 6)) statusList << QObject::RESERVED_TEXT_RES;
-    if (GET_BIT(status, 7)) statusList << QObject::RESERVED_TEXT_RES;
-    if (GET_BIT(status, 8)) statusList << QObject::tr("1.25V错误");
-    if (GET_BIT(status, 9)) statusList << QObject::tr("均衡母线错误");
-    if (GET_BIT(status, 10)) statusList << QObject::tr("均衡电流异常");
-    if (GET_BIT(status, 11)) statusList << QObject::tr("24V母线异常");
-    if (GET_BIT(status, 12)) statusList << QObject::tr("电芯电压异常");
-    if (GET_BIT(status, 13)) statusList << QObject::tr("均衡参数错误");
-    if (GET_BIT(status, 14)) statusList << QObject::tr("Mos异常");
-    if (GET_BIT(status, 15)) statusList << QObject::tr("副边电压异常");
-    // if (statusList.size() > 0) statusList.insert(0, QString::number(status, 16));
+
+    if(this->mycmu->is_pVer_a_fan_mos())
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuStateStr_a[i];
+            }
+            else
+            {
+                statusList << this->mycmu->BmuStateStr_a[i + 8];
+            }
+        }
+
+        for(int i = 8; i < 16; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuBalErrStr_a[i];
+            }
+        }
+    }
+    else if(this->mycmu->is_pVer_a_fan_pal())
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuStateStr_m[i];
+            }
+            else
+            {
+                statusList << this->mycmu->BmuStateStr_m[i + 8];
+            }
+        }
+
+        for(int i = 8; i < 16; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuBalErrStr_m[i];
+            }
+        }
+    }
+    else if(this->mycmu->is_pVer_a_liq_mos())
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuStateStr_w[i];
+            }
+            else
+            {
+                statusList << this->mycmu->BmuStateStr_w[i + 8];
+            }
+        }
+
+        for(int i = 8; i < 16; i++)
+        {
+            if (GET_BIT(status, i))
+            {
+                statusList << this->mycmu->BmuBalErrStr_w[i];
+            }
+        }
+    }
+    else
+    {
+        if (GET_BIT(status, 0)) statusList << QObject::tr("拨码异常");
+        if (GET_BIT(status, 1)) statusList << QObject::tr("拨码锁定");
+        statusList << (GET_BIT(status, 2) ? QObject::tr("干结点开路") : QObject::tr("干结点闭合"));
+        statusList << (GET_BIT(status, 3) ? QObject::tr("风机开") : QObject::tr("风机关"));
+        if (!GET_BIT(status, 4)) statusList << QObject::tr("辅源异常");
+        if (GET_BIT(status, 5)) statusList << QObject::RESERVED_TEXT_RES;
+        if (GET_BIT(status, 6)) statusList << QObject::RESERVED_TEXT_RES;
+        if (GET_BIT(status, 7)) statusList << QObject::RESERVED_TEXT_RES;
+        if (GET_BIT(status, 8)) statusList << QObject::tr("1.25V错误");
+        if (GET_BIT(status, 9)) statusList << QObject::tr("均衡母线错误");
+        if (GET_BIT(status, 10)) statusList << QObject::tr("均衡电流异常");
+        if (GET_BIT(status, 11)) statusList << QObject::tr("24V母线异常");
+        if (GET_BIT(status, 12)) statusList << QObject::tr("电芯电压异常");
+        if (GET_BIT(status, 13)) statusList << QObject::tr("均衡参数错误");
+        if (GET_BIT(status, 14)) statusList << QObject::tr("Mos异常");
+        if (GET_BIT(status, 15)) statusList << QObject::tr("副边电压异常");
+    }
     return statusList.join("|");
 }
 void BMSView::flushSoe(const ST_SOE& soe) {
@@ -1607,6 +1701,7 @@ void BMSView::flushBmuVer(){
     int cloumn_offset = 0;
     QTableWidgetItem* item;
 
+
     //访客权限的特殊处理
     if(db_manager::Instance()->userLevel() == db_manager::LEVEL_GUEST)
     {
@@ -1645,7 +1740,7 @@ void BMSView::flushBmuVer(){
         item = new QTableWidgetItem();
         item->setText(QString("0x%1").arg(mycmu->bmu_data[i].RunStat, 4, 16, QLatin1Char('0')));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setToolTip(getBmuInfo2(mycmu->bmu_data[i].RunStat));
+        item->setToolTip(getBmuInfo(mycmu->bmu_data[i].RunStat));
         ui->tableVer->setItem(i, cloumn_offset++, item);
 
         item = new QTableWidgetItem();
@@ -1706,6 +1801,7 @@ void BMSView::flushBmuVer(){
             {
                 QStringList strl = mycmu->GetBalanceValue(mycmu->bmu_data[i].U64BalStat,
                                                           mycmu->bmu_data[i].BalIdc).split("|");
+//                qDebug() << strl;
                 if(strl.count()>4){
                     for (int j = 0; j < 4; ++j) {
                         item = new QTableWidgetItem();
@@ -1736,6 +1832,7 @@ void BMSView::flushBmuVer(){
                 item->setText(mycmu->GetBalanceValue(mycmu->bmu_data[i].BalMode,mycmu->bmu_data[i].BalCur));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableVer->setItem(i, cloumn_offset++, item);
+//                qDebug() << mycmu->bmu_data[i].BalMode << mycmu->bmu_data[i].BalCur;
             }
             else
             {
@@ -1940,8 +2037,8 @@ static map<QString, mb_cmd> btnMap = {
     {"btnKMNON", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_ON}},
     {"btnKMNOFF", {CTRL_AO_ADDR, ADDR_CTRL_KMN, MB_CTRL_OFF}},
     {"btnClrSysLock", {CTRL_AO_ADDR, ADDR_CLEAR_SYSLOCK, MB_CLR_SYSLOCK}},
-    //{"btnFanON", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_ON}},
-    //{"btnFanOFF", {CTRL_AO_ADDR, ADDR_CTRL_FAN, MB_CTRL_OFF}},
+    {"btnFanON", {CTRL_AO_ADDR, 0xFF0B, 0xa5fe}},
+    {"btnFanOFF", {CTRL_AO_ADDR, 0xFF0B, 0x5aff}},
     {"AutoFindAddr", {CTRL_AO_ADDR, ADDR_CTRL_FINDADDR, MB_CTRL_ON}},
     {"btnHeRongON", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_ON}},
     {"btnHeRongOFF", {CTRL_AO_ADDR, ADDR_CTRL_HR, MB_CTRL_OFF}},
@@ -3001,7 +3098,7 @@ void BMSView::on_btnLoadDefault_released() {
 }
 void BMSView::pop_bmuTable_menu(const QPoint& pos) {
     {  // Handle global position
-        if((!this->mycmu->is_pVer_a_fan_mos()) || (!this->mycmu->is_pVer_a_fan_pal()) )
+        if((!this->mycmu->is_pVer_a_fan_mos()) && (!this->mycmu->is_pVer_a_fan_pal()) )
         {
             return;
         }

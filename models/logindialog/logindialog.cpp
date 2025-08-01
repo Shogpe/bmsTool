@@ -27,12 +27,44 @@
 
 QString getUUID()
 {
+//    QProcess process;
+//    process.start("wmic csproduct get uuid");
+//    process.waitForFinished();
+//    QString result = QString::fromLocal8Bit(process.readAllStandardOutput());
+//    result = result.split("\n")[1].trimmed();
+//    return result;
+    QString uuid;
     QProcess process;
-    process.start("wmic csproduct get uuid");
-    process.waitForFinished();
-    QString result = QString::fromLocal8Bit(process.readAllStandardOutput());
-    result = result.split("\n")[1].trimmed();
-    return result;
+
+    // 使用 PowerShell 命令获取 UUID（兼容 Windows 10/11）
+    process.start("powershell", QStringList()
+        << "-NoProfile"
+        << "-Command"
+        << "(Get-WmiObject -Class Win32_ComputerSystemProduct).UUID"
+    );
+
+    if (!process.waitForFinished(3000)) { // 设置超时 3 秒
+        qWarning() << "Process failed:" << process.errorString();
+        return {};
+    }
+
+    if (process.exitCode() != 0) {
+        qWarning() << "PowerShell error:" << process.readAllStandardError();
+        return {};
+    }
+
+    // 处理输出
+    uuid = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
+
+    // 验证 UUID 格式 (32 位十六进制)
+    static QRegularExpression re("^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$",
+                                QRegularExpression::CaseInsensitiveOption);
+    if (!re.match(uuid).hasMatch()) {
+        qWarning() << "Invalid UUID format:" << uuid;
+        return {};
+    }
+
+    return uuid;
 }
 
 

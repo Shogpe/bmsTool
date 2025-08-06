@@ -352,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -12148,7 +12148,7 @@
          <property name="title">
           <string>传感器校准</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,1,1,1,0">
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,0,0,0,0">
           <property name="leftMargin">
            <number>1</number>
           </property>
@@ -12177,7 +12177,160 @@
             </property>
            </widget>
           </item>
-          <item row="25" column="1">
+          <item row="15" column="1" colspan="3">
+           <widget class="QLabel" name="label_17">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1" colspan="4">
+           <widget class="QLabel" name="label_14">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>漏电流校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="22" column="3">
+           <widget class="QPushButton" name="btnIFullAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="text">
+             <string>高点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1" colspan="4">
+           <widget class="QLabel" name="label_15">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>预留电流传感器校准(SEN-1)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1" colspan="4">
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>CAN电流传感器校准(预留)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="27" column="1" colspan="3">
+           <widget class="QLabel" name="label_22">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>注：Ain电流传感器、预留电流传感器、漏电流校准需要按照零点-&gt;低点-&gt;高点的顺序进行，仅有完成了该传感器的三个校准步骤校准才完成。</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="1" colspan="4">
+           <widget class="QLabel" name="label_20">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>绝缘母线电压校准</string>
+            </property>
+           </widget>
+          </item>
+          <item row="26" column="1">
+           <widget class="QLabel" name="label_23">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="28" column="1">
            <spacer name="verticalSpacer_14">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -12209,6 +12362,73 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="btnUBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="3">
+           <widget class="QPushButton" name="btnRnAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="text">
+             <string>负对地绝缘</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="2">
+           <widget class="QPushButton" name="btnRpAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="text">
+             <string>正对地绝缘</string>
+            </property>
+           </widget>
+          </item>
           <item row="22" column="2">
            <widget class="QPushButton" name="btnIZeroAdj">
             <property name="sizePolicy">
@@ -12233,6 +12453,44 @@
             </property>
            </widget>
           </item>
+          <item row="8" column="1" colspan="3">
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <widget class="QPushButton" name="btnRUAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>母线电压</string>
+            </property>
+           </widget>
+          </item>
           <item row="19" column="1" colspan="3">
            <widget class="QLabel" name="label_13">
             <property name="minimumSize">
@@ -12252,8 +12510,8 @@
             </property>
            </widget>
           </item>
-          <item row="22" column="1">
-           <widget class="QPushButton" name="btnIBaseAdj">
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnRBaseAdj">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -12290,32 +12548,8 @@
             </property>
            </widget>
           </item>
-          <item row="22" column="3">
-           <widget class="QPushButton" name="btnIFullAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <strikeout>false</strikeout>
-             </font>
-            </property>
-            <property name="text">
-             <string>高点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="btnRZeroAdj">
+          <item row="22" column="1">
+           <widget class="QPushButton" name="btnIBaseAdj">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -12329,7 +12563,7 @@
              </size>
             </property>
             <property name="text">
-             <string>低点</string>
+             <string>零点</string>
             </property>
            </widget>
           </item>
@@ -12352,51 +12586,8 @@
             </property>
            </widget>
           </item>
-          <item row="15" column="1" colspan="3">
-           <widget class="QLabel" name="label_17">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="2">
-           <widget class="QPushButton" name="btnRpAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <strikeout>false</strikeout>
-             </font>
-            </property>
-            <property name="text">
-             <string>正对地绝缘</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="1">
-           <widget class="QPushButton" name="btnRUAdj">
+          <item row="7" column="2">
+           <widget class="QPushButton" name="btnUZeroAdj">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -12410,83 +12601,7 @@
              </size>
             </property>
             <property name="text">
-             <string>母线电压</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
-           <widget class="QPushButton" name="btnIleakBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>零点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="btnRBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>零点</string>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="1" colspan="4">
-           <widget class="QLabel" name="label_12">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>CAN电流传感器校准(预留)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1" colspan="3">
-           <widget class="QLabel" name="label_16">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
+             <string>低点</string>
             </property>
            </widget>
           </item>
@@ -12509,6 +12624,44 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btnRZeroAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>低点</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="btnIleakBaseAdj">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>零点</string>
+            </property>
+           </widget>
+          </item>
           <item row="23" column="1">
            <widget class="QLabel" name="label_21">
             <property name="minimumSize">
@@ -12519,25 +12672,6 @@
             </property>
             <property name="text">
              <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1" colspan="4">
-           <widget class="QLabel" name="label_15">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>预留电流传感器校准(SEN-1)</string>
             </property>
            </widget>
           </item>
@@ -12560,124 +12694,37 @@
             </property>
            </widget>
           </item>
-          <item row="17" column="3">
-           <widget class="QPushButton" name="btnRnAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <strikeout>false</strikeout>
-             </font>
-            </property>
-            <property name="text">
-             <string>负对地绝缘</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1" colspan="4">
-           <widget class="QLabel" name="label_14">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>漏电流校准</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPushButton" name="btnUBaseAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
+          <item row="25" column="1">
+           <widget class="QPushButton" name="btnTBaseAdj">
             <property name="text">
              <string>零点</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
-           <widget class="QPushButton" name="btnUZeroAdj">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
+          <item row="25" column="2">
+           <widget class="QPushButton" name="btnTZeroAdj">
             <property name="text">
              <string>低点</string>
             </property>
            </widget>
           </item>
-          <item row="16" column="1" colspan="4">
-           <widget class="QLabel" name="label_20">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
+          <item row="25" column="3">
+           <widget class="QPushButton" name="btnTFullAdj">
             <property name="text">
-             <string>绝缘母线电压校准</string>
+             <string>高点</string>
             </property>
            </widget>
           </item>
           <item row="24" column="1" colspan="3">
-           <widget class="QLabel" name="label_22">
+           <widget class="QLabel" name="label_11">
             <property name="minimumSize">
              <size>
               <width>0</width>
               <height>24</height>
              </size>
             </property>
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
             <property name="text">
-             <string>注：Ain电流传感器、预留电流传感器、漏电流校准需要按照零点-&gt;低点-&gt;高点的顺序进行，仅有完成了该传感器的三个校准步骤校准才完成。</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
+             <string>温度传感器校准(仅测试用)</string>
             </property>
            </widget>
           </item>

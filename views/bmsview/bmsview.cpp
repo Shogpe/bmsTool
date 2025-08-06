@@ -635,21 +635,43 @@ void BMSView::timerUpDate() {
 QString BMSView::GetBitStatus(uint16_t value, QString tips) {
     QStringList statusList;
     QStringList tipList;
-    if (tips.contains(',')) {
-        tipList = tips.split(",");
-    } else {
-//        if(this->mycmu->GetProtocalVer() == CMUV5_0){
-//            tipList = QStringList({"采样芯片处于配置状态", "BMU 处于均衡状态", "采样芯片时钟异常", "温度低温异常",
-//                                   "温度高温异常", "电芯过压故障", "电芯欠压故障", "电芯断线故障",
-//                                   "采样线总正断线故障", "采样线总负断线故障", "采样芯片寄存器校验异常", "采样芯片参考电压异常",
-//                                   "采样芯片校准电压异常", "采样芯片复用采样通道异常", "采样芯片故障", "采样芯片故障"});
-//        }else{
-//            tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
-//        }
-    tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
+
+    if(this->mycmu->is_pVer_a_fan_mos())
+    {
+        for(int i = 0; i < 16; i++)
+        {
+            if (GET_BIT(value, i))
+            {
+                statusList << this->mycmu->BmuErrStr_a[i];
+            }
+        }
     }
-    for (int i = 0; i < tipList.size(); i++) {
-        if ((((value >> i) & 0x01) > 0)) statusList << tipList.at(i);
+    else if(this->mycmu->is_pVer_a_fan_pal())
+    {
+        for(int i = 0; i < 16; i++)
+        {
+            if (GET_BIT(value, i))
+            {
+                statusList << this->mycmu->BmuErrStr_m[i];
+            }
+        }
+    }
+    else if(this->mycmu->is_pVer_a_liq_mos())
+    {
+        for(int i = 0; i < 16; i++)
+        {
+            if (GET_BIT(value, i))
+            {
+                statusList << this->mycmu->BmuErrStr_w[i];
+            }
+        }
+    }
+    else
+    {
+        tipList = QStringList({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"});
+        for (int i = 0; i < tipList.size(); i++) {
+            if ((((value >> i) & 0x01) > 0)) statusList << tipList.at(i);
+        }
     }
     return statusList.join("|");
 }
@@ -1458,12 +1480,12 @@ QString BMSView::getBmuInfo(uint16_t status) {
                 statusList << this->mycmu->BmuStateStr_a[i + 8];
             }
         }
-
+        statusList << "\n";
         for(int i = 8; i < 16; i++)
         {
             if (GET_BIT(status, i))
             {
-                statusList << this->mycmu->BmuBalErrStr_a[i];
+                statusList << this->mycmu->BmuBalErrStr_a[i - 8];
             }
         }
     }
@@ -1480,12 +1502,12 @@ QString BMSView::getBmuInfo(uint16_t status) {
                 statusList << this->mycmu->BmuStateStr_m[i + 8];
             }
         }
-
+        statusList << "\n";
         for(int i = 8; i < 16; i++)
         {
             if (GET_BIT(status, i))
             {
-                statusList << this->mycmu->BmuBalErrStr_m[i];
+                statusList << this->mycmu->BmuBalErrStr_m[i - 8];
             }
         }
     }
@@ -1502,12 +1524,12 @@ QString BMSView::getBmuInfo(uint16_t status) {
                 statusList << this->mycmu->BmuStateStr_w[i + 8];
             }
         }
-
+        statusList << "\n";
         for(int i = 8; i < 16; i++)
         {
             if (GET_BIT(status, i))
             {
-                statusList << this->mycmu->BmuBalErrStr_w[i];
+                statusList << this->mycmu->BmuBalErrStr_w[i - 8];
             }
         }
     }

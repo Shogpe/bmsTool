@@ -8,6 +8,7 @@
 #include <QCryptographicHash>
 #include <QSettings>
 
+
 #define AUTO_FILL_DEBUG_MODE   1
 
 
@@ -25,43 +26,35 @@
 #define PW_TIME_MESS_NUM    10
 #define LIST_NUM    (2*PW_TIME_MESS_NUM +1)
 
-QString getUUID()
-{
-//    QProcess process;
-//    process.start("wmic csproduct get uuid");
-//    process.waitForFinished();
-//    QString result = QString::fromLocal8Bit(process.readAllStandardOutput());
-//    result = result.split("\n")[1].trimmed();
-//    return result;
-    QString uuid;
-    QProcess process;
 
-    // 使用 PowerShell 命令获取 UUID（兼容 Windows 10/11）
-    process.start("powershell", QStringList()
-        << "-NoProfile"
-        << "-Command"
-        << "(Get-WmiObject -Class Win32_ComputerSystemProduct).UUID"
-    );
 
-    if (!process.waitForFinished(3000)) { // 设置超时 3 秒
-        qWarning() << "Process failed:" << process.errorString();
-        return {};
-    }
+QString getUUID() {
 
-    if (process.exitCode() != 0) {
-        qWarning() << "PowerShell error:" << process.readAllStandardError();
-        return {};
-    }
+    // 企业版获取uuid会有问题，这里改成获取绝对路径生成一个类似的id,大概率每个人用的时候路径不一样，大概率吧
+    // 如果连这都还有在出现logindialog之后闪退的问题，将 AUTO_FILL_DEBUG_MODE 宏 改为 0 ，不再允许密码填充
+    static QString uuid;
 
-    // 处理输出
-    uuid = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
+    if (uuid.isEmpty()) {
+        QString uniqueBase = QCoreApplication::applicationDirPath();
 
-    // 验证 UUID 格式 (32 位十六进制)
-    static QRegularExpression re("^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$",
-                                QRegularExpression::CaseInsensitiveOption);
-    if (!re.match(uuid).hasMatch()) {
-        qWarning() << "Invalid UUID format:" << uuid;
-        return {};
+        if(uniqueBase.isEmpty())
+        {
+            //如果连这个都获取不了，只能给按天刷新的uuid了。这样保证当天不用重新输入密码
+            uniqueBase = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+        }
+
+        qDebug() << "uniqueBase" << uniqueBase;
+
+        QCryptographicHash hash(QCryptographicHash::Sha1);
+        hash.addData(uniqueBase.toUtf8());
+        QByteArray result = hash.result().toHex();
+
+        uuid = QString("%1-%2-%3-%4-%5")
+            .arg(QString(result.mid(0, 8)))
+            .arg(QString(result.mid(8, 4)))
+            .arg(QString(result.mid(12, 4)))
+            .arg(QString(result.mid(16, 4)))
+            .arg(QString(result.mid(20, 12)));
     }
 
     return uuid;
@@ -108,10 +101,15 @@ logindialog::logindialog(QWidget *parent) : QDialog(parent), ui(new Ui::logindia
     this->adjustSize();
 
 #if AUTO_FILL_DEBUG_MODE
-    QString uuid = getUUID();
+    QString uuid = "";
 
     QSettings *settings = new QSettings("config.ini", QSettings::IniFormat);
     QString uuidSettings = settings->value("pcUUID", "XXXX").toString();
+
+    if(uuidSettings != "XXXX")
+    {
+        uuid = getUUID();
+    }
 
     qDebug() << "uuid:" << uuid << uuidSettings;
     if(uuid == uuidSettings)

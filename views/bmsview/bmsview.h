@@ -98,7 +98,7 @@ class BMSView : public QWidget {
     void flushBmuVer();
     void flushBmuEx();
     void flushSoe(const ST_SOE &soe);
-    QString BMSView::getBmuInfo(uint16_t status);
+    QString getBmuInfo(uint16_t status);
     void pop_bmuTable_menu(const QPoint& pos);
     void setDoButtonText(uint16_t value, QList<QString> textList);
     void setRegText();

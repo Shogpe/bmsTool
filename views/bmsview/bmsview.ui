@@ -352,7 +352,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">
@@ -7790,11 +7790,11 @@
       <property name="enabled">
        <bool>true</bool>
       </property>
+      <property name="toolTip">
+       <string/>
+      </property>
       <attribute name="title">
        <string>BMU扩展信息</string>
-      </attribute>
-      <attribute name="toolTip">
-       <string>仅CMU4.0支持</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">

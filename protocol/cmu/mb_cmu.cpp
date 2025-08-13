@@ -35,7 +35,7 @@ mb_cmu::mb_cmu(BMS_PROTOCOL ver) : QObject(nullptr) {
     //    pMq = MessageQueue::getInstance();
     //    pMq->registMsgQueue(0);
     cproVerList.clear();
-    cproVerList << CMU_P_V0_0_01 << CMU_P_V1_0_02 << CMU_P_V2_0_03 << CMU_P_V3_0_04
+    cproVerList << CMU_P_V0_0_01 << CMU_P_V0_0_02 << CMU_P_V0_0_03 << CMU_P_V0_0_04
                 << CMU_A_FAN_MOS_V1_0_00 << CMU_A_FAN_MOS_V1_0_01 << CMU_A_FAN_MOS_V1_0_02
                 << CMU_A_FAN_MOS_V1_0_03 << CMU_A_FAN_MOS_V1_0_04 << CMU_A_FAN_MOS_V1_3_00
                 << CMU_A_FAN_PAL_V2_0_00
@@ -198,10 +198,10 @@ void mb_cmu::Dump2CsvTitle() {
         if(is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
             data_buf << (tr("BMU%1_风机转速,").arg(i + 1));
         }
-        if (is_cpVer_Higher_than(CMU_P_V1_0_02)) {
+        if (is_cpVer_Higher_than(CMU_P_V0_0_02)) {
             data_buf << (tr("BMU%1_CAN错误,").arg(i + 1));
         }
-        if (is_cpVer_Higher_than(CMU_P_V2_0_03)) {
+        if (is_cpVer_Higher_than(CMU_P_V0_0_03)) {
             data_buf << (tr("BMU%1_母线电压,").arg(i + 1));
             if(is_pVer_a_liq_mos()){
                 data_buf << (tr("BMU%1_模组A均衡电流,").arg(i + 1));
@@ -294,7 +294,7 @@ void mb_cmu::Dump2Csv() {
             if(is_cpVer_match(CMU_A_FAN_MOS_V1_0_03)) {
                 data_buf << (this->bmu_data[i].FanSpeed) << ",";
             }
-            if (is_cpVer_Higher_than(CMU_P_V1_0_02)) {
+            if (is_cpVer_Higher_than(CMU_P_V0_0_02)) {
                 data_buf << (this->bmu_data[i].CanErr) << ",";
             }
             if (is_pVer_active()) {
@@ -994,13 +994,13 @@ int mb_cmu::ReadBmuData() {
             }
         }
 
-        if (is_cpVer_match(CMU_P_V2_0_03)) {
+        if (is_cpVer_match(CMU_P_V0_0_03)) {
             reg_num = config.bmu_num * 2;
             status += ReadData(0x03, 0x900, reg_num, p);
             for (int i = 0; i < config.bmu_num; i++) {
                 bmu_data[i].CanErr = *(p + i * 2 + 1);
             }
-        } else if (is_cpVer_Higher_than(CMU_P_V2_0_03)) {
+        } else if (is_cpVer_Higher_than(CMU_P_V0_0_03)) {
             // 通信计数
             if (is_pVer_a_fan_pal()) {
                 reg_num = config.bmu_num * 1;

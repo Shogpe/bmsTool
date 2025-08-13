@@ -449,7 +449,7 @@ void BMSView::uiChange(QHash<QString, qreal> mapData) {
     hdr_list.append(tr("运行状态"));
     hdr_list.append(tr("故障状态"));
     if (this->mycmu->is_pVer_passive()) {
-        if (this->mycmu->is_cpVer_Higher_than(CMU_P_V1_0_02)) {
+        if (this->mycmu->is_cpVer_Higher_than(CMU_P_V0_0_02)) {
             hdr_list.append(tr("CAN错误数"));
         }
         ui->BalnceStart->blockSignals(true);
@@ -1880,7 +1880,7 @@ void BMSView::flushBmuVer(){
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             ui->tableVer->setItem(i, cloumn_offset++, item);
         }
-        else if (mycmu->is_cpVer_Higher_than(CMU_P_V1_0_02))
+        else if (mycmu->is_cpVer_Higher_than(CMU_P_V0_0_02))
         {
             // CAN通信错误计数
             item = new QTableWidgetItem();

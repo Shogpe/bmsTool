@@ -251,9 +251,9 @@ typedef enum {
 //当前存在的所有复合版本
 #define CMU_P_V0_0_00           0000U  //无法归类的版本
 #define CMU_P_V0_0_01           0001U  //CMU1.0
-#define CMU_P_V1_0_02           0002U  //CMU2.0
-#define CMU_P_V2_0_03           0003U  //CMU3.0
-#define CMU_P_V3_0_04           0004U  //CMU3.1
+#define CMU_P_V0_0_02           0002U  //CMU2.0
+#define CMU_P_V0_0_03           0003U  //CMU3.0
+#define CMU_P_V0_0_04           0004U  //CMU3.1
 
 #define CMU_A_FAN_MOS_V1_0_00   1000U  //CMU4.1
 #define CMU_A_FAN_MOS_V1_0_01   1001U  //CMU4.0
@@ -436,9 +436,9 @@ private:
 
 public:
     //主动均衡
-    const QList<QString> BmuStateStr_a = {tr("存储地址与拨码地址不一致"),tr("地址锁定/使用自动地址"),tr("干接点开路"),tr("风机开机"),
+    const QList<QString> BmuStateStr_a = {tr("存储地址与拨码地址不一致或自动寻址中"),tr("地址锁定或使用自动地址"),tr("干接点开路"),tr("风机开机"),
                                  tr("+5V 辅源状态正常"),tr(""),tr(""),tr(""),
-                                 tr("自动寻址完成"),tr("地址未锁定/使用拨码地址"),tr("干接点闭合"),tr("风机关机"),
+                                 tr("地址拨码一致或自动寻址完成"),tr("地址未锁定或使用拨码地址"),tr("干接点闭合"),tr("风机关机"),
                                  tr("+5V 辅源状态异常"),tr(""),tr(""),tr("")};
 
     const QList<QString> BmuBalErrStr_a = {tr("1.25V 参考电压错误"),tr("均衡前正母线电压错误"),tr("均衡电流异常"),tr("24V母线电压超范围"),

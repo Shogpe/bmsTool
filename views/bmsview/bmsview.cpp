@@ -632,7 +632,7 @@ void BMSView::timerUpDate() {
     // elapsed(): 返回自上次调用start()或restart()以来经过的毫秒数
     // qDebug() << t.elapsed() << "ms";
 }
-QString BMSView::GetBitStatus(uint16_t value, QString tips) {
+QString BMSView::getBmuErrInfo(uint16_t value, QString tips) {
     QStringList statusList;
     QStringList tipList;
 
@@ -1768,7 +1768,7 @@ void BMSView::flushBmuVer(){
         item = new QTableWidgetItem();
         item->setText(QString("0x%1").arg(mycmu->bmu_data[i].ErrStat, 4, 16, QLatin1Char('0')));
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-        item->setToolTip(GetBitStatus(mycmu->bmu_data[i].ErrStat));
+        item->setToolTip(getBmuErrInfo(mycmu->bmu_data[i].ErrStat));
         ui->tableVer->setItem(i, cloumn_offset++, item);
 
         if (this->mycmu->is_pVer_active())
@@ -1859,12 +1859,12 @@ void BMSView::flushBmuVer(){
             else
             {
                 item = new QTableWidgetItem();
-                item->setText(GetBitStatus(mycmu->bmu_data[i].BalErr));
+                item->setText(mycmu->GetBitStatus(mycmu->bmu_data[i].BalErr));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableVer->setItem(i, cloumn_offset++, item);
 
                 item = new QTableWidgetItem();
-                item->setText(GetBitStatus(mycmu->bmu_data[i].BalStat));
+                item->setText(mycmu->GetBitStatus(mycmu->bmu_data[i].BalStat));
                 item->setFlags(item->flags() & (~Qt::ItemIsEditable));
                 ui->tableVer->setItem(i, cloumn_offset++, item);
 
@@ -2401,7 +2401,7 @@ void BMSView::sendCommand() {
     } else if (name == "btnBmuResetDef"){
         AOCtrlEmit(0xFF0A, 0x1D32, ui->btnBmuResetDef->text() + "?");
     } else if (name == "btnBMUUnlock"){
-        AOCtrlEmit(0xFFF1, 0xAA55, ui->btnBMUUnlock->text() + "?");
+        AOCtrlEmit(0xFFF1, 0x55AA, ui->btnBMUUnlock->text() + "?");
     } else if (name == "btnBMULock"){
         AOCtrlEmit(0xFFF1, 0xAA55, ui->btnBMULock->text() + "?");
     } else if (name == "btnCmuResetCaliCfg"){

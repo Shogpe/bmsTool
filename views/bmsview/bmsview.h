@@ -127,7 +127,7 @@ class BMSView : public QWidget {
 
 private:
     void changeEvent(QEvent* event);
-    QString GetBitStatus(uint16_t value, QString tips = "");
+    QString getBmuErrInfo(uint16_t value, QString tips = "");
     frmSaveLog savelog;
 
     uint32_t verCache;

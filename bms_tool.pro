@@ -26,7 +26,7 @@ DESTDIR     = $$PWD/output/
 # include(ThirdParty/log4qt/log4qt.pri)
 include(models/models.pri)
 include(views/views.pri)
-include(3rdParty.pri)
+include(3rdParty/3rdParty.pri)
 include(protocol/protocol.pri)
 
 SOURCES     += main.cpp \

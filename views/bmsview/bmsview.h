@@ -22,6 +22,8 @@ namespace Ui {
 class BMSView;
 }
 
+
+
 class BMSView : public QWidget {
     Q_OBJECT
 
@@ -89,6 +91,8 @@ class BMSView : public QWidget {
     void on_btnSaveDefault_released();
     void on_btnLoadDefault_released();
     //
+
+    void testGetMinMaxVoltDiff(void);
 
     void statGroupAutoHide(QHash<QString, qreal> mapData);
     void flushData(int type, QHash<QString, qreal> mapData);

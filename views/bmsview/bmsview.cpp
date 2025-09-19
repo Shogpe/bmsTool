@@ -126,6 +126,7 @@ void BMSView::initUserLevelForm()
         ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabSOE));
 
         ui->pb_clearNetErrCnt->setVisible(false);
+        ui->chk_balTestOutput->setVisible(false);
         ui->sp_netErrCnt->setVisible(false);
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_SUPER)
@@ -178,6 +179,7 @@ void BMSView::initUserLevelForm()
         ui->G_DeviceDebug->setEnabled(false);
 
         ui->pb_clearNetErrCnt->setVisible(false);
+        ui->chk_balTestOutput->setVisible(false);
         ui->sp_netErrCnt->setVisible(false);
     }
     else if(db_manager::Instance()->userLevel() == db_manager::LEVEL_DEBUG)
@@ -222,6 +224,7 @@ void BMSView::initUserLevelForm()
         ui->DataWidget->removeTab(ui->DataWidget->indexOf(ui->tabConfig));
 
         ui->pb_clearNetErrCnt->setVisible(true);
+        ui->chk_balTestOutput->setVisible(true);
         ui->sp_netErrCnt->setVisible(true);
     }
 
@@ -1662,6 +1665,11 @@ void BMSView::flushBmuVolt(){
 
     // 数据刷新完毕后自适应列宽
     ui->tableBMU->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    if(ui->chk_balTestOutput->isChecked())
+    {
+        testGetMinMaxVoltDiff();
+    }
 }
 
 
@@ -3662,4 +3670,98 @@ void BMSView::clearStatLabel(QList<QLabel *> &ll)
 }
 
 
+void BMSView::testGetMinMaxVoltDiff(void)
+{
+    typedef struct
+    {
+        uint bmuId;
+        uint cellId;
+        double volt;
+    }volt_T;
 
+    QList<volt_T> voltList;
+    for (int i = 0; i < config.bmu_num; i++)
+    {
+        for (int j = 0; j < config.vol_num; j++)
+        {
+            volt_T temp;
+            temp.bmuId = i;
+            temp.cellId = j;
+            temp.volt = double(this->mycmu->bmu_data[i].Ucell[j]) / 10000.0;
+            voltList.append(temp);
+        }
+    }
+
+    if(voltList.length() <= 2)
+    {
+        return;
+    }
+    std::sort(voltList.begin(), voltList.end(), [](volt_T a, volt_T b){ return (a.volt > b.volt); });
+
+    volt_T maxDiffGroup[2];
+    volt_T minDiffGroup[2];
+    double maxDiff = 0;
+    double minDiff = 10;
+    double avgDiff = 0;
+    double stdDiff = 0;
+
+
+    maxDiffGroup[0] = voltList.first();
+    maxDiffGroup[1] = voltList.last();
+    maxDiff = maxDiffGroup[0].volt - maxDiffGroup[1].volt;
+
+    for(int i = 0; i < voltList.length() - 1; i++)
+    {
+        double diffTemp = voltList[i].volt - voltList[i+1].volt;
+
+        if(diffTemp < minDiff)
+        {
+            minDiffGroup[0] = voltList[i];
+            minDiffGroup[1] = voltList[i+1];
+            minDiff = diffTemp;
+        }
+    }
+
+    foreach (volt_T var, voltList)
+    {
+        avgDiff += var.volt;
+    }
+    avgDiff = avgDiff/voltList.length();
+
+    foreach (volt_T var, voltList)
+    {
+        stdDiff += (var.volt - avgDiff) * (var.volt - avgDiff);
+    }
+    stdDiff = sqrt(stdDiff/voltList.length());
+
+    uint last = voltList.length() - 1;
+    QString time = "=======" + QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss") + "均衡测试用数据=============";
+    QString maxDiffStr = QString("最大压差数据：%1-%2 , %3-%4, 最大压差：%5V")
+            .arg(maxDiffGroup[0].bmuId + 1).arg(maxDiffGroup[0].cellId + 1)
+            .arg(maxDiffGroup[1].bmuId + 1).arg(maxDiffGroup[1].cellId + 1)
+            .arg(QString::number(maxDiff,'f',4));
+    QString minDiffStr = QString("最小压差数据：%1-%2 , %3-%4, 最小压差：%5V")
+            .arg(minDiffGroup[0].bmuId + 1).arg(minDiffGroup[0].cellId + 1)
+            .arg(minDiffGroup[1].bmuId + 1).arg(minDiffGroup[1].cellId + 1)
+            .arg(QString::number(minDiff,'f',4));
+    QString stdDiffStr = QString("电压平均值：%1V,标准差：%2V")
+            .arg(QString::number(avgDiff,'f',4)).arg(QString::number(stdDiff,'f',4));
+
+    QString maxStr = QString("最大三组数据：%1-%2 %3V、 %4-%5 %6V、 %7-%8 %9V")
+            .arg(voltList[0].bmuId + 1).arg(voltList[0].cellId + 1).arg(QString::number(voltList[0].volt,'f',4))
+            .arg(voltList[1].bmuId + 1).arg(voltList[1].cellId + 1).arg(QString::number(voltList[1].volt,'f',4))
+            .arg(voltList[2].bmuId + 1).arg(voltList[2].cellId + 1).arg(QString::number(voltList[2].volt,'f',4));
+
+    QString minStr = QString("最小三组数据：%1-%2 %3V、 %4-%5 %6V、 %7-%8 %9V")
+            .arg(voltList[last - 0].bmuId + 1).arg(voltList[last - 0].cellId + 1).arg(QString::number(voltList[last - 0].volt,'f',4))
+            .arg(voltList[last - 1].bmuId + 1).arg(voltList[last - 1].cellId + 1).arg(QString::number(voltList[last - 1].volt,'f',4))
+            .arg(voltList[last - 2].bmuId + 1).arg(voltList[last - 2].cellId + 1).arg(QString::number(voltList[last - 2].volt,'f',4));
+
+    qDebug() << time;
+    qDebug() << maxStr;
+    qDebug() << minStr;
+    qDebug() << maxDiffStr;
+    qDebug() << minDiffStr;
+    qDebug() << stdDiffStr;
+    qDebug() << "=========================================";
+}

@@ -322,6 +322,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="chk_balTestOutput">
+        <property name="text">
+         <string>均衡测试输出</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -352,7 +359,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabCMU">
       <property name="enabled">

@@ -1,0 +1,13 @@
+INCLUDEPATH += $$PWD/
+#include($$PWD/libmodbus/libmodbus.pri)
+# include($$PWD/cJSON/cJSON.pri)
+# include($$PWD/log4qt/log4qt.pri)
+# include($$PWD/view/view.pri)
+#include($$PWD/qtftp/qtftp.pri)
+#include($$PWD/JLinkSDK/JLinkSDK.pri)
+greaterThan(QT_MAJOR_VERSION, 4): include($$PWD/FramelessHelper/FramelessHelper.pri)
+greaterThan(QT_MAJOR_VERSION, 4): include($$PWD/qBreakpad/qBreakpad.pri)
+#include($$PWD/ZSqliteCipherDriver/ZSqliteCipherDriver.pri)
+#include($$PWD/systeminfo/systeminfo.pri)
+include($$PWD/../3rdParty/iconHelper/iconHelper.pri)
+include($$PWD/../3rdParty/CuteLogger/CuteLogger.pri)
